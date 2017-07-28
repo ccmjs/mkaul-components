@@ -90,13 +90,13 @@
         } );
   
         // select inner containers (mostly for buttons)
-        var digit_count = main_elem.querySelector( 'input.digit_count' );
+        var digit_count       = main_elem.querySelector( 'input.digit_count' );
         var digit_count_value = main_elem.querySelector( 'span.digit_count' );
-        var div_result = main_elem.querySelector( 'div.result' );
-        var left_button = main_elem.querySelector( 'button.left' );
-        var right_button = main_elem.querySelector( 'button.right' );
-        var number_area = main_elem.querySelector( 'p.number' );
-        var exit_button = main_elem.querySelector( 'button.exit' );
+        var div_result        = main_elem.querySelector( 'div.result' );
+        var left_button       = main_elem.querySelector( 'button.left' );
+        var right_button      = main_elem.querySelector( 'button.right' );
+        var number_area       = main_elem.querySelector( 'p.number' );
+        var exit_button       = main_elem.querySelector( 'button.exit' );
   
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
