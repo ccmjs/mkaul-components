@@ -1,0 +1,50 @@
+/**
+ * @overview default layout of ccm component game_chooser
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @license The MIT License (MIT)
+ */
+
+.row {
+    width: 100%;
+    text-align: center; // center the content of the container
+}
+
+.block {
+    width: 100px;
+    display: inline-block; // display inline with ability to provide width/height
+}
+
+button {
+    margin: 30px;
+    padding: 20px;
+    border-width: 6px;
+    border-radius: 20px;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+.left {
+    background-color: red;
+}
+
+.right {
+    background-color: green;
+}
+
+.exit {
+    background-color: darkgray;
+}
+
+p.number, span.digit_count  {
+    font-family: 'Open Sans', sans-serif;
+    font-size: xx-large;
+}
+
+.exit, .result {
+    font-family: 'Open Sans', sans-serif;
+    font-size: x-large;
+}
+
+.error {
+    background-color: red;
+}
