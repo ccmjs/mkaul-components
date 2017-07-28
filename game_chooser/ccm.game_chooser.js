@@ -33,7 +33,7 @@
                   type: 'range',
                   min: '1',
                   max: '%number_range_max_exponent%',
-                  step: 1,
+                  step: '1',
                   value: '%number_range_exponent%'
                 },
                 { tag: 'span', class: 'digit_count' }
