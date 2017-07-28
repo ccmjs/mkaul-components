@@ -5,7 +5,7 @@
 
 ## _ccm_ Components developed by Manfred Kaul
 
-* [game_chooser](https://mkaul.github.io/ccm-components/game_chooser/ccm.game_chooser.js)
+* [game_chooser](https://mkaul.github.io/ccm-components/game_chooser/index.html)
 ```
  <script src="https://mkaul.github.io/ccm-components/game_chooser/ccm.game_chooser.min.js"></script>
  <ccm-game_chooser></ccm-game_chooser>
