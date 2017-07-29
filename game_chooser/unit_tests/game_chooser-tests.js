@@ -21,12 +21,12 @@ ccm.files[ 'game_chooser-tests.js' ] = {
       'publicProperties': function ( suite ) {
         suite.game_chooser.instance( function ( instance ) {
           instance.start();
-          suite.assertEquals( [ 'start','css','html','language','languages','number_range_max_exponent','number_range_exponent','beep','beepSound','ccm','id','index','component','root','element', 'get_next_number' ], Object.keys( instance ) );
+          suite.assertEquals( [ 'start','css','html','language','languages','number_range_max_exponent','number_range_exponent','beep','beepSound','ccm','id','index','component','root','element', 'get_next_number', 'get_list_of_numbers' ], Object.keys( instance ) );
         } );
       }
     }
   },
-  runtime: {
+  configuration: {
     tests: {
       'name_is_game_chooser': function ( suite ) {
         suite.assertSame( 'game_chooser', suite.game_chooser.name );

@@ -104,10 +104,15 @@
         
         // next number for game
         var next_number;
+        var list_of_numbers = [];
   
-        // public function for accessing this number
+        // public functions for accessing numbers
         self.get_next_number = function(){
           return next_number;
+        };
+  
+        self.get_list_of_numbers = function(){
+          return list_of_numbers;
         };
   
         // has logger instance? => log 'render' event
@@ -184,6 +189,7 @@
             display_timer();
             number_of_clicks = 0;
             number_of_success = 0;
+            list_of_numbers = [];
       
           } else {
       
@@ -195,9 +201,11 @@
             var results = {
               success_rate_number: ( number_of_clicks === 0 ? 0 : 100.0 * number_of_success / number_of_clicks ).toFixed(2) + '% in ' +
               (duration/1000).toFixed(2),
-              average_time_number: (number_of_clicks === 0 ? 'N/A' : (average/1000).toFixed(2))
+              average_time_number: (number_of_clicks === 0 ? 'N/A' : (average/1000).toFixed(2)),
+              number_range_exponent: self.number_range_exponent,
+              numbers: list_of_numbers
             };
-  
+
             // add user data, if any
             if ( self.user ) results.user = self.user.data().key;
             // has logger instance? => log event
@@ -232,6 +240,7 @@
   
         function show_next_number(){
           next_number = Math.floor(( number_range(digit_count.value) * Math.random() ) % number_range(digit_count.value) );
+          list_of_numbers.push(next_number);
           number_area.innerHTML = self.get_next_number() ;
         }
   
