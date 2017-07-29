@@ -199,6 +199,7 @@
             
             // compute results
             var results = {
+              component: 'game_chooser',
               success_rate_number: ( number_of_clicks === 0 ? 0 : 100.0 * number_of_success / number_of_clicks ).toFixed(2) + '% in ' +
               (duration/1000).toFixed(2),
               average_time_number: (number_of_clicks === 0 ? 'N/A' : (average/1000).toFixed(2)),
@@ -209,11 +210,16 @@
             // add user data, if any
             if ( self.user ) results.user = self.user.data().key;
             // has logger instance? => log event
-            if ( self.logger ) self.logger.log( 'game_chooser', results );
+            if ( self.logger ) self.logger.log( results );
             
             // display
             self.ccm.helper.integrate(self.languages[self.language], results);
             self.ccm.helper.setContent( div_result, self.ccm.helper.html(self.html.message, results) );
+            
+            // on finish?
+            if (self.onFinish) self.onFinish( self, results );
+            
+            // Restart?
             exit_button.innerHTML = self.languages[self.language].start_button ;
             last_click_time = 0;
           }
