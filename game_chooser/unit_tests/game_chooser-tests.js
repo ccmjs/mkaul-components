@@ -35,6 +35,21 @@ ccm.files[ 'game_chooser-tests.js' ] = {
         suite.game_chooser.start(function (instance) {
           suite.assertTrue( instance.get_next_number() > 0 );
         });
+      },
+      'number_is_less_than_exponent': function ( suite ) {
+        suite.game_chooser.start(function (instance) {
+          suite.assertTrue( instance.get_next_number() < Math.pow( 10, instance.number_range_exponent ) );
+        });
+      },
+      'range_is_less_than_max': function ( suite ) {
+        suite.game_chooser.start(function (instance) {
+          suite.assertTrue( instance.number_range_exponent <= instance.number_range_max_exponent );
+        });
+      },
+      'language_is_valid': function ( suite ) {
+        suite.game_chooser.start(function (instance) {
+          suite.assertTrue( Object.keys(instance.languages).indexOf( instance.language ) > -1 );
+        });
       }
     }
   }
