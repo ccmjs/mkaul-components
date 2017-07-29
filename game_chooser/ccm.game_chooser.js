@@ -101,6 +101,14 @@
       var self = this;
 
       this.start = function ( callback ) {
+        
+        // next number for game
+        var next_number;
+  
+        // public function for accessing this number
+        self.get_next_number = function(){
+          return next_number;
+        };
   
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
@@ -123,8 +131,7 @@
   
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
-  
-        var next_number;
+
         show_next_number();
   
         var number_of_clicks = 0;
@@ -203,12 +210,6 @@
             last_click_time = 0;
           }
     
-        };
-  
-        // public functions
-        
-        self.get_next_number = function(){
-          return next_number;
         };
         
         // private functions

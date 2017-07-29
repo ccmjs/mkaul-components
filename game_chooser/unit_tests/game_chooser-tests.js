@@ -20,6 +20,7 @@ ccm.files[ 'game_chooser-tests.js' ] = {
       },
       'publicProperties': function ( suite ) {
         suite.game_chooser.instance( function ( instance ) {
+          instance.start();
           suite.assertEquals( [ 'start','css','html','language','languages','number_range_max_exponent','number_range_exponent','beep','beepSound','ccm','id','index','component','root','element', 'get_next_number' ], Object.keys( instance ) );
         } );
       }
@@ -31,7 +32,9 @@ ccm.files[ 'game_chooser-tests.js' ] = {
         suite.assertSame( 'game_chooser', suite.game_chooser.name );
       },
       'number_is_positive': function ( suite ) {
-        suite.assertTrue( suite.game_chooser.instance().get_next_number() > 0 );
+        suite.game_chooser.start(function (instance) {
+          suite.assertTrue( instance.get_next_number() > 0 );
+        });
       }
     }
   }
