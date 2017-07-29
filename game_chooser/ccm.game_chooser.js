@@ -208,7 +208,6 @@
         // public functions
         
         self.get_next_number = function(){
-          debugger;
           return next_number;
         };
         
