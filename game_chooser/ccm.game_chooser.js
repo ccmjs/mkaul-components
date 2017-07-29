@@ -93,6 +93,7 @@
   
       //  user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      // onfinish: function( instance, results ){ console.log( results ); }
     
     },
 
@@ -217,7 +218,7 @@
             self.ccm.helper.setContent( div_result, self.ccm.helper.html(self.html.message, results) );
             
             // on finish?
-            if (self.onFinish) self.onFinish( self, results );
+            if (self.onfinish) self.onfinish( self, results );
             
             // Restart?
             exit_button.innerHTML = self.languages[self.language].start_button ;
