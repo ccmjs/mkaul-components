@@ -205,9 +205,15 @@
     
         };
   
-  
-        /* private functions */
-  
+        // public functions
+        
+        self.get_next_number = function(){
+          debugger;
+          return next_number;
+        };
+        
+        // private functions
+        
         function display_timer(){
           if ( millisec >= 9 ){
             millisec=0;
@@ -225,12 +231,8 @@
         }
   
         function show_next_number(){
-          number_area.innerHTML = get_next_number() ;
-        }
-  
-        function get_next_number(){
           next_number = Math.floor(( number_range(digit_count.value) * Math.random() ) % number_range(digit_count.value) );
-          return next_number;
+          number_area.innerHTML = self.get_next_number() ;
         }
   
         function digit_sum(number) {
