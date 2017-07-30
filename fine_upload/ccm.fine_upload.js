@@ -22,8 +22,8 @@
           id: 'uploader'
         }
       },
-      css: [ 'ccm.load',  'resources/fine-uploader-gallery.min.css' ],
-      fine_uploader_lib: [ 'ccm.load', 'resources/fine-uploader.min.js' ],
+      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader-gallery.min.css' ],
+      fine_uploader_lib: [ 'ccm.load', 'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader.min.js' ],
       template: `<div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
                 <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
