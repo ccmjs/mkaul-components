@@ -7,17 +7,21 @@
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'learning_app';
+var component_name = 'fine_upload';
+var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
+var account = 'mkaul';
 
 var index_html = `<!DOCTYPE html>
 <meta charset="utf-8">
-<script src="https://mkaul.github.io/ccm-components/${component_name}/ccm.${component_name}.js"></script>
+<meta name="author" content="${author}">
+<meta name="license" content="The MIT License (MIT)">
+<script src="https://${account}.github.io/ccm-components/${component_name}/ccm.${component_name}.js"></script>
 <script src="ccm.${component_name}.js"></script>
 <ccm-${component_name}></ccm-${component_name}>`;
 
 var ccm_component = `/**
  * @overview ccm component for ${component_name}
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @author ${author}
  * @license The MIT License (MIT)
  */
 
@@ -39,7 +43,8 @@ var ccm_component = `/**
           ]
         }
       },
-      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/${component_name}/resources/default.css' ],
+      css: [ 'ccm.load',  'resources/default.css' ],
+      // css: [ 'ccm.load',  'https://${account}.github.io/ccm-components/${component_name}/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -77,7 +82,7 @@ var ccm_component = `/**
 
 var default_css = `/**
  * @overview default layout of ccm component ${component_name}
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @author ${author}
  * @license The MIT License (MIT)
  */`;
 
