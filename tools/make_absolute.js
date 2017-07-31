@@ -13,20 +13,32 @@ const fs = require('fs');
 const path = require('path');
 
 const component_name = 'fine_upload';
+const author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
 
-const relative_path = '[.]/resources/'; // dot is any char in RegExp
-const absolute_path = `https://mkaul.github.io/ccm-components/${component_name}/resources/`;
+const relative_path = './resources/';
+const absolute_path = `https://${author}.github.io/ccm-components/${component_name}/resources/`;
 
 walk(path.join('..' + path.sep + component_name), function(err, results) {
   if (err) throw err;
   results.map(function (someFile) {
     if ( abs_switch === absolute) {
-      replace( someFile, relative_path, absolute_path );
+      replace( someFile, RE(relative_path), absolute_path );
+                      // dot matches any char in RegExp
     } else {
-      replace( someFile, absolute_path, relative_path );
+      replace( someFile, RE(absolute_path), relative_path );
     }
   });
 });
+
+
+
+/*
+ * RE( someString ) returns the regular expression escaping special chars
+ * e.g. dot is any char in RegExp, therefore dot has to be escaped for turning it into a regexp
+ */
+function RE( someString ) {
+  return someString.replace(/([.|$*+?[\]()]|\\|\^|]|-)/g, "[$1]")
+}
 
 
 // https://stackoverflow.com/questions/14177087/replace-a-string-in-a-file-with-nodejs
