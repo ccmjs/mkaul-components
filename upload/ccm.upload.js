@@ -92,8 +92,8 @@
             var formData = new FormData();
   
             formData.append('files', input.files);
-            formData.append('user', dataset.user );
-            formData.append('token', dataset.token);
+            formData.append('user',  self.user.data().key );
+            formData.append('token', self.user.data().token );
   
             xhr.open( "POST", self.upload_server, true );
   
