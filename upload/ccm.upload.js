@@ -97,9 +97,8 @@
             xhr.open( "POST", self.upload_server, true );
             
             xhr.onload = function(e) {
-              console.log( this.responseText );
+              reports.textContent += this.response.response;
               console.log( JSON.parse(this.response) );
-              alert( 'onload' );
             };
   
             xhr.upload.onprogress = function(e) {
