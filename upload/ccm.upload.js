@@ -39,9 +39,9 @@
         login: 'Upload erst nach Login möglich.',
         abort: 'Upload abgebrochen.'
       },
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  './resources/default.css' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', '{sign_on: "hbrsinfkaul"}' ],
+      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -80,22 +80,23 @@
           for (var i = 0, numFiles = input.files.length; i < numFiles; i++) {
             file_array.push( input.files[i] );
           }
-          selected.textContent = file_array.map(f=>f.name).join(', ');
   
-          // self.user = self.ccm.context.find( self, 'user' );
-          self.ccm.load( { url: 'https://kaul.inf.h-brs.de/login/login.php', params: { realm: 'hbrsinfkaul' } }, function ( response ) {
+          selected.textContent = 'Selected ';
+          selected.textContent += file_array.map(f=>f.name).join(', ');
   
-            // user data
-            var dataset = self.ccm.helper.filterProperties( response, 'user', 'token' );
+          // has user instance? => login user (if not already logged in)
+          if ( self.user ) self.user.login( proceed ); else proceed();
+          
+          function proceed(){
   
             var formData = new FormData();
   
             formData.append('files', input.files);
             formData.append('user', dataset.user );
             formData.append('token', dataset.token);
-
+  
             xhr.open( "POST", self.upload_server, true );
-            
+  
             xhr.onload = function(e) {
               reports.textContent += this.response.response;
               console.log( JSON.parse(this.response) );
@@ -108,23 +109,23 @@
                 progress_bar.textContent = progress_bar.value; // Fallback for unsupported browsers.
               }
             };
-            
+  
             xhr.send( formData );
-          });
-          
+          }
         }, false);
         
         // Freie Gestaltung von fileElem => Weiterleitung an fileSelect
         fileSelect.addEventListener("click", function (e) {
           fileElem.click();
-          e.preventDefault(); // prevent navigation to "#"
+          e.preventDefault();
         }, false);
         
         abort_button.addEventListener('click', abort, false);
         
         function abort( e ){
           xhr.abort();
-          alert( self.message.abort );
+          reports.textContent += self.message.abort;
+          e.preventDefault();
         }
 
         if ( callback ) callback();
