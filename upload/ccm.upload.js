@@ -1,43 +1,40 @@
 /**
- * @overview ccm component for upload
- * with fetch API
- * see https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-html5-js-fetch-api
+ * @overview ccm component for upload with XMLHttpRequest async
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
  */
 
 ( function () {
 
-  let ccm_version = '9.0.0';
-  let ccm_url     = 'https://akless.github.io/ccm/ccm.js';
+  var ccm_version = '9.0.0';
+  var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
 
-  const component_name = 'upload';
-  const component_obj  = {
+  var component_name = 'upload';
+  var component_obj  = {
 
     name: component_name,
   
     config: {
+      key:           'test',
       upload_server: 'https://kaul.inf.h-brs.de/data/upload.php',
-      content_type: 'image/jpeg',
+      view_server:   'https://kaul.inf.h-brs.de/data/view.php',
+      content_type:  'image/*',
       html: {
         main: {
           tag: 'form', inner: [
-            { tag: 'input', type: 'file', id: 'fileElem', multiple: true,
-              accept: 'image/*', style: 'display:none' },
-            { tag: 'button', id: 'fileSelect', inner: 'Dateien auswählen' },
-            { id: 'selected' },
+            { tag: 'input', type: 'file', accept: '%accept%' },
             { tag: 'progress', min: '0', max: '100', value: '0', inner: '0% complete' },
-            { tag: 'button', id: 'upload', type: 'submit', inner: 'Upload' },
             { tag: 'button', id: 'abort', inner: 'Abort' },
             { id: 'reports' }
           ]
+        },
+        response: {
+          tag: 'a', target: '_blank', inner: '%filename%'
         }
       },
       message: {
-        select: 'Bitte wählen Sie eine Datei aus.',
-        load: 'Bitte warten. Datei wird erst noch kopiert.',
-        login: 'Upload erst nach Login möglich.',
-        abort: 'Upload abgebrochen.'
+        abort:   'Upload abgebrochen: ',
+        success: 'Fertig hochgeladen: '
       },
       css: [ 'ccm.load',  './resources/default.css' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
@@ -48,7 +45,7 @@
 
     Instance: function () {
   
-      const self = this;
+      var self = this;
 
       this.start = function ( callback ) {
       
@@ -56,76 +53,79 @@
         if ( self.logger ) self.logger.log( 'render' );
         
         // prepare main HTML structure
-        const main_elem = self.ccm.helper.html( self.html.main );
+        var main_elem = self.ccm.helper.html( self.html.main );
         
         // select inner containers
-        const input = main_elem.querySelector( 'input' );
-        const fileSelect = main_elem.querySelector("#fileSelect");
-        const fileElem = main_elem.querySelector("#fileElem");
-        const selected = main_elem.querySelector("#selected");
-        const progress_bar = main_elem.querySelector( 'progress' );
-        const upload_button = main_elem.querySelector( '#upload' );
-        const abort_button = main_elem.querySelector( '#abort' );
-        const reports = main_elem.querySelector( '#reports' );
+        var input = main_elem.querySelector( 'input' );
+        var progress_bar = main_elem.querySelector( 'progress' );
+        var abort_button = main_elem.querySelector( '#abort' );
+        var reports = main_elem.querySelector( '#reports' );
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        self.ccm.helper.setContent( self.element, main_elem, { accept: self.content_type } );
   
-        // preparing AJAX call
+        // prepare AJAX request
         var xhr = new XMLHttpRequest();
-        
-        // select file handler
-        input.addEventListener('change', function (e) {
-          var file_array = [];
-          for (var i = 0, numFiles = input.files.length; i < numFiles; i++) {
-            file_array.push( input.files[i] );
-          }
+        var database_keys = { key: self.key, view_server: self.view_server };
   
-          selected.textContent = 'Selected ';
-          selected.textContent += file_array.map(f=>f.name).join(', ');
-  
-          // has user instance? => login user (if not already logged in)
-          if ( self.user ) self.user.login( proceed ); else proceed();
-          
-          function proceed(){
-  
-            var formData = new FormData();
-  
-            formData.append('files', input.files);
-            formData.append('user',  self.user.data().key );
-            formData.append('token', self.user.data().token );
-  
-            xhr.open( "POST", self.upload_server, true );
-  
-            xhr.onload = function(e) {
-              reports.textContent += this.response.response;
-              console.log( JSON.parse(this.response) );
-            };
-  
-            xhr.upload.onprogress = function(e) {
-              if (e.lengthComputable) {
-                if (e.total === 0) e.total = 100;
-                progress_bar.value = (e.loaded / e.total) * 100;
-                progress_bar.textContent = progress_bar.value; // Fallback for unsupported browsers.
-              }
-            };
-  
-            xhr.send( formData );
-          }
-        }, false);
-        
-        // Freie Gestaltung von fileElem => Weiterleitung an fileSelect
-        fileSelect.addEventListener("click", function (e) {
-          fileElem.click();
-          e.preventDefault();
-        }, false);
-        
+        input.addEventListener('change', selectFile, false);
         abort_button.addEventListener('click', abort, false);
         
+        // "select file" handler
+        function selectFile() {
+          var file = this.files[0];
+          database_keys.filename = file.name;
+          var formData = new FormData();
+          formData.append('key', self.key);
+          formData.append("file", file);
+  
+          xhr.open('POST', self.upload_server, true);
+  
+          xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+              progress_bar.value = (e.loaded / e.total) * 100;
+              progress_bar.textContent = progress_bar.value; // Fallback for unsupported browsers.
+            }
+          };
+  
+          xhr.onload = function () {
+            if (this.status == 200) {
+              reports.textContent = self.message.success;
+              var element = self.ccm.helper.html( self.html.response, database_keys );
+              element.href = self.view_server + '?'
+                + 'user=' + database_keys.user
+                + '&token=' + database_keys.token
+                + '&key=' + self.key;
+              reports.appendChild(element);
+            }
+          };
+  
+          // has user instance? => login user (if not already logged in)
+          if (self.user) self.user.login(proceed); else proceed();
+  
+          function proceed() {
+            database_keys.user = self.user.data().user;
+            database_keys.token = self.user.data().token;
+            formData.append('user', self.user.data().user);
+            formData.append('token', self.user.data().token);
+            xhr.send(formData);
+          }
+  
+          function log_form(x) { // for debugging only
+            console.log(x);
+            var result = {};
+            for (var entry of formData.entries()) {
+              result[entry[0]] = entry[1];
+            }
+            result = JSON.stringify(result);
+            console.log(result);
+            return JSON.stringify(formData.entries());
+          }
+        }
+  
         function abort( e ){
           xhr.abort();
-          reports.textContent += self.message.abort;
-          e.preventDefault();
+          reports.textContent = self.message.abort + xhr.response;
         }
 
         if ( callback ) callback();
