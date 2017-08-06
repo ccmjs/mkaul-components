@@ -17,11 +17,14 @@
     config: {
       key:           'test',
       upload_server: 'https://kaul.inf.h-brs.de/data/upload.php',
-      view_server:   'https://kaul.inf.h-brs.de/data/view.php',
+      upload_view:   'https://kaul.inf.h-brs.de/data/view.php',
+      upload_size: 100, // max. 100 MB, see php.ini upload_max_filesize = 120M
+      upload_time: 80,  // max 80 sec,  see php.ini max_execution_time = 90
+      
       content_type:  'image/*',  // which types to accept by file chooser
       type_regex:    'image/.*', // check type via regex, or see next line:
       suffix_regex:  '\.jpeg$|\.jpg$|\.png$|\.pdf$', // or check via name suffix
-            // both regex are alternatives
+            // both regex are alternatives or may be omitted
       html: {
         main: {
           tag: 'form', inner: [
@@ -38,7 +41,8 @@
       },
       message: {
         abort:   'Upload abgebrochen: ',
-        success: 'Fertig hochgeladen: '
+        success: 'Fertig hochgeladen: ',
+        file_too_large: 'File too large'
       },
       css: [ 'ccm.load',  './resources/default.css' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
@@ -69,19 +73,28 @@
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
   
-        
+        // placeholder for all upcoming AJAX requests
         var xhr;
-        var database_keys = { key: self.key, view_server: self.view_server };
+        
+        // parameters for input dialog
+        var input_parameter = { key: self.key, upload_view: self.upload_view };
   
+        // add event listeners for all buttons
         input.addEventListener('change', selectFile, false);
         abort_button.addEventListener('click', abort, false);
         
         // "select file" handler
         function selectFile() {
   
-          // get and check file
+          // get and check file type and suffix
           var file = this.files[0];
-          database_keys.filename = file.name;
+          input_parameter.filename = file.name;
+  
+          // Input Validation: size
+          if ( file.size > self.upload_size * 1024 * 1024 ){
+            alert( self.file_too_large );
+            return false;
+          }
   
           function wrong_file_type(file){
             return  self.type_regex && ! file.type.match( self.type_regex )
@@ -102,7 +115,7 @@
           }
           
           // prepare next AJAX request
-          xhr = new XMLHttpRequest();
+          xhr = new XMLHttpRequest(); // new request for every file to be uploaded
           reports.textContent = ''; // clear old success reports
           failure.textContent = ''; // clear old error messages
           
@@ -111,9 +124,10 @@
           formData.append('key', self.key);
           formData.append("file", file);
   
-          // prepare AJAX call
-          xhr.open('POST', self.upload_server, true);
+          // prepare AJAX POST request
+          xhr.open('POST', self.upload_server, true); // true === async
   
+          // update progress bar
           xhr.upload.onprogress = function (e) {
             if (e.lengthComputable) {
               progress_bar.value = (e.loaded / e.total) * 100;
@@ -121,6 +135,7 @@
             }
           };
   
+          // handle all kinds of errors during upload
           function error_message( event ){
             return ' Status: '+ xhr.status
               + ', Event: ' + JSON.stringify(event)
@@ -136,18 +151,20 @@
           };
   
           xhr.upload.ontimeout = function (event) {
-            failure.textContent += 'Timeout' + error_message( event );
+            failure.textContent += 'Timeout' + error_message( event )
+              + ' Max. time for upload is ' + self.upload_time + ' sec.';
           };
   
           xhr.onload = function () {
             if (this.status == 200) {
               reports.textContent = self.message.success;
-              var element = self.ccm.helper.html( self.html.response, database_keys );
-              element.href = self.view_server + '?'
-                + 'user=' + database_keys.user
-                + '&token=' + database_keys.token
+              var element = self.ccm.helper.html( self.html.response, input_parameter );
+              element.href = self.upload_view + '?'
+                + 'user=' + input_parameter.user
+                + '&token=' + input_parameter.token
                 + '&key=' + self.key;
               reports.appendChild(element);
+              if ( self.logger ) self.logger.log( input_parameter );
             }
           };
   
@@ -155,8 +172,8 @@
           if (self.user) self.user.login(proceed); else proceed();
   
           function proceed() {
-            database_keys.user = self.user.data().user;
-            database_keys.token = self.user.data().token;
+            input_parameter.user = self.user.data().user;
+            input_parameter.token = self.user.data().token;
             formData.append('user', self.user.data().user);
             formData.append('token', self.user.data().token);
             xhr.send(formData);
