@@ -25,7 +25,8 @@
             { tag: 'input', type: 'file', accept: '%accept%' },
             { tag: 'progress', min: '0', max: '100', value: '0', inner: '0% complete' },
             { tag: 'button', id: 'abort', inner: 'Abort' },
-            { id: 'reports' }
+            { id: 'reports' },
+            { id: 'failure'}
           ]
         },
         response: {
@@ -53,19 +54,20 @@
         if ( self.logger ) self.logger.log( 'render' );
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main );
+        var main_elem = self.ccm.helper.html( self.html.main, { accept: self.content_type } );
         
         // select inner containers
         var input = main_elem.querySelector( 'input' );
         var progress_bar = main_elem.querySelector( 'progress' );
         var abort_button = main_elem.querySelector( '#abort' );
         var reports = main_elem.querySelector( '#reports' );
+        var failure = main_elem.querySelector( '#failure' );
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem, { accept: self.content_type } );
+        self.ccm.helper.setContent( self.element, main_elem );
   
-        // prepare AJAX request
-        var xhr = new XMLHttpRequest();
+        
+        var xhr;
         var database_keys = { key: self.key, view_server: self.view_server };
   
         input.addEventListener('change', selectFile, false);
@@ -73,12 +75,22 @@
         
         // "select file" handler
         function selectFile() {
+          
+          // prepare next AJAX request
+          xhr = new XMLHttpRequest();
+          reports.textContent = ''; // clear old success reports
+          failure.textContent = ''; // clear old error messages
+          
+          // get file
           var file = this.files[0];
           database_keys.filename = file.name;
+          
+          // prepare form data
           var formData = new FormData();
           formData.append('key', self.key);
           formData.append("file", file);
   
+          // prepare AJAX call
           xhr.open('POST', self.upload_server, true);
   
           xhr.upload.onprogress = function (e) {
@@ -86,6 +98,24 @@
               progress_bar.value = (e.loaded / e.total) * 100;
               progress_bar.textContent = progress_bar.value; // Fallback for unsupported browsers.
             }
+          };
+  
+          function error_message( event ){
+            return ' Status: '+ xhr.status
+              + ', Event: ' + JSON.stringify(event)
+              + ', Response: ' + xhr.response + '.'
+          }
+          
+          xhr.upload.onabort = function (event) {
+            failure.textContent += 'Abort' + error_message( event );
+          };
+  
+          xhr.upload.onerror = function (event) {
+            failure.textContent += 'Error' + error_message( event );
+          };
+  
+          xhr.upload.ontimeout = function (event) {
+            failure.textContent += 'Timeout' + error_message( event );
           };
   
           xhr.onload = function () {
@@ -123,9 +153,14 @@
           }
         }
   
-        function abort( e ){
+        // interrupt current AJAX request without reloading the HTML page
+        function abort(e){
           xhr.abort();
-          reports.textContent = self.message.abort + xhr.response;
+          
+          // prevent reloading component and HTML page
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         }
 
         if ( callback ) callback();
