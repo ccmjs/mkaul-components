@@ -85,10 +85,10 @@
   
           function wrong_file_type(file){
             return ! file.type.match( self.type_regex )
-              && ! file.name.match( self.suffix_regex );
+              &&   ! file.name.match( self.suffix_regex );
           }
           
-          if ( wrong_file_type(file) ){
+          if ( self.type_regex && self.suffix_regex && wrong_file_type(file) ){
             if ( ! file.type.match( self.type_regex ) ){
               reports.textContent = 'File type is ' + file.type
                 + ', required is type ' + self.type_regex;
