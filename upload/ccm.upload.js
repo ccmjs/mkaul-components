@@ -18,7 +18,10 @@
       key:           'test',
       upload_server: 'https://kaul.inf.h-brs.de/data/upload.php',
       view_server:   'https://kaul.inf.h-brs.de/data/view.php',
-      content_type:  'image/*',
+      content_type:  'image/*',  // which types to accept by file chooser
+      type_regex:    'image/.*', // check type via regex, or see next line:
+      suffix_regex:  '\.jpeg$|\.jpg$|\.png$|\.pdf$', // or check via name suffix
+            // both regex are alternatives
       html: {
         main: {
           tag: 'form', inner: [
@@ -75,15 +78,33 @@
         
         // "select file" handler
         function selectFile() {
+  
+          // get and check file
+          var file = this.files[0];
+          database_keys.filename = file.name;
+  
+          function wrong_file_type(file){
+            return ! file.type.match( self.type_regex )
+              && ! file.name.match( self.suffix_regex );
+          }
+          
+          if ( wrong_file_type(file) ){
+            if ( ! file.type.match( self.type_regex ) ){
+              reports.textContent = 'File type is ' + file.type
+                + ', required is type ' + self.type_regex;
+              return false;
+            }
+            if ( ! file.name.match( self.suffix_regex ) ){
+              reports.textContent = 'File type is ' + file.type
+                + ', required is suffix ' + self.suffix_regex;
+              return false;
+            }
+          }
           
           // prepare next AJAX request
           xhr = new XMLHttpRequest();
           reports.textContent = ''; // clear old success reports
           failure.textContent = ''; // clear old error messages
-          
-          // get file
-          var file = this.files[0];
-          database_keys.filename = file.name;
           
           // prepare form data
           var formData = new FormData();
