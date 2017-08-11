@@ -14,6 +14,9 @@
  *  Use CORS for cross domain operation.
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
+ *
+ *
+ * ToDo LightDOM, delete config properties
  */
 
 ( function () {
@@ -41,9 +44,19 @@
               { tag: 'span', class: 'deadline', inner: 'Edit your profile before deadline ' }
             ] },
             
+            { tag: 'label', for: 'height', inner: [
+              { tag: 'input', id: 'height', type: 'number', min: 100, max: 220, step: 1, value:175 },
+              { tag: 'span', inner: 'cm'}
+            ] },
+    
+            { tag: 'label', for: 'weightInput', inner: 'Weight' },
+            { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
+            { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
+            
+            
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
-              { tag: 'select', id: 'top5', name: 'top5', size: 5, multiple: true, inner: [
+              { tag: 'select', id: 'top5', size: 5, multiple: true, inner: [
                 { tag: 'option', inner: 'Michael Jackson' },
                 { tag: 'option', inner: 'Tom Waits' },
                 { tag: 'option', inner: 'Nina Hagen' },
@@ -81,21 +94,33 @@
             { tag: 'input', type: 'text', id: 'name' },
             
             { tag: 'label', for: 'vita', inner: 'Vita' },
-            { tag: 'textarea', id: 'vita' },
+            { tag: 'textarea', id: 'vita', inner: 'Your Vita here as a default value' },
             
             { tag: 'input', type: 'file', id: 'portrait', accept: 'image/*' },
+    
+            { id: 'dummy', value: 'test' }, // should not be persisted
             
             { tag: 'button', type: 'submit', inner: 'Submit!'}
+            
           ]
+        },
+        response: {
+          tag: 'a', target: '_blank', inner: '%filename%'
         }
       },
       language: 'de',
       messages: {
         'en': {
-          'deadline_exceeded': 'Deadline exceeded.'
+          deadline_exceeded: 'Deadline exceeded.',
+          wrong_file_type: 'Wrong file type.',
+          file_too_large: 'File too large',
+          success: 'Successfully uploaded.'
         },
         'de': {
-          'deadline_exceeded': 'Deadline überschritten.'
+          deadline_exceeded: 'Deadline überschritten.',
+          wrong_file_type: 'Falscher File-Typ.',
+          file_too_large: 'Datei zu groß.',
+          success: 'Erfolgreich hochgeladen.'
         }
       },
       css: [ 'ccm.load',  './resources/default.css' ],
@@ -135,6 +160,7 @@
   
             if (tag.tag === 'input' && tag.id && !tag.name) tag.name = tag.id;
             if (tag.tag === 'textarea') tag.name = tag.id;
+            if (tag.tag === 'select') tag.name = tag.id;
             if (tag.tag === 'option') tag.id = encode_id( tag.inner ); // no space allowed
   
             // recursive descend
@@ -215,9 +241,38 @@
           var submit_button = self.element.querySelector('button[type="submit"]');
           submit_button.addEventListener('click', submit, false);
           
-          function submit( e ){
-            // prepare next AJAX request
-            var xhr = new XMLHttpRequest(); // new request for every file to be uploaded
+          // ----------- file upload handler ------------
+          self.ccm.helper.makeIterable( main_elem.querySelectorAll('input[type="file"]') ).map(function (input) {
+            
+            var id = input.id;
+  
+            // select inner containers
+            var containers = {
+              id: id,
+              input: input, // a file input element
+              progress_bar: main_elem.querySelector( '#' + id + '_progress' ),
+              abort_button: main_elem.querySelector( '#' + id + '_abort' ),
+              reports: main_elem.querySelector( '#' + id + '_reports' ),
+              failure: main_elem.querySelector( '#' + id + '_failure' )
+            };
+  
+            // placeholder for all upcoming AJAX requests for this file input element
+            var xhr;
+  
+            // parameters for input dialog
+            var input_parameter = { key: self.key, upload_view: self.server };
+  
+            // add event listeners for both buttons, file select and abort
+            input.addEventListener('change', select_handler( xhr, containers, input_parameter ), false);
+            containers.abort_button.addEventListener('click', abort_handler( xhr ), false);
+            
+          });
+
+          
+          function submit( e ){ // Handler for submit button of form
+            
+            // prepare next AJAX request for this form
+            var xhr = new XMLHttpRequest(); // new request for every form to be uploaded
   
             // prepare form data
             var form = self.element.querySelector('form');
@@ -229,8 +284,10 @@
             prepare_select_values();
             prepare_checkbox_values();
             
-            // Special case: radio uses name as key and id as value for persistence
+            // Special cases:
+            // radio uses name as key and id as value for persistence
             prepare_radio_values();
+            prepare_file_inputs();
   
             // log_form_data();
   
@@ -321,6 +378,26 @@
                 }
               }
             }
+  
+            // collect all file inputs
+            function prepare_file_inputs() {
+              // get all file inputs
+              var array_of_all_file_inputs = [];
+              var file_inputs = form.querySelectorAll('input[type="file"]');
+              for (var i=0; i<file_inputs.length; i++){
+                array_of_all_file_inputs.push( file_inputs[i].id );
+                var selected_files = [];
+                for (var j=0; j<file_inputs[i].files.length; j++){
+                  selected_files.push({
+                    name: file_inputs[i].files[j].name,
+                    size: file_inputs[i].files[j].size,
+                    type: file_inputs[i].files[j].type
+                  });
+                }
+                formData.append( file_inputs[i].id, JSON.stringify( selected_files ) );
+              }
+              formData.append( '_posted_files', JSON.stringify( array_of_all_file_inputs ) );
+            }
             
             function log_form_data(){
               for (var pair of formData.entries()) {
@@ -341,6 +418,7 @@
             
             // Late filling form with values with recursive descend
             // traverse by all record keys
+            
             Object.keys( record ).map( assign_values_to_ids );
             
             function assign_values_to_ids( rec_key ) {
@@ -354,9 +432,18 @@
               }
               
               switch ( rec_type ){
+                case 'range':
+                  if ( self.element.querySelector('#' + rec_key) ){
+                    var range_input_elem = self.element.querySelector('#' + rec_key);
+                    if ( rec_val ) range_input_elem.value = rec_val;
+                    range_input_elem.oninput(); // simulate input event for updating output elements
+                  }
+                  break;
                 case 'radio':
-                  var selected_node = self.element.querySelector('#' + rec_val);
-                  if ( selected_node ) selected_node.checked = 'checked';
+                  if ( rec_val ){ // radio has selection
+                    var selected_node = self.element.querySelector('#' + rec_val);
+                    if ( selected_node ) selected_node.checked = 'checked';
+                  }
                   break;
                 case 'checkbox':
                   if (Array.isArray(rec_val)){
@@ -382,7 +469,21 @@
                     || '';
                   break;
                 case 'file':
-                  self.element.querySelector('#' + rec_key).filename = rec_val; // ToDo
+                  if ( rec_val ){
+                    var files = JSON.parse( rec_val );
+                    files.map(function (file) {
+                      self.element.querySelector('#' + rec_key + '_reports').innerHTML +=
+                        ' <a href="' + self.server + '?' +
+                          'semester=' + self.semester +
+                          '&fach=' + self.fach +
+                          '&key=' + self.key +
+                          '&id=' + rec_key +
+                          '&user=' + self.user.data().user +
+                          '&token=' + self.user.data().token +
+                          '" target="_blank" title="Stored ' + file.type + ': ' + file.size +
+                          ' bytes. Select new file to overwrite.">'+file.name+'</a> ';
+                    });
+                  }
                   break;
                 case 'deadline':
                   var list = self.element.querySelectorAll('.deadline'); // class selector
@@ -392,7 +493,7 @@
                   break;
                 default:
                   if ( self.element.querySelector('#' + rec_key) )
-                    self.element.querySelector('#' + rec_key).value = rec_val || '';
+                    if ( rec_val ) self.element.querySelector('#' + rec_key).value = rec_val;
               }
   
               // search recursively for id or name called rec_key within self.html.main.inner
@@ -419,12 +520,122 @@
           });
         }
         
+        // =================== helper functions =====================
+        
         function encode_id( id ){  // replace space by underscore
           return id.replace(/\s/g, '_');
         }
   
         function decode_id( id ){  // replace underscore by space
           return id.replace(/_/g, ' ');
+        }
+  
+        function select_handler( xhr, containers, input_parameter ){
+          // "select file" handler
+          return function selectFile(){
+    
+            // get and check file type and suffix
+            var file = this.files[0];
+            input_parameter.filename = file.name;
+    
+            // prevent hacker attack uploading PHP file
+            if (file.name.split('.').slice(-1)[0].toUpperCase() === 'PHP'){
+              alert( self.messages[self.language].wrong_file_type );
+              return false;
+            }
+    
+            // prepare next AJAX request
+            xhr = new XMLHttpRequest(); // new request for every file to be uploaded
+            containers.reports.textContent = ''; // clear old success reports
+            containers.failure.textContent = ''; // clear old error messages
+    
+            // prepare form data
+            var formData = new FormData();
+            formData.append('semester', self.semester);
+            formData.append('fach', self.fach);
+            formData.append('key', self.key);
+            formData.append('id', containers.id);
+            formData.append("file", file);
+    
+            // prepare AJAX POST request
+            xhr.open('POST', self.server, true); // true === async
+    
+            // update progress bar
+            xhr.upload.onprogress = function (e) {
+              if (e.lengthComputable) {
+                containers.progress_bar.value = (e.loaded / e.total) * 100;
+                containers.progress_bar.textContent = containers.progress_bar.value; // Fallback for unsupported browsers.
+              }
+            };
+    
+            // handle all kinds of errors during upload
+            function error_message( event ){
+              return ' Status: '+ xhr.status
+                + ', Event: ' + JSON.stringify(event)
+                + ', Response: ' + xhr.response + '.'
+            }
+    
+            xhr.upload.onabort = function (event) {
+              containers.failure.textContent += 'Abort' + error_message( event );
+            };
+    
+            xhr.upload.onerror = function (event) {
+              containers.failure.textContent += 'Error' + error_message( event );
+            };
+    
+            xhr.upload.ontimeout = function (event) {
+              containers.failure.textContent += 'Timeout' + error_message( event );
+            };
+    
+            xhr.onload = function () {
+              if (this.status == 200) {
+                containers.reports.textContent = self.messages[self.language].success;
+                var element = self.ccm.helper.html( self.html.response, input_parameter );
+                element.href = self.server + '?'
+                  + 'semester=' + self.semester
+                  + '&fach=' + self.fach
+                  + '&key=' + self.key
+                  + '&id=' + containers.id
+                  + '&user=' + input_parameter.user
+                  + '&token=' + input_parameter.token;
+                containers.reports.appendChild(element);
+                if ( self.logger ) self.logger.log( input_parameter );
+              }
+            };
+    
+            // has user instance? => login user (if not already logged in)
+            if (self.user) self.user.login(proceed); else proceed();
+    
+            function proceed() {
+              input_parameter.user = self.user.data().user;
+              input_parameter.token = self.user.data().token;
+              formData.append('user', self.user.data().user);
+              formData.append('token', self.user.data().token);
+              xhr.send(formData);
+            }
+    
+            function log_form(x) { // for debugging only
+              var result = {};
+              for (var entry of formData.entries()) {
+                result[entry[0]] = entry[1];
+              }
+              result = JSON.stringify(result);
+              console.log(x, result);
+              return JSON.stringify(formData.entries());
+            }
+          }
+        }
+  
+        // interrupt current AJAX request without reloading the HTML page
+        function abort_handler( xhr ){
+          return function abort( e ){
+            xhr.abort();
+  
+            // prevent reloading component and HTML page
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }
         }
 
         if ( callback ) callback();
