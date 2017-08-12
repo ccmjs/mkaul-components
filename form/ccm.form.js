@@ -33,8 +33,9 @@
       key: 'test',
       semester: '1', // begin with 1 = WiSe 2017/18
       fach: 'se',  // se = Software Engineering
-      server: 'https://kaul.inf.h-brs.de/data/form.php',
+      server: 'https://kaul.inf.h-brs.de/data/form.php', // database access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
+      uml: [ 'ccm.component', '../uml/ccm.uml.js' ],
       html: {
         main: {  // all elements with id have persistent values
           tag: 'form', inner: [
@@ -53,6 +54,7 @@
             { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
             { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
             
+            { tag: 'ccm-uml', id: 'my_uml', value: 'Bob->Alice2 : hello' },
             
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
@@ -154,6 +156,7 @@
         
         function add_attributes( parent ){
           return function( tag ){
+            // if parent element informations are needed use the following augmentation:
             // tag.parent_tag = parent.tag;
             // tag.parent_name = parent.name || '';
             // tag.parent_id = parent.id || '';
@@ -168,11 +171,6 @@
               if ( tag.tag === 'label' || tag.tag === 'fieldset' || tag.tag === 'select' )
                 tag.inner.map( add_attributes( tag ) );
             }
-  
-            // ohne Erfolg:
-            // if (tag.type = 'text' && !tag.size) tag.size = 60;  // fkt NICHT!!!
-            // if (tag.tag = 'textarea' && !tag.cols) tag.cols = 60;
-            // if (tag.tag = 'textarea' && !tag.rows) tag.rows = 10;
           }
         }
         
@@ -181,35 +179,39 @@
           this.splice( index, 0, item );
         };
   
-        // helper method for of loop querySelectorAll
+        // helper method for iterating querySelectorAll result NodeList
         NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
   
-        self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'key', value: self.key } );
-        self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'semester', value: self.semester } );
-        self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'fach', value: self.fach } );
+        // Special cases
+        insert_database_keys();
+        insert_abort_buttons_for_file_inputs();
+        
+        function insert_database_keys() { // insert database keys as hidden fields in HTML form
+          self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'key', value: self.key } );
+          self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'fach', value: self.fach } );
+          self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'semester', value: self.semester } );
+        }
   
-        insert_abort_buttons();
-  
-        // insert Abort Button for each insert file
-        function insert_abort_buttons() {
+        // insert Abort Button for each input file tag recursively
+        function insert_abort_buttons_for_file_inputs() {
           // search all input tags of type file
-          var file_inputs = [];
-          var tag_ids = [];
-          self.html.main.inner.map(function (tag, index) {
-            if (tag.tag === 'input' && tag.type === 'file') {
-              file_inputs.push(index+1);
-              tag_ids.push(tag.id);
-            }
+          var file_inputs = collect_all_tags( function ( elem ) {
+            return elem.tag === 'input' && elem.type === 'file';
           });
   
           // insert abort button for each insert file
-          for (var i = file_inputs.length - 1; i >= 0; i--) {
-            self.html.main.inner.insert( file_inputs[i], { id: tag_ids[i] + '_failure'} );
-            self.html.main.inner.insert( file_inputs[i], { id: tag_ids[i] + '_reports' } );
-            self.html.main.inner.insert( file_inputs[i], { tag: 'button', id: tag_ids[i] + '_abort', inner: 'Abort' } );
-            self.html.main.inner.insert( file_inputs[i], { tag: 'progress', id: tag_ids[i] + '_progress', min: '0', max: '100', value: '0', inner: '0% complete' } );
-          }
+          file_inputs.tags.map( function (file_input, i) {
+            var root = file_inputs.tags[i].root;
+            var index = file_inputs.tags[i].index;
+            root.insert( index, { id: file_inputs.ids[i] + '_failure'} );
+            root.insert( index, { id: file_inputs.ids[i] + '_reports' } );
+            root.insert( index, { tag: 'button', id: file_inputs.ids[i] + '_abort', inner: 'Abort' } );
+            root.insert( index, { tag: 'progress', id: file_inputs.ids[i] + '_progress', min: '0', max: '100', value: '0', inner: '0% complete' } );
+          });
+
         }
+  
+
 
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main );
@@ -218,12 +220,25 @@
         // before values are loaded from database.
         // Values are filled in later async.
         self.ccm.helper.setContent( self.element, main_elem );
+        var uml_instances = [];
+        // start_uml_instances();
+  
+        // start all UML component instances
+        function start_uml_instances() {
+          self.ccm.helper.makeIterable(self.element.querySelectorAll('ccm-uml'))
+            .map(function (elem) {
+              self.uml.start({ element: elem, value: elem.value }, function ( uml_instance ) {
+                uml_instance.element_id = elem.id;
+                uml_instances.push( uml_instance );
+              });
+             });
+        }
   
         // Late Login
         // has user instance? => login user (if not already logged in)
         if (self.user) self.user.login(proceed); else proceed();
         
-        function proceed() {
+        function proceed() { // proceed after login
           
           // prepare authentication in POST form:
           // add user and token hidden fields to POST form
@@ -260,12 +275,17 @@
             var xhr;
   
             // parameters for input dialog
-            var input_parameter = { key: self.key, upload_view: self.server };
+            var input_parameter = { key: self.key };
   
             // add event listeners for both buttons, file select and abort
             input.addEventListener('change', select_handler( xhr, containers, input_parameter ), false);
             containers.abort_button.addEventListener('click', abort_handler( xhr ), false);
             
+          });
+  
+          // window.ccm_form_update_uml
+          uml_instances.map(function (uml_component) {
+            uml_component.sync();
           });
 
           
@@ -288,6 +308,7 @@
             // radio uses name as key and id as value for persistence
             prepare_radio_values();
             prepare_file_inputs();
+            prepare_uml();
   
             // log_form_data();
   
@@ -399,6 +420,12 @@
               formData.append( '_posted_files', JSON.stringify( array_of_all_file_inputs ) );
             }
             
+            function prepare_uml() {
+              uml_instances.map(function ( uml_component ) {
+                formData.append( uml_component.element_id, uml_component.value );
+              });
+            }
+            
             function log_form_data(){
               for (var pair of formData.entries()) {
                 console.log(pair[0]+ ', ' + pair[1]);
@@ -473,15 +500,8 @@
                     var files = JSON.parse( rec_val );
                     files.map(function (file) {
                       self.element.querySelector('#' + rec_key + '_reports').innerHTML +=
-                        ' <a href="' + self.server + '?' +
-                          'semester=' + self.semester +
-                          '&fach=' + self.fach +
-                          '&key=' + self.key +
-                          '&id=' + rec_key +
-                          '&user=' + self.user.data().user +
-                          '&token=' + self.user.data().token +
-                          '" target="_blank" title="Stored ' + file.type + ': ' + file.size +
-                          ' bytes. Select new file to overwrite.">'+file.name+'</a> ';
+                        ' <a href="' + file_url( rec_key ) + '" target="_blank" title="Stored ' + file.type + ': ' + file.size +
+                          ' bytes. Select new file to overwrite AND submit.">' + file.name + '</a>';
                     });
                   }
                   break;
@@ -518,6 +538,16 @@
             }
             
           });
+  
+          function file_url( id ) {
+            return self.server + '?' +
+              'semester=' + self.semester +
+              '&fach=' + self.fach +
+              '&key=' + self.key +
+              '&id=' + id +
+              '&user=' + self.user.data().user +
+              '&token=' + self.user.data().token;
+          }
         }
         
         // =================== helper functions =====================
@@ -535,7 +565,7 @@
           return function selectFile(){
     
             // get and check file type and suffix
-            var file = this.files[0];
+            var file = this.files[0]; // ToDo select multiple files
             input_parameter.filename = file.name;
     
             // prevent hacker attack uploading PHP file
@@ -591,13 +621,7 @@
               if (this.status == 200) {
                 containers.reports.textContent = self.messages[self.language].success;
                 var element = self.ccm.helper.html( self.html.response, input_parameter );
-                element.href = self.server + '?'
-                  + 'semester=' + self.semester
-                  + '&fach=' + self.fach
-                  + '&key=' + self.key
-                  + '&id=' + containers.id
-                  + '&user=' + input_parameter.user
-                  + '&token=' + input_parameter.token;
+                element.href = file_url( containers.id );
                 containers.reports.appendChild(element);
                 if ( self.logger ) self.logger.log( input_parameter );
               }
@@ -635,6 +659,25 @@
             e.preventDefault();
             e.stopPropagation();
             return false;
+          }
+        }
+        
+        // collect all tags satisfying the condition recursively
+        function collect_all_tags( condition ) {
+          var all_tags = [];
+          var all_elem_ids = [];
+          self.html.main.inner.map( collect_all_tags( self.html.main.inner ) );
+          return { tags: all_tags, ids: all_elem_ids };
+    
+          function collect_all_tags( root ){
+            return function ( elem, index ) {
+              if ( condition( elem, index ) ) {
+                all_tags.push( {root: root, index: index+1} );
+                all_elem_ids.push( elem.id );
+              } else if ( Array.isArray( elem.inner ) ) {
+                collect_all_tags( elem.inner );
+              }
+            }
           }
         }
 
