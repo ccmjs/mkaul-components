@@ -54,7 +54,7 @@
             { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
             { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
             
-            { tag: 'ccm-uml', id: 'my_uml', value: 'Bob->Alice2 : hello' },
+            { tag: 'ccm-uml', id: 'my_uml', default: 'Bob->Alice2 : hello' },
             
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
@@ -220,17 +220,14 @@
         // before values are loaded from database.
         // Values are filled in later async.
         self.ccm.helper.setContent( self.element, main_elem );
-        var uml_instances = [];
-        // start_uml_instances();
+
+        start_uml_instances();
   
         // start all UML component instances
         function start_uml_instances() {
           self.ccm.helper.makeIterable(self.element.querySelectorAll('ccm-uml'))
             .map(function (elem) {
-              self.uml.start({ element: elem, value: elem.value }, function ( uml_instance ) {
-                uml_instance.element_id = elem.id;
-                uml_instances.push( uml_instance );
-              });
+              self.uml.start({ root: elem, value: elem.value });
              });
         }
   
@@ -282,12 +279,6 @@
             containers.abort_button.addEventListener('click', abort_handler( xhr ), false);
             
           });
-  
-          // window.ccm_form_update_uml
-          uml_instances.map(function (uml_component) {
-            uml_component.sync();
-          });
-
           
           function submit( e ){ // Handler for submit button of form
             
@@ -421,13 +412,14 @@
             }
             
             function prepare_uml() {
-              uml_instances.map(function ( uml_component ) {
-                formData.append( uml_component.element_id, uml_component.value );
+              self.ccm.helper.makeIterable( self.element.querySelectorAll('ccm-uml') ).map(function (elem) {
+                elem.ccm_instance.sync(); // read textarea value and write into component value
+                formData.append( elem.id, elem.ccm_instance.value );
               });
             }
             
             function log_form_data(){
-              for (var pair of formData.entries()) {
+              for (var pair of formData.entries()) { // ToDo ES6
                 console.log(pair[0]+ ', ' + pair[1]);
               }
             }
@@ -449,6 +441,7 @@
             Object.keys( record ).map( assign_values_to_ids );
             
             function assign_values_to_ids( rec_key ) {
+              
               var rec_type = elem_type( self.html.main.inner );
               var rec_val =  record[ rec_key ];
               
@@ -512,8 +505,11 @@
                   }
                   break;
                 default:
-                  if ( self.element.querySelector('#' + rec_key) )
-                    if ( rec_val ) self.element.querySelector('#' + rec_key).value = rec_val;
+                  if ( rec_type && rec_type.startsWith('ccm') ){
+                    self.element.querySelector('#' + rec_key).ccm_instance.sync( rec_val );
+                  } else if ( self.element.querySelector('#' + rec_key) ){
+                    if (rec_val) self.element.querySelector('#' + rec_key).value = rec_val;
+                  }
               }
   
               // search recursively for id or name called rec_key within self.html.main.inner
@@ -523,6 +519,7 @@
                   var elem = elem_array[ i ];
                   if ( rec_key === elem.id ){
                     if ( elem.tag === 'textarea' ) return 'textarea';
+                    if ( elem.tag.startsWith('ccm') ) return elem.tag;
                   }
                   if ( rec_key === elem.name ){
                     if ( elem.tag === 'input' ) return elem.type; // exit by return
@@ -538,19 +535,20 @@
             }
             
           });
-  
-          function file_url( id ) {
-            return self.server + '?' +
-              'semester=' + self.semester +
-              '&fach=' + self.fach +
-              '&key=' + self.key +
-              '&id=' + id +
-              '&user=' + self.user.data().user +
-              '&token=' + self.user.data().token;
-          }
+          
         }
         
         // =================== helper functions =====================
+  
+        function file_url( id ) {
+          return self.server + '?' +
+            'semester=' + self.semester +
+            '&fach=' + self.fach +
+            '&key=' + self.key +
+            '&id=' + id +
+            '&user=' + self.user.data().user +
+            '&token=' + self.user.data().token;
+        }
         
         function encode_id( id ){  // replace space by underscore
           return id.replace(/\s/g, '_');
@@ -585,7 +583,7 @@
             formData.append('fach', self.fach);
             formData.append('key', self.key);
             formData.append('id', containers.id);
-            formData.append("file", file);
+            formData.append("file", file); // ToDo multiple file inputs, not single file
     
             // prepare AJAX POST request
             xhr.open('POST', self.server, true); // true === async

@@ -18,8 +18,8 @@
 
     config: {
       plantUML: "http://www.plantuml.com/plantuml/img/",
-      rawdeflate: ['ccm.load', './resources/rawdeflate.js'], // helper library for PlantUML
-      value: 'Bob->Alice : hello', // default
+      rawdeflate: ['ccm.load', '../uml/resources/rawdeflate.js'], // helper library for PlantUML
+      default: 'Bob->Alice : hello',
       html: {
         main: {
           inner: [
@@ -44,25 +44,28 @@
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
-        
+
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main,
           { plantUML: self.plantUML,
-            default: self.value,
-            compressed_default: compress_uml( self.value )
+            default: self.value? self.value : self.default,
+            compressed_default: compress_uml( self.value? self.value : self.default )
           } );
         
         // select inner containers (mostly for buttons)
         var img = main_elem.querySelector( 'img' );
         var textarea = main_elem.querySelector( 'textarea' );
   
-        self.sync = function ( e ) {
+        self.sync = function ( event_or_value ) {
+          if ( typeof event_or_value === 'string' ){
+            textarea.value = event_or_value;
+          }
           self.value = textarea.value;
           if ( self.logger ) self.logger.log( self.value );
           compress( img, self.value );
-          if( e ){
-            e.preventDefault();
-            e.stopPropagation();
+          if( event_or_value instanceof Event ){
+            event_or_value.preventDefault();
+            event_or_value.stopPropagation();
             return false;
           }
         };
@@ -73,6 +76,9 @@
         
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
+  
+        // create a back link from HTML root element <ccm-uml> to ccm component instance
+        self.root.ccm_instance = self;
   
         // helper functions for PlantUML
         function encode64(data) {
