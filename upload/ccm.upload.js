@@ -22,9 +22,10 @@
       upload_time: 80,  // max 80 sec,  see php.ini max_execution_time = 90
       
       content_type:  'image/*',  // which types to accept by file chooser
+          // see https://stackoverflow.com/questions/181214/file-input-accept-attribute-is-it-useful
       type_regex:    'image/.*', // check type via regex, or see next line:
       suffix_regex:  '\.jpeg$|\.jpg$|\.png$|\.pdf$', // or check via name suffix
-            // both regex are alternatives or may be omitted
+            // both regex are alternatives or may both be omitted
       html: {
         main: {
           tag: 'form', inner: [
@@ -42,9 +43,10 @@
       message: {
         abort:   'Upload abgebrochen: ',
         success: 'Fertig hochgeladen: ',
-        file_too_large: 'File too large'
+        file_too_large: 'File too large',
+        wrong_file_type: 'Wrong file type'
       },
-      css: [ 'ccm.load',  './resources/default.css' ]
+      css: [ 'ccm.load',  '../upload/resources/default.css' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -89,6 +91,12 @@
           // get and check file type and suffix
           var file = this.files[0];
           input_parameter.filename = file.name;
+          
+          // prevent hacker attack uploading PHP file
+          if (file.name.split('.').slice(-1)[0].toUpperCase() === 'PHP'){
+            alert( self.wrong_file_type );
+            return false;
+          }
   
           // Input Validation: size
           if ( file.size > self.upload_size * 1024 * 1024 ){
@@ -105,11 +113,13 @@
             if ( self.type_regex && ! file.type.match( self.type_regex ) ){
               reports.textContent = 'File type is ' + file.type
                 + ', required is type ' + self.type_regex;
+              alert( self.wrong_file_type );
               return false;
             }
             if ( self.suffix_regex && ! file.name.match( self.suffix_regex ) ){
               reports.textContent = 'File type is ' + file.type
                 + ', required is suffix ' + self.suffix_regex;
+              alert( self.wrong_suffix );
               return false;
             }
           }
@@ -182,7 +192,7 @@
           function log_form(x) { // for debugging only
             console.log(x);
             var result = {};
-            for (var entry of formData.entries()) {
+            for (var entry of formData.entries()) { // ToDo ES6
               result[entry[0]] = entry[1];
             }
             result = JSON.stringify(result);

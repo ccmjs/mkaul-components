@@ -36,6 +36,7 @@
       server: 'https://kaul.inf.h-brs.de/data/form.php', // database access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       uml: [ 'ccm.component', '../uml/ccm.uml.js' ],
+      upload: [ 'ccm.component', '../upload/ccm.upload.js', { server: 'https://kaul.inf.h-brs.de/data/form.php' } ],
       html: {
         main: {  // all elements with id have persistent values
           tag: 'form', inner: [
@@ -54,7 +55,9 @@
             { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
             { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
             
-            { tag: 'ccm-uml', id: 'my_uml', default: 'Bob->Alice2 : hello' },
+            { tag: 'ccm-uml', id: 'my_uml', class: 'ccm', default: 'Bob->Alice2 : hello' },
+    
+            { tag: 'ccm-upload', id: 'my_upload', class: 'ccm' },
             
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
@@ -221,14 +224,23 @@
         // Values are filled in later async.
         self.ccm.helper.setContent( self.element, main_elem );
 
-        start_uml_instances();
+        start_ccm_instances();
   
-        // start all UML component instances
-        function start_uml_instances() {
-          self.ccm.helper.makeIterable(self.element.querySelectorAll('ccm-uml'))
+        // start all ccm component instances
+        function start_ccm_instances() {
+          self.ccm.helper.makeIterable(self.element.querySelectorAll('.ccm'))
             .map(function (elem) {
-              self.uml.start({ root: elem, value: elem.value });
-             });
+              switch( elem.tagName ){
+                case 'CCM-UML':
+                  self.uml.start({ root: elem, value: elem.value });
+                  break;
+                case 'CCM-UPLOAD':
+                  self.upload.start({ root: elem, value: elem.value });
+                  break;
+                default:
+                  debugger;
+              }
+            });
         }
   
         // Late Login
@@ -412,7 +424,7 @@
             }
             
             function prepare_uml() {
-              self.ccm.helper.makeIterable( self.element.querySelectorAll('ccm-uml') ).map(function (elem) {
+              self.ccm.helper.makeIterable( self.element.querySelectorAll('.ccm') ).map(function (elem) {
                 elem.ccm_instance.sync(); // read textarea value and write into component value
                 formData.append( elem.id, elem.ccm_instance.value );
               });
