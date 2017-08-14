@@ -16,13 +16,13 @@
  * @license The MIT License (MIT)
  *
  *
- * ToDo LightDOM, delete config properties
+ * ToDo LightDOM, delete config properties, privatize
  */
 
 ( function () {
 
   var ccm_version = '9.0.0';
-  var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
+  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.0.0.js';
 
   var component_name = 'form';
   var component_obj  = {
@@ -30,15 +30,17 @@
     name: component_name,
 
     config: {
-      key: 'test',
-      semester: '1', // begin with 1 = WiSe 2017/18
-      fach: 'se',  // se = Software Engineering
-      server: 'https://kaul.inf.h-brs.de/data/form.php', // database access
+      key: 'test',   // unique key of this form
+      keys: {        // additional DB keys if necessary (optional)
+        semester: 1, // begin with 1 = WiSe 2017/18
+        fach: 'se'   // se = Software Engineering
+      },
+      server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       uml: [ 'ccm.component', '../uml/ccm.uml.js' ],
-      upload: [ 'ccm.component', '../upload/ccm.upload.js', { server: 'https://kaul.inf.h-brs.de/data/form.php' } ],
+      upload: [ 'ccm.component', '../upload/ccm.upload.js' ],
       html: {
-        main: {  // all elements with id have persistent values
+        main: {  // elements with id persist values
           tag: 'form', inner: [
             
             { tag: 'h2', inner: 'Profile' },
@@ -55,9 +57,9 @@
             { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
             { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
             
-            { tag: 'ccm-uml', id: 'my_uml', class: 'ccm', default: 'Bob->Alice2 : hello' },
+            { tag: 'ccm-uml', id: 'my_uml', default: 'Bob->Alice2 : hello' },
     
-            { tag: 'ccm-upload', id: 'my_upload', class: 'ccm' },
+            { tag: 'ccm-upload', id: 'my_upload' },
             
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
@@ -100,8 +102,6 @@
             
             { tag: 'label', for: 'vita', inner: 'Vita' },
             { tag: 'textarea', id: 'vita', inner: 'Your Vita here as a default value' },
-            
-            { tag: 'input', type: 'file', id: 'portrait', accept: 'image/*' },
     
             { id: 'dummy', value: 'test' }, // should not be persisted
             
@@ -113,7 +113,7 @@
           tag: 'a', target: '_blank', inner: '%filename%'
         }
       },
-      language: 'de',
+      language: 'de', // ToDo enable Dynamic Switching
       messages: {
         'en': {
           deadline_exceeded: 'Deadline exceeded.',
@@ -128,7 +128,7 @@
           success: 'Erfolgreich hochgeladen.'
         }
       },
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  '../form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -140,39 +140,29 @@
       var self = this;
 
       this.start = function ( callback ) {
+        
+        // find all tags starting with "ccm-"
+        var ccm_ids = collect_ids_of_all_tags(function ( elem ) {
+          return elem.tag && elem.tag.startsWith('ccm-');
+        });
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
         
-        // get action field or server URL from config
-        var action = self.html.main.action;
-        if (!self.server){
-          self.server = action; // from config html
-        }
-        if (!self.server){
-          self.server = 'http://httpbin.org/post'; // default
-        }
-        self.html.main.action = self.server;
-        
-        // add attributes where necessary recursively
+        // add attribute "name" for all input elements recursively
         self.html.main.inner.map( add_attributes( self.html.main ) );
         
         function add_attributes( parent ){
-          return function( tag ){
-            // if parent element informations are needed use the following augmentation:
-            // tag.parent_tag = parent.tag;
-            // tag.parent_name = parent.name || '';
-            // tag.parent_id = parent.id || '';
-  
-            if (tag.tag === 'input' && tag.id && !tag.name) tag.name = tag.id;
-            if (tag.tag === 'textarea') tag.name = tag.id;
-            if (tag.tag === 'select') tag.name = tag.id;
-            if (tag.tag === 'option') tag.id = encode_id( tag.inner ); // no space allowed
+          return function( elem ){
+            if (elem.tag === 'input' && elem.id && !elem.name) elem.name = elem.id;
+            if (elem.tag === 'textarea') elem.name = elem.id;
+            if (elem.tag === 'select') elem.name = elem.id;
+            if (elem.tag === 'option') elem.id = encode_id( elem.inner ); // no space allowed
   
             // recursive descend
-            if ( Array.isArray( tag.inner ) ){
-              if ( tag.tag === 'label' || tag.tag === 'fieldset' || tag.tag === 'select' )
-                tag.inner.map( add_attributes( tag ) );
+            if ( Array.isArray( elem.inner ) ){
+              // if ( elem.tag === 'label' || elem.tag === 'fieldset' || elem.tag === 'select' ) ???
+                elem.inner.map( add_attributes( elem ) );
             }
           }
         }
@@ -187,35 +177,15 @@
   
         // Special cases
         insert_database_keys();
-        insert_abort_buttons_for_file_inputs();
-        
-        function insert_database_keys() { // insert database keys as hidden fields in HTML form
+  
+        // insert database keys as hidden fields in HTML form
+        function insert_database_keys() {
           self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'key', value: self.key } );
-          self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'fach', value: self.fach } );
-          self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: 'semester', value: self.semester } );
-        }
-  
-        // insert Abort Button for each input file tag recursively
-        function insert_abort_buttons_for_file_inputs() {
-          // search all input tags of type file
-          var file_inputs = collect_all_tags( function ( elem ) {
-            return elem.tag === 'input' && elem.type === 'file';
+          Object.keys(self.keys).map(function (key) {
+            self.html.main.inner.insert(1, { tag: 'input', type: 'hidden', name: key, value: self.keys[key] } );
           });
-  
-          // insert abort button for each insert file
-          file_inputs.tags.map( function (file_input, i) {
-            var root = file_inputs.tags[i].root;
-            var index = file_inputs.tags[i].index;
-            root.insert( index, { id: file_inputs.ids[i] + '_failure'} );
-            root.insert( index, { id: file_inputs.ids[i] + '_reports' } );
-            root.insert( index, { tag: 'button', id: file_inputs.ids[i] + '_abort', inner: 'Abort' } );
-            root.insert( index, { tag: 'progress', id: file_inputs.ids[i] + '_progress', min: '0', max: '100', value: '0', inner: '0% complete' } );
-          });
-
         }
-  
-
-
+        
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main );
         
@@ -228,17 +198,17 @@
   
         // start all ccm component instances
         function start_ccm_instances() {
-          self.ccm.helper.makeIterable(self.element.querySelectorAll('.ccm'))
-            .map(function (elem) {
+          ccm_ids.map(function ( id ) {
+            var elem = self.element.querySelector( '#'+id );
               switch( elem.tagName ){
                 case 'CCM-UML':
                   self.uml.start({ root: elem, value: elem.value });
                   break;
                 case 'CCM-UPLOAD':
-                  self.upload.start({ root: elem, value: elem.value });
+                  self.upload.start({ key: self.key, root: elem, value: elem.value, keys: { semester: self.keys.semester, fach: self.keys.fach, id: id }  });
                   break;
                 default:
-                  debugger;
+                  self[ elem.tagName ].start({ root: elem, value: elem.value });
               }
             });
         }
@@ -265,33 +235,6 @@
           var submit_button = self.element.querySelector('button[type="submit"]');
           submit_button.addEventListener('click', submit, false);
           
-          // ----------- file upload handler ------------
-          self.ccm.helper.makeIterable( main_elem.querySelectorAll('input[type="file"]') ).map(function (input) {
-            
-            var id = input.id;
-  
-            // select inner containers
-            var containers = {
-              id: id,
-              input: input, // a file input element
-              progress_bar: main_elem.querySelector( '#' + id + '_progress' ),
-              abort_button: main_elem.querySelector( '#' + id + '_abort' ),
-              reports: main_elem.querySelector( '#' + id + '_reports' ),
-              failure: main_elem.querySelector( '#' + id + '_failure' )
-            };
-  
-            // placeholder for all upcoming AJAX requests for this file input element
-            var xhr;
-  
-            // parameters for input dialog
-            var input_parameter = { key: self.key };
-  
-            // add event listeners for both buttons, file select and abort
-            input.addEventListener('change', select_handler( xhr, containers, input_parameter ), false);
-            containers.abort_button.addEventListener('click', abort_handler( xhr ), false);
-            
-          });
-          
           function submit( e ){ // Handler for submit button of form
             
             // prepare next AJAX request for this form
@@ -310,8 +253,7 @@
             // Special cases:
             // radio uses name as key and id as value for persistence
             prepare_radio_values();
-            prepare_file_inputs();
-            prepare_uml();
+            prepare_ccm();
   
             // log_form_data();
   
@@ -402,34 +344,15 @@
                 }
               }
             }
-  
-            // collect all file inputs
-            function prepare_file_inputs() {
-              // get all file inputs
-              var array_of_all_file_inputs = [];
-              var file_inputs = form.querySelectorAll('input[type="file"]');
-              for (var i=0; i<file_inputs.length; i++){
-                array_of_all_file_inputs.push( file_inputs[i].id );
-                var selected_files = [];
-                for (var j=0; j<file_inputs[i].files.length; j++){
-                  selected_files.push({
-                    name: file_inputs[i].files[j].name,
-                    size: file_inputs[i].files[j].size,
-                    type: file_inputs[i].files[j].type
-                  });
-                }
-                formData.append( file_inputs[i].id, JSON.stringify( selected_files ) );
-              }
-              formData.append( '_posted_files', JSON.stringify( array_of_all_file_inputs ) );
-            }
             
-            function prepare_uml() {
-              self.ccm.helper.makeIterable( self.element.querySelectorAll('.ccm') ).map(function (elem) {
+            function prepare_ccm() {
+              ccm_ids.map(function (id) {
+                var elem = self.element.querySelector('#'+id);
                 elem.ccm_instance.sync(); // read textarea value and write into component value
-                formData.append( elem.id, elem.ccm_instance.value );
+                formData.append( elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify( elem.ccm_instance.value ) );
               });
             }
-            
+
             function log_form_data(){
               for (var pair of formData.entries()) { // ToDo ES6
                 console.log(pair[0]+ ', ' + pair[1]);
@@ -442,8 +365,8 @@
                             params: { key: self.key,
                                       user: self.user.data().user,
                                       token: self.user.data().token,
-                                      semester: self.semester,
-                                      fach: self.fach
+                                      semester: self.keys.semester,
+                                      fach: self.keys.fach
                                     }
                           }, function (record) {
             
@@ -500,16 +423,6 @@
                     || self.element.querySelector('#' + rec_key).innerText
                     || '';
                   break;
-                case 'file':
-                  if ( rec_val ){
-                    var files = JSON.parse( rec_val );
-                    files.map(function (file) {
-                      self.element.querySelector('#' + rec_key + '_reports').innerHTML +=
-                        ' <a href="' + file_url( rec_key ) + '" target="_blank" title="Stored ' + file.type + ': ' + file.size +
-                          ' bytes. Select new file to overwrite AND submit.">' + file.name + '</a>';
-                    });
-                  }
-                  break;
                 case 'deadline':
                   var list = self.element.querySelectorAll('.deadline'); // class selector
                   for (var i = 0; i< list.length; i++){
@@ -552,124 +465,24 @@
         
         // =================== helper functions =====================
   
-        function file_url( id ) {
-          return self.server + '?' +
-            'semester=' + self.semester +
-            '&fach=' + self.fach +
-            '&key=' + self.key +
-            '&id=' + id +
-            '&user=' + self.user.data().user +
-            '&token=' + self.user.data().token;
+        function file_url( args ) { // args is an object = keyword parameter
+          if ( ! args.server ) args.server = self.server;
+          if ( ! args.params ) args.params = self.keys;
+          Object.assign( args.params, { key: self.key } );
+          if ( args.id ) args.params.id = args.id;
+          var url = args.server;
+          Object.keys(args.params).map(function (key, i) {
+            url += (i===0?'?':'&') + key + '=' + args.params[ key ];
+          });
+          return url;
         }
         
         function encode_id( id ){  // replace space by underscore
-          return id.replace(/\s/g, '_');
+          return id.replace(/\s/g, '__');
         }
   
         function decode_id( id ){  // replace underscore by space
-          return id.replace(/_/g, ' ');
-        }
-  
-        function select_handler( xhr, containers, input_parameter ){
-          // "select file" handler
-          return function selectFile(){
-    
-            // get and check file type and suffix
-            var file = this.files[0]; // ToDo select multiple files
-            input_parameter.filename = file.name;
-    
-            // prevent hacker attack uploading PHP file
-            if (file.name.split('.').slice(-1)[0].toUpperCase() === 'PHP'){
-              alert( self.messages[self.language].wrong_file_type );
-              return false;
-            }
-    
-            // prepare next AJAX request
-            xhr = new XMLHttpRequest(); // new request for every file to be uploaded
-            containers.reports.textContent = ''; // clear old success reports
-            containers.failure.textContent = ''; // clear old error messages
-    
-            // prepare form data
-            var formData = new FormData();
-            formData.append('semester', self.semester);
-            formData.append('fach', self.fach);
-            formData.append('key', self.key);
-            formData.append('id', containers.id);
-            formData.append("file", file); // ToDo multiple file inputs, not single file
-    
-            // prepare AJAX POST request
-            xhr.open('POST', self.server, true); // true === async
-    
-            // update progress bar
-            xhr.upload.onprogress = function (e) {
-              if (e.lengthComputable) {
-                containers.progress_bar.value = (e.loaded / e.total) * 100;
-                containers.progress_bar.textContent = containers.progress_bar.value; // Fallback for unsupported browsers.
-              }
-            };
-    
-            // handle all kinds of errors during upload
-            function error_message( event ){
-              return ' Status: '+ xhr.status
-                + ', Event: ' + JSON.stringify(event)
-                + ', Response: ' + xhr.response + '.'
-            }
-    
-            xhr.upload.onabort = function (event) {
-              containers.failure.textContent += 'Abort' + error_message( event );
-            };
-    
-            xhr.upload.onerror = function (event) {
-              containers.failure.textContent += 'Error' + error_message( event );
-            };
-    
-            xhr.upload.ontimeout = function (event) {
-              containers.failure.textContent += 'Timeout' + error_message( event );
-            };
-    
-            xhr.onload = function () {
-              if (this.status == 200) {
-                containers.reports.textContent = self.messages[self.language].success;
-                var element = self.ccm.helper.html( self.html.response, input_parameter );
-                element.href = file_url( containers.id );
-                containers.reports.appendChild(element);
-                if ( self.logger ) self.logger.log( input_parameter );
-              }
-            };
-    
-            // has user instance? => login user (if not already logged in)
-            if (self.user) self.user.login(proceed); else proceed();
-    
-            function proceed() {
-              input_parameter.user = self.user.data().user;
-              input_parameter.token = self.user.data().token;
-              formData.append('user', self.user.data().user);
-              formData.append('token', self.user.data().token);
-              xhr.send(formData);
-            }
-    
-            function log_form(x) { // for debugging only
-              var result = {};
-              for (var entry of formData.entries()) {
-                result[entry[0]] = entry[1];
-              }
-              result = JSON.stringify(result);
-              console.log(x, result);
-              return JSON.stringify(formData.entries());
-            }
-          }
-        }
-  
-        // interrupt current AJAX request without reloading the HTML page
-        function abort_handler( xhr ){
-          return function abort( e ){
-            xhr.abort();
-  
-            // prevent reloading component and HTML page
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-          }
+          return id.replace(/__/g, '  '); // ToDo this is not a safe restauration of replacement
         }
         
         // collect all tags satisfying the condition recursively
@@ -679,16 +492,21 @@
           self.html.main.inner.map( collect_all_tags( self.html.main.inner ) );
           return { tags: all_tags, ids: all_elem_ids };
     
-          function collect_all_tags( root ){
+          function collect_all_tags( parent ){
             return function ( elem, index ) {
               if ( condition( elem, index ) ) {
-                all_tags.push( {root: root, index: index+1} );
+                all_tags.push( {parent: parent, index: index+1} );
                 all_elem_ids.push( elem.id );
               } else if ( Array.isArray( elem.inner ) ) {
                 collect_all_tags( elem.inner );
               }
             }
           }
+        }
+  
+        // collect ids only
+        function collect_ids_of_all_tags( condition ) {
+          return collect_all_tags( condition ).ids;
         }
 
         if ( callback ) callback();

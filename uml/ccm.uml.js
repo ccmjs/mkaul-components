@@ -9,7 +9,7 @@
 ( function () {
 
   var ccm_version = '9.0.0';
-  var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
+  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.0.0.js';
 
   var component_name = 'uml';
   var component_obj  = {
@@ -29,7 +29,7 @@
           ]
         }
       },
-      // css: [ 'ccm.load',  './resources/default.css' ],
+      // css: [ 'ccm.load',  '../uml/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/uml/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -57,12 +57,12 @@
         var textarea = main_elem.querySelector( 'textarea' );
   
         self.sync = function ( event_or_value ) {
-          if ( typeof event_or_value === 'string' ){
-            textarea.value = event_or_value;
+          if ( event_or_value !== 'undefined' && event_or_value && ! ( event_or_value instanceof Event ) ){
+            textarea.value = event_or_value; // write value into textarea
           }
-          self.value = textarea.value;
-          if ( self.logger ) self.logger.log( self.value );
-          compress( img, self.value );
+          self.value = textarea.value; // sync value
+          if ( self.logger ) self.logger.log( self.value ); // log value
+          if ( self.value ) compress( img, self.value ); // write into src attribute of img tag
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
             event_or_value.stopPropagation();

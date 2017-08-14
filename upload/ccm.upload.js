@@ -7,7 +7,7 @@
 ( function () {
 
   var ccm_version = '9.0.0';
-  var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
+  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.0.0.js';
 
   var component_name = 'upload';
   var component_obj  = {
@@ -42,7 +42,7 @@
           ]
         },
         response: {
-          tag: 'a', target: '_blank', inner: '%filename%'
+          tag: 'a', target: '_blank', inner: '%name%'
         }
       },
       
@@ -109,16 +109,32 @@
         // add event listeners for all buttons
         input.addEventListener('change', selectFile, false);
         abort_button.addEventListener('click', abort, false);
+  
+        // sync function before file is selected
+        self.sync = function ( event_or_value ) {
+          if ( event_or_value !== 'undefined' && event_or_value && ! ( event_or_value instanceof Event ) ){
+            self.value = JSON.parse( event_or_value );
+          }
+          Object.assign( params, self.value );
+          report_file_link();
+          if ( self.logger ) self.logger.log( params );
+          if( event_or_value instanceof Event ){
+            event_or_value.preventDefault();
+            event_or_value.stopPropagation();
+            return false;
+          }
+        };
         
         // "select file" handler
         function selectFile() {
   
           // get file
           var file = this.files[0];
-          params.filename = file.name;
+          params.name = file.name;
   
+          // sync function after file is selected
           self.sync = function ( event_or_value ) {
-            if ( ! ( event_or_value instanceof Event ) ){
+            if ( event_or_value !== 'undefined' && event_or_value && ! ( event_or_value instanceof Event ) ){
               self.value = JSON.parse( event_or_value );
             } else {
               self.value = {
@@ -128,6 +144,7 @@
               };
             }
             Object.assign( params, self.value );
+            report_file_link();
             if ( self.logger ) self.logger.log( params );
             if( event_or_value instanceof Event ){
               event_or_value.preventDefault();
@@ -213,28 +230,16 @@
   
           xhr.onload = function () {
             if (this.status == 200) {
-              reports.textContent = self.messages[self.language].success;
-              var element = self.ccm.helper.html( self.html.response, params );
-              element.href = file_url( self.server, params );
-              reports.appendChild(element);
+              report_file_link();
               if ( self.logger ) self.logger.log( params );
             }
           };
-          
-          function file_url( server, params ) {
-            var url = server;
-            Object.keys(params).map(function (key, i) {
-              if ( key === 'name' || key === 'filename' ) return;
-              url += (i===0?'?':'&') + key + '=' + params[ key ];
-            });
-            return url;
-          }
   
           // has user instance? => login user (if not already logged in)
           if (self.user) self.user.login(proceed); else proceed();
   
           function proceed() {
-            Object.assign( params, self.user.data() );
+            Object.assign( params, { user: self.user.data().user, token: self.user.data().token } );
             Object.keys( params ).map(function (key) {
               formData.append(key, params[key] );
             });
@@ -261,6 +266,29 @@
           e.preventDefault();
           e.stopPropagation();
           return false;
+        }
+        
+        function report_file_link(){
+          reports.textContent = self.messages[self.language].success;
+          var element = self.ccm.helper.html( self.html.response, params );
+          element.href = file_url( self.server, params );
+          reports.appendChild(element);
+        }
+  
+        function file_url( server, params ) {
+          var url = server;
+          
+          // Whitelist of legal parameters
+          var whitelist = [ 'key', 'user', 'token' ].concat( Object.keys( self.keys ) );
+          
+          // add parameters
+          // Object.assign( params, self.user.data() );
+          Object.keys(params).map(function (key, i) {
+            if ( whitelist.indexOf( key ) > -1 ) {
+              url += (i===0?'?':'&') + key + '=' + encodeURIComponent( params[ key ] );
+            }
+          });
+          return url;
         }
 
         if ( callback ) callback();
