@@ -1,6 +1,6 @@
 /**
- * @overview game_chooser is a little game implemented in ccm
- *      Game: A number is given and you have to say,
+ * @overview game_chooser is a little game implemented in ccm.
+ *      Game Rules: A number is given and the user has to say,
  *      whether the sum of digits is even or odd
  *      as fast as possible
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
@@ -9,7 +9,7 @@
 
 ( function () {
 
-  var ccm_version = '9.0.0';
+  var ccm_version = '9.1.0';
   var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
 
   var component_name = 'game_chooser';
