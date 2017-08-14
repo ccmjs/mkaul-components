@@ -11,7 +11,7 @@
 ( function () {
 
   var ccm_version = '9.1.0';
-  var ccm_url     = 'https://akless.github.io/ccm/ccm.js';
+  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.1.0.js';
 
   var component_name = 'geogebra';
   var component_obj  = {
