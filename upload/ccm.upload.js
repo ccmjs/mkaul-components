@@ -16,8 +16,13 @@
   
     config: {
       key:           'test',
-      upload_server: 'https://kaul.inf.h-brs.de/data/upload.php',
-      upload_view:   'https://kaul.inf.h-brs.de/data/view.php',
+      keys: {        // additional DB keys if necessary (optional)
+        semester: 1,
+        fach: 'se',
+        id: 'portrait' // default, overwritten by self.root.id == id of HTML element
+      },
+      server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
+
       upload_size: 100, // max. 100 MB, see php.ini upload_max_filesize = 120M
       upload_time: 80,  // max 80 sec,  see php.ini max_execution_time = 90
       
@@ -40,15 +45,28 @@
           tag: 'a', target: '_blank', inner: '%filename%'
         }
       },
-      message: {
-        abort:   'Upload abgebrochen: ',
-        success: 'Fertig hochgeladen: ',
-        file_too_large: 'File too large',
-        wrong_file_type: 'Wrong file type'
+      
+      language: 'de', // ToDo enable Dynamic Switching
+      messages: {
+        'en': {
+          abort: 'Upload cancelled: ',
+          success: 'Upload successful: ',
+          file_too_large: 'File too large',
+          wrong_file_type: 'Wrong file type',
+          wrong_suffix: 'Wrong file suffix'
+        },
+        'de': {
+          abort: 'Upload abgebrochen: ',
+          success: 'Fertig hochgeladen: ',
+          file_too_large: 'Datei zu groß',
+          wrong_file_type: 'Falscher Datei-Typ',
+          wrong_suffix: 'Falsche Datei-Endung'
+        }
       },
-      css: [ 'ccm.load',  '../upload/resources/default.css' ]
+      
+      css: [ 'ccm.load',  '../upload/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
+      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -75,12 +93,19 @@
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
   
+        // create a back link from HTML root element <ccm-*> to ccm component instance
+        self.root.ccm_instance = self;
+  
         // placeholder for all upcoming AJAX requests
         var xhr;
         
         // parameters for input dialog
-        var input_parameter = { key: self.key, upload_view: self.upload_view };
-  
+        var params = { key: self.key };
+        Object.assign( params, self.keys );
+        
+        // id from root
+        if ( self.root.id ) params.id = self.root.id;
+        
         // add event listeners for all buttons
         input.addEventListener('change', selectFile, false);
         abort_button.addEventListener('click', abort, false);
@@ -88,19 +113,40 @@
         // "select file" handler
         function selectFile() {
   
-          // get and check file type and suffix
+          // get file
           var file = this.files[0];
-          input_parameter.filename = file.name;
+          params.filename = file.name;
+  
+          self.sync = function ( event_or_value ) {
+            if ( ! ( event_or_value instanceof Event ) ){
+              self.value = JSON.parse( event_or_value );
+            } else {
+              self.value = {
+                name: file.name,
+                size: file.size,
+                type: file.type
+              };
+            }
+            Object.assign( params, self.value );
+            if ( self.logger ) self.logger.log( params );
+            if( event_or_value instanceof Event ){
+              event_or_value.preventDefault();
+              event_or_value.stopPropagation();
+              return false;
+            }
+          };
+  
+          // ======== all checks of file type and file suffix ==========
           
           // prevent hacker attack uploading PHP file
           if (file.name.split('.').slice(-1)[0].toUpperCase() === 'PHP'){
-            alert( self.wrong_file_type );
+            alert( self.messages[self.language].wrong_file_type );
             return false;
           }
   
           // Input Validation: size
           if ( file.size > self.upload_size * 1024 * 1024 ){
-            alert( self.file_too_large );
+            alert( self.messages[self.language].file_too_large );
             return false;
           }
   
@@ -113,13 +159,13 @@
             if ( self.type_regex && ! file.type.match( self.type_regex ) ){
               reports.textContent = 'File type is ' + file.type
                 + ', required is type ' + self.type_regex;
-              alert( self.wrong_file_type );
+              alert( self.messages[self.language].wrong_file_type );
               return false;
             }
             if ( self.suffix_regex && ! file.name.match( self.suffix_regex ) ){
               reports.textContent = 'File type is ' + file.type
                 + ', required is suffix ' + self.suffix_regex;
-              alert( self.wrong_suffix );
+              alert( self.messages[self.language].wrong_suffix );
               return false;
             }
           }
@@ -135,7 +181,7 @@
           formData.append("file", file);
   
           // prepare AJAX POST request
-          xhr.open('POST', self.upload_server, true); // true === async
+          xhr.open('POST', self.upload_server ? self.upload_server : self.server, true); // true === async
   
           // update progress bar
           xhr.upload.onprogress = function (e) {
@@ -167,25 +213,31 @@
   
           xhr.onload = function () {
             if (this.status == 200) {
-              reports.textContent = self.message.success;
-              var element = self.ccm.helper.html( self.html.response, input_parameter );
-              element.href = self.upload_view + '?'
-                + 'user=' + input_parameter.user
-                + '&token=' + input_parameter.token
-                + '&key=' + self.key;
+              reports.textContent = self.messages[self.language].success;
+              var element = self.ccm.helper.html( self.html.response, params );
+              element.href = file_url( self.server, params );
               reports.appendChild(element);
-              if ( self.logger ) self.logger.log( input_parameter );
+              if ( self.logger ) self.logger.log( params );
             }
           };
+          
+          function file_url( server, params ) {
+            var url = server;
+            Object.keys(params).map(function (key, i) {
+              if ( key === 'name' || key === 'filename' ) return;
+              url += (i===0?'?':'&') + key + '=' + params[ key ];
+            });
+            return url;
+          }
   
           // has user instance? => login user (if not already logged in)
           if (self.user) self.user.login(proceed); else proceed();
   
           function proceed() {
-            input_parameter.user = self.user.data().user;
-            input_parameter.token = self.user.data().token;
-            formData.append('user', self.user.data().user);
-            formData.append('token', self.user.data().token);
+            Object.assign( params, self.user.data() );
+            Object.keys( params ).map(function (key) {
+              formData.append(key, params[key] );
+            });
             xhr.send(formData);
           }
   
