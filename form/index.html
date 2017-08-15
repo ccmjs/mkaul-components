@@ -3,4 +3,67 @@
 <meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2017">
 <meta name="license" content="The MIT License (MIT)">
 <script src="ccm.form.js"></script>
-<ccm-form></ccm-form>
+<ccm-form>
+
+    <h2>Profile</h2>
+    <p><span class="deadline">Edit your profile before deadline </span></p>
+
+    <h3><i>ccm</i> Subcomponents</h3>
+    <h4>UML</h4>
+    <fieldset>
+        <ccm-uml id="my_uml" default="Bob->Alice2 : hello"></ccm-uml>
+    </fieldset>
+    <h4>Upload</h4>
+    <fieldset>
+        <ccm-upload id="my_upload"></ccm-upload>
+    </fieldset>
+
+    <h3>Number and Range</h3>
+    <label for="height">Height</label>
+    <input id="height" type="number">
+
+    <label for="weightInput">Weight</label>
+    <input id="weightInput" type="range" min="0" max="100" value="60" oninput="weightOutput.value = weightInput.value">
+    <output id="weightOutput" for="weightInput">60</output>
+
+    <h3>Select</h3>
+    <label>
+        <div>Künstler(in):</div>
+        <select id="top5" size="5" multiple="">
+            <option>Michael Jackson</option>
+            <option>Tom Waits</option>
+            <option>Nina Hagen</option>
+            <option>Marianne Rosenberg</option>
+            <option>Donald Trump</option>
+        </select>
+    </label>
+
+    <h3>Radio</h3>
+    <fieldset>
+        <input type="radio" id="rmc" name="Zahlmethode" value="Mastercard">
+        <label for="rmc"> Mastercard</label>
+        <input type="radio" id="rvi" name="Zahlmethode" value="Visa">
+        <label for="rvi"> Visa</label>
+        <input type="radio" id="rae" name="Zahlmethode" value="AmericanExpress">
+        <label for="rae">AmericanExpress</label>
+    </fieldset>
+
+    <h3>Checkbox</h3>
+    <fieldset>
+        <input type="checkbox" id="cmc" name="Checkbox" value="Mastercard">
+        <label for="cmc"> Mastercard</label>
+        <input type="checkbox" id="cvi" name="Checkbox" value="Visa">
+        <label for="cvi"> Visa</label>
+        <input type="checkbox" id="cae" name="Checkbox" value="AmericanExpress">
+        <label for="cae">AmericanExpress</label>
+    </fieldset>
+    <label for="firstname">First Name</label>
+    <input type="text" id="firstname">
+    <label for="name">Name</label>
+    <input type="text" id="name">
+    <label for="vita">Vita</label>
+    <textarea id="vita">Your Vita here as a default value</textarea>
+    <div id="dummy" value="test"></div>
+    <button type="submit">Submit!</button>
+
+</ccm-form>
