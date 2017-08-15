@@ -41,6 +41,76 @@
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       uml:    [ 'ccm.component', '../uml/ccm.uml.js' ],       //  key == component name
       upload: [ 'ccm.component', '../upload/ccm.upload.js' ], //  key == component name
+      html: {  // Optional: JSON structure instead of LightDOM given in HTML file
+        main: {
+          inner: [   // Rule: elements with id persist values
+        
+            { tag: 'h2', inner: 'Profile' },
+            { tag: 'p', inner: [
+              { tag: 'span', class: 'deadline', inner: 'Edit your profile before deadline ' }
+            ] },
+        
+            { tag: 'label', for: 'height', inner: 'Height' },
+            { tag: 'input', id: 'height', type: 'number', min: 100, max: 220, step: 1, value:175 },
+            { tag: 'span', inner: 'cm'},
+        
+            { tag: 'label', for: 'weightInput', inner: 'Weight' },
+            { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
+            { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
+        
+            { tag: 'ccm-uml', id: 'my_uml', default: 'Bob->Alice2 : hello' },
+        
+            { tag: 'ccm-upload', id: 'my_upload' },
+        
+            { tag: 'label', inner: [
+              { inner: 'Künstler(in):' },
+              { tag: 'select', id: 'top5', size: 5, multiple: true, inner: [
+                { tag: 'option', inner: 'Michael Jackson' },
+                { tag: 'option', inner: 'Tom Waits' },
+                { tag: 'option', inner: 'Nina Hagen' },
+                { tag: 'option', inner: 'Marianne Rosenberg' },
+                { tag: 'option', inner: 'Donald Trump' },
+              ] },
+            ] },
+        
+            { tag: 'h3', inner: 'Radio' },
+        
+            { tag: 'fieldset', inner: [
+              { tag: 'input', type: 'radio', id: 'rmc', name: 'Zahlmethode', value: 'Mastercard' },
+              { tag: 'label', for: 'rmc', inner: ' Mastercard' },
+              { tag: 'input', type: 'radio', id: 'rvi', name: 'Zahlmethode', value: 'Visa' },
+              { tag: 'label', for: 'rvi', inner: ' Visa' },
+              { tag: 'input', type: 'radio', id: 'rae', name: 'Zahlmethode', value: 'AmericanExpress' },
+              { tag: 'label', for: 'rae', inner: ' AmericanExpress' }
+            ] },
+        
+            { tag: 'h3', inner: 'Checkbox' },
+        
+            { tag: 'fieldset', inner: [
+              { tag: 'input', type: 'checkbox', id: 'cmc', name: 'Checkbox', value: 'Mastercard' },
+              { tag: 'label', for: 'mc', inner: ' Mastercard' },
+              { tag: 'input', type: 'checkbox', id: 'cvi', name: 'Checkbox', value: 'Visa' },
+              { tag: 'label', for: 'vi', inner: ' Visa' },
+              { tag: 'input', type: 'checkbox', id: 'cae', name: 'Checkbox', value: 'AmericanExpress' },
+              { tag: 'label', for: 'ae', inner: ' AmericanExpress' }
+            ] },
+        
+            { tag: 'label', for: 'firstname', inner: 'First Name' },
+            { tag: 'input', type: 'text', id: 'firstname' },
+        
+            { tag: 'label', for: 'name', inner: 'Name' },
+            { tag: 'input', type: 'text', id: 'name' },
+        
+            { tag: 'label', for: 'vita', inner: 'Vita' },
+            { tag: 'textarea', id: 'vita', inner: 'Your Vita here as a default value' },
+        
+            { id: 'dummy', value: 'test' }, // should not be persisted
+        
+            { tag: 'button', type: 'submit', inner: 'Submit!'}
+      
+          ]
+        }
+      },
       language: 'de', // Switch between languages via Reload
       messages: {
         'en': {
@@ -69,7 +139,8 @@
 
       this.start = function ( callback ) {
   
-        // create form for holding all input elements of ccm-form
+        // create form for holding all form elements given between <ccm-form>-tags
+        // or as JSON structure in config
         var form = document.createElement('form');
        
         // has logger instance? => log 'render' event
@@ -90,12 +161,17 @@
         // set content of own website area as fast as possible,
         // before values are loaded from database.
         // Values are filled in later asynchronously.
-  
-        self.ccm.helper.setContent( self.element, augmentedLightDOM() );
+        
+        var localDOM = self.inner; // LightDOM == HTML code between <ccm-form>-tags
+        if ( ! localDOM ){
+          localDOM = self.ccm.helper.html( self.html.main ); // JSON code as second choice
+        }
+        
+        augmentLocalDOM( localDOM );
+        
+        self.ccm.helper.setContent( self.element, form );
     
-        function augmentedLightDOM() {
-
-          var lightDOM = self.inner;
+        function augmentLocalDOM( lightDOM ) {
           
           self.ccm.helper.makeIterable( lightDOM.childNodes ).map(function ( child ) {
             form.appendChild( child );
@@ -147,13 +223,11 @@
               augment( nodes[i] );
             }
           }
-          
-          return form;
         }
 
         start_ccm_instances();
   
-        // start all ccm component instances
+        // start all ccm subcomponent instances inside this form
         function start_ccm_instances() {
           ccm_ids.map(function ( id ) {
             var elem = self.element.querySelector( '#'+id );
@@ -199,7 +273,6 @@
             var xhr = new XMLHttpRequest(); // new request for every form to be uploaded
     
             // prepare form data
-            var form = self.element.querySelector('form');
             var formData = new FormData(form);
     
             // log_form_data();
