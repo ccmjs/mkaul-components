@@ -1,5 +1,5 @@
 /**
- * @overview ccm component for uml
+ * @overview ccm component for UML
  * @see PlantUML
  * @url http://plantuml.com/demo-javascript-synchronous
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
@@ -7,9 +7,11 @@
  */
 
 ( function () {
+  
+  var filename = 'ccm.uml.js';
 
-  var ccm_version = '9.0.0';
-  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.0.0.js';
+  var ccm_version = '9.2.0';
+  var ccm_url     = 'https://akless.github.io/ccm/version/ccm-9.2.0.js';
 
   var component_name = 'uml';
   var component_obj  = {
@@ -20,6 +22,7 @@
       plantUML: "http://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', '../uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
+      onchange: function ( instance, results, name ) { console.log( name, results ); },
       html: {
         main: {
           inner: [
@@ -149,7 +152,7 @@
     }
 
   };
-
+  if ( window.ccm && window.ccm.files ) window.ccm.files[ filename ] = component_obj;
   var namespace = window.ccm && ccm.components[ component_name ]; if ( namespace ) { if ( namespace.ccm_version ) ccm_version = namespace.ccm_version; if ( namespace.ccm_url ) ccm_url = namespace.ccm_url; }
   if ( !window.ccm || !ccm[ ccm_version ] ) { var tag = document.createElement( 'script' ); document.head.appendChild( tag ); tag.onload = register; tag.src = ccm_url; } else register();
   function register() { ccm[ ccm_version ].component( component_obj ); }
