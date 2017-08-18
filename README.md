@@ -2,6 +2,7 @@
 
 * See [github.com/akless/ccm](https://github.com/akless/ccm) what _ccm_ and what a _ccm_ component is.
 * See [mkaul.github.io/ccm-components](https://mkaul.github.io/ccm-components) for examples and embed code.
+* See [Web Component Cloud](https://akless.github.io/w2c/) for more _ccm_ components
 
 ## _ccm_ Components developed by Manfred Kaul
 
