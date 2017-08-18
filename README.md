@@ -6,6 +6,8 @@
 
 ## _ccm_ Components developed by Manfred Kaul
 
+Click on a link for online demo. Include the following HTML code for including the web component into your own web site. 
+
 * [game_chooser](https://mkaul.github.io/ccm-components/game_chooser/index.html)
 ```
  <script src="https://mkaul.github.io/ccm-components/game_chooser/ccm.game_chooser.min.js"></script>
