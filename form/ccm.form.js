@@ -149,13 +149,20 @@
         var ccm_ids = [];
         
         // collect the types of all elements with ids in this object
-        var element_types = { deadline: 'DEADLINE' };
+        var element_types = { deadline: 'DEADLINE', points: 'POINTS' };
         function element_type( id ){
           if (element_types[ id ])
             return element_types[ id ].toUpperCase();
-          else
-            debugger;
+          else {
+            console.log( 'Undefined type for ' + id );
+            return 'TEXT'; // ToDo  test
+          }
         }
+  
+        // Overwrite config properties by HTML attribute values
+        self.ccm.helper.makeIterable( self.root.attributes ).map( function ( attribute ) {
+          self[ attribute.name ] = attribute.value;
+        });
   
         // set content of own website area as fast as possible,
         // before values are loaded from database.
@@ -459,6 +466,12 @@
                   var list = self.element.querySelectorAll('.deadline'); // class selector
                   for (var i = 0; i < list.length; i++) {
                     list[i].innerText += ' ' + record.deadline;
+                  }
+                  break;
+                case 'POINTS':
+                  var point_list = self.element.querySelectorAll('.points'); // class selector
+                  for (var i = 0; i < point_list.length; i++) {
+                    point_list[i].innerText += ' (max. ' + record.points + ' Punkte) ';
                   }
                   break;
                 default:

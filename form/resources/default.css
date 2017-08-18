@@ -3,3 +3,34 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
  */
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+label, textarea {
+    display: block;
+}
+
+label {
+    margin-top: 0.5rem;
+}
+
+textarea {
+    width: 300px; height: 75px
+}
+
+button[type=submit] {
+    margin: 1.0rem;
+    padding: 0.5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border-width: 6px;
+    border-radius: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bolder;
+    font-size: large;
+    color: white;
+}
+
+
