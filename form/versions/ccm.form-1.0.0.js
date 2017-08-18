@@ -39,8 +39,8 @@
       },
       server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      uml: [ 'ccm.component', '../uml/ccm.uml.js' ],
-      upload: [ 'ccm.component', '../upload/ccm.upload.js' ],
+      uml: [ 'ccm.component', 'https://mkaul.github.io/ccm-components/uml/ccm.uml.js' ],
+      upload: [ 'ccm.component', 'https://mkaul.github.io/ccm-components/upload/ccm.upload.js' ],
       html: {
         main: {  // elements with id persist values
           tag: 'form', inner: [
@@ -129,7 +129,7 @@
           success: 'Erfolgreich hochgeladen.'
         }
       },
-      css: [ 'ccm.load',  '../form/resources/default.css' ],
+      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],

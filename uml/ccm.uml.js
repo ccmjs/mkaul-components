@@ -20,7 +20,7 @@
 
     config: {
       plantUML: "http://www.plantuml.com/plantuml/img/",
-      rawdeflate: ['ccm.load', '../uml/resources/rawdeflate.js'], // helper library for PlantUML
+      rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
       onchange: function ( instance, results, name ) { console.log( name, results ); },
       html: {
@@ -32,7 +32,7 @@
           ]
         }
       },
-      // css: [ 'ccm.load',  '../uml/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/uml/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/uml/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],

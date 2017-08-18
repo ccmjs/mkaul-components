@@ -1,6 +1,6 @@
 /**
  * @overview game_chooser is a little game implemented in ccm.
- *      Game Rules: A number is given and the user has to say,
+ *      Game Rules: A number is given and the user has to choose,
  *      whether the sum of digits is even or odd
  *      as fast as possible
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017

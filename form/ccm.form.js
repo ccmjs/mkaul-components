@@ -39,8 +39,8 @@
       },
       server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      uml:    [ 'ccm.component', '../uml/ccm.uml.js' ],       //  key == component name
-      upload: [ 'ccm.component', '../upload/ccm.upload.js' ], //  key == component name
+      uml:    [ 'ccm.component', 'https://mkaul.github.io/ccm-components/uml/ccm.uml.js' ],       //  key == component name
+      upload: [ 'ccm.component', 'https://mkaul.github.io/ccm-components/upload/ccm.upload.js' ], //  key == component name
       html: {  // Optional: JSON structure instead of LightDOM given in HTML file
         main: {
           inner: [   // Rule: elements with id persist values
@@ -68,8 +68,7 @@
                 { tag: 'option', inner: 'Michael Jackson' },
                 { tag: 'option', inner: 'Tom Waits' },
                 { tag: 'option', inner: 'Nina Hagen' },
-                { tag: 'option', inner: 'Marianne Rosenberg' },
-                { tag: 'option', inner: 'Donald Trump' },
+                { tag: 'option', inner: 'Marianne Rosenberg' }
               ] },
             ] },
         
@@ -126,7 +125,7 @@
           success: 'Erfolgreich hochgeladen.'
         }
       },
-      css: [ 'ccm.load',  '../form/resources/default.css' ],
+      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -288,7 +287,7 @@
     
             // log_form_data();
     
-            // prepare AJAX POST request
+            // === POST === prepare AJAX POST request
             xhr.open('POST', self.server, true); // true === async
     
             xhr.onload = function () {
@@ -391,7 +390,7 @@
             }
           }
   
-          // load previous values from database asynchronously via GET request
+          // ==== GET ==== load previous values from database asynchronously via GET request
           self.ccm.load({
             url: self.server,
             params: {
@@ -405,7 +404,7 @@
     
             // Late filling form with values with recursive descend
             // traverse by all record keys
-    
+            
             Object.keys(record).map(assign_values_to_ids);
     
             function assign_values_to_ids(rec_key) {
