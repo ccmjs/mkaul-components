@@ -8,16 +8,14 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-label, textarea {
+textarea {
     display: block;
+    width: 300px;
+    height: 75px;
 }
 
 label {
     margin-top: 0.5rem;
-}
-
-textarea {
-    width: 300px; height: 75px
 }
 
 button[type=submit] {
