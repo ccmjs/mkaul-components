@@ -6,7 +6,7 @@
 
 ccm.files[ 'game_chooser-tests.js' ] = {
   setup: function ( suite, callback ) {
-    suite.ccm.component( '../ccm.game_chooser.js', function ( component ) {
+    suite.ccm.component( 'https://Manfred Kaul <manfred.kaul@h-brs.de> 2017.github.io/ccm-components/upload/ccm.game_chooser.js', function ( component ) {
       suite.game_chooser = component;
       callback();
     } );

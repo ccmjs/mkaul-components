@@ -11,9 +11,14 @@
   var component = {
     
     name: 'uml',
+    version: [ 1, 0, 0 ],
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
-
+    ccm: {
+      url: 'https://akless.github.io/ccm/version/ccm-10.0.0.min.js',
+      integrity: 'sha384-lFM/OdNL4uOjWgutWPJ/7GhViVV3QX74lVJUwRekoTRnNR6PhGZcKEK28yme5oQR',
+      crossorigin: 'anonymous'
+    },
+    
     config: {
       plantUML: "http://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML

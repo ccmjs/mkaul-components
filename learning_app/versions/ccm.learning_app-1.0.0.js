@@ -1,18 +1,15 @@
 /**
- * @overview ccm component for geogebra
+ * @overview ccm connector for learning apps from http://learningapps.org
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @see https://www.geogebra.org/wiki/en/Reference:Applet_Embedding
- *      https://dev.geogebra.org/trac/wiki/GeoGebraWeb
- *      https://github.com/geogebra/geogebra
- *      https://tube.geogebra.org
+ * @see http://learningapps.org
  */
 
 ( function () {
   
   var component = {
     
-    name: 'geogebra',
+    name: 'learning_app',
     version: [ 1, 0, 0 ],
     
     ccm: {
@@ -22,12 +19,22 @@
     },
 
     config: {
-      // https://www.geogebra.org/wiki/en/Reference:Applet_Embedding
-      // https://wiki.geogebra.org/en/Reference:Math_Apps_Embedding
-      geogebra:  [ 'ccm.load', '//cdn.geogebra.org/apps/deployggb.js' ],
-      applet: { material_id: "17499", borderColor:"#55FF00" },
-      div_id: "applet_container"
-      
+      key: '1661469', // key of learning app, see http://learningapps.org
+      html: {
+        main: {
+          id: 'main',
+          inner: [
+            {
+              tag: 'iframe',
+              frameborder: '0',
+              webkitallowfullscreen: 'true',
+              mozallowfullscreen: 'true',
+              inner: ' Your browser doesn´t support iframes. '
+            }
+          ]
+        }
+      },
+      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/learning_app/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -42,9 +49,15 @@
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
         
-        // make GeoGebra Applet
-        var applet = new GGBApplet( self.applet, true );
-        applet.inject( self.div_id, 'preferHTML5' );
+        // prepare main HTML structure
+        var main_elem = self.ccm.helper.html( self.html.main );
+        var iframe = main_elem.querySelector('iframe');
+        
+        // set content of own website area
+        self.ccm.helper.setContent( self.element, main_elem );
+  
+        // load with same protocol http or https as this component
+        iframe.src = '//LearningApps.org/watch?app=' + self.key ;
 
         if ( callback ) callback();
       };
