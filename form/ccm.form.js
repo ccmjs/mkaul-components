@@ -408,6 +408,8 @@
             // Late filling form with values with recursive descend
             // traverse by all record keys
             
+            if ( typeof record === 'string' ) record = JSON.parse( record );
+            
             Object.keys(record).map(assign_values_to_ids);
     
             function assign_values_to_ids(rec_key) {
