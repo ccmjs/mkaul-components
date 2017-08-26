@@ -9,14 +9,9 @@
   
   var component = {
     
-    name: 'fine_upload',
-    version: [ 1, 0, 0 ],
+    name: 'fine_upload', 
     
-    ccm: {
-      url: 'https://akless.github.io/ccm/version/ccm-10.0.0.min.js',
-      integrity: 'sha384-lFM/OdNL4uOjWgutWPJ/7GhViVV3QX74lVJUwRekoTRnNR6PhGZcKEK28yme5oQR',
-      crossorigin: 'anonymous'
-    },
+    ccm: 'https://akless.github.io/ccm/ccm.js',
     
     config: {
       upload_url: 'https://kaul.inf.h-brs.de/upload',
@@ -25,8 +20,8 @@
           id: 'uploader'
         }
       },
-      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader-gallery.min.css' ],
-      fine_uploader_lib: [ 'ccm.load', 'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader.min.js' ],
+      css: [ 'ccm.load',  'resources/fine-uploader-gallery.min.css' ],
+      fine_uploader_lib: [ 'ccm.load', 'resources/fine-uploader.min.js' ],
       template: `<div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
                 <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
