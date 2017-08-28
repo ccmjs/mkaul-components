@@ -28,15 +28,15 @@
     ccm: 'https://akless.github.io/ccm/ccm.js',
 
     config: {
-      key: 'test',   // unique key of this form
+      fkey: 'test',   // form key = unique key of this form
       keys: {        // additional DB keys if necessary (optional)
         semester: 1, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
       server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      uml:    [ 'ccm.component', '../uml/ccm.uml.js' ],       //  key == component name
-      upload: [ 'ccm.component', '../upload/ccm.upload.js' ], //  key == component name
+      uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],       //  key == component name
+      upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ], //  key == component name
       html: {  // Optional: JSON structure instead of LightDOM given in HTML file
         main: {
           inner: [   // Rule: elements with id persist values
@@ -121,7 +121,7 @@
           success: 'Erfolgreich hochgeladen.'
         }
       },
-      css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -131,62 +131,72 @@
     Instance: function () {
     
       var self = this;
-
-      this.start = function ( callback ) {
+      var my;           // contains privatized instance members // ToDo
   
-        // create form for holding all form elements given between <ccm-form>-tags
-        // or as JSON structure in config
-        var form = document.createElement('form');
-       
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+      this.init = function ( callback ) {
   
-        // collect the ids of all ccm subcomponents in this array
-        var ccm_ids = [];
-        
-        // collect the types of all elements with ids in this object
+        // Collect the types of all inner elements with ids in this object.
+        // Initially, DEADLINE and POINTS are set.
         var element_types = { deadline: 'DEADLINE', points: 'POINTS' };
-        function element_type( id ){
-          if (element_types[ id ])
-            return element_types[ id ].toUpperCase();
-          else {
-            console.log( 'Undefined type for ' + id );
-            return 'TEXT'; // ToDo  test
-          }
-        }
-  
-        // Overwrite config properties by HTML attribute values
-        self.ccm.helper.makeIterable( self.root.attributes ).map( function ( attribute ) {
-          self[ attribute.name ] = attribute.value;
-        });
-  
-        // set content of own website area as fast as possible,
-        // before values are loaded from database.
-        // Values are filled in later asynchronously.
-        
-        var localDOM = self.inner; // LightDOM == HTML code between <ccm-form>-tags
-        if ( ! localDOM ){
-          localDOM = self.ccm.helper.html( self.html.main ); // JSON code as second choice
-        }
-        
-        augmentLocalDOM( localDOM );
-        
-        self.ccm.helper.setContent( self.element, form );
     
-        function augmentLocalDOM( lightDOM ) {
-          
-          self.ccm.helper.makeIterable( lightDOM.childNodes ).map(function ( child ) {
-            form.appendChild( child );
-          });
+        // support declarative way for defining a form via HTML or JSON
+        generateForm();
+    
+        callback();
+    
+        /** generate form from LightDOM or JSON */
+        function generateForm() {
   
-          // insert database keys as hidden fields in HTML form
-          form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: 'key', value: self.key }) );
-          Object.keys(self.keys).map(function (key) {
-            form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: key, value: self.keys[key] }) );
-          });
+          // create form for holding all form elements given between <ccm-form>-tags
+          // or as JSON structure in config
+          self.form = document.createElement('form');
+  
+          // Array for collecting all ids of ccm custom elements
+          self.ccm_ids = [];
           
-          augment( form );
+          // export knowledge about element types via this function
+          self.element_type = function( id ){
+            if (element_types[ id ])
+              return element_types[ id ].toUpperCase();
+            else {
+              console.log( 'Form has no id #' + id );
+              return 'TEXT'; // ToDo  test
+            }
+          };
 
+          if ( self.inner ){    // === LightDOM as first choice
+            self.localDOM = self.inner; // inner will be privatized after init
+          } else {              // === JSON as second choice
+            self.localDOM = self.ccm.helper.html( self.html.main );
+          }
+  
+          // collect useful data from lightDOM and add useful data to lightDOM
+          augmentLightDOM( self.localDOM );
+ 
+        }
+  
+        function augmentLightDOM( lightDOM ) {
+    
+          if ( typeof lightDOM === 'string' ) { // convert into DOM
+            var fragment = document.createDocumentFragment();
+            var inner_div = document.createElement('div');
+            fragment.appendChild(inner_div);
+            inner_div.innerHTML = lightDOM;
+            lightDOM = inner_div;
+          }
+    
+          self.ccm.helper.makeIterable( lightDOM.childNodes ).map(function ( child ) {
+            self.form.appendChild( child );
+          });
+    
+          // insert database keys as hidden fields in HTML form
+          self.form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: 'key', value: self.fkey }) );
+          Object.keys(self.keys).map(function (key) {
+            self.form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: key, value: self.keys[key] }) );
+          });
+    
+          augment( self.form );
+    
           function augment( elem ) {
             if ( elem.id ){
               switch ( elem.tagName ){
@@ -216,7 +226,7 @@
                 default:
                   element_types[ elem.id ] = elem.tagName;
                   if ( elem.tagName.startsWith('CCM-') ){
-                    ccm_ids.push( elem.id );
+                    self.ccm_ids.push( elem.id );
                   }
               }
             }
@@ -226,16 +236,43 @@
             }
           }
         }
+    
+      };
+  
+      this.ready = function ( callback ) {
+  
+        // Overwrite config properties by HTML attribute values
+        // self.ccm.helper.makeIterable( self.root.attributes ).map( function ( attribute ) {
+        //   self[ attribute.name ] = attribute.value;
+        // });
+  
+        // privatize all possible instance members
+        // my = self.ccm.helper.privatize( self );
+    
+        callback();
+    
+      };
+
+      this.start = function ( callback ) {
+       
+        // has logger instance? => log 'render' event
+        if ( self.logger ) self.logger.log( 'render' );
+  
+        // set content of own website area as fast as possible,
+        // before values are loaded from database.
+        // Values are filled in later asynchronously.
+  
+        self.ccm.helper.setContent( self.element, self.form );
 
         start_ccm_instances();
   
         // start all ccm subcomponent instances inside this form
         function start_ccm_instances() {
-          ccm_ids.map(function ( id ) {
+          self.ccm_ids.map(function ( id ) {
             var elem = self.element.querySelector( '#'+id );
               var component_name = elem.tagName.substr(4,elem.tagName.length).toLowerCase();
               self[ component_name ].start( {
-                key: self.key,
+                key: self.fkey,
                 root: elem,
                 value: elem.value,
                 keys: {
@@ -275,7 +312,7 @@
             var xhr = new XMLHttpRequest(); // new request for every form to be uploaded
     
             // prepare form data
-            var formData = new FormData(form);
+            var formData = new FormData(self.form);
     
             // log_form_data();
     
@@ -315,7 +352,7 @@
     
             // collect all values of multiple selects
             function prepare_select_values() {
-              var nodeList = form.querySelectorAll('select');
+              var nodeList = self.form.querySelectorAll('select');
               for (var i = 0; i < nodeList.length; i++) {
                 var select_node = nodeList[i];
                 formData.append(select_node.id, JSON.stringify(getSelectValues(select_node)));
@@ -343,7 +380,7 @@
             // collect all values of checkboxes
             function prepare_checkbox_values() {
               // get all checkboxes with all names
-              var checkboxes = form.querySelectorAll('input[type="checkbox"]');
+              var checkboxes = self.form.querySelectorAll('input[type="checkbox"]');
               // collect all names
               var names = [];
               for (var i = 0; i < checkboxes.length; i++) {
@@ -351,7 +388,7 @@
                 if (names.indexOf(name) === -1) names.push(name); // no duplicates
               }
               names.map(function (name) {
-                var namedNodes = form.querySelectorAll('input[name="' + name + '"]');
+                var namedNodes = self.form.querySelectorAll('input[name="' + name + '"]');
                 formData.append(name, JSON.stringify(getCheckedValues(namedNodes)));
               });
       
@@ -370,7 +407,7 @@
             // collect all values of radio boxes
             function prepare_radio_values() {
               // get all radio boxes with all names
-              var radios = form.querySelectorAll('input[type="radio"]');
+              var radios = self.form.querySelectorAll('input[type="radio"]');
               for (var i = 0; i < radios.length; i++) {
                 if (radios[i].checked) {
                   formData.append(radios[i].name, radios[i].id);
@@ -379,7 +416,7 @@
             }
     
             function prepare_ccm() {
-              ccm_ids.map(function (id) {
+              self.ccm_ids.map(function (id) {
                 var elem = self.element.querySelector('#' + id);
                 elem.ccm_instance.sync(); // read textarea value and write into component value
                 formData.append(elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify(elem.ccm_instance.value));
@@ -392,12 +429,12 @@
               }
             }
           }
-  
+
           // ==== GET ==== load previous values from database asynchronously via GET request
           self.ccm.load({
             url: self.server,
             params: {
-              key: self.key,
+              key: self.fkey,
               user: self.user.data().user,
               token: self.user.data().token,
               semester: self.keys.semester,
@@ -412,7 +449,7 @@
     
             function assign_values_to_ids(rec_key) {
       
-              var rec_type = element_type(rec_key);
+              var rec_type = self.element_type(rec_key);
               var rec_val = record[rec_key];
       
               // handle multiple select or check
@@ -487,7 +524,7 @@
         function file_url( args ) { // args is an object = keyword parameter
           if ( ! args.server ) args.server = self.server;
           if ( ! args.params ) args.params = self.keys;
-          Object.assign( args.params, { key: self.key } );
+          Object.assign( args.params, { key: self.fkey } );
           if ( args.id ) args.params.id = args.id;
           var url = args.server;
           Object.keys(args.params).map(function (key, i) {
@@ -495,17 +532,19 @@
           });
           return url;
         }
-        
-        function encode_id( id ){  // replace space by underscore
-          return id.replace(/\s/g, '__');
-        }
-  
-        function decode_id( id ){  // replace underscore by space
-          return id.replace(/__/g, '  '); // ToDo this is not a safe restauration of replacement
-        }
 
         if ( callback ) callback();
       };
+      
+      // helper functions used in init, ready and start
+  
+      function encode_id( id ){  // replace space by underscore
+        return id.replace(/\s/g, '__');
+      }
+  
+      function decode_id( id ){  // replace underscore by space
+        return id.replace(/__/g, '  '); // ToDo this is not a safe restauration of replacement
+      }
 
     }
 
