@@ -13,8 +13,8 @@
     ccm: 'https://akless.github.io/ccm/ccm.js',
 
     config: {
-      css: [ 'ccm.load',  './resources/default.min.css' ],
-      hljs: [ 'ccm.load',  './resources/highlight.min.js' ]
+      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/default.min.css' ],
+      hljs: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
