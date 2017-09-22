@@ -15,6 +15,8 @@
     config: {
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/default.min.css' ],
       hljs: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ]
+      // clazz: 'java',
+      // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -32,9 +34,9 @@
         
         // prepare main HTML structure
         var main_html = '<pre><code class="'
-          + self.root.classList.value
+          + ( self.clazz || self.root.classList.value ) // config or lightDOM
           + '">'
-          + self.inner.textContent
+          + ( self.content || self.inner.textContent )  // config or lightDOM
           + '</code></pre>';
         
         // set content of own website area
