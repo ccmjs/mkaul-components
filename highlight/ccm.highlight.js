@@ -13,8 +13,10 @@
     ccm: 'https://akless.github.io/ccm/ccm.js',
 
     config: {
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/default.min.css' ],
-      hljs: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ]
+      hljs: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
+      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.css' ]
+      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.css' ],
+      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/default.min.css' ],
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
@@ -28,26 +30,35 @@
       var self = this;
 
       this.start = function ( callback ) {
+
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
-        
-        // prepare main HTML structure
-        var main_html = '<pre><code class="'
-          + ( self.clazz || self.root.classList.value ) // config or lightDOM
-          + '">'
-          + ( self.content || self.inner.textContent )  // config or lightDOM
-          + '</code></pre>';
-        
+
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_html );
+        self.ccm.helper.setContent( self.element, self.ccm.helper.html( {
+          tag: 'pre', inner: {
+            tag: 'code',
+            class: ( self.clazz || self.root.classList.value ) // config or lightDOM
+          }
+        } ) );
         
         // get DOM element of <pre><code>
         var main_elem = self.element.querySelector('pre code');
+
+        // set main element content to config or lightDOM content
+        var textContent = self.content || self.inner.innerHTML;
+        
+        // skip first new line
+        var firstBreak = textContent.indexOf('\n');
+        textContent = textContent.substr(firstBreak+1);
+        
+        main_elem.textContent = textContent;
   
         hljs.highlightBlock( main_elem );
 
         if ( callback ) callback();
+        
       };
 
     }
