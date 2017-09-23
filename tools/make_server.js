@@ -5,32 +5,22 @@
  * @license The MIT License (MIT)
  */
 
-const absolute = 'absolute';
-const relative = 'relative';
-let abs_switch = absolute;
-
 const fs = require('fs');
 const path = require('path');
 
-const component_name = 'upload';
+const component_name = 'form';
 const author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
 
-const relative_path = `https://Manfred Kaul <manfred.kaul@h-brs.de> 2017.github.io/ccm-components/upload/`;
-// https://mkaul.github.io/ccm-components/${component_name}/resources/
-const absolute_path = `https://${author}.github.io/ccm-components/${component_name}/`;
-// const absolute_path = `https://kaul.inf.h-brs.de/data/ccm/${component_name}/resources/`;
+const replacements = {
+  "'resources/": "'//kaul.inf.h-brs.de/data/ccm/form/resources/",
+  "'./resources/": "'//kaul.inf.h-brs.de/data/ccm/form/resources/",
+  "'../": "'//kaul.inf.h-brs.de/data/ccm/"
+};
 
-// ToDo Relative Pfade auf andere Komponenten und andere Autoren fehlen
-
-walk(path.join('..' + path.sep + ''), function(err, results) {
+walk(path.join('..' + path.sep + component_name), function(err, results) {
   if (err) throw err;
-  results.map(function (someFile) {
-    if ( abs_switch === absolute) {
-      replace( someFile, RE(relative_path), absolute_path );
-                      // dot matches any char in RegExp
-    } else {
-      replace( someFile, RE(absolute_path), relative_path );
-    }
+  results.map(function ( someFile ) {
+    replace( someFile );
   });
 });
 
@@ -41,23 +31,31 @@ walk(path.join('..' + path.sep + ''), function(err, results) {
  * e.g. dot is any char in RegExp, therefore dot has to be escaped for turning it into a regexp
  */
 function RE( someString ) {
+  // dot matches any char in RegExp
   return someString.replace(/([.|$*+?[\]()]|\\|\^|]|-)/g, "[$1]")
 }
 
 
 // https://stackoverflow.com/questions/14177087/replace-a-string-in-a-file-with-nodejs
-function replace( someFile, find, replacement ){
+function replace( someFile ){
+  let count = 0;
   fs.readFile(someFile, 'utf8', function (err1,data) {
     if (err1) throw err1;
-    let regexp = new RegExp(find, 'g');
-    let count = (data.split(regexp)).length - 1;
-    if (count){
-      console.log( count + ' replacements in ' + someFile );
-      let result = data.replace(regexp, replacement);
-      fs.writeFile(someFile, result, 'utf8', function (err2) {
+  
+    Object.keys( replacements ).map(function ( find ) {
+      let regexp = new RegExp( RE( find ), 'g');
+      let splitted_array = data.split(regexp);
+      count += splitted_array.length - 1;
+      data = splitted_array.join( replacements[ find ] );
+    });
+  
+    if ( count ){
+      fs.writeFile(someFile, data, 'utf8', function (err2) {
         if (err2) throw err2;
+        console.log(count + ' replacements in ' + someFile);
       });
     }
+    
   });
 }
 
