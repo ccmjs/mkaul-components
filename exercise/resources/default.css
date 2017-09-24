@@ -1,0 +1,15 @@
+/**
+ * @overview default layout of ccm component exercise
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @license The MIT License (MIT)
+ */
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+textarea {
+    display: block;
+    width: 300px;
+    height: 75px;
+}

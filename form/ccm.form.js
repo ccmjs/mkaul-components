@@ -33,10 +33,16 @@
         semester: 1, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
-      server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
+      server: '//kaul.inf.h-brs.de/data/form.php', // uniform server access
+      
+      // subcomponents
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],       //  key == component name
-      upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ], //  key == component name
+      uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
+      upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
+      highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
+      show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
+      exercise: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js' ],
+      
       html: {  // Optional: JSON structure instead of LightDOM given in HTML file
         main: {
           inner: [   // Rule: elements with id persist values
@@ -152,7 +158,7 @@
           self.form = document.createElement('form');
   
           // Array for collecting all ids of ccm custom elements
-          self.ccm_ids = [];
+          self.ccm_elems = [];
           
           // export knowledge about element types via this function
           self.element_type = function( id ){
@@ -198,6 +204,13 @@
           augment( self.form );
     
           function augment( elem ) {
+            
+            // collect all ccm subcomponents, without nested parameters
+            if ( elem.tagName.startsWith('CCM-') &&  elem.tagName.split('-').length === 2 ){
+              self.ccm_elems.push( elem );
+            }
+            
+            // augment elements with id with additional information
             if ( elem.id ){
               switch ( elem.tagName ){
                 case 'INPUT':
@@ -225,11 +238,10 @@
                   break;
                 default:
                   element_types[ elem.id ] = elem.tagName;
-                  if ( elem.tagName.startsWith('CCM-') ){
-                    self.ccm_ids.push( elem.id );
-                  }
               }
             }
+            
+            // recursive descend
             var nodes = elem.children;
             for (var i = 0; i < nodes.length; i++) {
               augment( nodes[i] );
@@ -268,20 +280,32 @@
   
         // start all ccm subcomponent instances inside this form
         function start_ccm_instances() {
-          self.ccm_ids.map(function ( id ) {
-            var elem = self.element.querySelector( '#'+id );
-              var component_name = elem.tagName.substr(4,elem.tagName.length).toLowerCase();
-              self[ component_name ].start( {
-                key: self.fkey,
-                root: elem,
-                value: elem.value,
-                keys: {
-                  semester: self.keys.semester,
-                  fach: self.keys.fach,
-                  id: id
-                }
+          self.ccm_elems.map(function ( elem ) {
+            
+            // get name without ccm prefix
+            var component_name = elem.tagName.substr(4,elem.tagName.length).toLowerCase();
+            
+            // start parameter for component
+            var start_params = {
+              key: self.fkey,
+              root: elem,
+              value: elem.value
+            };
+            if ( elem.id ){
+              start_params.keys = {
+                semester: self.keys.semester,
+                fach: self.keys.fach,
+                id: elem.id
+              };
+            }
+            
+            // start component if exists
+            if ( self[ component_name ] ){
+              self[ component_name ].start( start_params, function ( instance ) {
+                elem.ccm_instance = instance;
               } );
-            } );
+            }
+          } );
         }
   
         // Late Login
@@ -414,12 +438,16 @@
                 }
               }
             }
-    
+  
             function prepare_ccm() {
-              self.ccm_ids.map(function (id) {
-                var elem = self.element.querySelector('#' + id);
-                elem.ccm_instance.sync(); // read textarea value and write into component value
-                formData.append(elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify(elem.ccm_instance.value));
+              self.ccm_elems.map(function (elem) {
+                // read textarea value and write into component value
+                if ( elem.id && elem.ccm_instance ){ // id is indicator for persistence
+                  // first update component value === sync
+                  elem.ccm_instance.sync();
+                  // write value into formData object for POST request
+                  formData.append(elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify(elem.ccm_instance.value));
+                }
               });
             }
     

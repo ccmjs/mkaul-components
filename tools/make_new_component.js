@@ -7,7 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'highlight';
+var component_name = 'exercise';
 var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
 var account = 'mkaul';
 
@@ -41,7 +41,7 @@ var ccm_component = `/**
           ]
         }
       },
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/${component_name}/resources/default.css' ],
       // css: [ 'ccm.load',  'https://${account}.github.io/ccm-components/${component_name}/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],

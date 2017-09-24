@@ -30,7 +30,6 @@
       var self = this;
 
       this.start = function ( callback ) {
-
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
@@ -47,11 +46,13 @@
         var main_elem = self.element.querySelector('pre code');
 
         // set main element content to config or lightDOM content
-        var textContent = self.content || self.inner.innerHTML;
+        var textContent = self.content || ( self.inner || self.root ).innerHTML;
         
-        // skip first new line
-        var firstBreak = textContent.indexOf('\n');
-        textContent = textContent.substr(firstBreak+1);
+        // skip first and last new line
+        // var firstBreak = textContent.indexOf('\n');
+        // textContent = textContent.substr(firstBreak+1);
+        // var lastBreak = textContent.lastIndexOf('\n');
+        // textContent = textContent.substring(0, lastBreak);
         
         main_elem.textContent = textContent;
   
