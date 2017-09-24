@@ -28,7 +28,7 @@
         }
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
+      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -81,7 +81,8 @@
         self.ccm.start( 'show_solutions' , {  // ToDo Choose the right ccm version, not self.ccm
           root: show_solutions,
           fkey: self.fkey,
-          keys: self.keys
+          keys: self.keys,
+          user: self.user
         });
 
         if ( callback ) callback();
