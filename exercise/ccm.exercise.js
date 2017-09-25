@@ -21,7 +21,8 @@
       html: {
         main: {
           inner: [
-            { id: 'task', inner: '%task%' }
+            { id: 'task', inner: '%task%' },
+            { tag: 'p' }
           ]
         }
       },
@@ -63,16 +64,17 @@
 
             // self.ccm.helper.generateConfig( elem ); // ToDo
             
-            var param_name = elem.tagName.split('-')[2].toLowerCase();
-            switch ( param_name ){
-              case 'question':
-                self.questions.push( elem.innerHTML );
-                self.html.main.inner.push( { tag: 'label', for: self.fkey + count, inner: elem.innerHTML } );
-                self.html.main.inner.push( { tag: 'textarea', id: self.fkey + count } );
-                break;
-              default: self[ param_name ] = elem.innerHTML;
+            if ( elem.tagName.startsWith('CCM-EXERCISE-') ){
+              var param_name = elem.tagName.split('-')[2].toLowerCase();
+              switch ( param_name ){
+                case 'question':
+                  self.questions.push( elem.innerHTML );
+                  self.html.main.inner.push( { tag: 'label', for: self.fkey + count, inner: elem.innerHTML } );
+                  self.html.main.inner.push( { tag: 'textarea', id: self.fkey + count } );
+                  break;
+                default: self[ param_name ] = elem.innerHTML;
+              }
             }
-            
           } );
           
           if ( self.questions.length === 0 ){
@@ -91,11 +93,30 @@
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
   
+        if(!String.linkify) {
+          String.prototype.linkify = function() {
+      
+            // http://, https://, ftp://
+            var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+      
+            // www. sans http:// or https://
+            var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+      
+            // Email addresses
+            var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
+      
+            return this
+              .replace(urlPattern, '<a href="$&">$&</a>')
+              .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
+              .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
+          };
+        }
+  
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main,
           {
             id: self.for,
-            task: self.task,
+            task: self.task.linkify(),
             placeholder: self.placeholder || ''
           } );
         
@@ -127,6 +148,7 @@
         });
 
         if ( callback ) callback();
+        
       };
 
     }

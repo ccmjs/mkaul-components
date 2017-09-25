@@ -17,5 +17,6 @@ textarea {
 code {
     font-family: monospace;
     font-size: larger;
+    color: blue;
     background-color: lightgrey;
 }
