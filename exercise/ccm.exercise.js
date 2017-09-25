@@ -15,15 +15,13 @@
     config: {
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
       show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
-      task: 'Schreiben Sie in Java 8 ein Programm, das eine Datei liest, die Anzahl der Wörter darin zählt und diese Zahl dann ausgibt.',
-      placeholder: 'class WordCounter ...',
+      // task: 'Richten Sie Ihre Entwicklungsumgebung für Java 8 ein und schreiben Sie Hello World in Java 8.',
+      // placeholder: 'class HelloWorld ...',
+      // questions: ['a', 'b'],
       html: {
         main: {
           inner: [
-            { id: 'task', inner: '%task%' },
-            { tag: 'label', for: '%id%' },
-            { tag: 'textarea', id: '%id%', placeholder: '%placeholder%' },
-            { tag: 'ccm-show_solutions', for: '%id%' }
+            { id: 'task', inner: '%task%' }
           ]
         }
       },
@@ -36,11 +34,8 @@
     Instance: function () {
     
       var self = this;
-
-      this.start = function ( callback ) {
-      
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+  
+      this.init = function ( callback ) {
   
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
@@ -49,13 +44,59 @@
           fach: self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('id');
+    
+        // support declarative way for defining a quiz via HTML
+        evaluateLightDOM();
+    
+        callback();
+    
+        /** finds Custom Component Elements for generating config parameters */
+        function evaluateLightDOM() {
+      
+          var children = ( self.inner || self.root ).children;
+          self.questions = [];
+          var count = 0;
+      
+          // iterate over all children of the Light DOM to search for config parameters
+          self.ccm.helper.makeIterable( children ).map( function ( elem ) {
+            count += 1;
+
+            // self.ccm.helper.generateConfig( elem ); // ToDo
+            
+            var param_name = elem.tagName.split('-')[2].toLowerCase();
+            switch ( param_name ){
+              case 'question':
+                self.questions.push( elem.innerHTML );
+                self.html.main.inner.push( { tag: 'label', for: self.fkey + count, inner: elem.innerHTML } );
+                self.html.main.inner.push( { tag: 'textarea', id: self.fkey + count } );
+                break;
+              default: self[ param_name ] = elem.innerHTML;
+            }
+            
+          } );
+          
+          if ( self.questions.length === 0 ){
+            self.html.main.inner.push( { tag: 'label', for: self.fkey } );
+            self.html.main.inner.push( { tag: 'textarea', id: self.fkey, placeholder: self.placeholder || '' } );
+          }
+  
+          self.html.main.inner.push( { tag: 'ccm-show_solutions', for: self.fkey } );
+      
+        }
+    
+      };
+
+      this.start = function ( callback ) {
+      
+        // has logger instance? => log 'render' event
+        if ( self.logger ) self.logger.log( 'render' );
   
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main,
           {
             id: self.for,
             task: self.task,
-            placeholder: self.placeholder
+            placeholder: self.placeholder || ''
           } );
         
         // select inner containers (mostly for buttons)

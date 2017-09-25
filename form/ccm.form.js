@@ -328,6 +328,12 @@
           }
   
           var submit_button = self.element.querySelector('button[type="submit"]');
+          if ( ! submit_button ){
+            submit_button = self.ccm.helper.html( {
+              tag: 'button', type: 'submit', inner: 'Speichern!'
+            } );
+            self.element.querySelector('form').appendChild( submit_button );
+          }
           submit_button.addEventListener('click', submit, false);
   
           function submit(e) { // Handler for submit button of form

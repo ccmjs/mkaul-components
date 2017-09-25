@@ -41,7 +41,7 @@
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/show_solutions/resources/default.css' ],
-      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ]
+      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { "sign_on": "hbrsinfkaul" } ]
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -80,9 +80,9 @@
           if ( this.checked ){ // display all solutions
   
             if ( solutions_div.style.display === 'none' ) {
-              
+
               solutions_div.style.display = 'block';
-              
+
             } else {
               
               // Late Login
@@ -135,9 +135,6 @@
                 });
               }
             }
-  
-
-            
           } else { // erase all solutions
   
             solutions_div.style.display = 'none';
