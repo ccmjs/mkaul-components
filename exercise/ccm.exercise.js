@@ -56,6 +56,7 @@
       
           var children = ( self.inner || self.root ).children;
           self.questions = [];
+          self.question_ids = [];
           var count = 0;
       
           // iterate over all children of the Light DOM to search for config parameters
@@ -69,6 +70,7 @@
               switch ( param_name ){
                 case 'question':
                   self.questions.push( elem.innerHTML );
+                  self.question_ids.push( self.fkey + count );
                   self.html.main.inner.push( { tag: 'label', for: self.fkey + count, inner: elem.innerHTML } );
                   self.html.main.inner.push( { tag: 'textarea', id: self.fkey + count } );
                   break;
@@ -121,7 +123,7 @@
           } );
         
         // select inner containers (mostly for buttons)
-        var show_solutions = main_elem.querySelector( 'ccm-show_solutions' );
+        var show_solutions_div = main_elem.querySelector( 'ccm-show_solutions' );
         var textarea = main_elem.querySelector( 'textarea' );
 
         // set content of own website area
@@ -129,9 +131,26 @@
   
         self.sync = function ( event_or_value ) {
           if ( event_or_value !== 'undefined' && event_or_value && ! ( event_or_value instanceof Event ) ){
-            textarea.value = event_or_value; // write value into textarea
+            if ( self.questions.length === 0 ){
+              textarea.value = event_or_value; // write value into textarea
+            } else {
+              var questions_from_db = JSON.parse( event_or_value );
+              Object.keys( questions_from_db ).map(function ( id ) {
+                main_elem.querySelector( '#' + id ).value = questions_from_db[ id ];
+              });
+            }
           }
-          self.value = textarea.value; // sync value
+          
+          if ( self.questions.length === 0 ){
+            self.value = textarea.value; // sync value
+          } else {
+            var question_values = {};
+            self.question_ids.map(function ( id ) {
+              question_values[ id ] = main_elem.querySelector( '#' + id ).value
+            });
+            self.value = JSON.stringify( question_values );
+          }
+          
           if ( self.logger ) self.logger.log( self.value ); // log value
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
@@ -141,9 +160,10 @@
         };
   
         self.ccm.start( 'show_solutions' , {  // ToDo Choose the right ccm version, not self.ccm
-          root: show_solutions,
+          root: show_solutions_div,
           fkey: self.fkey,
           keys: self.keys,
+          parent: self,
           user: self.user
         });
 

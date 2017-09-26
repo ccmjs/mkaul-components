@@ -29,19 +29,28 @@
           inner: [
             { tag: 'input', id: '%id%', type: 'checkbox' },
             { tag: 'label', for: '%id%', inner: 'Zeige Liste aller eingereichten Lösungen' },
-            { tag: 'div', id: '%solutions_id%' }
+            { id: '%solutions_id%' }
           ]
         },
         error: {
           inner: 'Bitte bis zur Deadline %deadline% warten!'
         },
         solution: {
-          tag: 'div', inner: '%solution%'
+          inner: [
+            { class: 'solution', inner: '%solution%' },
+            { class: 'comments' }
+          ]
+          
         }
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/show_solutions/resources/default.css' ],
-      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { "sign_on": "hbrsinfkaul" } ]
+      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { "sign_on": "hbrsinfkaul" } ],
+      comment: [ 'ccm.component', 'https://tkless.github.io/ccm-components/comment/versions/ccm.comment-1.0.0.js', {
+        data: {
+          store: ['ccm.store', { store: 'comments', url: 'https://ccm.inf.h-brs.de' } ]
+        }
+      } ]
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -111,23 +120,30 @@
                   if ( typeof record === 'string') record = JSON.parse(record);
       
                   if ( record.ERROR ){
+                    
                     solutions_div.innerHTML = self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } );
+                  
                   } else {
+                    
                     var code = record.SUCCESS.code;
+                    
                     Object.keys( record ).map(function ( uid ) {
                       if ( uid !== 'ERROR' &&  uid !== 'SUCCESS' ){
-                        var child = self.ccm.helper.html(
-                          self.html.solution, {
-                            solution: record[ uid ]
-                          } );
+                        
+                        var child = self.ccm.helper.html( self.html.solution, { solution: record[ uid ] } );
+                        
                         solutions_div.appendChild( child );
-                        if ( code ){
-                          self.ccm.start( 'highlight' , {  // ToDo Choose the right ccm version, not self.ccm
-                            root: child,
-                            clazz: code,
-                            content: record[ uid ]
-                          });
-                        }
+  
+                        if ( code ) self.highlight.start( {
+                          parent: child, clazz: code, content: record[ uid ]
+                        }, function ( instance ) {
+                            self.ccm.helper.setContent( child.querySelector('.solution'), instance.root );
+                        } );
+  
+                        self.comment.start( { parent: child, 'data.key': uid + '_' + self.for }, function ( instance ) {
+                          self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
+                        });
+                        
                       }
                     });
                   }

@@ -36,7 +36,7 @@
       server: '//kaul.inf.h-brs.de/data/form.php', // uniform server access
       
       // subcomponents
-      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
+      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
       uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
       upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
@@ -274,6 +274,7 @@
         // before values are loaded from database.
         // Values are filled in later asynchronously.
   
+        
         self.ccm.helper.setContent( self.element, self.form );
 
         start_ccm_instances();
@@ -287,15 +288,17 @@
             
             // start parameter for component
             var start_params = {
-              key: self.fkey,
+              fkey: self.fkey,
               root: elem,
-              value: elem.value
+              value: elem.value,
+              parent: self,
+              user: self.user
             };
             if ( elem.id ){
               start_params.keys = {
                 semester: self.keys.semester,
-                fach: self.keys.fach,
-                id: elem.id
+                fach: self.keys.fach
+                // id: elem.id // ToDo ???
               };
             }
             
