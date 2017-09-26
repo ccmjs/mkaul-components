@@ -29,7 +29,7 @@
           inner: [
             { tag: 'input', id: '%id%', type: 'checkbox' },
             { tag: 'label', for: '%id%', inner: 'Zeige Liste aller eingereichten Lösungen' },
-            { id: '%solutions_id%' }
+            { class: 'solutions' }
           ]
         },
         error: {
@@ -73,14 +73,10 @@
         if ( ! self.for ) self.for = self.root.getAttribute('for');
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main,
-          {
-            id: self.for,
-            solutions_id: 'solutions_' + self.for
-          } );
+        var main_elem = self.ccm.helper.html( self.html.main, { id: self.for } );
         
         // select solutions div
-        var solutions_div = main_elem.querySelector( '#solutions_' + self.for );
+        var solutions_div = main_elem.querySelector( '.solutions' );
         
         // select checkbox
         var checkbox = main_elem.querySelector( 'input' );
