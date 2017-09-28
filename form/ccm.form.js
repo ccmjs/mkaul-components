@@ -36,7 +36,7 @@
       server: '//kaul.inf.h-brs.de/data/form.php', // uniform server access
       
       // subcomponents
-      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.2.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
+      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
       uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
       upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
@@ -472,7 +472,7 @@
             url: self.server,
             params: {
               key: self.fkey,
-              user: self.user.data().user,
+              user: self.user.data().id,
               token: self.user.data().token,
               semester: self.keys.semester,
               fach: self.keys.fach
