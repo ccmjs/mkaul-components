@@ -19,6 +19,10 @@
       rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
       onchange: function ( instance, results, name ) { console.log( name, results ); },
+      data: {
+        store: ["ccm.store"/*,{store:"uml",url:"https://ccm.inf.h-brs.de"}*/],
+        key: "demo"
+      },
       html: {
         main: {
           inner: [

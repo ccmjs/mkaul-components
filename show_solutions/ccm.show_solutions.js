@@ -45,7 +45,7 @@
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/show_solutions/resources/default.css' ],
-      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { "sign_on": "hbrsinfkaul" } ],
+      user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.2.0.min.js', { "sign_on": "hbrsinfkaul" } ],
       comment: [ 'ccm.component', 'https://tkless.github.io/ccm-components/comment/versions/ccm.comment-1.0.0.js', {
         data: {
           store: ['ccm.store', { store: 'hbrs_ss17_se1_comments', url: 'https://ccm.inf.h-brs.de' } ],
@@ -138,7 +138,7 @@
                             self.ccm.helper.setContent( child.querySelector('.solution'), instance.root );
                         } );
 
-                        self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.for }, function ( instance ) {
+                        self.comment.start( { parent: self, user: [ "ccm.instance", "https://akless.github.io/ccm-components/user/versions/ccm.user-1.2.0.min.js" ], 'data.key': uid + '_' + self.for }, function ( instance ) {
                           self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
                         });
                         
