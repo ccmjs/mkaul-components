@@ -13,7 +13,7 @@
     ccm: 'https://akless.github.io/ccm/ccm.js',
     
     config: {
-      key:           'test',
+      fkey:           'test',  // ToDo Use fkey instead of key
       keys: {        // additional DB keys if necessary (optional)
         semester: 1,
         fach: 'se',
@@ -64,7 +64,7 @@
       
       css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/upload/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
-      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
+      user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -98,7 +98,7 @@
         var xhr;
         
         // parameters for input dialog
-        var params = { key: self.key };
+        var params = { key: self.fkey };
         Object.assign( params, self.keys );
         
         // id from root
@@ -192,7 +192,7 @@
           
           // prepare form data
           var formData = new FormData();
-          formData.append('key', self.key);
+          formData.append('key', self.fkey);
           formData.append("file", file);
   
           // prepare AJAX POST request
@@ -237,7 +237,7 @@
           if (self.user) self.user.login(proceed); else proceed();
   
           function proceed() {
-            Object.assign( params, { user: self.user.data().user, token: self.user.data().token } );
+            Object.assign( params, { user: self.user.data().id, token: self.user.data().token } );
             Object.keys( params ).map(function (key) {
               formData.append(key, params[key] );
             });

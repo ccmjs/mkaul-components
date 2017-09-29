@@ -302,12 +302,11 @@
               };
             }
             
-            // start component if exists
-            if ( self[ component_name ] ){
-              self[ component_name ].start( start_params, function ( instance ) {
-                elem.ccm_instance = instance;
-              } );
-            }
+            // start component if component exists
+            self[ component_name ].start( start_params, function ( instance ) {
+              elem.ccm_instance = instance;
+            } );
+
           } );
         }
   
@@ -319,15 +318,13 @@
   
           // prepare authentication in POST form:
           // add user and token hidden fields to POST form
-          add_node('user');
-          add_node('token');
+          add_hidden_input( 'user', self.user.data().id );
+          add_hidden_input( 'token', self.user.data().token );
   
-          function add_node(name) {
-            var node = document.createElement('input');
-            node.setAttribute('type', 'hidden');
-            node.setAttribute('name', name);
-            node.setAttribute('value', self.user.data()[name]);
-            self.element.querySelector('form').appendChild(node);
+          function add_hidden_input(name, value) {
+            self.element.querySelector('form').appendChild(self.ccm.helper.html({
+              tag: 'input', type: 'hidden', name: '%name%', value: '%value%'
+            }, { name: name, value: value }));
           }
   
           var submit_button = self.element.querySelector('button[type="submit"]');
@@ -357,9 +354,9 @@
             // radio uses name as key and id as value for persistence
             prepare_radio_values();
             prepare_ccm();
-    
-            // log_form_data();
-    
+  
+            // log_form_data(); // for debugging
+  
             // === POST === prepare AJAX POST request
             xhr.open('POST', self.server, true); // true === async
     
