@@ -19,11 +19,11 @@
         semester: 1, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
-      user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
+      // user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
       form: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/form/ccm.form.js' ],
-      exercise: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js' ],
-      show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
-      highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ]
+      // exercise: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js' ],
+      // show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
+      // highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ]
     },
 
     Instance: function () {
@@ -85,7 +85,7 @@
                 
               }
   
-              start_ccm_children( child_node );
+              // start_ccm_children( child_node );
               
             });
           }
