@@ -42,6 +42,17 @@
     Instance: function () {
     
       var self = this;
+  
+      this.init = function ( callback ) {
+        // inherit context parameter
+        if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
+        if ( ! self.keys ) self.keys = {
+          semester: self.ccm.context.find(self,'semester'),
+          fach: self.ccm.context.find(self,'fach')
+        };
+    
+        callback();
+      };
       
       this.start = function ( callback ) {
       

@@ -141,13 +141,21 @@
   
       this.init = function ( callback ) {
   
+        // inherit context parameter
+        if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
+        if ( ! self.keys ) self.keys = {
+          semester: self.ccm.context.find(self,'semester'),
+          fach: self.ccm.context.find(self,'fach')
+        };
+  
         // Collect the types of all inner elements with ids in this object.
         // Initially, DEADLINE and POINTS are set.
         var element_types = { deadline: 'DEADLINE', points: 'POINTS' };
     
         // support declarative way for defining a form via HTML or JSON
         generateForm();
-    
+  
+        // setTimeout( callback(), 10);
         callback();
     
         /** generate form from LightDOM or JSON */
@@ -165,7 +173,9 @@
             if (element_types[ id ])
               return element_types[ id ].toUpperCase();
             else {
-              console.log( 'Form has no id #' + id );
+              if (['name', 'before_deadline'].indexOf(id) === -1) {
+                console.log( 'Form has no id #' + id );
+              }
               return 'TEXT'; // ToDo  test
             }
           };
@@ -182,13 +192,10 @@
         }
   
         function augmentLightDOM( lightDOM ) {
-    
-          if ( typeof lightDOM === 'string' ) { // convert into DOM
-            var fragment = document.createDocumentFragment();
-            var inner_div = document.createElement('div');
-            fragment.appendChild(inner_div);
-            inner_div.innerHTML = lightDOM;
-            lightDOM = inner_div;
+  
+          // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
+          if ( typeof lightDOM === 'string' ){
+            lightDOM = document.createRange().createContextualFragment( lightDOM );
           }
     
           self.ccm.helper.makeIterable( lightDOM.childNodes ).map(function ( child ) {
@@ -260,9 +267,10 @@
   
         // privatize all possible instance members
         // my = self.ccm.helper.privatize( self );
-    
+  
+        // setTimeout( callback(), 10);
         callback();
-    
+        
       };
 
       this.start = function ( callback ) {

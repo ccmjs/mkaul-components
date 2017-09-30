@@ -53,6 +53,11 @@
     
         /** finds Custom Component Elements for generating config parameters */
         function evaluateLightDOM() {
+  
+          // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
+          if ( typeof self.inner === 'string' ){
+            self.inner = document.createRange().createContextualFragment( self.inner );
+          }
       
           var children = ( self.inner || self.root ).children;
           self.questions = [];
@@ -70,9 +75,9 @@
               switch ( param_name ){
                 case 'question':
                   self.questions.push( elem.innerHTML );
-                  self.question_ids.push( self.fkey + count );
-                  self.html.main.inner.push( { tag: 'label', for: self.fkey + count, inner: elem.innerHTML } );
-                  self.html.main.inner.push( { tag: 'textarea', id: self.fkey + count } );
+                  self.question_ids.push( self.fkey + '_' + count );
+                  self.html.main.inner.push( { tag: 'label', for: self.fkey + '_' + count, inner: elem.innerHTML } );
+                  self.html.main.inner.push( { tag: 'textarea', id: self.fkey + '_' + count } );
                   break;
                 default: self[ param_name ] = elem.innerHTML;
               }
@@ -91,6 +96,8 @@
       };
 
       this.start = function ( callback ) {
+        
+        console.log( 'starting exercise ' + self.for + ' in parent ' + self.parent.index );
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
@@ -159,7 +166,7 @@
           }
         };
   
-        self.ccm.start( 'show_solutions' , {  // ToDo Choose the right ccm version, not self.ccm
+        self.show_solutions.start( {
           root: show_solutions_div,
           fkey: self.fkey,
           keys: self.keys,

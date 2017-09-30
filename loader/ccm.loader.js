@@ -37,15 +37,16 @@
           params: {
             id: self.nr
           }
-        }, function ( record ) {
+        }, function ( load_value ) {
           
-          var content = JSON.parse( record );
+          var record = JSON.parse( load_value );
 
-          self.element.innerHTML = content.filecontents;
+          // self.element.innerHTML = record.filecontents;
 
           // set content of own website area
-          // self.ccm.helper.setContent( self.element, content.filecontents );
+          self.ccm.helper.setContent( self.element, record.filecontents );
   
+          self.element.ccm_instance = self;
           start_ccm_children( self.element );
           
         });
@@ -54,29 +55,37 @@
           
           if ( mother_node.hasChildNodes() ){
             
-            self.ccm.helper.makeIterable( mother_node.children ).map(function (child) {
+            self.ccm.helper.makeIterable( mother_node.children ).map(function (child_node) {
   
-              if ( child.tagName.startsWith('CCM-') &&  child.tagName.split('-').length === 2 ){
+              if ( child_node.tagName.startsWith('CCM-') &&  child_node.tagName.split('-').length === 2 ){
   
                 // get name without ccm prefix
-                var component_name = child.tagName.substr(4,child.tagName.length).toLowerCase();
-
+                var component_name = child_node.tagName.substr(4,child_node.tagName.length).toLowerCase();
+                
                 // start parameter for component
                 var start_params = {
-                  root: child,
-                  inner: child.innerHTML,
-                  parent: self,
+                  root: child_node,
+                  inner: child_node.innerHTML,
+                  // parent: mother_node.ccm_instance,
                   keys: self.keys
                 };
-                
-                // start component if component exists
+  
+                Object.assign( start_params, self.ccm.helper.makeIterable( child_node.attributes )
+                  .reduce(function (attributes,single_attribute) {
+                    if ( [ 'id', 'index', 'key', 'root', 'start' ].indexOf( single_attribute.name ) >= 0 ) return attributes;
+                    attributes[ single_attribute.name ] = single_attribute.nodeValue;
+                    return attributes;
+                }, {}) );
+
+                // start component
                 self[ component_name ].start( start_params, function ( instance ) {
-                  child.ccm_instance = instance;
+                  child_node.ccm_instance = instance;
+                  console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
                 } );
                 
               }
   
-              start_ccm_children( child );
+              start_ccm_children( child_node );
               
             });
           }

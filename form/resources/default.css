@@ -31,10 +31,8 @@ button[type=submit] {
     padding-right: 3rem;
     border-width: 6px;
     border-radius: 20px;
-    font-family: 'Open Sans', sans-serif;
     font-weight: bolder;
-    font-size: large;
-    color: white;
+    font-size: larger;
 }
 
 
