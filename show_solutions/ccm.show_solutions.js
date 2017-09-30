@@ -116,10 +116,10 @@
                   // traverse by all record keys
       
                   if ( typeof record === 'string') record = JSON.parse(record);
-      
+
                   if ( record.ERROR ){
-                    
-                    solutions_div.innerHTML = self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } );
+  
+                    solutions_div.appendChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ));
                   
                   } else {
                     
