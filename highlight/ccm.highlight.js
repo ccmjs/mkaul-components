@@ -13,11 +13,13 @@
     ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
 
     config: {
-      hljs:  [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
-      
-      css0:  [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/default.min.css' ],
-      css1:  [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
-      css2:  [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css'  ]
+      hljs:  [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
+      css:   [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
+  
+      css0:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css',
+      css1:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css',
+      css2:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css',
+      css3:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css'
       
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
@@ -31,7 +33,13 @@
     
       var self = this;
   
-      self.style = 0;
+      this.style = 0;
+      
+      this.setStyle = function( style_nr ) {
+        self.style = style_nr;
+        self.style %= 4;
+        self.element.parentNode.querySelector('link').href = self[ 'css' + self.style ] ;
+      };
 
       this.start = function ( callback ) {
       
@@ -97,10 +105,7 @@
         
         function changeStyle() {
           self.style += 1;
-          self.style %= 3;
-          for (var i=0; i<3; i++){
-            self.element.querySelector('#css' + self.style).disabled  = ( i !== self.style );
-          }
+          self.setStyle( self.style );
         }
         
       };
