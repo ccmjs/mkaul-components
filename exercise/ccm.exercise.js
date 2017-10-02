@@ -10,7 +10,7 @@
 
     name: 'exercise',
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
 
     config: {
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
@@ -97,7 +97,7 @@
 
       this.start = function ( callback ) {
         
-        console.log( 'starting exercise ' + self.for + ' in parent ' + self.parent.index );
+        // console.log( 'starting exercise ' + self.for + ' in parent ' + self.parent.index );
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
@@ -155,7 +155,8 @@
             self.question_ids.map(function ( id ) {
               question_values[ id ] = main_elem.querySelector( '#' + id ).value
             });
-            self.value = JSON.stringify( question_values );
+            // self.value = JSON.stringify( question_values );
+            self.value = question_values;
           }
           
           if ( self.logger ) self.logger.log( self.value ); // log value
@@ -169,6 +170,7 @@
         self.show_solutions.start( {
           root: show_solutions_div,
           fkey: self.fkey,
+          id: self.for,
           keys: self.keys,
           parent: self,
           user: self.user

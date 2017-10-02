@@ -15,11 +15,7 @@
     config: {
       hljs:  [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
       css:   [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
-  
-      css0:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css',
-      css1:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css',
-      css2:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css',
-      css3:  '//kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css'
+      css_alternatives: [ '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
       
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
@@ -37,8 +33,8 @@
       
       this.setStyle = function( style_nr ) {
         self.style = style_nr;
-        self.style %= 4;
-        self.element.parentNode.querySelector('link').href = self[ 'css' + self.style ] ;
+        self.style %= self.css_alternatives.length;
+        self.element.parentNode.querySelector('link').href = self.css_alternatives[ self.style ] ;
       };
 
       this.start = function ( callback ) {
@@ -59,8 +55,8 @@
               }
             },
             { style: 'position: absolute; top: 0; right: 0; margin: 3px;', inner: [
-                { tag: 'button', inner: 'Copy', title: 'Copy to ClipBoard', onclick: copyToClipBoard, style: 'border-radius: 10px; margin: 3px;' },
-                { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px;' }
+                { tag: 'button', inner: 'Copy', title: 'Copy to ClipBoard', onclick: copyToClipBoard, style: 'border-radius: 10px; margin: 3px; outline:0;' },
+                { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
               ]
             }
            ]
@@ -89,9 +85,18 @@
         // back replacement of "<" instead of "&lt;"
         // https://stackoverflow.com/questions/1248849/converting-sanitised-html-back-to-displayable-html
         function htmlDecode(input){
-          var e = document.createElement('div');
-          e.innerHTML = input;
-          return e.childNodes[0].nodeValue;
+          var elem = document.createElement('div');
+          elem.innerHTML = input;
+          return input ? elem.childNodes[0].nodeValue : input;
+        }
+  
+        function isHTML(str) { // ToDo to be deleted
+          var div = document.createElement('div');
+          div.innerHTML = str;
+          for (var c = div.childNodes, i = c.length; i--; ) {
+            if (c[i].nodeType == 1) return true;
+          }
+          return false;
         }
         
         function copyToClipBoard() {

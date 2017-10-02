@@ -17,7 +17,7 @@
 
     name: 'show_solutions',
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
 
     config: {
       server: '//kaul.inf.h-brs.de/data/form.php',
@@ -40,16 +40,14 @@
             { class: 'solution', inner: '%solution%' },
             { class: 'comments' }
           ]
-          
         }
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/show_solutions/resources/default.css' ],
+      
       user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { "sign_on": "hbrsinfkaul" } ],
       comment: [ 'ccm.component', 'https://tkless.github.io/ccm-components/comment/versions/ccm.comment-1.0.0.js', {
         data: {
           store: ['ccm.store', { store: 'hbrs_ss17_se1_comments', url: 'https://ccm.inf.h-brs.de' } ],
-          "key": "demo",
           "permission_settings": { "access": "group" }
         }
       } ]
@@ -103,7 +101,7 @@
                   url: self.server,
                   params: {
                     key: self.fkey,
-                    id: self.root.getAttribute('for'),
+                    id: self.parent.for || self.root.getAttribute('for'),
                     user: self.user.data().id,
                     token: self.user.data().token,
                     semester: self.keys.semester,
@@ -124,21 +122,45 @@
                   } else {
                     
                     var code = record.SUCCESS.code;
+                    var json = record.SUCCESS.json;
                     
                     Object.keys( record ).map(function ( uid ) {
                       if ( uid !== 'ERROR' &&  uid !== 'SUCCESS' ){
                         
-                        var child = self.ccm.helper.html( self.html.solution, { solution: record[ uid ] } );
+                        var child;
+                        var solution = record[ uid ];
                         
+                        if ( json ){
+                          // Is field a JSON structure?
+                          solution = JSON.parse( solution );
+                          var structure = Object.keys(solution).reduce(function (structure,key) {
+                            structure.inner.push({ class: 'solution', inner: solution[ key ] });
+                            structure.inner.push({ tag: 'hr' });
+                            return structure;
+                          }, { // initial structure is a div with some inner elements
+                            inner: [], class: 'solution_box'
+                          } );
+                          // only one comment for all fields
+                          structure.inner.push({ class: 'comments' });
+                          child = self.ccm.helper.html( structure );
+                        } else { // no JSON
+                          child = self.ccm.helper.html( self.html.solution, { solution: solution } );
+                        }
+    
                         solutions_div.appendChild( child );
   
-                        if ( code ) self.highlight.start( {
-                          parent: self, clazz: code, content: record[ uid ]
-                        }, function ( instance ) {
-                            self.ccm.helper.setContent( child.querySelector('.solution'), instance.root );
-                        } );
-
-                        self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.for }, function ( instance ) {
+                        if ( code ){ // render code highlighting
+                          ccm.helper.makeIterable(child.querySelectorAll('.solution')).map(function (node) {
+                            self.highlight.start( {
+                              parent: self, clazz: code, content: node.innerHTML
+                            }, function ( instance ) {
+                              self.ccm.helper.setContent( node, instance.root );
+                            } );
+                          })
+                        }
+  
+                        // only one comment for all fields
+                        self.comment.start( { parent: self, user: self.user, 'data.key': self.fkey + '_' + uid + '_' + self.for }, function ( instance ) {
                           self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
                         });
                         

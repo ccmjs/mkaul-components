@@ -45,7 +45,7 @@
 
           // set content of own website area
           self.ccm.helper.setContent( self.element, record.filecontents );
-  
+          
           self.element.ccm_instance = self;
           start_ccm_children( self.element );
           
@@ -80,7 +80,7 @@
                 // start component
                 self[ component_name ].start( start_params, function ( instance ) {
                   child_node.ccm_instance = instance;
-                  console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
+                  // console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
                 } );
                 
               }

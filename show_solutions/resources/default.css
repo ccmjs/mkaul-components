@@ -3,3 +3,17 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
  */
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+.solution_box {
+    border-style: dashed;
+    border-width: 1px;
+    padding: 0.5rem;
+    margin: 3px;
+}

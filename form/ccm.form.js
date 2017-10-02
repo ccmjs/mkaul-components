@@ -25,7 +25,7 @@
     
     name: 'form',
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
 
     config: {
       fkey: 'test',   // form key = unique key of this form
@@ -185,7 +185,7 @@
           } else {              // === JSON as second choice
             self.localDOM = self.ccm.helper.html( self.html.main );
           }
-  
+          
           // collect useful data from lightDOM and add useful data to lightDOM
           augmentLightDOM( self.localDOM );
  
@@ -364,6 +364,20 @@
             prepare_ccm();
   
             // log_form_data(); // for debugging
+            
+            // ==== protection against XSS attacks ====
+            // for (var pair of formData.entries()) { // with ES6
+            //   if ( typeof pair[ 1 ] === 'string' ){
+            //     formData.set( pair[ 0 ], ccm.helper.protect( pair[ 1 ] ) );
+            //   }
+            // }
+  
+            // same without ES6:
+            // for (var pair in Object.entries(formData.entries())){
+            //   if ( typeof pair[ 1 ] === 'string' ){
+            //     formData.set( pair[ 0 ], ccm.helper.protect( pair[ 1 ] ) );
+            //   }
+            // }
   
             // === POST === prepare AJAX POST request
             xhr.open('POST', self.server, true); // true === async
