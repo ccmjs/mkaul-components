@@ -76,14 +76,19 @@
                     attributes[ single_attribute.name ] = single_attribute.nodeValue;
                     return attributes;
                 }, {}) );
-                
+  
                 // start component
-                self[ component_name ].start( start_params, function ( instance ) {
+                if ( self[ component_name ] ){
+                  self[ component_name ].start( start_params, function ( instance ) {
+    
+                    child_node.ccm_instance = instance;
+                    // console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
+                  } );
+                } else {
                   
-                  child_node.ccm_instance = instance;
-                  // console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
-                } );
-                
+                  self.ccm.start( start_params.src, start_params );
+                  
+                }
               }
   
               // start_ccm_children( child_node );
