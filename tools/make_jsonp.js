@@ -20,15 +20,18 @@ const dir = fs.readdir(json_path, function(err, files){
     .map(function(file){
       fs.readFile(path.join(json_path, file), function (er, data) {
         if (er) throw er;
-        let new_contents = 'ccm.callback[ "'+ file +'" ](';
-        new_contents += "\n";
-        new_contents += data;
-        new_contents += "\n";
-        new_contents += ');';
-        // delete .json from filename
+  
         let filenameparts = file.split('.');
         filenameparts.pop();
         filenameparts.push('js');
+        
+        let new_contents = 'ccm.files[ "'+ filenameparts.join('.') +'" ] = ';
+        new_contents += "\n";
+        new_contents += data;
+        new_contents += "\n";
+        new_contents += ';';
+        // delete .json from filename
+        
         fs.writeFile(path.join(json_path, filenameparts.join('.')), new_contents, function(e){
           console.log(file, '=>', filenameparts.join('.'));
           if (e) throw e;

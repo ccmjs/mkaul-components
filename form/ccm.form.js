@@ -25,7 +25,8 @@
     
     name: 'form',
     
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       fkey: 'test',   // form key = unique key of this form
@@ -46,24 +47,24 @@
       html: {  // Optional: JSON structure instead of LightDOM given in HTML file
         main: {
           inner: [   // Rule: elements with id persist values
-        
+
             { tag: 'h2', inner: 'Profile' },
             { tag: 'p', inner: [
               { tag: 'span', class: 'deadline', inner: 'Edit your profile before deadline ' }
             ] },
-        
+
             { tag: 'label', for: 'height', inner: 'Height' },
             { tag: 'input', id: 'height', type: 'number', min: 100, max: 220, step: 1, value:175 },
             { tag: 'span', inner: 'cm'},
-        
+
             { tag: 'label', for: 'weightInput', inner: 'Weight' },
             { tag: 'input', id: 'weightInput', type: 'range', min: 0, max: 100, value:60, oninput:"weightOutput.value = weightInput.value" },
             { tag: 'output', id: 'weightOutput', for: 'weightInput', inner: '60' },
-        
+
             { tag: 'ccm-uml', id: 'my_uml', default: 'Bob->Alice2 : hello' },
-        
+
             { tag: 'ccm-upload', id: 'my_upload' },
-        
+
             { tag: 'label', inner: [
               { inner: 'Künstler(in):' },
               { tag: 'select', id: 'top5', size: 5, multiple: true, inner: [
@@ -73,9 +74,9 @@
                 { tag: 'option', inner: 'Marianne Rosenberg' }
               ] },
             ] },
-        
+
             { tag: 'h3', inner: 'Radio' },
-        
+
             { tag: 'fieldset', inner: [
               { tag: 'input', type: 'radio', id: 'rmc', name: 'Zahlmethode', value: 'Mastercard' },
               { tag: 'label', for: 'rmc', inner: ' Mastercard' },
@@ -84,9 +85,9 @@
               { tag: 'input', type: 'radio', id: 'rae', name: 'Zahlmethode', value: 'AmericanExpress' },
               { tag: 'label', for: 'rae', inner: ' AmericanExpress' }
             ] },
-        
+
             { tag: 'h3', inner: 'Checkbox' },
-        
+
             { tag: 'fieldset', inner: [
               { tag: 'input', type: 'checkbox', id: 'cmc', name: 'Checkbox', value: 'Mastercard' },
               { tag: 'label', for: 'mc', inner: ' Mastercard' },
@@ -95,20 +96,20 @@
               { tag: 'input', type: 'checkbox', id: 'cae', name: 'Checkbox', value: 'AmericanExpress' },
               { tag: 'label', for: 'ae', inner: ' AmericanExpress' }
             ] },
-        
+
             { tag: 'label', for: 'firstname', inner: 'First Name' },
             { tag: 'input', type: 'text', id: 'firstname' },
-        
+
             { tag: 'label', for: 'name', inner: 'Name' },
             { tag: 'input', type: 'text', id: 'name' },
-        
+
             { tag: 'label', for: 'vita', inner: 'Vita' },
             { tag: 'textarea', id: 'vita', inner: 'Your Vita here as a default value' },
-        
+
             { id: 'dummy', value: 'test' }, // should not be persisted
-        
+
             { tag: 'button', type: 'submit', inner: 'Submit!'}
-      
+
           ]
         }
       },
@@ -135,11 +136,26 @@
     },
 
     Instance: function () {
+  
+      if(!String.tagify) {
+        String.prototype.tagify = function() {
+      
+          // spaces
+          var spacePattern = /\s+/gim;
+      
+          return this.replace(spacePattern, '_');
+        };
+      }
     
       var self = this;
       var my;           // contains privatized instance members // ToDo
   
       this.init = function ( callback ) {
+  
+        // Insert config given by key into start_params
+        if ( self.key ){
+          self.ccm.helper.action( JSON.parse( self.key ), self );
+        }
   
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
@@ -154,8 +170,7 @@
     
         // support declarative way for defining a form via HTML or JSON
         generateForm();
-  
-        // setTimeout( callback(), 10);
+        
         callback();
     
         /** generate form from LightDOM or JSON */
@@ -179,24 +194,99 @@
               return 'TEXT'; // ToDo  test
             }
           };
-
-          if ( self.inner ){    // === LightDOM as first choice
-            self.localDOM = self.inner; // inner will be privatized after init
-          } else {              // === JSON as second choice
-            self.localDOM = self.ccm.helper.html( self.html.main );
+  
+          // no Light DOM? => use empty fragment
+          if ( !self.inner ){
+            self.inner = document.createDocumentFragment();
+            self.inner.appendChild( self.ccm.helper.html( self.html.main ) );
           }
+  
+          // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
+          if ( typeof self.inner === 'string' ) self.inner = document.createRange().createContextualFragment( self.inner );
+  
+          // do some replacements in inner HTML of own Custom Element (recursive)
+          replacements( self.inner );
           
           // collect useful data from lightDOM and add useful data to lightDOM
-          augmentLightDOM( self.localDOM );
+          augmentLightDOM( self.inner );
  
         }
   
-        function augmentLightDOM( lightDOM ) {
+        function replacements( node ) {
+    
+          self.ccm.helper.makeIterable( node.children ).map( function ( child ) {
+      
+            var fieldset, values;
+      
+            switch ( child.tagName ) {
+        
+              case 'RADIO':
+                fieldset = document.createElement( 'fieldset' );
+                self.ccm.helper.makeIterable( child.childNodes ).map(function (subChild) {
+                  fieldset.appendChild( subChild );
+                });
+                try {
+                  values = JSON.parse( child.getAttribute('values') )
+                } catch(e){
+                  values = child.getAttribute('values').split(',');
+                }
+                values.map(function (value) {
+                  var input = self.ccm.helper.html({
+                    tag: 'input', type: 'radio', id: '%id%', name: '%name%', value: value
+                  }, {
+                    id: child.id + '_' + value.tagify(),
+                    name: child.id
+                  });
+                  var label = self.ccm.helper.html({
+                    tag: 'label', for: '%id%', inner: '&nbsp;' + value
+                  }, {
+                    id: child.id + '_' + value.tagify(),
+                    name: child.id
+                  });
+                  fieldset.appendChild( input );
+                  fieldset.appendChild( label );
+                });
+                node.replaceChild( fieldset, child );
+                break;
+        
+              case 'CHECKBOX':
+                fieldset = document.createElement( 'fieldset' );
+                fieldset.appendChild( child.firstChild );
+                try {
+                  values = JSON.parse( child.getAttribute('values') )
+                } catch(e){
+                  values = child.getAttribute('values').split(',');
+                }
+                values.map(function (value) {
+                  var input = self.ccm.helper.html({
+                    tag: 'input', type: 'checkbox', id: '%id%', name: '%name%', value: value
+                  }, {
+                    id: child.id + '_' + value.tagify(),
+                    name: child.id
+                  });
+                  var label = self.ccm.helper.html({
+                    tag: 'label', for: '%id%', inner: '&nbsp;' + value
+                  }, {
+                    id: child.id + '_' + value.tagify(),
+                    name: child.id
+                  });
+                  fieldset.appendChild( input );
+                  fieldset.appendChild( label );
+                });
+                node.replaceChild( fieldset, child );
+                break;
+        
+              default:
+                replacements( child );
+        
+            }
+      
+          } );
+    
+        }
+        
   
-          // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
-          if ( typeof lightDOM === 'string' ){
-            lightDOM = document.createRange().createContextualFragment( lightDOM );
-          }
+        function augmentLightDOM( lightDOM ) {
     
           self.ccm.helper.makeIterable( lightDOM.childNodes ).map(function ( child ) {
             self.form.appendChild( child );

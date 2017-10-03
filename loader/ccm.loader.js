@@ -72,13 +72,14 @@
   
                 Object.assign( start_params, self.ccm.helper.makeIterable( child_node.attributes )
                   .reduce(function (attributes,single_attribute) {
-                    if ( [ 'id', 'index', 'key', 'root', 'start' ].indexOf( single_attribute.name ) >= 0 ) return attributes;
+                    if ( [ 'id', 'index', 'root', 'start' ].indexOf( single_attribute.name ) >= 0 ) return attributes;
                     attributes[ single_attribute.name ] = single_attribute.nodeValue;
                     return attributes;
                 }, {}) );
-
+                
                 // start component
                 self[ component_name ].start( start_params, function ( instance ) {
+                  
                   child_node.ccm_instance = instance;
                   // console.log( 'parent of ' + child_node.ccm_instance.index + ' is ' + mother_node.ccm_instance.index );
                 } );
@@ -86,6 +87,7 @@
               }
   
               // start_ccm_children( child_node );
+              // not necessary, because started via ccm runtime
               
             });
           }
