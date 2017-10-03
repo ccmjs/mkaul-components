@@ -30,13 +30,13 @@
             { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave' },
             { tag: 'hr' },
             { tag: 'table', inner: [
-              { tag: 'tr', inner: [ { tag: 'th', inner: 'von' }, { tag: 'th', inner: 'bis' }, { tag: 'th', inner: 'Dauer' }, { tag: 'th', inner: 'Preis' } ] }
+              { tag: 'tr', inner: [ { tag: 'th', inner: 'Nr' }, { tag: 'th', inner: 'Von' }, { tag: 'th', inner: 'Bis' }, { tag: 'th', inner: 'Dauer' }, { tag: 'th', inner: 'Preis' } ] }
             ] }
           ]
         },
         row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%preis%' } ] }
       },
-      // css: [ 'ccm.load',  '//mkaul.github.io/ccm-components/parkhaus/resources/default.css' ],
+      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/default.css' ]
       // user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', '//akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
