@@ -137,11 +137,11 @@
 
     Instance: function () {
   
-      if(!String.tagify) {
+      if(!String.tagify) { // ToDo eliminate
         String.prototype.tagify = function() {
       
           // spaces
-          var spacePattern = /\s+/gim;
+          var spacePattern = /\s+|\//gim;
       
           return this.replace(spacePattern, '_');
         };
@@ -152,7 +152,7 @@
   
       this.init = function ( callback ) {
   
-        // Insert config given by key into start_params
+        // ToDo Insert config given by key into start_params
         if ( self.key ){
           self.ccm.helper.action( JSON.parse( self.key ), self );
         }
@@ -221,6 +221,7 @@
             switch ( child.tagName ) {
         
               case 'RADIO':
+                element_types[ child.id ] = child.tagName;
                 fieldset = document.createElement( 'fieldset' );
                 self.ccm.helper.makeIterable( child.childNodes ).map(function (subChild) {
                   fieldset.appendChild( subChild );
@@ -231,25 +232,18 @@
                   values = child.getAttribute('values').split(',');
                 }
                 values.map(function (value) {
-                  var input = self.ccm.helper.html({
-                    tag: 'input', type: 'radio', id: '%id%', name: '%name%', value: value
-                  }, {
-                    id: child.id + '_' + value.tagify(),
-                    name: child.id
-                  });
-                  var label = self.ccm.helper.html({
-                    tag: 'label', for: '%id%', inner: '&nbsp;' + value
-                  }, {
-                    id: child.id + '_' + value.tagify(),
-                    name: child.id
-                  });
+                  var input = self.ccm.helper.html(
+                    { tag: 'label', inner: [
+                      { tag: 'input', type: 'radio', name: child.id, value: value },
+                      { tag: 'span', class: 'wrappable', inner: value }
+                    ]} );
                   fieldset.appendChild( input );
-                  fieldset.appendChild( label );
                 });
                 node.replaceChild( fieldset, child );
                 break;
         
               case 'CHECKBOX':
+                element_types[ child.id ] = child.tagName;
                 fieldset = document.createElement( 'fieldset' );
                 fieldset.appendChild( child.firstChild );
                 try {
@@ -258,20 +252,12 @@
                   values = child.getAttribute('values').split(',');
                 }
                 values.map(function (value) {
-                  var input = self.ccm.helper.html({
-                    tag: 'input', type: 'checkbox', id: '%id%', name: '%name%', value: value
-                  }, {
-                    id: child.id + '_' + value.tagify(),
-                    name: child.id
-                  });
-                  var label = self.ccm.helper.html({
-                    tag: 'label', for: '%id%', inner: '&nbsp;' + value
-                  }, {
-                    id: child.id + '_' + value.tagify(),
-                    name: child.id
-                  });
+                  var input = self.ccm.helper.html(
+                    { tag: 'label', inner: [
+                      { tag: 'input', type: 'checkbox', name: child.id, value: value },
+                      { tag: 'span', class: 'wrappable', inner: value }
+                    ]} );
                   fieldset.appendChild( input );
-                  fieldset.appendChild( label );
                 });
                 node.replaceChild( fieldset, child );
                 break;
@@ -539,7 +525,7 @@
                 var result = [];
                 for (var i = 0, n = checkboxes.length; i < n; i++) {
                   if (checkboxes[i].checked) {
-                    result.push(checkboxes[i].id);
+                    result.push(checkboxes[i].value);
                   }
                 }
                 return result;
@@ -552,7 +538,7 @@
               var radios = self.form.querySelectorAll('input[type="radio"]');
               for (var i = 0; i < radios.length; i++) {
                 if (radios[i].checked) {
-                  formData.append(radios[i].name, radios[i].id);
+                  formData.append(radios[i].name, radios[i].value);
                 }
               }
             }
@@ -616,17 +602,17 @@
                   break;
                 case 'RADIO':
                   if (rec_val) { // radio has selection
-                    var selected_node = self.element.querySelector('#' + rec_val);
+                    var selected_node = self.element.querySelector('input[name="' + rec_key + '"][value="' + rec_val + '"]');
                     if (selected_node) selected_node.checked = 'checked';
                   }
                   break;
                 case 'CHECKBOX':
                   if (Array.isArray(rec_val)) {
-                    rec_val.map(function (id) {
-                      self.element.querySelector('#' + id).checked = 'checked';
+                    rec_val.map(function (value) {
+                      self.element.querySelector('input[name="' + rec_key + '"][value="' + value + '"]').checked = 'checked';
                     });
                   } else {
-                    self.element.querySelector('#' + rec_val).checked = 'checked';
+                    self.element.querySelector('input[name="' + rec_key + '"][value="' + rec_val + '"]').checked = 'checked';
                   }
                   break;
                 case 'SELECT':
