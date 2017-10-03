@@ -278,12 +278,6 @@
             self.form.appendChild( child );
           });
     
-          // insert database keys as hidden fields in HTML form
-          self.form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: 'key', value: self.fkey }) );
-          Object.keys(self.keys).map(function (key) {
-            self.form.appendChild( self.ccm.helper.html({ tag: 'input', type: 'hidden', name: key, value: self.keys[key] }) );
-          });
-    
           augment( self.form );
     
           function augment( elem ) {
@@ -400,17 +394,6 @@
         
         function proceed() { // proceed after login
   
-          // prepare authentication in POST form:
-          // add user and token hidden fields to POST form
-          add_hidden_input( 'user', self.user.data().id );
-          add_hidden_input( 'token', self.user.data().token );
-  
-          function add_hidden_input(name, value) {
-            self.element.querySelector('form').appendChild(self.ccm.helper.html({
-              tag: 'input', type: 'hidden', name: '%name%', value: '%value%'
-            }, { name: name, value: value }));
-          }
-  
           var submit_button = self.element.querySelector('button[type="submit"]');
           if ( ! submit_button ){
             submit_button = self.ccm.helper.html( {
@@ -427,6 +410,12 @@
     
             // prepare form data
             var formData = new FormData(self.form);
+            formData.append( 'user', self.user.data().id );
+            formData.append( 'token', self.user.data().token );
+            formData.append( 'key', self.fkey );
+            Object.keys( self.keys ).map(function (key) {
+              formData.append( key, self.keys[key] );
+            });
     
             // log_form_data();
     
