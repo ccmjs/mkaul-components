@@ -9,9 +9,10 @@
   var component  = {
 
     name: 'loader',
+  
+    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
     
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-
     config: {
       nr: 1,
       server: '//kaul.inf.h-brs.de/data/loader.php',
@@ -70,12 +71,9 @@
                   keys: self.keys
                 };
   
-                Object.assign( start_params, self.ccm.helper.makeIterable( child_node.attributes )
-                  .reduce(function (attributes,single_attribute) {
-                    if ( [ 'id', 'index', 'root', 'start' ].indexOf( single_attribute.name ) >= 0 ) return attributes;
-                    attributes[ single_attribute.name ] = single_attribute.nodeValue;
-                    return attributes;
-                }, {}) );
+                var new_config = self.ccm.helper.generateConfig(child_node);
+  
+                start_params = ccm.helper.integrate( new_config, start_params );
   
                 // start component
                 if ( self[ component_name ] ){

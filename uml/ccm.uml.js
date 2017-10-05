@@ -11,9 +11,10 @@
   var component = {
     
     name: 'uml',
+  
+    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
-
     config: {
       plantUML: "http://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML
@@ -35,7 +36,7 @@
       // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/uml/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/uml/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_uml' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -56,8 +57,8 @@
       
       this.start = function ( callback ) {
       
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        // has logger instance? => log 'start' event
+        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
 
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main,
@@ -75,7 +76,7 @@
             textarea.value = event_or_value; // write value into textarea
           }
           self.value = textarea.value; // sync value
-          if ( self.logger ) self.logger.log( self.value ); // log value
+          if ( self.logger ) self.logger.log( 'sync', { fkey: self.fkey, keys: self.keys, value: self.value } );
           if ( self.value ) compress( img, self.value ); // write into src attribute of img tag
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();

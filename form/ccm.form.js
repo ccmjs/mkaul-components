@@ -131,7 +131,7 @@
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_form' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -346,7 +346,7 @@
       this.start = function ( callback ) {
        
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
   
         // set content of own website area as fast as possible,
         // before values are loaded from database.
@@ -396,8 +396,10 @@
   
           var submit_button = self.element.querySelector('button[type="submit"]');
           if ( ! submit_button ){
-            submit_button = self.ccm.helper.html( {
-              tag: 'button', type: 'submit', inner: 'Speichern!'
+            submit_button = self.ccm.helper.html({
+              inner: {
+                tag: 'button', type: 'submit', inner: 'Speichern!'
+              }
             } );
             self.element.querySelector('form').appendChild( submit_button );
           }
@@ -448,18 +450,19 @@
             xhr.open('POST', self.server, true); // true === async
     
             xhr.onload = function () {
-              if (this.status === 200) {
+              if ( this.status === 200 ) {
                 if (xhr.response && JSON.parse(xhr.response).deadline) {
-                  alert(xhr.statusText);
+                  alert( xhr.statusText );
+                  if ( self.logger ) self.logger.log( 'post', { status: this.status, statusText: xhr.statusText, responseText: xhr.responseText } );
                 } else {
-                  alert(self.messages[self.language].deadline_exceeded);
+                  alert( self.messages[ self.language ].deadline_exceeded );
                 }
               } else {
                 console.log(xhr.statusText + ' ' + xhr.responseText);
               }
             };
     
-            xhr.send(formData);
+            xhr.send( formData );
     
             e.preventDefault();
             e.stopPropagation();

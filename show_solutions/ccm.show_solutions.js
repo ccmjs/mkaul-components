@@ -49,9 +49,12 @@
         data: {
           store: ['ccm.store', { store: 'hbrs_ss17_se1_comments', url: 'https://ccm.inf.h-brs.de' } ],
           "permission_settings": { "access": "group" }
-        }
-      } ]
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+        },
+        logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_comment' ] ]
+      } ],
+      
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_show_solutions' ] ]
+      
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -60,9 +63,6 @@
       var self = this;
 
       this.start = function ( callback ) {
-      
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
         
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
@@ -71,6 +71,9 @@
           fach: self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('for');
+  
+        // has logger instance? => log 'start' event
+        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, for: self.for } );
         
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main, { id: self.for } );

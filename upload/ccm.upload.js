@@ -9,8 +9,9 @@
   var component = {
     
     name: 'upload',
-    
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+  
+    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       fkey:           'test',  // ToDo Use fkey instead of key
@@ -44,7 +45,7 @@
         }
       },
       
-      language: 'de', // ToDo enable Dynamic Switching
+      language: 'de', // Dynamic Switching by restart
       messages: {
         'en': {
           abort: 'Upload cancelled: ',
@@ -65,7 +66,7 @@
       css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/upload/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_upload' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -85,9 +86,9 @@
       };
 
       this.start = function ( callback ) {
-      
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+  
+        // has logger instance? => log 'start' event
+        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
         
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main, { accept: self.content_type } );
@@ -219,9 +220,12 @@
   
           // handle all kinds of errors during upload
           function error_message( event ){
-            return ' Status: '+ xhr.status
+            var msg = ' Status: '+ xhr.status
               + ', Event: ' + JSON.stringify(event)
-              + ', Response: ' + xhr.response + '.'
+              + ', Response: ' + xhr.response + '.';
+            // has logger instance? => log 'error' event
+            if ( self.logger ) self.logger.log( 'error', { fkey: self.fkey, keys: self.keys, msg: msg } );
+            return msg;
           }
           
           xhr.upload.onabort = function (event) {
@@ -240,7 +244,8 @@
           xhr.onload = function () {
             if (this.status == 200) {
               report_file_link();
-              if ( self.logger ) self.logger.log( params );
+              // has logger instance? => log 'success' event
+              if ( self.logger ) self.logger.log( 'success', { params: params } );
             }
           };
   

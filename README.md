@@ -43,3 +43,40 @@ Click on a link for online demo. Include the following HTML code for including t
  <script src="https://mkaul.github.io/ccm-components/form/ccm.form.min.js"></script>
  <ccm-form></ccm-form>
 ```
+
+## Multiple Embedding Techniques for HTML including _ccm_ Components
+
+* via loader
+```
+<script src="//kaul.inf.h-brs.de/data/ccm/loader/ccm.loader.js"></script><ccm-loader nr="1"></ccm-loader>
+```
+* via content und HTML (attention: JSON-Format!)
+```
+<script src="//akless.github.io/ccm-components/content/ccm.content.js"></script>
+<ccm-content inner='[ "ccm.load", "//kaul.inf.h-brs.de/data/2017/se1/le00.html" ]'></ccm-content>
+
+// or as nested Attribut:
+
+<ccm-content>
+  <ccm-load-inner src="https://kaul.inf.h-brs.de/data/2017/se1/le00.html"></ccm-load-inner>
+</ccm-content>
+```
+* via content und JavaScript loading HTML
+```
+<body>
+<script src="https://akless.github.io/ccm/ccm.js"></script>
+<script src="https://akless.github.io/ccm-components/content/ccm.content.js"></script>
+<script>
+  ccm.start('content',{ root: document.body, inner: [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/2017/se1/le00.html' ] });
+</script>
+```
+* via content und JSON config
+```
+<script src="https://akless.github.io/ccm-components/content/ccm.content.js"></script>
+<ccm-content key='["ccm.get","https://kaul.inf.h-brs.de/data/2017/se1/json/configs.js", "le04"]'></ccm-content>
+```
+* via ccm.form.js loading a remote config
+```
+<script src="https://kaul.inf.h-brs.de/data/ccm/form/ccm.form.js"></script>
+<ccm-form key='["ccm.get","https://kaul.inf.h-brs.de/data/2017/se1/json/forms.js", "orga_profil"]'></ccm-form>
+```
