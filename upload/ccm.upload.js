@@ -16,7 +16,7 @@
     config: {
       fkey:           'test',  // ToDo Use fkey instead of key
       keys: {        // additional DB keys if necessary (optional)
-        semester: 1,
+        semester: 172,
         fach: 'se',
         id: 'portrait' // default, overwritten by self.root.id == id of HTML element
       },

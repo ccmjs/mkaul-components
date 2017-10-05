@@ -17,7 +17,7 @@
       nr: 1,
       server: '//kaul.inf.h-brs.de/data/loader.php',
       keys: {        // additional DB keys if necessary (optional)
-        semester: 1, // begin with 1 = WiSe 2017/18
+        semester: 172, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
       // user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],

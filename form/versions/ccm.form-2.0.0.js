@@ -35,7 +35,7 @@
     config: {
       key: 'test',   // unique key of this form
       keys: {        // additional DB keys if necessary (optional)
-        semester: 1, // begin with 1 = WiSe 2017/18
+        semester: 172, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
       server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access

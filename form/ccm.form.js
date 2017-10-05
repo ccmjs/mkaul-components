@@ -31,7 +31,7 @@
     config: {
       fkey: 'test',   // form key = unique key of this form
       keys: {        // additional DB keys if necessary (optional)
-        semester: 1, // begin with 1 = WiSe 2017/18
+        semester: 172, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
       server: '//kaul.inf.h-brs.de/data/form.php', // uniform server access
@@ -453,7 +453,17 @@
               if ( this.status === 200 ) {
                 if (xhr.response && JSON.parse(xhr.response).deadline) {
                   alert( xhr.statusText );
-                  if ( self.logger ) self.logger.log( 'post', { status: this.status, statusText: xhr.statusText, responseText: xhr.responseText } );
+                  var content_length = Array.from(formData.entries(), ([key, prop]) => (
+                    {[key]: {
+                      "ContentLength":
+                        typeof prop === "string"
+                          ? prop.length
+                          : prop.size
+                    }
+                    }));
+                  if ( self.logger ){
+                       self.logger.log( 'post', { status: this.status, statusText: xhr.statusText, responseText: xhr.responseText, key_count: formData.length, content_length: content_length  } );
+                  }
                 } else {
                   alert( self.messages[ self.language ].deadline_exceeded );
                 }

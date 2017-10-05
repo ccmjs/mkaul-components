@@ -73,7 +73,7 @@
         if ( ! self.for ) self.for = self.root.getAttribute('for');
   
         // has logger instance? => log 'start' event
-        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, for: self.for } );
+        // if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, for: self.for } );
         
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main, { id: self.for } );
@@ -86,6 +86,9 @@
         checkbox.addEventListener('change', function ( e ) {
           
           if ( this.checked ){ // display all solutions
+  
+            // has logger instance? => log 'show' event
+            if ( self.logger ) self.logger.log( 'show', { component: self.index, fkey: self.fkey, for: self.for } );
   
             if ( solutions_div.style.display === 'none' ) {
 
@@ -163,7 +166,7 @@
                         }
   
                         // only one comment for all fields
-                        self.comment.start( { parent: self, user: self.user, 'data.key': self.fkey + '_' + uid + '_' + self.for }, function ( instance ) {
+                        self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
                           self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
                         });
                         
