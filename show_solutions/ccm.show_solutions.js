@@ -12,18 +12,18 @@
  */
 
 ( function () {
-
+  
   var component  = {
-
+    
     name: 'show_solutions',
     
     ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-
+    
     config: {
       server: '//kaul.inf.h-brs.de/data/form.php',
       
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
-
+      
       html: {
         main: {
           inner: [
@@ -37,7 +37,17 @@
         },
         solution: {
           inner: [
-            { class: 'solution', inner: '%solution%' },
+            {
+              class: 'solution',
+              inner: [
+                {
+                  class: 'voting'
+                },
+                {
+                  inner: '%solution%'
+                }
+              ]
+            },
             { class: 'comments' }
           ]
         }
@@ -53,15 +63,23 @@
         logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_comment' ] ]
       } ],
       
+      voting: [ 'ccm.component', 'https://tkless.github.io/ccm-components/thumb_rating/versions/ccm.thumb_rating-1.0.0.js', {
+        data: {
+          store: ['ccm.store', { store: 'hbrs_ss17_se1_voting', url: 'wss://ccm.inf.h-brs.de' } ],
+          "permission_settings": { "access": "group" }
+        },
+        user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ]
+      } ],
+      
       logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_show_solutions' ] ]
       
       // onfinish: function( instance, results ){ console.log( results ); }
     },
-
-    Instance: function () {
     
+    Instance: function () {
+      
       var self = this;
-
+      
       this.start = function ( callback ) {
         
         // inherit context parameter
@@ -71,7 +89,7 @@
           fach: self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('for');
-  
+        
         // has logger instance? => log 'start' event
         // if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, for: self.for } );
         
@@ -86,24 +104,23 @@
         checkbox.addEventListener('change', function ( e ) {
           
           if ( this.checked ){ // display all solutions
-  
+            
             // has logger instance? => log 'show' event
             if ( self.logger ) self.logger.log( 'show', { component: self.index, fkey: self.fkey, for: self.for } );
-  
+            
             if ( solutions_div.style.display === 'none' ) {
-
+              
               solutions_div.style.display = 'block';
-
-            } else {
+              
+            }
+            else {
               
               // Late Login
               // has user instance? => login user (if not already logged in)
               if (self.user) self.user.login(proceed); else proceed();
-  
+              
               function proceed() { // proceed after login
-    
-                // ==== GET ==== load all solutions for this key and this id
-                self.ccm.load({
+                var solutions = {
                   url: self.server,
                   params: {
                     key: self.fkey,
@@ -114,21 +131,30 @@
                     fach: self.keys.fach,
                     all: 1
                   }
-                }, function (record) {
-      
+                };
+                
+                // ==== GET ==== load all solutions for this key and this id
+                self.ccm.load( solutions, function (record) {
+                  // console.log( 'solution', record);
+                  
                   // Late filling form with values with recursive descend
                   // traverse by all record keys
-      
-                  if ( typeof record === 'string') record = JSON.parse(record);
-
-                  if ( record.ERROR ){
-  
-                    solutions_div.appendChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ));
                   
-                  } else {
+                  if ( typeof record === 'string') record = JSON.parse(record);
+                  
+                  if ( record.ERROR ){
+                    
+                    solutions_div.appendChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ));
+                    
+                  }
+                  
+                  else {
                     
                     var code = record.SUCCESS.code;
                     var json = record.SUCCESS.json;
+                    
+                    var counter = 1;
+                    var unsorted_solutions = [];
                     
                     Object.keys( record ).map(function ( uid ) {
                       if ( uid !== 'ERROR' &&  uid !== 'SUCCESS' ){
@@ -149,12 +175,11 @@
                           // only one comment for all fields
                           structure.inner.push({ class: 'comments' });
                           child = self.ccm.helper.html( structure );
+                          
                         } else { // no JSON
                           child = self.ccm.helper.html( self.html.solution, { solution: solution } );
                         }
-    
-                        solutions_div.appendChild( child );
-  
+                        
                         if ( code ){ // render code highlighting
                           ccm.helper.makeIterable(child.querySelectorAll('.solution')).map(function (node) {
                             self.highlight.start( {
@@ -164,21 +189,53 @@
                             } );
                           })
                         }
-  
+                        
+                        counter++;
+                        self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
+                          unsorted_solutions.push( { "voting": voting_inst.getVoting(), "solution": child } );
+                          self.ccm.helper.setContent( child.querySelector('.voting'), voting_inst.root );
+                          check();
+                        } );
+                        
+                        counter++;
                         // only one comment for all fields
                         self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
                           self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
+                          check();
                         });
-                        
                       }
                     });
+                    check();
+                    
+                    function check() {
+                      counter--;
+                      if ( counter > 0 ) return;
+                      
+                      var sorted = unsorted_solutions.sort( compare );
+                      
+                      sorted.map( function ( entry ) {
+                        solutions_div.appendChild( entry.solution );
+                      } );
+                      
+                      function compare( a, b ) {
+                        if ( a.voting > b.voting )
+                          return -1;
+                        if ( a.voting < b.voting )
+                          return 1;
+                        return 0;
+                      }
+                      
+                    }
+                    
                   }
-      
+                  
                 });
               }
             }
-          } else { // erase all solutions
-  
+          }
+          
+          else { // erase all solutions
+            
             solutions_div.style.display = 'none';
             
           }
@@ -187,13 +244,13 @@
         
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
-
+        
         if ( callback ) callback();
       };
-
+      
     }
-
+    
   };
-
+  
   function p(){window.ccm[v].component(component)}var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
 }() );
