@@ -9,8 +9,9 @@
   var component  = {
 
     name: 'exercise',
-    
+  
     ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
@@ -40,9 +41,9 @@
   
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
-        if ( ! self.keys ) self.keys = {
-          semester: self.ccm.context.find(self,'semester'),
-          fach: self.ccm.context.find(self,'fach')
+        self.keys = {
+          semester: self.semester || self.ccm.context.find(self,'semester'),
+          fach: self.fach || self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('id');
     
@@ -115,8 +116,8 @@
             var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
       
             return this
-              .replace(urlPattern, '<a href="$&">$&</a>')
-              .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
+              .replace(urlPattern, '<a target="_blank" href="$&">$&</a>')
+              .replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>')
               .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
           };
         }
@@ -176,7 +177,7 @@
           user: self.user
         });
 
-        if ( callback ) callback();
+        if ( callback ) callback( this );
         
       };
 

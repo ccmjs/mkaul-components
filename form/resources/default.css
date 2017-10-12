@@ -15,6 +15,13 @@ form {
     background-color: rgb(255, 246, 210);
 }
 
+code {
+    font-family: monospace;
+    font-size: larger;
+    background-color: lightgrey;
+    color: blue;
+}
+
 fieldset {
     margin-bottom: 0.3rem;
 }

@@ -9,8 +9,9 @@
   var component  = {
 
     name: 'highlight',
-    
+  
     ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       hljs:  [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
@@ -99,18 +100,24 @@
           return false;
         }
         
-        function copyToClipBoard() {
+        function copyToClipBoard(e) {
           var range = document.createRange();
           range.selectNode( main_elem );
           var selection = window.getSelection();
           if( ! selection.containsNode( main_elem ) ) selection.addRange(range);
           document.execCommand("Copy");
           // window.getSelection().empty();
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         }
         
-        function changeStyle() {
+        function changeStyle(e) {
           self.style += 1;
           self.setStyle( self.style );
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         }
         
       };

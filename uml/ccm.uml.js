@@ -12,8 +12,8 @@
     
     name: 'uml',
   
-    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       plantUML: "http://www.plantuml.com/plantuml/img/",
@@ -47,9 +47,9 @@
       this.init = function ( callback ) {
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
-        if ( ! self.keys ) self.keys = {
-          semester: self.ccm.context.find(self,'semester'),
-          fach: self.ccm.context.find(self,'fach')
+        self.keys = {
+          semester: self.semester || self.ccm.context.find(self,'semester'),
+          fach: self.fach || self.ccm.context.find(self,'fach')
         };
     
         callback();

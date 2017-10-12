@@ -10,8 +10,8 @@
 
     name: 'loader',
   
-    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       nr: 1,

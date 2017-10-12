@@ -16,8 +16,9 @@
   var component  = {
     
     name: 'show_solutions',
-    
+  
     ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       server: '//kaul.inf.h-brs.de/data/form.php',
@@ -44,7 +45,20 @@
                   class: 'voting'
                 },
                 {
-                  inner: '%solution%'
+                  tag: 'textarea'
+                }
+              ]
+            },
+            { class: 'comments' }
+          ]
+        },
+        multiple_solutions: {
+          inner: [
+            {
+              class: 'solution',
+              inner: [
+                {
+                  class: 'voting'
                 }
               ]
             },
@@ -82,12 +96,12 @@
       var self = this;
       
       this.start = function ( callback ) {
-        
+  
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
-        if ( ! self.keys ) self.keys = {
-          semester: self.ccm.context.find(self,'semester'),
-          fach: self.ccm.context.find(self,'fach')
+        self.keys = {
+          semester: self.semester || self.ccm.context.find(self,'semester'),
+          fach: self.fach || self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('for');
         
@@ -166,33 +180,20 @@
                         if ( json ){
                           // Is field a JSON structure?
                           solution = JSON.parse( solution );
-                          var structure = Object.keys(solution).reduce(function (structure,key) {
-                            structure.inner.push({ class: 'solution', inner: solution[ key ] });
-                            structure.inner.push({ tag: 'hr' });
-                            return structure;
-                          }, { // initial structure is a div with some inner elements
-                            inner: [], class: 'solution_box'
+                          var structure = self.html.multiple_solutions;
+                          
+                          Object.keys(solution).map(function (key) {
+                            structure.inner[0].inner.push({tag: 'textarea', inner: solution[key]});
                           } );
-                          // only one comment for all fields
-                          structure.inner.push({ class: 'comments' });
                           child = self.ccm.helper.html( structure );
                           
                         } else { // no JSON
-                          child = self.ccm.helper.html( self.html.solution, { solution: solution } );
-                        }
-                        
-                        if ( code ){ // render code highlighting
-                          ccm.helper.makeIterable(child.querySelectorAll('.solution')).map(function (node) {
-                            self.highlight.start( {
-                              parent: self, clazz: code, content: node.innerHTML
-                            }, function ( instance ) {
-                              self.ccm.helper.setContent( node, instance.root );
-                            } );
-                          })
+                          child = self.ccm.helper.html( self.html.solution );
+                          child.querySelector('textarea').value = solution;
                         }
                         
                         counter++;
-                        self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
+                        if ( self.voting ) self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
                           unsorted_solutions.push( { "voting": voting_inst.getVoting(), "solution": child } );
                           self.ccm.helper.setContent( child.querySelector('.voting'), voting_inst.root );
                           check();
@@ -200,7 +201,7 @@
                         
                         counter++;
                         // only one comment for all fields
-                        self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
+                        if ( self.comment ) self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
                           self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
                           check();
                         });

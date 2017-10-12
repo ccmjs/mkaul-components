@@ -25,8 +25,8 @@
     
     name: 'form',
     
-    // ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       fkey: 'test',   // form key = unique key of this form
@@ -38,7 +38,7 @@
       
       // subcomponents
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
-      uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
+      // uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
       upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
       highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
       show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
@@ -136,32 +136,17 @@
     },
 
     Instance: function () {
-  
-      if(!String.tagify) { // ToDo eliminate
-        String.prototype.tagify = function() {
-      
-          // spaces
-          var spacePattern = /\s+|\//gim;
-      
-          return this.replace(spacePattern, '_');
-        };
-      }
     
       var self = this;
       var my;           // contains privatized instance members // ToDo
   
       this.init = function ( callback ) {
   
-        // ToDo Insert config given by key into start_params
-        if ( self.key ){
-          self.ccm.helper.action( JSON.parse( self.key ), self );
-        }
-  
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
-        if ( ! self.keys ) self.keys = {
-          semester: self.ccm.context.find(self,'semester'),
-          fach: self.ccm.context.find(self,'fach')
+        self.keys = {
+          semester: self.semester || self.ccm.context.find(self,'semester'),
+          fach: self.fach || self.ccm.context.find(self,'fach')
         };
   
         // Collect the types of all inner elements with ids in this object.
@@ -397,9 +382,9 @@
           var submit_button = self.element.querySelector('button[type="submit"]');
           if ( ! submit_button ){
             submit_button = self.ccm.helper.html({
-              inner: {
+              
                 tag: 'button', type: 'submit', inner: 'Speichern!'
-              }
+              
             } );
             self.element.querySelector('form').appendChild( submit_button );
           }
@@ -452,7 +437,8 @@
             xhr.onload = function () {
               if ( this.status === 200 ) {
                 if (xhr.response && JSON.parse(xhr.response).deadline) {
-                  alert( xhr.statusText );
+                  // alert( xhr.statusText );
+                  alert( self.messages[ self.language ].success );
                   var content_length = Array.from(formData.entries(), ([key, prop]) => (
                     {[key]: {
                       "ContentLength":
@@ -468,7 +454,7 @@
                   alert( self.messages[ self.language ].deadline_exceeded );
                 }
               } else {
-                console.log(xhr.statusText + ' ' + xhr.responseText);
+                console.log( 'Status ' + xhr.statusText + ': ' + xhr.responseText);
               }
             };
     
@@ -640,7 +626,7 @@
                 case 'POINTS':
                   var point_list = self.element.querySelectorAll('.points'); // class selector
                   for (var i = 0; i < point_list.length; i++) {
-                    point_list[i].innerText += ' (max. ' + record.points + ' Punkte) ';
+                    point_list[i].innerText += ' (max. ' + record.points + (record.points===1?' Punkt) ':' Punkte) ');
                   }
                   break;
                 default:
@@ -676,10 +662,6 @@
   
       function encode_id( id ){  // replace space by underscore
         return id.replace(/\s/g, '__');
-      }
-  
-      function decode_id( id ){  // replace underscore by space
-        return id.replace(/__/g, '  '); // ToDo this is not a safe restauration of replacement
       }
 
     }

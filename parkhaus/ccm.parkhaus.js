@@ -9,9 +9,10 @@
   var component  = {
 
     name: 'parkhaus',
+  
+    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
-    ccm: '//akless.github.io/ccm/ccm.js',
-
     config: {
       delay: 500,
       html: {
@@ -26,11 +27,11 @@
             { tag: 'img', class: 'garage', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
             { tag: 'img', class: 'exit', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/empty.png', width: '202', height: '74' },
             { tag: 'hr' },
-            { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter' },
-            { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave' },
+            { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
+            { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
             { tag: 'hr' },
             { tag: 'table', inner: [
-              { tag: 'tr', inner: [ { tag: 'th', inner: 'Nr' }, { tag: 'th', inner: 'Von' }, { tag: 'th', inner: 'Bis' }, { tag: 'th', inner: 'Dauer' }, { tag: 'th', inner: 'Preis' } ] }
+              { tag: 'tr', inner: [ { tag: 'th', inner: 'Nr', title: 'Nr des Autos' }, { tag: 'th', inner: 'Von', title: 'Startzeit des Parkens' }, { tag: 'th', inner: 'Bis', title: 'Endzeit des Parkens' }, { tag: 'th', inner: 'Dauer', title: 'Wie lange war das Auto im Parkhaus?' }, { tag: 'th', inner: 'Preis', title: 'Parkgebühren' } ] }
             ] }
           ]
         },
@@ -52,7 +53,7 @@
         var total = 0;
         var cars = [];
         var begin = (new Date()).getTime();
-        var price_factor = 0.01;
+        var price_factor = 0.001;
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
