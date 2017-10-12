@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="license" content="The MIT License (MIT)">
+
+<!--
+<script src="../../ccm/ccm.js"></script>
+<script>
+  ccm.get( { store: 'submit', url: 'https://ccm.inf.h-brs.de' }, '1507804315720X06346667960005914', console.log );
+</script>
+-->
+
+<script src="ccm.submit.js"></script>
+
+<ccm-submit key='["ccm.get","resources/configs.js","local"]'>
+
+  <h1>Übung 1 - Aufgabe 1</h1>
+  <p>Lesen Sie hier und reflektieren die dort.</p>
+
+  <input name="name" type="text"><br>
+  <input name="number" type="number"><br>
+  <textarea name="text"></textarea><br>
+  <input name="foo" type="blank"><br>
+
+  <h3>Select</h3>
+  <label>
+    <div>Künstler(in):</div>
+    <select name="top5" size="5" multiple="multiple">
+      <option>Michael Jackson</option>
+      <option>Tom Waits</option>
+      <option>Nina Hagen</option>
+      <option>Marianne Rosenberg</option>
+    </select>
+  </label>
+
+  <h3>Radio</h3>
+  <fieldset>
+    <input type="radio" id="rmc" name="Zahlmethode" value="Mastercard">
+    <label for="rmc"> Mastercard</label>
+    <input type="radio" id="rvi" name="Zahlmethode" value="Visa">
+    <label for="rvi"> Visa</label>
+    <input type="radio" id="rae" name="Zahlmethode" value="AmericanExpress">
+    <label for="rae">AmericanExpress</label>
+  </fieldset>
+
+  <h3>Checkbox</h3>
+  <fieldset>
+    <input type="checkbox" id="cmc" name="Checkbox" value="Mastercard">
+    <label for="cmc"> Mastercard</label>
+    <input type="checkbox" id="cvi" name="Checkbox" value="Visa">
+    <label for="cvi"> Visa</label>
+    <input type="checkbox" id="cae" name="Checkbox" value="AmericanExpress">
+    <label for="cae">AmericanExpress</label>
+  </fieldset>
+
+  <label>First Name
+    <input type="text" name="firstname">
+  </label>
+
+
+  <label>Name
+    <input type="text" name="name">
+  </label>
+
+
+  <label>Vita
+    <textarea name="vita" placeholder="Your Vita here"></textarea>
+  </label>
+
+  <button id="submit">Submit</button>
+
+</ccm-submit>
