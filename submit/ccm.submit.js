@@ -7,7 +7,7 @@
 
 ( function () {
 
-  let component = {
+  const component = {
 
     name: 'submit',
   
@@ -25,14 +25,14 @@
     Instance: function () {
 
       // collect all ccm input elements in the array called inputs
-      let inputs = [];
+      const inputs = [];
 
       this.ready = ( callback ) => {
 
         // iterate all input elements
         [...this.inner.querySelectorAll( 'input' )].map( ( input ) => {
-
-          let type = input.getAttribute( 'type' );
+  
+          const type = input.getAttribute( 'type' );
           switch ( type ) {
             case 'button':
             case 'checkbox':
@@ -85,10 +85,10 @@
 
       this.start = ( callback ) => {
 
-        // make lightDOM the shadowDOM
+        // put LightDOM into ShadowDOM
         this.ccm.helper.setContent( this.element, this.inner );
-
-        let submit = this.element.querySelector( '#submit' );
+  
+        const submit = this.element.querySelector( '#submit' );
         
         // submit button is disabled until all subcomponents are ready
         submit.disabled = true;
@@ -96,7 +96,7 @@
 
           // fetch values from input elements
           // let record = this.ccm.helper.formData( this.element );
-          let record = formData( this.element );
+          const record = formData( this.element );
           
           // fetch values from ccm subcomponents
           // getValue ist the standard API for ccm subcomponents
@@ -115,7 +115,7 @@
           // fill all input elements with values from dataset identified by name
           for ( key in dataset ) {
             //
-            let input = this.element.querySelector( '[name="'+key+'"]' );
+            const input = this.element.querySelector( '[name="'+key+'"]' );
             if ( input ) input.value = dataset[ key ];
           }
 
@@ -153,8 +153,8 @@
         
         // ccm.helper.formData
         function formData( form ) {
-    
-          let data = {};
+  
+          const data = {};
           
           [ ...form.querySelectorAll( '*[name]' ) ].map( function ( input ) {
 
