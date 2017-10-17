@@ -368,9 +368,12 @@
                 // id: elem.id // ToDo ???
               };
             }
+  
+            var config = self.ccm.helper.generateConfig(elem);
+            config = self.ccm.helper.integrate( start_params, config );
             
             // start component if component exists
-            self[ component_name ].start( start_params, function ( instance ) {
+            self[ component_name ].start( config, function ( instance ) {
               elem.ccm_instance = instance;
               check();
             } );

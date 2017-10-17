@@ -180,7 +180,8 @@
                         if ( json ){
                           // Is field a JSON structure?
                           solution = JSON.parse( solution );
-                          var structure = self.html.multiple_solutions;
+                          // deep copy
+                          var structure = JSON.parse(JSON.stringify(self.html.multiple_solutions));
                           
                           Object.keys(solution).map(function (key) {
                             structure.inner[0].inner.push({tag: 'textarea', inner: solution[key]});
@@ -194,7 +195,7 @@
                         
                         counter++;
                         if ( self.voting ) self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
-                          unsorted_solutions.push( { "voting": voting_inst.getVoting(), "solution": child } );
+                          unsorted_solutions.push( { "voting": voting_inst.getValue(), "solution": child } );
                           self.ccm.helper.setContent( child.querySelector('.voting'), voting_inst.root );
                           check();
                         } );
