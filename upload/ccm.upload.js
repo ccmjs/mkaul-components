@@ -10,7 +10,7 @@
     
     name: 'upload',
   
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
@@ -66,7 +66,7 @@
       css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/upload/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/upload/resources/default.css' ],
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul" } ],
-      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_upload' ] ]
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_upload' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
