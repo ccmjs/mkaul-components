@@ -17,13 +17,13 @@
     
     name: 'show_solutions',
   
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
-      server: '//kaul.inf.h-brs.de/data/form.php',
+      server: 'https://kaul.inf.h-brs.de/data/form.php',
       
-      highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
+      highlight: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
       
       html: {
         main: {
@@ -40,16 +40,14 @@
           inner: [
             {
               class: 'solution',
-              inner: [
-                {
-                  class: 'voting'
-                },
-                {
-                  tag: 'textarea'
-                }
-              ]
+              inner: { tag: 'textarea' }
             },
-            { class: 'comments' }
+            {
+              inner: [
+                { class: 'voting' },
+                { class: 'comments' }
+              ]
+            }
           ]
         },
         multiple_solutions: {
@@ -66,7 +64,7 @@
           ]
         }
       },
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
       
       user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { "sign_on": "hbrsinfkaul" } ],
       comment: [ 'ccm.component', 'https://tkless.github.io/ccm-components/comment/versions/ccm.comment-1.0.0.js', {
@@ -83,10 +81,10 @@
           "permission_settings": { "access": "group" }
         },
         user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
-        logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_voting' ] ]
+        logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_voting' ] ]
       } ],
       
-      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_show_solutions' ] ]
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_show_solutions' ] ]
       
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -129,6 +127,10 @@
               
             }
             else {
+
+              // create a loading symbol
+              let loading = self.ccm.helper.loading( self );
+              self.ccm.helper.setContent( solutions_div, loading );
               
               // Late Login
               // has user instance? => login user (if not already logged in)
@@ -159,7 +161,7 @@
                   
                   if ( record.ERROR ){
                     
-                    solutions_div.appendChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ));
+                    solutions_div.replaceChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ), loading);
                     
                   }
                   
@@ -215,7 +217,8 @@
                       if ( counter > 0 ) return;
                       
                       var sorted = unsorted_solutions.sort( compare );
-                      
+
+                      solutions_div.innerHTML = '';
                       sorted.map( function ( entry ) {
                         solutions_div.appendChild( entry.solution );
                       } );

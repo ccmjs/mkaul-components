@@ -10,13 +10,13 @@
 
     name: 'highlight',
   
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
-      hljs:  [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
-      css:   [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
-      css_alternatives: [ '//kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', '//kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
+      hljs:  [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
+      css:   [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
+      css_alternatives: [ 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
       
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]

@@ -10,12 +10,12 @@
 
     name: 'exercise',
   
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: 'https://akless.github.io/ccm/ccm.js',
 
     config: {
-      highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
-      show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
+      highlight: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
+      show_solutions: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
       // task: 'Richten Sie Ihre Entwicklungsumgebung für Java 8 ein und schreiben Sie Hello World in Java 8.',
       // placeholder: 'class HelloWorld ...',
       // questions: ['a', 'b'],
@@ -27,7 +27,7 @@
           ]
         }
       },
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css' ],
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/exercise/resources/default.css' ],
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }

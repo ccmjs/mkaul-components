@@ -4,15 +4,16 @@
  * @license The MIT License (MIT)
  */
 
-* {
+body {
     font-family: 'Open Sans', sans-serif;
 }
 
 form {
     border-style: ridge;
-    padding: 0.5rem;
+    padding: 0.1rem;
     margin-bottom: 1rem;
     background-color: rgb(255, 246, 210);
+    overflow: auto;
 }
 
 code {
@@ -28,7 +29,7 @@ fieldset {
 
 textarea {
     display: block;
-    width: 300px;
+    width: 96%;
     height: 75px;
 }
 
@@ -50,6 +51,22 @@ button[type=submit] {
     border-radius: 20px;
     font-weight: bolder;
     font-size: larger;
+}
+
+ccm-editor > div {
+    background-color: #ffffff;
+}
+
+table {
+    border-collapse:collapse;
+    border-style: solid;
+    border-width: thin;
+    text-align: center;
+    width: 100%;
+}
+
+table td{
+    border:1px solid;
 }
 
 

@@ -285,7 +285,9 @@
         function report_file_link(){
           reports.textContent = self.messages[self.language].success;
           var element = self.ccm.helper.html( self.html.response, params );
-          element.href = file_url( self.server, params );
+          var src = file_url( self.server, params );
+          element.src = src;
+          element.href = src;
           reports.appendChild(element);
         }
   
@@ -293,10 +295,10 @@
           var url = server;
           
           // Whitelist of legal parameters
-          var whitelist = [ 'key', 'user', 'token' ].concat( Object.keys( self.keys ) );
+          var whitelist = [ 'key', 'id', 'user', 'token' ].concat( Object.keys( self.keys ) );
           
-          // add parameters
-          // Object.assign( params, self.user.data() );
+          // add user parameters
+          Object.assign( params, { user: self.user.data().id, token: self.user.data().token } );
           Object.keys(params).map(function (key, i) {
             if ( whitelist.indexOf( key ) > -1 ) {
               url += (i===0?'?':'&') + key + '=' + encodeURIComponent( params[ key ] );
@@ -305,7 +307,7 @@
           return url;
         }
 
-        if ( callback ) callback();
+        if ( callback ) callback( self );
       };
 
     }

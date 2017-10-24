@@ -10,7 +10,7 @@
 
     name: 'parkhaus',
   
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
@@ -22,10 +22,10 @@
               'Autos im Parkhaus: &nbsp; ',
               { tag: 'span', class: 'counter', inner: '0' }
             ] },
-            { tag: 'img', class: 'entry', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/car.png', width: '202', height: '74' },
-            { tag: 'img', class: 'ampel', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/traffic-light-red.png', width: '55', height: '155' },
-            { tag: 'img', class: 'garage', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
-            { tag: 'img', class: 'exit', src: '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/empty.png', width: '202', height: '74' },
+            { tag: 'img', class: 'entry', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/car.png', width: '202', height: '74' },
+            { tag: 'img', class: 'ampel', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/traffic-light-red.png', width: '55', height: '155' },
+            { tag: 'img', class: 'garage', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
+            { tag: 'img', class: 'exit', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/empty.png', width: '202', height: '74' },
             { tag: 'hr' },
             { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
             { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
@@ -37,7 +37,7 @@
         },
         row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%preis%' } ] }
       },
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/default.css' ]
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/default.css' ]
       // user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', '//akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }

@@ -25,7 +25,7 @@
     
     name: 'form',
     
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
@@ -34,15 +34,44 @@
         semester: 172, // begin with 1 = WiSe 2017/18
         fach: 'se'   // se = Software Engineering
       },
-      server: '//kaul.inf.h-brs.de/data/form.php', // uniform server access
+      server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
       
       // subcomponents
       user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { sign_on: "hbrsinfkaul", logged_in: true } ],
-      // uml:    [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
-      upload: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
-      highlight: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
-      show_solutions: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
-      exercise: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js' ],
+      uml:    [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/uml/ccm.uml.js' ],
+      upload: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/upload/ccm.upload.js' ],
+      highlight: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/highlight/ccm.highlight.js' ],
+      show_solutions: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/show_solutions/ccm.show_solutions.js' ],
+      exercise: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/exercise/ccm.exercise.js' ],
+      editor: [ 'ccm.component', 'https://tkless.github.io/ccm-components/editor/versions/ccm.editor-1.0.0.js', {
+        settings: {
+          modules: {
+            history: {
+              delay: 1000,
+              maxStack: 300,
+              userOnly: false // default
+            },
+            //syntax: true,    // needed for syntax highlighting
+
+            toolbar: [          // if no toolbar needed set: settings.modules.toolbar: false
+              [ { 'header': [1, 2, 3, 4, 5, 6, false] } ],
+              [ 'bold', 'italic', 'underline', 'strike' ],        // toggled buttons
+              [ 'blockquote', 'code-block' ],
+              [ { 'script': 'sub'}, { 'script': 'super' } ],
+              [ { 'size': ['small', false, 'large', 'huge'] } ],
+              [ { 'list': 'ordered'}, { 'list': 'bullet' } ],
+              [ { 'indent': '-1'}, { 'indent': '+1' } ],
+              [ { 'color': [] }, { 'background': [] } ],
+              [ { 'font': [] } ],
+              [ { 'align': [] } ],
+              [ 'link' ],   // , 'image' => beware of large data volume
+              [ 'clean' ]
+            ]
+          },
+          placeholder: 'Inhaltsbereich für den Editor',
+          theme: 'snow'
+        }
+      } ],
       
       html: {  // Optional: JSON structure instead of LightDOM given in HTML file
         main: {
@@ -128,10 +157,10 @@
           success: 'Erfolgreich hochgeladen.'
         }
       },
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/form/resources/default.css' ],
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/form/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/form/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_form' ] ]
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_form' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
     
@@ -365,7 +394,7 @@
               start_params.keys = {
                 semester: self.keys.semester,
                 fach: self.keys.fach
-                // id: elem.id // ToDo ???
+                // id: elem.id // ToDo
               };
             }
   
@@ -544,13 +573,24 @@
               }
               
               function prepare_ccm() {
+                var stored_contents = '';
                 self.ccm_elems.map(function (elem) {
                   // read textarea value and write into component value
                   if ( elem.id && elem.ccm_instance ){ // id is indicator for persistence
                     // first update component value === sync
-                    elem.ccm_instance.sync();
+                    if ( elem.ccm_instance.sync ) elem.ccm_instance.sync();
                     // write value into formData object for POST request
-                    formData.append(elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify(elem.ccm_instance.value));
+                    if ( elem.ccm_instance.value ) {
+                      formData.append( elem.id, typeof elem.ccm_instance.value === 'string' ? elem.ccm_instance.value : JSON.stringify(elem.ccm_instance.value) );
+                    } else {
+                      if ( elem.ccm_instance.get ) {
+                        stored_contents = JSON.stringify( elem.ccm_instance.get().getContents() );
+                        if ( stored_contents.length > 65530 ) alert('Editor input too long: Please shorten your input!');
+                        formData.append(elem.id, stored_contents );
+                      } else {
+
+                      }
+                    }
                   }
                 });
               }
@@ -644,7 +684,11 @@
                   default:
                     if (rec_type && rec_type.startsWith('CCM')) {
                       var ccm_instance = self.element.querySelector('#' + rec_key).ccm_instance;
-                      if ( ccm_instance ) ccm_instance.sync( rec_val );
+                      if ( ccm_instance &&  ccm_instance.sync ){
+                        ccm_instance.sync( rec_val );
+                      } else {
+                        ccm_instance.get().setContents( JSON.parse( rec_val ) );
+                      }
                     } else if (self.element.querySelector('#' + rec_key)) {
                       if (rec_val) self.element.querySelector('#' + rec_key).value = rec_val;
                     }
