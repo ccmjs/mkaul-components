@@ -1,0 +1,10 @@
+/**
+ * @overview default layout of ccm component solutions_view
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @license The MIT License (MIT)
+ */
+
+textarea {
+    width: 96%;
+    height: 75px;
+}
