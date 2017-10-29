@@ -16,7 +16,7 @@
     // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
-      plantUML: "http://www.plantuml.com/plantuml/img/",
+      plantUML: "https://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
       onchange: function ( instance, results, name ) { console.log( name, results ); },
@@ -29,10 +29,79 @@
           inner: [
             { tag: 'img', src: '%plantUML%%compressed_default%' },
             { tag: 'textarea', inner: '%default%' },
-            { tag: 'button', inner: 'Sync' }
+            { tag: 'button', class: 'sync', inner: 'Sync' },
+            { tag: 'button', class: 'help', inner: 'Help' },
+            { class: 'uml_helper_text', inner: '%uml_helper_text%', style: 'display:none' }
           ]
+        },
+        help: { // helper text in UML form to be redefined via config
+          en: { // in English
+            inner: [
+              'With ',
+              { tag: 'a', href: 'http://plantuml.sourceforge.net', target: '_blank', inner: 'PlantUML' },
+              ' you can specify the following diagrams:',
+              { tag: 'ul', inner: [
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/use-case-diagram', target: '_blank', inner: 'UML Use Case diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/class-diagram', target: '_blank', inner: 'UML class diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/sequence-diagram', target: '_blank', inner: 'UML sequence diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/activity-diagram-beta', target: '_blank', inner: 'UML activity diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/state-diagram', target: '_blank', inner: 'UML state diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/component-diagram', target: '_blank', inner: 'UML component diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/object-diagram', target: '_blank', inner: 'UML object diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/deployment-diagram', target: '_blank', inner: 'UML deployment diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/timing-diagram', target: '_blank', inner: 'UML timing diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/salt', target: '_blank', inner: 'Wireframes' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/gantt-diagram', target: '_blank', inner: 'Gantt Charts' } },
+              ] } ]
+          },
+          de: { // in German
+            inner: [
+              { tag: 'a', href: 'http://plantuml.sourceforge.net', target: '_blank', inner: 'PlantUML' },
+              ' erlaubt die textuelle Spezifikation und die Generierung folgender Diagramme (siehe auch ',
+              { tag: 'a', href: 'http://translate.plantuml.com/de/PlantUML_Language_Reference_Guide_DE.pdf', target: '_blank', inner: 'PlantUML in deutsch' },
+              ' ): ',
+              { tag: 'ul', inner: [
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/use-case-diagram', target: '_blank', inner: 'UML Anwendungsfall-Diagramm (<i>Use Case</i>)' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/class-diagram', target: '_blank', inner: 'UML Klassendiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/sequence-diagram', target: '_blank', inner: 'UML Sequenzdiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/activity-diagram-beta', target: '_blank', inner: 'UML Aktivitätsdiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/state-diagram', target: '_blank', inner: 'UML Zustandsdiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/component-diagram', target: '_blank', inner: 'UML Komponentendiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/object-diagram', target: '_blank', inner: 'UML Objektdiagramm' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/deployment-diagram', target: '_blank', inner: 'UML Deployment Diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/timing-diagram', target: '_blank', inner: 'UML Timing Diagram' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/salt', target: '_blank', inner: 'Wireframes' } },
+                { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/gantt-diagram', target: '_blank', inner: 'Gantt Chart' } },
+              ] } ]
+          }
         }
       },
+
+      style: {
+        img: {
+          border: 'solid',
+          "border-width": '2px'
+        },
+        textarea: {
+          width: '35em',
+          height: '18em'
+        }
+      },
+
+      language: 'de', // Dynamic Switching by restart
+      messages: {
+        'en': {
+          show: 'Display help text',
+          hide: 'Hide help text',
+          sync: 'Sync text and diagram'
+        },
+        'de': {
+          show: 'Zeige Hilfetext',
+          hide: 'Verberge Hilfetext',
+          sync: 'Synchronisiere Text und Diagramm'
+        }
+      },
+
       // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/uml/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/uml/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
@@ -63,34 +132,64 @@
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main,
           { plantUML: self.plantUML,
-            default: self.value? self.value : self.default,
-            compressed_default: compress_uml( self.value? self.value : self.default )
+            default: self.value? self.value.uml : self.default,
+            compressed_default: compress_uml( self.value? self.value.uml : self.default )
           } );
         
-        // select inner containers (mostly for buttons)
+        // select inner containers
+        var uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
+        self.ccm.helper.setContent( uml_helper_text, self.ccm.helper.html( self.html.help[self.language] ) );
         var img = main_elem.querySelector( 'img' );
         var textarea = main_elem.querySelector( 'textarea' );
   
         self.sync = function ( event_or_value ) {
-          if ( event_or_value !== 'undefined' && event_or_value && ! ( event_or_value instanceof Event ) ){
-            textarea.value = event_or_value; // write value into textarea
+          if ( event_or_value && event_or_value !== 'undefined' && ! ( event_or_value instanceof Event ) ){
+            // write value into textarea
+            if ( event_or_value.startsWith('{') ){
+              textarea.value = JSON.parse( event_or_value ).uml;
+            } else {
+              textarea.value = event_or_value;
+            }
           }
-          self.value = textarea.value; // sync value
+          // sync value and textarea
+          self.value = { uml: textarea.value };
           if ( self.logger ) self.logger.log( 'sync', { fkey: self.fkey, keys: self.keys, value: self.value } );
-          if ( self.value ) compress( img, self.value ); // write into src attribute of img tag
+          if ( self.value ) compress( img, self.value.uml ); // write into src attribute of img tag
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
             event_or_value.stopPropagation();
             return false;
           }
         };
+
+        var help_button = main_elem.querySelector( 'button.help' );
+
+        help_button.addEventListener('click', help, false);
+
+        function help(e) { // toggle visibility of helper text
+          if ( uml_helper_text.style.display === 'none' ){
+            uml_helper_text.style.display = 'block';
+            help_button.title = self.messages[self.language].hide;
+          } else {
+            uml_helper_text.style.display = 'none';
+            help_button.title = self.messages[self.language].show;
+          }
+        }
         
-        var button = main_elem.querySelector( 'button' );
-        
-        button.addEventListener('click', self.sync, false);
+        var sync_button = main_elem.querySelector( 'button.sync' );
+        sync_button.title = self.messages[self.language].sync;
+
+        sync_button.addEventListener('click', self.sync, false);
         
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
+
+        // styling
+        if ( self.style ) Object.keys(self.style).map(selector=>{
+          Object.keys(self.style[selector]).map(key=>{
+            self.element.querySelector(selector).style.setProperty(key, self.style[selector][key]);
+          });
+        });
   
         // create a back link from HTML root element <ccm-uml> to ccm component instance
         self.root.ccm_instance = self;
