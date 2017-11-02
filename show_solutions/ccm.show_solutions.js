@@ -148,8 +148,11 @@
 
         more_link.addEventListener('click', e => {
           offset += 10;
-          // proceed();
+          proceed();
         });
+
+        // create a loading symbol
+        let loading = self.ccm.helper.loading( self );
         
         // select checkbox
         var checkbox = main_elem.querySelector( 'input' );
@@ -162,162 +165,17 @@
             
             if ( solutions_div.style.display === 'none' && solutions_div.firstElementChild.classList.value !== "ccm_loading" ) {
                     solutions_div.style.display = 'block';
+                    more_link.style.display = 'block';
             } else {
-              // create a loading symbol
-              let loading = self.ccm.helper.loading( self );
+
               self.ccm.helper.setContent( solutions_div, loading );
-              
               // Late Login
               // has user instance? => login user (if not already logged in)
               if (self.user) self.user.login(proceed); else proceed();
-              
-              function proceed() { // proceed after login
-                var solutions = {
-                  url: self.server,
-                  params: {
-                    key: self.fkey,
-                    id: self.parent.for || self.root.getAttribute('for'),
-                    user: self.user.data().id,
-                    token: self.user.data().token,
-                    semester: self.keys.semester,
-                    fach: self.keys.fach,
-                    all: offset
-                  }
-                };
-                
-                // ==== GET ==== load all solutions for this key and this id
-                self.ccm.load( solutions, function (record) {
-                  // console.log( 'solution', record);
-                  
-                  // Late filling form with values with recursive descend
-                  // traverse by all record keys
-                  
-                  if ( typeof record === 'string') record = JSON.parse(record);
-                  
-                  if ( record.ERROR ){
-                    
-                    solutions_div.replaceChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ), loading);
-                    
-                  }
-                  
-                  else {
-                    
-                    var code = record.SUCCESS.code;
-                    var json = record.SUCCESS.json;
-                    
-                    var counter = 1;
-                    var unsorted_solutions = [];
-                    
-                    Object.keys( record ).map(function ( uid ) {
-                      if ( uid !== 'ERROR' &&  uid !== 'SUCCESS' ){
-                        
-                        var child;
-                        var newChild;
-                        var solution = record[ uid ];
-                        var solution_object;
-                        
-                        if ( json ){
-                          // Is field a JSON structure?
-                          solution = JSON.parse( solution );
-                          // deep copy
-                          var structure = JSON.parse(JSON.stringify(self.html.multiple_solutions));
-                          
-                          Object.keys(solution).map(function (key) {
-                            structure.inner[0].inner.push({tag: 'textarea', inner: solution[key]});
-                          } );
-                          child = self.ccm.helper.html( structure );
-                          
-                        } else { // no JSON
-                          child = self.ccm.helper.html( self.html.solution );
-                          switch (typing(solution)){
-                            case "string":
-                            child.querySelector('textarea').value = solution;
-                              break;
-                            case "json":
-                              solution_object = JSON.parse( solution );
-                              if ( solution_object.ops ){
-                                newChild = document.createElement('div');
-                                child.replaceChild( newChild, child.firstElementChild );
-                                self.editor.start( { root: newChild }, instance => {
-                                  instance.get().setContents( solution_object );
-                                });
-                              } else if ( solution_object.uml ){
-                                newChild = document.createElement('div');
-                                child.replaceChild( newChild, child.firstElementChild );
-                                self.uml.start({root: newChild, default: solution_object.uml }, instance => {
-                                  instance.sync( solution_object.uml );
-                                });
-                              } else if ( solution_object.type && solution_object.type.startsWith('image') ){ // upload
-                                newChild = document.createElement('img');
-                                newChild.style.width = '96%';
-                                newChild.style.height = '600px';
-                                newChild.src = get_url({ url: self.server, params: { semester: self.keys.semester, fach: self.keys.fach, key: self.fkey, id: self.for, uid: uid, user: self.user.data().id, token: self.user.data().token } });
-                                child.replaceChild( newChild, child.firstElementChild );
-                              }
-                              break;
-                            case "editor":
-                              break;
-                            case "uml":
-                              break;
-                            case "upload":
-                              break;
-                            default:
-                              debugger;
-                          }
-
-                        }
-                        
-                        counter++;
-                        if ( self.voting ) self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
-                          unsorted_solutions.push( { "voting": voting_inst.getValue(), "solution": child } );
-                          self.ccm.helper.setContent( child.querySelector('.voting'), voting_inst.root );
-                          check();
-                        } );
-                        
-                        counter++;
-                        // only one comment for all fields
-                        if ( self.comment ) self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
-                          self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
-                          check();
-                        });
-                      }
-                    });
-                    check();
-                    
-                    function check() {
-                      counter--;
-                      if ( counter > 0 ) return;
-                      
-                      var sorted = unsorted_solutions.sort( compare );
-
-                      solutions_div.innerHTML = '';
-                      sorted.map( function ( entry ) {
-                        solutions_div.appendChild( entry.solution );
-                      } );
-
-                      more_link.style.display = 'block';
-                      
-                      function compare( a, b ) {
-                        if ( a.voting > b.voting )
-                          return -1;
-                        if ( a.voting < b.voting )
-                          return 1;
-                        return 0;
-                      }
-                      
-                    }
-                    
-                  }
-                  
-                });
-              }
             }
-          }
-          
-          else { // erase all solutions
-            
+          } else { // erase all solutions
             solutions_div.style.display = 'none';
-            
+            more_link.style.display = 'none';
           }
           
         });
@@ -326,6 +184,150 @@
         self.ccm.helper.setContent( self.element, main_elem );
 
         // =============== helper functions ================
+
+        function proceed() { // proceed after login
+          var solutions = {
+            url: self.server,
+            params: {
+              key: self.fkey,
+              id: self.parent.for || self.root.getAttribute('for'),
+              user: self.user.data().id,
+              token: self.user.data().token,
+              semester: self.keys.semester,
+              fach: self.keys.fach,
+              all: offset
+            }
+          };
+
+          // ==== GET ==== load all solutions for this key and this id
+          self.ccm.load( solutions, function (record) {
+            // console.log( 'solution', record);
+
+            // Late filling form with values with recursive descend
+            // traverse by all record keys
+
+            if ( typeof record === 'string') record = JSON.parse(record);
+
+            if ( record.ERROR ){
+
+              solutions_div.replaceChild(self.ccm.helper.html( self.html.error, { deadline: record.ERROR.deadline } ), loading);
+
+            } else {
+
+              var code = record.SUCCESS.code;
+              var json = record.SUCCESS.json;
+
+              var counter = 1;
+              var unsorted_solutions = [];
+
+              Object.keys( record ).map(function ( uid ) {
+                if ( uid !== 'ERROR' &&  uid !== 'SUCCESS' ){
+
+                  var child;
+                  var newChild;
+                  var solution = record[ uid ];
+                  var solution_object;
+
+                  if ( json ){
+                    // Is field a JSON structure?
+                    solution = JSON.parse( solution );
+                    // deep copy
+                    var structure = JSON.parse(JSON.stringify(self.html.multiple_solutions));
+
+                    Object.keys(solution).map(function (key) {
+                      structure.inner[0].inner.push({tag: 'textarea', inner: solution[key]});
+                    } );
+                    child = self.ccm.helper.html( structure );
+
+                  } else { // no JSON
+                    child = self.ccm.helper.html( self.html.solution );
+                    switch (typing(solution)){
+                      case "string":
+                        child.querySelector('textarea').value = solution;
+                        break;
+                      case "json":
+                        solution_object = JSON.parse( solution );
+                        if ( solution_object.ops ){
+                          newChild = document.createElement('div');
+                          child.replaceChild( newChild, child.firstElementChild );
+                          self.editor.start( { root: newChild }, instance => {
+                            instance.get().setContents( solution_object );
+                          });
+                        } else if ( solution_object.uml ){
+                          newChild = document.createElement('div');
+                          child.replaceChild( newChild, child.firstElementChild );
+                          self.uml.start({root: newChild, default: solution_object.uml }, instance => {
+                            instance.sync( solution_object.uml );
+                          });
+                        } else if ( solution_object.type && solution_object.type.startsWith('image') ){ // upload
+                          newChild = document.createElement('img');
+                          newChild.style.width = '96%';
+                          newChild.style.height = '600px';
+                          newChild.src = get_url({ url: self.server, params: { semester: self.keys.semester, fach: self.keys.fach, key: self.fkey, id: self.for, uid: uid, user: self.user.data().id, token: self.user.data().token } });
+                          child.replaceChild( newChild, child.firstElementChild );
+                        }
+                        break;
+                      case "editor":
+                        break;
+                      case "uml":
+                        break;
+                      case "upload":
+                        break;
+                      default:
+                        debugger;
+                    }
+
+                  }
+
+                  counter++;
+                  if ( self.voting ) self.voting.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( voting_inst ) {
+                    unsorted_solutions.push( { "voting": voting_inst.getValue(), "solution": child } );
+                    self.ccm.helper.setContent( child.querySelector('.voting'), voting_inst.root );
+                    check();
+                  } );
+
+                  counter++;
+                  // only one comment for all fields
+                  if ( self.comment ) self.comment.start( { parent: self, user: self.user, 'data.key': uid + '_' + self.parent.for + '_' + self.for }, function ( instance ) {
+                    self.ccm.helper.setContent( child.querySelector('.comments'), instance.root );
+                    check();
+                  });
+                }
+              });
+              check();
+
+              function check() {
+                counter--;
+                if ( counter > 0 ) return;
+
+                var sorted = unsorted_solutions.sort( compare );
+
+                // solutions_div.innerHTML = '';
+                if ( loading.parentNode === solutions_div ){
+                  solutions_div.replaceChild(self.ccm.helper.html( { tag: 'h3', inner: 'Solutions ' } ), loading);
+                }
+                sorted.map( function ( entry ) {
+                  solutions_div.appendChild( entry.solution );
+                } );
+
+                more_link.style.display = 'block';
+
+                function compare( a, b ) {
+                  if ( a.voting > b.voting )
+                    return -1;
+                  if ( a.voting < b.voting )
+                    return 1;
+                  return 0;
+                }
+
+              }
+
+            }
+
+          });
+        }
+
+
         function typing( solution ){
           var typ = typeof solution;
           if ( typ === "string" ){
