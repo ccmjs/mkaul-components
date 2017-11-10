@@ -31,7 +31,8 @@
      * @type {object}
      */
     config: {
-      // menu item format = [ nr, button label, title label, filename ]
+      // menu item format = [ button label, title label, filename ]
+      // is also the location hash format (anchor)
       menu: [ [ 'Orga', 'OG', 'orga' ], [ 'LE01', '01', 'le01' ] ],
 
       separation_char: ',', // default is comma separated format
@@ -85,9 +86,11 @@
       
         //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
-        // ToDo write interpreter for LightDOM
-
+        if ( self.inner && self.inner.innerHTML.trim() ){
+          // interpreter for LightDOM
+          self.text = self.inner.innerHTML;
+          self.menu = JSON.parse( self.text );
+        }
         callback();
       };
       
