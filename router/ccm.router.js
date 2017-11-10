@@ -149,7 +149,7 @@
 
         if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
           // already selected by hash
-          if ( window.onhashchange ) window.onhashchange();
+          window.onhashchange();
         }
 
         // backup old event handler
