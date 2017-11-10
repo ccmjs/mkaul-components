@@ -134,6 +134,9 @@
           })
         });
 
+        // backup old event handler
+        const old_window_onhashchange = window.onhashchange;
+
         // assign new event handler
         window.onhashchange = (e) => {
           let address_vector;
@@ -147,13 +150,11 @@
           }
         };
 
+        // when initially opening this web page, is there a location.hash (anchor)?
         if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
-          // already selected by hash
+          // already selected by location.hash
           window.onhashchange();
         }
-
-        // backup old event handler
-        const old_window_onhashchange = window.onhashchange;
 
         function start( address_vector ) {
           const filename = address_vector[2];
