@@ -1,0 +1,23 @@
+/**
+ * @overview default layout of ccm component router
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @license The MIT License (MIT)
+ */
+
+body {
+    padding: 0.1em;
+}
+.center {
+    text-align: center;
+}
+.btn {
+    margin: 0.2rem;
+    padding: 0.1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-width: 6px;
+    border-radius: 20px;
+    font-weight: bolder;
+    font-size: larger;
+    background-color: #d5ff52;
+}
