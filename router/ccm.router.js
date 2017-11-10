@@ -32,7 +32,7 @@
      */
     config: {
       // menu item format = [ nr, button label, title label, filename ]
-      menu: [ [ 'Orga', 'OG', 'orga' ], [ 'Team', 'Team', 'team' ] ],
+      menu: [ [ 'Orga', 'OG', 'orga' ], [ 'LE01', '01', 'le01' ] ],
 
       separation_char: ',', // default is comma separated format
 
@@ -40,7 +40,7 @@
 
       feedback: [ 'ccm.instance', '//kaul.inf.h-brs.de/data/ccm/feedback/versions/ccm.feedback-1.0.0.js', { position: 'right', from_above: '50%', data: { key: 'se1_ws17', store: [ 'ccm.store', { store: 'feedback', url: 'https://ccm.inf.h-brs.de' } ] } } ],
 
-      server: 'https://kaul.inf.h-brs.de/data/2017/se1',
+      server: 'https://kaul.inf.h-brs.de/data/2017/se1/',
 
       html: {
         main: {
@@ -134,14 +134,6 @@
           })
         });
 
-        if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
-          // already selected by hash
-          window.onhashchange();
-        }
-
-        // backup old event handler
-        const old_window_onhashchange = window.onhashchange;
-
         // assign new event handler
         window.onhashchange = (e) => {
           let address_vector;
@@ -154,6 +146,14 @@
             old_window_onhashchange(e);
           }
         };
+
+        if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
+          // already selected by hash
+          if ( window.onhashchange ) window.onhashchange();
+        }
+
+        // backup old event handler
+        const old_window_onhashchange = window.onhashchange;
 
         function start( address_vector ) {
           const filename = address_vector[2];
