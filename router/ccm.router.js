@@ -164,7 +164,7 @@
           const oldChild = content.firstChild;
           const newChild = document.createElement('div');
           if (oldChild) content.replaceChild(newChild,oldChild); else content.appendChild(newChild);
-          ccm.start( 'content-2-0-0', { semester: "172", fach: "se", root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] });
+          self.ccm.start( 'content-2-0-0', { semester: "172", fach: "se", root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] });
         }
 
         self.feedback.start( ( instance ) => {
