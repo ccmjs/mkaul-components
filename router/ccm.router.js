@@ -46,7 +46,7 @@
       // dependencies
       content: [ 'ccm.instance', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js' ],
 
-      feedback: [ 'ccm.instance', '//kaul.inf.h-brs.de/data/ccm/feedback/versions/ccm.feedback-1.0.0.js', { position: 'right', from_above: '50%', data: { key: 'se1_ws17', store: [ 'ccm.store', { store: 'feedback', url: 'https://ccm.inf.h-brs.de' } ] } } ],
+      // feedback: [ 'ccm.instance', '//kaul.inf.h-brs.de/data/ccm/feedback/versions/ccm.feedback-1.0.0.js', { position: 'right', from_above: '50%', data: { key: 'se1_ws17', store: [ 'ccm.store', { store: 'feedback', url: 'https://ccm.inf.h-brs.de' } ] } } ],
 
       html: {
         main: {
@@ -170,10 +170,10 @@
           const newChild = document.createElement('div');
           if (oldChild) content.replaceChild(newChild,oldChild); else content.appendChild(newChild);
           const config =  $.integrate({ root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] } , self.keys );
-          self.ccm.start( 'content-2-0-0', config );
+          self.ccm.start( self.content.component.index, config );
         }
 
-        self.feedback.start( ( instance ) => {
+        if ( self.feedback ) self.feedback.start( ( instance ) => {
           feedback.appendChild( instance.root );
           if ( callback ) callback();
         });
