@@ -165,6 +165,8 @@
         }
 
         function start( address_vector ) {
+          // has logger instance? => log 'start' event
+          if ( self.logger ) self.logger.log( 'start', address_vector );
           const filename = address_vector[2];
           const oldChild = content.firstChild;
           const newChild = document.createElement('div');
@@ -175,8 +177,9 @@
 
         if ( self.feedback ) self.feedback.start( ( instance ) => {
           feedback.appendChild( instance.root );
-          if ( callback ) callback();
         });
+
+        if ( callback ) callback();
 
       };
 
