@@ -32,11 +32,14 @@
      */
     config: {
       html: {
-        main:  { tag: 'svg', id: "intern",
-          width:"500", height:"250",
-          // viewport: "0 0 500 250",
+        main:  {
+          tag: 'svg',
+          width:"500",
+          height:"250",
           inner:
-            { tag: 'polygon', id:"intern_polygon", points: '220,10 300,210 170,250 123,234', style: 'fill:lime;stroke:purple;stroke-width:1' }
+            { tag: 'polygon',
+              points: '220,10 300,210 170,250 123,234',
+              style: 'fill:lime;stroke:purple;stroke-width:1' }
           }
       },
 
@@ -100,9 +103,6 @@
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
-
-        self.element.style.width = '500px';
-        self.element.style.height = '250px';
         
         // prepare main HTML structure
         const main_elem = $.html( self.html.main );
