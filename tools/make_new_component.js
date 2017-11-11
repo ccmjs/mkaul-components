@@ -7,7 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'exercise';
+var component_name = 'radar_chart';
 var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
 var account = 'mkaul';
 
@@ -15,7 +15,7 @@ var index_html = `<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="author" content="${author}">
 <meta name="license" content="The MIT License (MIT)">
-<script src="https://${account}.github.io/ccm-components/${component_name}/ccm.${component_name}.js"></script>
+<!--<script src="https://${account}.github.io/ccm-components/${component_name}/ccm.${component_name}.js"></script>-->
 <script src="ccm.${component_name}.js"></script>
 <ccm-${component_name}></ccm-${component_name}>`;
 
@@ -23,16 +23,34 @@ var ccm_component = `/**
  * @overview ccm component for ${component_name}
  * @author ${author}
  * @license The MIT License (MIT)
+ * @version latest (1.0.0)
+ * TODO: docu comments -> API
+ * TODO: unit tests
+ * TODO: builder component
+ * TODO: i18n
  */
 
-( function () {
+{
 
-  var component  = {
+  const component  = {
 
+    /**
+     * unique component name
+     * @type {string}
+     */
     name: '${component_name}',
     
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    /**
+     * recommended used framework version
+     * @type {string}
+     */
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
+    /**
+     * default instance configuration
+     * @type {object}
+     */
     config: {
       html: {
         main: {
@@ -43,28 +61,73 @@ var ccm_component = `/**
       },
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/${component_name}/resources/default.css' ],
       // css: [ 'ccm.load',  'https://${account}.github.io/ccm-components/${component_name}/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
+      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
+    /**
+     * for creating instances of this component
+     * @constructor
+     */
     Instance: function () {
     
-      var self = this;
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
+      const self = this;
+      
+      /**
+       * shortcut to help functions
+       * @type {Object}
+       */
+      let $;
+      
+      /**
+       * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
+       */
+      this.init = callback => {
+      
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
+        //  Then use it with higher priority
+        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
+        
+        // ToDo interprete LightDOM
 
-      this.start = function ( callback ) {
+        callback();
+      };
+      
+      /**
+       * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
+       */
+      this.ready = callback => {
+
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+        
+        callback();
+      };  
+        
+      /**
+       * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
+       */
+      this.start = callback => {
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main, { even: 'even' } );
+        const main_elem = $.html( self.html.main, { even: 'even' } );
         
         // select inner containers (mostly for buttons)
-        var left_button = main_elem.querySelector( 'button.left' );
+        const left_button = main_elem.querySelector( 'button.left' );
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
 
         if ( callback ) callback();
       };
@@ -73,8 +136,8 @@ var ccm_component = `/**
 
   };
 
-  function p(){window.ccm[v].component(component)}var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
-}() );`;
+  function p(){window.ccm[v].component(component)}const f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{const n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"===typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{const e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
+}`;
 
 var default_css = `/**
  * @overview default layout of ccm component ${component_name}
