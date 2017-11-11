@@ -31,17 +31,22 @@
      * @type {object}
      */
     config: {
+      server: 'https://kaul.inf.h-brs.de/data/2017/se1/',
+
+      // additional config parameters tobe merged into loader config
+      keys: { semester: "172", fach: "se" },
+
       // menu item format = [ button label, title label, filename ]
       // is also the location hash format (anchor)
       menu: [ [ 'Orga', 'OG', 'orga' ], [ 'LE01', '01', 'le01' ] ],
 
-      separation_char: ',', // default is comma separated format
+      // default is comma separated format for location.hash (anchor)
+      separation_char: ',',
 
+      // dependencies
       content: [ 'ccm.instance', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js' ],
 
       feedback: [ 'ccm.instance', '//kaul.inf.h-brs.de/data/ccm/feedback/versions/ccm.feedback-1.0.0.js', { position: 'right', from_above: '50%', data: { key: 'se1_ws17', store: [ 'ccm.store', { store: 'feedback', url: 'https://ccm.inf.h-brs.de' } ] } } ],
-
-      server: 'https://kaul.inf.h-brs.de/data/2017/se1/',
 
       html: {
         main: {
@@ -89,7 +94,7 @@
         if ( self.inner && self.inner.innerHTML.trim() ){
           // interpreter for LightDOM
           self.text = self.inner.innerHTML;
-          self.menu = JSON.parse( self.text );
+          self.menu = JSON.parse( '[' + self.text + ']' );
         }
         callback();
       };
@@ -144,17 +149,17 @@
         window.onhashchange = (e) => {
           let address_vector;
           // anchors without comma are local only (inner page)
-          if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
+          if ( location.hash.length > 0 && location.hash.indexOf( self.separation_char ) >= 0 ) {
             // parse address_vector from comma separated format of anchor
-            address_vector = location.hash.replace('#','').split(self.separation_char);
+            address_vector = location.hash.slice(1).split( self.separation_char );
             start( address_vector );
           } else {
-            old_window_onhashchange(e);
+            if ( old_window_onhashchange ) old_window_onhashchange(e);
           }
         };
 
         // when initially opening this web page, is there a location.hash (anchor)?
-        if (location.hash.length > 0 && location.hash.indexOf(self.separation_char) >= 0) {
+        if ( location.hash.length > 0 && location.hash.indexOf( self.separation_char ) >= 0 ) {
           // already selected by location.hash
           window.onhashchange();
         }
@@ -164,7 +169,8 @@
           const oldChild = content.firstChild;
           const newChild = document.createElement('div');
           if (oldChild) content.replaceChild(newChild,oldChild); else content.appendChild(newChild);
-          self.ccm.start( 'content-2-0-0', { semester: "172", fach: "se", root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] });
+          const config =  $.integrate({ root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] } , self.keys );
+          self.ccm.start( 'content-2-0-0', config );
         }
 
         self.feedback.start( ( instance ) => {
