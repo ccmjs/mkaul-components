@@ -31,15 +31,22 @@
      * @type {object}
      */
     config: {
+      dimensions: [ 'pünktlich', 'zuverlässig', 'kooperativ', 'ansprechbar', 'effektiv', 'hilfsbereit', 'durchsetzungsstark' ],
+      candidates: {
+        first:  [ 10, 20, 30, 40, 50, 60, 70 ],
+        second: [ 70, 60, 50, 40, 30, 20, 10 ]
+      },
+      styles: {
+        first: 'fill:orange;stroke:black;stroke-width:1;opacity=0.2',
+        second: 'fill:lime;stroke:purple;stroke-width:1;opacity=0.2'
+      },
       html: {
         main:  {
           tag: 'svg',
-          width:"500",
-          height:"250",
-          inner:
-            { tag: 'polygon',
-              points: '220,10 300,210 170,250 123,234',
-              style: 'fill:lime;stroke:purple;stroke-width:1' }
+          width:"400",
+          height:"400",
+          viewport: "0 0 200 200",
+          inner: []
           }
       },
 
@@ -103,6 +110,41 @@
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
+
+        let dim_count = self.dimensions.length;
+        let list = self.html.main.inner;
+        let radiants = [];
+        let polygons = {};
+        Object.keys(self.candidates).map( candidate => { polygons[candidate]=[] });
+
+        self.dimensions.map( ( dim, index ) => {
+          // 100,100 is the center
+          // 200, 200 is the most outer point
+
+          // divide full circle by the number of dimensions
+          const angle = ( Math.PI / 2 ) - ( index * ( 2 * Math.PI / dim_count ) );
+          const endx  = 100+100*Math.cos( angle ), endy = 100+100*Math.sin( angle );
+
+          // add a radiant for every dimension
+          radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"2", stroke:"black" });
+          radiants.push({ tag: 'text', x: endx, y: endy, inner: self.dimensions[ index ] });
+
+          // calculate polygons for all candidates
+          Object.keys(self.candidates).map( candidate => {
+            polygons[candidate].push(
+                 ' ' + (100+self.candidates[candidate][index]*Math.cos( angle )).toFixed(2)
+               + ',' + (100+self.candidates[candidate][index]*Math.sin( angle )).toFixed(2)
+               );
+          });
+        });
+
+        // draw polygons for all candidates
+        Object.keys(self.candidates).map( candidate => {
+          list.push({ tag: 'polygon', points: polygons[candidate].join(' '), style: self.styles[candidate]});
+        });
+
+        // draw radiants
+        list.push(...radiants);
         
         // prepare main HTML structure
         const main_elem = $.html( self.html.main );
