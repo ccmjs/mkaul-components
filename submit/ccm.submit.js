@@ -3,34 +3,108 @@
  * @author André Kless <andre.kless@web.de> 2017
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
+ * TODO: docu comments -> API
+ * TODO: unit tests
+ * TODO: builder component
+ * TODO: i18n
  */
 
-( function () {
+{ // ES6 IIFE
 
-  const component = {
+  const component  = {
 
+    /**
+     * unique component name
+     * @type {string}
+     */
     name: 'submit',
-  
-    ccm: '//akless.github.io/ccm/version/ccm-10.0.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
-    
+
+    /**
+     * recommended used framework version
+     * @type {string}
+     */
+    // ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
+
+    /**
+     * default instance configuration
+     * @type {object}
+     */
     config: {
 
       "data": { "store": [ "ccm.store" ] },
+      "content": [ "ccm.component", "//akless.github.io/ccm-components/content/ccm.content.js" ]
 
-    //  "onfinish": { "log": true }
+      //  "inner": ...
+      //  "onfinish": { "log": true }
 
     },
 
+    /**
+     * for creating instances of this component
+     * @constructor
+     */
     Instance: function () {
 
-      // collect all ccm input elements in the array called inputs
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
+      let self = this;
+
+      /**
+       * privatized instance members
+       * @type {object}
+       */
+      let my;
+
+      /**
+       * shortcut to help functions
+       * @type {Object}
+       */
+      let $;
+
+      /**
+       * collect all ccm input elements in the array called inputs
+       * @type {Array}
+       */
       const inputs = [];
 
-      this.ready = ( callback ) => {
+      /**
+       * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
+       */
+      this.init = callback => {
+
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
+        //  Then use it with higher priority
+        if ( self.inner && self.inner.innerHTML.trim() ){
+
+          // get lightDOM
+          self.lightDOM = self.inner.innerHTML;
+
+          // ToDo interpreter for LightDOM
+          // self.form = JSON.parse( '[' + self.lightDOM + ']' );
+        }
+        callback();
+      };
+
+      /**
+       * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
+       */
+      this.ready = callback => {
+
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
+        // ToDo privatize all possible instance members
+        // my = $.privatize( self );
+
+        if ( ! self.inner ) return callback();
 
         // iterate all input elements
-        [...this.inner.querySelectorAll( 'input' )].map( ( input ) => {
+        [...self.inner.querySelectorAll( 'input' )].map( ( input ) => {
   
           const type = input.getAttribute( 'type' );
           switch ( type ) {
@@ -58,13 +132,13 @@
             case 'week':
               break; // do not touch standard HTML input elements
               
-            default: // manage ccm subbcomponents
+            default: // manage ccm subcomponents
               
               // check whether there is a dependent subcomponent in this config
-              if ( !this[ type ] ) return;
+              if ( !self[ type ] ) return;
               
               // create a loading symbol
-              let loading = this.ccm.helper.loading( this );
+              let loading = $.loading( self );
               
               // remember this loading element, the type und the name of this input element
               inputs.push( {
@@ -83,110 +157,125 @@
         callback();
       };
 
-      this.start = ( callback ) => {
+      this.start =  callback => {
 
-        // put LightDOM into ShadowDOM
-        this.ccm.helper.setContent( this.element, this.inner );
-  
-        const submit = this.element.querySelector( '#submit' );
-        
-        // submit button is disabled until all subcomponents are ready
-        submit.disabled = true;
-        submit.addEventListener( 'click', () => {
+        if ( !self.inner ) { if ( callback ) callback(); return; }
 
-          // fetch values from input elements
-          // let record = this.ccm.helper.formData( this.element );
-          const record = formData( this.element );
-          
-          // fetch values from ccm subcomponents
-          // getValue ist the standard API for ccm subcomponents
-          inputs.map( ( input ) => {
-            record[ input.name ] = input.instance.getValue();
-          } );
+        if ( self.content ) self.content.start( { inner: self.inner }, proceed ); else proceed();
 
-          // submit collected form data to database
-          if ( this.onfinish ) this.ccm.helper.onFinish( this, record );
+        function proceed( content ) {
 
-        } );
+          // put LightDOM into ShadowDOM
+          $.setContent(self.element, content ? content.root : self.inner);
 
-        // fetch data from database and write values into the input elements of this form
-        this.ccm.helper.dataset( this.data, ( dataset ) => {
+          const element = content ? content.element : self.element;
 
-          // fill all input elements with values from dataset identified by name
-          for ( key in dataset ) {
-            //
-            const input = this.element.querySelector( '[name="'+key+'"]' );
-            if ( input ) input.value = dataset[ key ];
+          let submit = element.querySelector('#submit');
+          const button = $.html({tag: 'input', type: 'submit', id: 'submit'});
+          if (!submit) {
+            element.appendChild(button);
+            submit = button;
           }
 
-          // count all started instances of ccm subbcomponents
-          let counter = 1;
-          
-          // iterate over all ccm subbcomponents
-          inputs.map( ( input ) => {
-            counter++;
-            
-            // fork all ccm subbcomponents in parallel
-            this[ input.type ].start( { 'data.key': input.name }, ( instance ) => {
-              input.instance = instance;
-              input.elem.parentNode.replaceChild( instance.root, input.elem );
-              check();
-            } );
-          } );
-          check();
+          // submit button is disabled until all subcomponents are ready
+          submit.disabled = true;
+          submit.addEventListener('click', () => {
 
-          // join all started ccm subbcomponents in parallel
-          function check() {
+            // fetch values from input elements
+            // let record = $.formData( element );
+            const record = formData(element);
 
-            counter--;
-            if ( counter > 0 ) return;
-  
-            // submit button is enabled when all subcomponents are ready
-            submit.disabled = false;
+            // fetch values from ccm subcomponents
+            // getValue ist the standard API for ccm subcomponents
+            inputs.map(input => {
+              record[ input.name ] = input.instance.getValue();
+            });
 
-            // callback after join all parallel subcomponents start
-            if ( callback ) callback();
-          }
+            // submit collected form data to database
+            if (self.onfinish) $.onFinish(self, record);
 
-        } );
-        
-        
-        // ccm.helper.formData
-        function formData( form ) {
-  
-          const data = {};
-          
-          [ ...form.querySelectorAll( '*[name]' ) ].map( function ( input ) {
+          });
 
-            if ( input.type === 'radio' ) {
-              
-              if ( input.checked ) data[ input.name ] = input.value;
-              
-            } else if ( input.type === 'checkbox' ){
-              
-              if ( ! data[ input.name ] ) data[ input.name ] = [];
-              if ( input.checked ) data[ input.name ].push( input.value );
-              
-            } else if ( input.type.startsWith('select') ){
-  
-              data[ input.name ] = [ ...input.options ]
-                .filter( option => option.selected )
-                .map( option => option.value || option.text );
-  
-            } else if ( input.type === 'number' ) {
-              
-              let value = parseInt( input.value );
-              if ( isNaN( value ) ) value = '';
-              data[ input.name ] = value;
-              
+          // fetch data from database and write values into the input elements of this form
+          $.dataset( self.data, dataset => {
+
+            // fill all input elements with values from dataset identified by name
+            for (key in dataset) {
+              //
+              const input = element.querySelector('[name="' + key + '"]');
+              if (input) input.value = dataset[key];
             }
-            
-            else if ( !input.value )
-              data[ input.name ] = '';
-            else
-              data[ input.name ] = input.value;
-          } );
-          return data;
+
+            // count all started instances of ccm subcomponents
+            let counter = 1;
+
+            // iterate over all ccm subcomponents
+            inputs.map( input => {
+              counter++;
+
+              // fork all ccm subcomponents in parallel
+              self[ input.type ].start( { 'data.key': dataset.key + '_' + input.name }, instance => {
+                input.instance = instance;
+                input.elem.parentNode.replaceChild(instance.root, input.elem);
+                check();
+              });
+            });
+            check();
+
+            // join all started ccm subcomponents in parallel
+            function check() {
+
+              counter--;
+              if (counter > 0) return;
+
+              // submit button is enabled when all subcomponents are ready
+              submit.disabled = false;
+
+              // callback after join all parallel subcomponents start
+              if (callback) callback();
+            }
+
+          });
+
+
+          // ccm.helper.formData
+          function formData(form) {
+
+            const data = {};
+
+            [...form.querySelectorAll('[name]')].map( input => {
+
+              if (input.type === 'radio') {
+
+                if (input.checked) data[input.name] = input.value;
+
+              } else if (input.type === 'checkbox') {
+
+                if (!data[input.name]) data[input.name] = [];
+                if (input.checked) data[input.name].push(input.value);
+
+              } else if (input.type.startsWith('select')) {
+
+                data[input.name] = [...input.options]
+                  .filter(option => option.selected)
+                  .map(option => option.value || option.text);
+
+              } else if (input.type === 'number') {
+
+                let value = parseInt(input.value);
+                if (isNaN(value)) value = '';
+                data[input.name] = value;
+
+              }
+
+              else if (!input.value)
+                data[input.name] = '';
+              else
+                data[input.name] = input.value;
+            });
+            return data;
+          }
+
         }
 
       };
@@ -195,5 +284,5 @@
 
   };
 
-  function p(){window.ccm[v].component(component)}var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
-}() );
+  function p(){window.ccm[v].component(component)}const f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{const n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"===typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{const e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
+}

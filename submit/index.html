@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<meta name="author" content="André Kless <andre.kless@web.de> 2017">
+<meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2017">
 <meta name="license" content="The MIT License (MIT)">
 
 <!--
@@ -11,15 +13,19 @@
 
 <script src="ccm.submit.js"></script>
 
-<ccm-submit key='["ccm.get","resources/configs.js","local"]'>
+<ccm-submit key='["ccm.get","resources/configs.js","demo"]'>
+
+  <source src="https://akless.github.io/ccm-components/blank/ccm.blank.js">
+  <ccm-blank></ccm-blank>
 
   <h1>Übung 1 - Aufgabe 1</h1>
-  <p>Lesen Sie hier und reflektieren die dort.</p>
+  <p>Lesen Sie hier und reflektieren Sie dort.</p>
+
+  <input name="team_partner" type="rating"><br>
 
   <input name="name" type="text"><br>
   <input name="number" type="number"><br>
   <textarea name="text"></textarea><br>
-  <input name="foo" type="blank"><br>
 
   <h3>Select</h3>
   <label>
