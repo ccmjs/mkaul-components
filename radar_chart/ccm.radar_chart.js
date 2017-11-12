@@ -32,15 +32,23 @@
      */
     config: {
       dimensions: [ 'pünktlich', 'zuverlässig', 'kooperativ', 'ansprechbar', 'effektiv', 'hilfsbereit', 'durchsetzungsstark' ],
-      candidates: {
-        first:  [ 10, 20, 30, 40, 50, 60, 70 ],
+      candidates: { // values between 0 and 100
+        first:  [ 10, 20, 30, 40, 50, 60, 70 ],  // one value per dimension
         second: [ 70, 60, 50, 40, 30, 20, 10 ]
       },
-      styles: {
-        first: 'fill:orange;stroke:black;stroke-width:1;opacity=0.2',
-        second: 'fill:lime;stroke:purple;stroke-width:1;opacity=0.2'
+      styles: {  // choose color here
+        first: 'fill:orange;stroke:red;stroke-width:3;',
+        second: 'fill:lime;stroke:purple;stroke-width:3;'
       },
-      html: {
+      css_styles: {  // choose opacity here
+        first: {
+          "fill-opacity": 0.5
+        },
+        second: {
+          "fill-opacity": 0.5
+        }
+      },
+      html: {  // size of SVG image
         main:  {
           tag: 'svg',
           width:"400",
@@ -126,8 +134,8 @@
           const endx  = 100+100*Math.cos( angle ), endy = 100+100*Math.sin( angle );
 
           // add a radiant for every dimension
-          radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"2", stroke:"black" });
-          radiants.push({ tag: 'text', x: endx, y: endy, inner: self.dimensions[ index ] });
+          radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"1", stroke:"black", "stroke-dasharray":"5, 2" });
+          radiants.push({ tag: 'text', x: endx, y: endy, "font-family":"Verdana", "font-size":"10", inner: self.dimensions[ index ] });
 
           // calculate polygons for all candidates
           Object.keys(self.candidates).map( candidate => {
@@ -140,11 +148,15 @@
 
         // draw polygons for all candidates
         Object.keys(self.candidates).map( candidate => {
-          list.push({ tag: 'polygon', points: polygons[candidate].join(' '), style: self.styles[candidate]});
+          list.push({ tag: 'polygon', id: candidate, points: polygons[candidate].join(' '), style: self.styles[candidate]});
         });
 
         // draw radiants
         list.push(...radiants);
+
+        [50,100].map( radius => {
+          list.push({ tag: 'circle', cx: 100, cy: 100, r: radius, fill:"none", "stroke-width":"1", stroke:"black", "stroke-dasharray":"5, 2" });
+        });
         
         // prepare main HTML structure
         const main_elem = $.html( self.html.main );
@@ -154,6 +166,13 @@
 
         // Hack in order to get SVG rendered inside the shadow root
         self.element.innerHTML += '';
+
+        // set CSS styles from config JSON settings
+        if ( self.css_styles ) Object.keys(self.css_styles).map(selector=>{
+          Object.keys(self.css_styles[selector]).map(key=>{
+            self.element.querySelector('#'+selector).style.setProperty(key, self.css_styles[selector][key]);
+          });
+        });
 
         if ( callback ) callback();
       };
