@@ -12,13 +12,14 @@
 
     name: 'clock',
     
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       html: {
         main: { class: 'main' }
       },
+      lit_html: [ 'ccm.module', '//kaul.inf.h-brs.de/data/ccm/clock/resources/lit-html.js' ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/clock/resources/default.css' ],
       // lit_html: [ 'ccm.load', { url: '//kaul.inf.h-brs.de/data/ccm/clock/resources/lit-html.js', attr: { type: 'module' } } ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/clock/resources/default.css' ],
@@ -48,7 +49,7 @@
         const minuteTicks = (() => {
           const lines = [];
           for (let i = 0; i < 60; i++) {
-            lines.push(svg`
+            lines.push(self.lit_html.svg`
             <line 
               class='minor'
               y1='42'
@@ -62,7 +63,7 @@
         const hourTicks = (() => {
           const lines = [];
           for (let i = 0; i < 12; i++) {
-            lines.push(svg`
+            lines.push(self.lit_html.svg`
             <line 
               class='major'
               y1='32'
@@ -74,7 +75,7 @@
         })();
 
         const svg_render = (() =>{
-          return html`
+          return self.lit_html.html`
             <style>
               :host {
                 display: block;
@@ -155,7 +156,7 @@
 
         setInterval(() => {
           this.date = new Date();
-          lit_html_render( svg_render(), self.element ); // re-render every second
+          self.lit_html.render( svg_render(), self.element ); // re-render every second
         }, 1000);
 
         if ( callback ) callback();
