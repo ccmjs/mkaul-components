@@ -44,7 +44,7 @@
 
       this.start = callback => {
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        if ( self.logger ) self.logger.log( 'render', this.date );
 
         const minuteTicks = (() => {
           const lines = [];
