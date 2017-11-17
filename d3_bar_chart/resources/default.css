@@ -1,0 +1,12 @@
+/**
+ * @overview default layout of ccm component d3_bar_chart
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @license The MIT License (MIT)
+ */
+
+#chart div {
+    display: inline-block;
+    background: #4285F4;
+    width: 20px;
+    margin-right: 3px;
+}
