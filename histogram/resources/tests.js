@@ -1,13 +1,13 @@
 
 /**
- * @overview unit tests of ccm component for histogramm
+ * @overview unit tests of ccm component for histogram
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
  */
 
 ccm.files[ 'tests.js' ] = {
   setup: ( suite, callback ) => {
-    suite.ccm.component( '../histogramm/ccm.histogramm.js', component => {
+    suite.ccm.component( '../histogram/ccm.histogram.js', component => {
       suite.component = component;
       callback();
     } );
@@ -15,7 +15,7 @@ ccm.files[ 'tests.js' ] = {
   fundamental: {
     tests: {
       componentName: suite => {
-        suite.component.instance( instance => suite.assertSame( 'histogramm', instance.component.name ) );
+        suite.component.instance( instance => suite.assertSame( 'histogram', instance.component.name ) );
       }
     }
   },
@@ -31,7 +31,7 @@ ccm.files[ 'tests.js' ] = {
         onfinish: ( instance, result ) => suite.assertEquals( { foo: 'bar' }, result )
       }, instance => {
         console.log( instance.element );
-        instance.element.querySelector( '#histogramm' ).click();
+        instance.element.querySelector( '#histogram' ).click();
       } );
     }
   }

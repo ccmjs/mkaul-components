@@ -1,5 +1,5 @@
 /**
- * @overview ccm component for histogramm
+ * @overview ccm component for histogram
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
@@ -17,7 +17,7 @@
      * unique component name
      * @type {string}
      */
-    name: 'histogramm',
+    name: 'histogram',
     
     /**
      * recommended used framework version
@@ -70,9 +70,9 @@
         }
       },
 
-      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/histogramm/resources/default.css' ],
+      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/histogram/resources/default.css' ],
 
-      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/histogramm/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/histogram/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
