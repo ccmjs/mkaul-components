@@ -2,7 +2,7 @@
  * @overview ccm component for d3_bar_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.0.0)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -25,6 +25,9 @@
      */
     ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
+
+
+    version: [ 2, 0, 0 ],
 
     /**
      * default instance configuration

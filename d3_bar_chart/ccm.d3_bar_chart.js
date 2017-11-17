@@ -36,6 +36,22 @@
 
       data: "//kaul.inf.h-brs.de/data/ccm/d3_bar_chart/sales.csv",
 
+      data_dimensions: {
+        x: 'salesperson',
+        y: 'sales'
+      },
+
+      size: {
+        width: 640,
+        height: 320,
+        margin: {
+          top: 20,
+          right: 20,
+          bottom: 30,
+          left: 40
+        }
+      },
+
       html: {
         main: {
           inner: {
@@ -113,19 +129,24 @@
         // set the dimensions and margins of the graph
         // according to Malcolm Maclean: D3 Tips and Tricks v4.x
         // https://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4
-        var margin = {top: 20, right: 20, bottom: 30, left: 40},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+        let margin = {
+            top: self.size.margin.top,
+            right: self.size.margin.right,
+            bottom: self.size.margin.bottom,
+            left: self.size.margin.left
+          },
+          width = self.size.width - margin.left - margin.right,
+          height = self.size.height - margin.top - margin.bottom;
 
         // set the ranges
-        var x = d3.scaleBand()
+        let x = d3.scaleBand()
           .range([0, width])
           .padding(0.1);
-        var y = d3.scaleLinear()
+        let y = d3.scaleLinear()
           .range([height, 0]);
 
         // append the svg object to the shadow dom
-        var svg = d3.select(main_elem.querySelector("svg"))
+        let svg = d3.select(main_elem.querySelector("svg"))
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
           // append a 'group' element to 'svg'
@@ -140,22 +161,22 @@
 
           // format the data
           data.forEach(function(d) {
-            d.sales = +d.sales;
+            d[self.data_dimensions.y] = +d[self.data_dimensions.y];
           });
 
           // Scale the range of the data in the domains
-          x.domain(data.map(function(d) { return d.salesperson; }));
-          y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+          x.domain(data.map(function(d) { return d[self.data_dimensions.x]; }));
+          y.domain([0, d3.max(data, function(d) { return d[self.data_dimensions.y]; })]);
 
           // append the rectangles for the bar chart
           svg.selectAll(".bar")
             .data(data)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return x(d.salesperson); })
+            .attr("x", function(d) { return x(d[self.data_dimensions.x]); })
             .attr("width", x.bandwidth())
-            .attr("y", function(d) { return y(d.sales); })
-            .attr("height", function(d) { return height - y(d.sales); });
+            .attr("y", function(d) { return y(d[self.data_dimensions.y]); })
+            .attr("height", function(d) { return height - y(d[self.data_dimensions.y]); });
 
           // add x Axis
           svg.append("g")

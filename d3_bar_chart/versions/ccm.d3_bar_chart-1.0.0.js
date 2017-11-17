@@ -26,6 +26,8 @@
     ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
 
+    version: [ 1, 0, 0 ],
+
     /**
      * default instance configuration
      * @type {object}
