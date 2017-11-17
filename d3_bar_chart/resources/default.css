@@ -16,7 +16,7 @@
 }
 
 .chart text {
-    fill: white;
+    fill: black;
     font: 10px sans-serif;
     text-anchor: end;
 }
