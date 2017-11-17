@@ -130,13 +130,13 @@
         // according to Malcolm Maclean: D3 Tips and Tricks v4.x
         // https://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4
         let margin = {
-            top: self.size.margin.top,
-            right: self.size.margin.right,
-            bottom: self.size.margin.bottom,
-            left: self.size.margin.left
+            top: self.size && self.size.margin && self.size.margin.top || 20,
+            right: self.size && self.size.margin && self.size.margin.right || 20,
+            bottom: self.size && self.size.margin && self.size.margin.bottom || 30,
+            left: self.size && self.size.margin && self.size.margin.left || 40
           },
-          width = self.size.width - margin.left - margin.right,
-          height = self.size.height - margin.top - margin.bottom;
+          width = (self.size && self.size.width || 640) - margin.left - margin.right,
+          height = (self.size && self.size.height || 320) - margin.top - margin.bottom;
 
         // set the ranges
         let x = d3.scaleBand()
@@ -158,6 +158,12 @@
         // get the data
         d3.csv(self.data, function(error, data) {
           if (error) throw error;
+
+          if ( ! self.data_dimensions ){
+            self.data_dimensions = {};
+            self.data_dimensions.x =  Object.keys( data[ 0 ] )[ 0 ];
+            self.data_dimensions.y =  Object.keys( data[ 0 ] )[ 1 ];
+          }
 
           // format the data
           data.forEach(function(d) {
