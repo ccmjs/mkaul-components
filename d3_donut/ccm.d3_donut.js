@@ -44,7 +44,7 @@
         main: {
           inner: [
             { tag: 'svg' },
-            { tag: 'button', onClick: '%changeData%', inner: 'Change Data' },
+            { tag: 'button', inner: 'Change Data' },
           ]
         }
       },
@@ -108,9 +108,9 @@
       
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
-        
+
         // prepare main HTML structure
-        const main_elem = $.html( self.html.main, { changeData: changeData } );
+        const main_elem = $.html( self.html.main );
 
         !function(){
           var Donut3D={};
@@ -253,6 +253,8 @@
           return self.data.map(function(d){
             return {label:d.label, value:1000*Math.random(), color:d.color};});
         }
+
+        main_elem.querySelector('button').addEventListener("click", changeData, false);
 
         // set content of own website area
         $.setContent( self.element, main_elem );
