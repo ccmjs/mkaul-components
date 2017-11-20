@@ -182,8 +182,7 @@
           submit.addEventListener('click', () => {
 
             // fetch values from input elements
-            // let record = $.formData( element );
-            const record = formData(element);
+            const record = $.formData(element);
 
             // fetch values from ccm subcomponents
             // getValue ist the standard API for ccm subcomponents
@@ -236,45 +235,6 @@
             }
 
           });
-
-
-          // ccm.helper.formData
-          function formData(form) {
-
-            const data = {};
-
-            [...form.querySelectorAll('[name]')].map( input => {
-
-              if (input.type === 'radio') {
-
-                if (input.checked) data[input.name] = input.value;
-
-              } else if (input.type === 'checkbox') {
-
-                if (!data[input.name]) data[input.name] = [];
-                if (input.checked) data[input.name].push(input.value);
-
-              } else if (input.type.startsWith('select')) {
-
-                data[input.name] = [...input.options]
-                  .filter(option => option.selected)
-                  .map(option => option.value || option.text);
-
-              } else if (input.type === 'number') {
-
-                let value = parseInt(input.value);
-                if (isNaN(value)) value = '';
-                data[input.name] = value;
-
-              }
-
-              else if (!input.value)
-                data[input.name] = '';
-              else
-                data[input.name] = input.value;
-            });
-            return data;
-          }
 
         }
 
