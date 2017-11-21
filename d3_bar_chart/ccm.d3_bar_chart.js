@@ -130,13 +130,13 @@
         // according to Malcolm Maclean: D3 Tips and Tricks v4.x
         // https://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4
         let margin = {
-            top: self.size && self.size.margin && self.size.margin.top || 20,
-            right: self.size && self.size.margin && self.size.margin.right || 20,
-            bottom: self.size && self.size.margin && self.size.margin.bottom || 30,
-            left: self.size && self.size.margin && self.size.margin.left || 40
+            top: self.size.margin.top,
+            right: self.size.margin.right,
+            bottom: self.size.margin.bottom,
+            left: self.size.margin.left
           },
-          width = (self.size && self.size.width || 640) - margin.left - margin.right,
-          height = (self.size && self.size.height || 320) - margin.top - margin.bottom;
+          width = (self.size.width) - margin.left - margin.right,
+          height = (self.size.height) - margin.top - margin.bottom;
 
         // set the ranges
         let x = d3.scaleBand()
@@ -145,7 +145,13 @@
         let y = d3.scaleLinear()
           .range([height, 0]);
 
-        // append the svg object to the shadow dom
+        // append the svg object to the shadow DOM:
+        // ========================================
+        // When used globally, d3.js selects a node in the DOM via element id, i.e. "svg"
+        // Inside a shadow DOM this does not work.
+        // Use the element instead, which has already been selected.
+        // In this case main_elem.querySelector("svg").
+        // Instead of "svg" you write main_elem.querySelector("svg").
         let svg = d3.select(main_elem.querySelector("svg"))
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
@@ -197,6 +203,7 @@
           $.setContent( self.element, main_elem );
 
           // Hack in order to get SVG rendered inside the shadow root
+          // Otherwise the SVG elements are part of the DOM, but not rendered.
           self.element.innerHTML += '';
 
           if ( callback ) callback();
