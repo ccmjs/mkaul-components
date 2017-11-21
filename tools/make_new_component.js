@@ -7,7 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'radar_chart';
+var component_name = 'd3_donut';
 var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
 var account = 'mkaul';
 
@@ -117,8 +117,8 @@ var ccm_component = `/**
        */
       this.start = callback => {
       
-        // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        // has logger instance? => log 'start' event
+        if ( self.logger ) self.logger.log( 'start' );
         
         // prepare main HTML structure
         const main_elem = $.html( self.html.main, { even: 'even' } );
@@ -139,11 +139,64 @@ var ccm_component = `/**
   function p(){window.ccm[v].component(component)}const f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{const n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"===typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{const e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
 }`;
 
-var default_css = `/**
+let default_css = `/**
  * @overview default layout of ccm component ${component_name}
  * @author ${author}
  * @license The MIT License (MIT)
  */`;
+
+let default_test_html = `<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="author" content="${author}">
+<meta name="license" content="The MIT License (MIT)">
+    
+<script src="https://akless.github.io/ccm/version/ccm-11.5.0.min.js"></script>
+<script>ccm.components.testsuite = { ccm: '//akless.github.io/ccm/ccm.js' };</script>
+<script src="//akless.github.io/ccm-components/testsuite/versions/ccm.testsuite-1.0.0.js"></script>
+<ccm-testsuite-1-0-0>
+  <ccm-load-tests src="resources/tests.js"></ccm-load-tests>
+</ccm-testsuite-1-0-0>
+`;
+
+let default_test_js = `
+/**
+ * @overview unit tests of ccm component for ${component_name}
+ * @author ${author}
+ * @license The MIT License (MIT)
+ */
+
+ccm.files[ 'tests.js' ] = {
+  setup: ( suite, callback ) => {
+    suite.ccm.component( '../${component_name}/ccm.${component_name}.js', component => {
+      suite.component = component;
+      callback();
+    } );
+  },
+  fundamental: {
+    tests: {
+      componentName: suite => {
+        suite.component.instance( instance => suite.assertSame( '${component_name}', instance.component.name ) );
+      }
+    }
+  },
+  tests: {
+    oneInput: suite => {
+      suite.component.start( {
+        inner: suite.ccm.helper.html( {
+          tag: 'input',
+          type: 'text',
+          name: 'foo',
+          value: 'bar'
+        } ),
+        onfinish: ( instance, result ) => suite.assertEquals( { foo: 'bar' }, result )
+      }, instance => {
+        console.log( instance.element );
+        instance.element.querySelector( '#${component_name}' ).click();
+      } );
+    }
+  }
+};
+`;
 
 fs.mkdir(path.join('..' + path.sep + component_name), function (err1) {
   if (err1) throw err1;
@@ -152,6 +205,11 @@ fs.mkdir(path.join('..' + path.sep + component_name), function (err1) {
   fs.writeFile('..' + path.sep + component_name + path.sep + 'index.html', index_html, 'utf8', function (err2) {
       if (err2) throw err2;
       console.log('index.html created.');
+  });
+
+  fs.writeFile('..' + path.sep + component_name + path.sep + 'test.html', default_test_html, 'utf8', function (err2) {
+    if (err2) throw err2;
+    console.log('test.html created.');
   });
   
   fs.writeFile('..' + path.sep + component_name + path.sep + 'ccm.' + component_name + '.js', ccm_component, 'utf8', function (err3) {
@@ -165,8 +223,13 @@ fs.mkdir(path.join('..' + path.sep + component_name), function (err1) {
   
     fs.writeFile('..' + path.sep + component_name + path.sep + 'resources' + path.sep + 'default.css', default_css, 'utf8', function (err5) {
         if (err5) throw err5;
-        console.log('default.css created.');
+        console.log('resources/default.css created.');
       });
+
+    fs.writeFile('..' + path.sep + component_name + path.sep + 'resources' + path.sep + 'tests.js', default_test_js, 'utf8', function (err5) {
+      if (err5) throw err5;
+      console.log('resources/test.js created.');
+    });
     
   });
 });
