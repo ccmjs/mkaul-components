@@ -1,5 +1,5 @@
 /**
- * @overview unit tests of ccm component for submit
+ * @overview unit tests of ccm component for submitting data
  * @author André Kless <andre.kless@web.de> 2017
  * @license The MIT License (MIT)
  */
@@ -27,9 +27,9 @@ ccm.files[ 'tests.js' ] = {
           name: 'foo',
           value: 'bar'
         } ),
-        onfinish: ( instance, result ) => suite.assertEquals( { foo: 'bar' }, result )
+        onfinish: ( instance, results ) => suite.assertEquals( { foo: 'bar' }, results )
       }, instance => {
-        console.log( instance.element );
+        console.log( instance.element, instance.element.querySelector( '#submit' ) );
         instance.element.querySelector( '#submit' ).click();
       } );
     }

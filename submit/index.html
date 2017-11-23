@@ -4,74 +4,227 @@
 <meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2017">
 <meta name="license" content="The MIT License (MIT)">
 
-<!--
-<script src="../../ccm/ccm.js"></script>
-<script>
-  ccm.get( { store: 'submit', url: 'https://ccm.inf.h-brs.de' }, '1507804315720X06346667960005914', console.log );
-</script>
--->
-
 <script src="ccm.submit.js"></script>
 
-<ccm-submit key='["ccm.get","resources/configs.js","demo"]'>
-
+<ccm-submit key='["ccm.get","resources/configs.js","local"]'>
   <source src="https://akless.github.io/ccm-components/blank/ccm.blank.js">
+
+  <h3>Decoration</h3>
+
   <ccm-blank></ccm-blank>
 
-  <h1>Übung 1 - Aufgabe 1</h1>
-  <p>Lesen Sie hier und reflektieren Sie dort.</p>
+  <h3>Input</h3>
 
-  <input name="team_partner" type="rating"><br>
+  <p>
+    <label>
+      color:<br>
+      <input type="color" name="color">
+    </label>
+  </p>
 
-  <input name="name" type="text"><br>
-  <input name="number" type="number"><br>
-  <textarea name="text"></textarea><br>
+  <p>
+    <label>
+      date:<br>
+      <input type="date" name="date">
+    </label>
+  </p>
 
-  <h3>Select</h3>
-  <label>
-    <div>Künstler(in):</div>
-    <select name="top5" size="5" multiple="multiple">
-      <option>Michael Jackson</option>
-      <option>Tom Waits</option>
-      <option>Nina Hagen</option>
-      <option>Marianne Rosenberg</option>
-    </select>
-  </label>
+  <p>
+    <label>
+      datetime-local:<br>
+      <input type="datetime-local" name="datetime-local">
+    </label>
+  </p>
 
-  <h3>Radio</h3>
-  <fieldset>
-    <input type="radio" id="rmc" name="Zahlmethode" value="Mastercard">
-    <label for="rmc"> Mastercard</label>
-    <input type="radio" id="rvi" name="Zahlmethode" value="Visa">
-    <label for="rvi"> Visa</label>
-    <input type="radio" id="rae" name="Zahlmethode" value="AmericanExpress">
-    <label for="rae">AmericanExpress</label>
-  </fieldset>
+  <p>
+    <label>
+      email:<br>
+      <input type="email" name="email">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      month:<br>
+      <input type="month" name="month">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      password:<br>
+      <input type="password" name="password">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      search:<br>
+      <input type="search" name="search">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      tel:<br>
+      <input type="tel" name="tel">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      text:<br>
+      <input type="text" name="text">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      time:<br>
+      <input type="time" name="time">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      url:<br>
+      <input type="url" name="url">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      week:<br>
+      <input type="week" name="week">
+    </label>
+  </p>
+
+  <h3>Number</h3>
+
+  <p>
+    <label>
+      number:<br>
+      <input type="number" name="number">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      range:<br>
+      <input type="range" name="range" min="1" max="10">
+    </label>
+  </p>
 
   <h3>Checkbox</h3>
+
+  <p>
+    <label>
+      checkbox: <input type="checkbox" name="checkbox">
+    </label>
+  </p>
+
   <fieldset>
-    <input type="checkbox" id="cmc" name="Checkbox" value="Mastercard">
-    <label for="cmc"> Mastercard</label>
-    <input type="checkbox" id="cvi" name="Checkbox" value="Visa">
-    <label for="cvi"> Visa</label>
-    <input type="checkbox" id="cae" name="Checkbox" value="AmericanExpress">
-    <label for="cae">AmericanExpress</label>
+    <legend>multi-checkbox</legend>
+    <label>
+      checkbox A: <input type="checkbox" name="multi-checkbox" value="A"> &nbsp;
+    </label>
+    <label>
+      checkbox B: <input type="checkbox" name="multi-checkbox" value="B"> &nbsp;
+    </label>
+    <label>
+      checkbox C: <input type="checkbox" name="multi-checkbox" value="C">
+    </label>
   </fieldset>
 
-  <label>First Name
-    <input type="text" name="firstname">
-  </label>
+  <h3>Radio</h3>
 
+  <fieldset>
+    <legend>radio</legend>
+    <label>
+      radio A: <input type="radio" name="radio" value="A"> &nbsp;
+    </label>
+    <label>
+      radio B: <input type="radio" name="radio" value="B"> &nbsp;
+    </label>
+    <label>
+      radio C: <input type="radio" name="radio" value="C">
+    </label>
+  </fieldset>
 
-  <label>Name
-    <input type="text" name="name">
-  </label>
+  <h3>Select</h3>
 
+  <p>
+    <label>
+      select:<br>
+      <select name="select">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+    </label>
+  </p>
 
-  <label>Vita
-    <textarea name="vita" placeholder="Your Vita here"></textarea>
-  </label>
+  <p>
+    <label>
+      multi-select:<br>
+      <select name="multi-select" multiple>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+    </label>
+  </p>
 
-  <button id="submit">Submit</button>
+  <h3>Textarea</h3>
+
+  <p>
+    <label>
+      textarea:<br>
+      <textarea name="textarea"></textarea>
+    </label>
+  </p>
+
+  <h3>Special</h3>
+
+  <p>
+    <label>
+      complex-data:<br>
+      <select name="complex-data">
+        <option value="{'A':{'B':'C'}}">object</option>
+        <option value="['A','B','C']">array</option>
+        <option value="{'A':['B','C']}">both</option>
+      </select>
+    </label>
+  </p>
+
+  <p>
+    <label>
+      deep.property:<br>
+      <input type="text" name="deep.property">
+    </label>
+  </p>
+
+  <h3><i>ccm</i>-based Input Elements</h3>
+
+  <fieldset>
+    <legend>cloze_builder:</legend>
+    <input type="cloze_builder" name="cloze_builder">
+  </fieldset>
+
+  <br>
+
+  <fieldset>
+    <legend>teambuild_builder:</legend>
+    <input type="teambuild_builder" name="teambuild_builder">
+  </fieldset>
+
+  <br>
+
+  <fieldset>
+    <legend>thumb_rating:</legend>
+    <input type="thumb_rating" name="thumb_rating">
+  </fieldset>
+
+  <h3>Submit</h3>
 
 </ccm-submit>
