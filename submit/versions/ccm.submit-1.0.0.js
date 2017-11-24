@@ -3,12 +3,7 @@
  * @author André Kless <andre.kless@web.de> 2017
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
- * TODO: callbacks (onchange, ...)
- * TODO: docu comments -> API
- * TODO: unit tests
- * TODO: builder component (not needed -> HTML focused)
- * TODO: i18n
+ * @version 1.0.0
  */
 
 {
@@ -21,10 +16,20 @@
     name: 'submit',
 
     /**
-     * recommended used framework version
-     * @type {string}
+     * component version
+     * @type {number[]}
      */
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    version: [ 1, 0, 0 ],
+
+    /**
+     * reference to used framework version
+     * @type {object}
+     */
+    ccm: {
+      url: 'https://akless.github.io/ccm/version/ccm-12.8.0.min.js',
+      integrity: 'sha384-Z9a6XNKaNetgzAttxGs10YlOi0jNjGACggebpAKRvOgV56M1swC2HNJowR89c3gE',
+      crossorigin: 'anonymous'
+    },
 
     /**
      * default instance configuration
