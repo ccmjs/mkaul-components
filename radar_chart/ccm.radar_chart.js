@@ -23,7 +23,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-12.8.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
 
     /**
@@ -31,7 +31,7 @@
      * @type {object}
      */
     config: {
-      dimensions: [ 'pünktlich', 'zuverlässig', 'kooperativ', 'ansprechbar', 'effektiv', 'hilfsbereit', 'durchsetzungsstark' ],
+      dimensions: [ 'pünktlich', 'zuverlässig', 'kooperativ', 'erreichbar', 'effektiv', 'hilfsbereit', 'durchsetzungsstark' ],
       candidates: { // values between 0 and 100
         first:  [ 10, 20, 30, 40, 50, 60, 70 ],  // one value per dimension
         second: [ 70, 60, 50, 40, 30, 20, 10 ]
@@ -48,12 +48,23 @@
           "fill-opacity": 0.5
         }
       },
+      css_classes: {
+        radiant_text: {
+          "font-family": "Verdana",
+          "font-size": "10"
+        }
+      },
+
+      radiant_text: 1, // add text after x data points; 1 = every
+
       html: {  // size of SVG image
         main:  {
           tag: 'svg',
-          width:"400",
-          height:"400",
+          style: 'padding: 15px;',
+          width:"230",
+          height:"200",
           viewport: "0 0 200 200",
+          // transform: "translate(10, 10)",
           inner: []
           }
       },
@@ -119,7 +130,7 @@
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
 
-        let dim_count = self.dimensions.length;
+        const dim_count = self.dimensions.length;
         let list = self.html.main.inner;
         let radiants = [];
         let polygons = {};
@@ -134,8 +145,11 @@
           const endx  = 100+100*Math.cos( angle ), endy = 100+100*Math.sin( angle );
 
           // add a radiant for every dimension
-          radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"1", stroke:"black", "stroke-dasharray":"5, 2" });
-          radiants.push({ tag: 'text', x: endx, y: endy, "font-family":"Verdana", "font-size":"10", inner: self.dimensions[ index ] });
+          radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"0.1", stroke:"black", "stroke-dasharray":"5, 2"  });
+          if ( index % self.radiant_text === 0 ){
+            radiants.push({ tag: 'circle', cx: endx, cy: endy, r: 2, fill:"black", "stroke-width":"0.1", stroke:"black" });
+            radiants.push({ tag: 'text', x: endx-10, y: endy-5, class: 'radiant_text', inner: self.dimensions[ index ] });
+          }
 
           // calculate polygons for all candidates
           Object.keys(self.candidates).map( candidate => {
@@ -167,11 +181,20 @@
         // Hack in order to get SVG rendered inside the shadow root
         self.element.innerHTML += '';
 
-        // set CSS styles from config JSON settings
+        // set CSS styles for elements with id-s from config JSON settings
         if ( self.css_styles ) Object.keys(self.css_styles).map(selector=>{
           Object.keys(self.css_styles[selector]).map(key=>{
             self.element.querySelector('#'+selector).style.setProperty(key, self.css_styles[selector][key]);
           });
+        });
+
+        // set CSS styles for elements with CSS classes from config JSON settings
+        if ( self.css_classes ) Object.keys(self.css_classes).map(selector=>{
+          Object.keys(self.css_classes[selector]).map(key=>{
+            [...self.element.querySelectorAll('.'+selector)].map( elem => {
+              elem.style.setProperty(key, self.css_classes[selector][key]);
+            });
+           });
         });
 
         if ( callback ) callback();

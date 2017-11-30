@@ -1,0 +1,105 @@
+:host {
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#form {
+    padding-left: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-radius: 6px;
+}
+
+h4 {
+    margin-top: 1em;
+    margin-bottom: 0.1em;
+}
+
+#blockchain_number {
+    width: 82%;
+}
+
+.number {
+    padding: 6px 12px;
+    font-size: 1.2em;
+    font-weight: 400;
+    line-height: 1.4em;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#hash, #prev {
+    cursor: not-allowed;
+    font-family: monospace;
+    line-height: 1.1em;
+    color: #555;
+    background-color: #d4d4d4;
+}
+
+button {
+    margin: 1em;
+    display: block;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    position: relative;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 1px rgba(0,0,0,.075);
+    background-repeat: repeat-x;
+    border-color: #245580;
+    background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
+}
+
+label {
+    white-space: nowrap;
+}
+
+input {
+    width: 90%;
+    font-size: 1.2em;
+    line-height: 1.4em;
+    color: #555;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
+textarea {
+    display: block;
+    width: 90%;
+    height: 10em;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.success {
+    background: rgb(223, 240, 216);
+}
+
+.error {
+    background: rgb(250, 220, 220);
+} 
