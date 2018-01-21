@@ -56,7 +56,8 @@
               }
             },
             { style: 'position: absolute; top: 0; right: 0; margin: 3px;', inner: [
-                { tag: 'button', inner: 'Copy', title: 'Copy to ClipBoard', onclick: copyToClipBoard, style: 'border-radius: 10px; margin: 3px; outline:0;' },
+                { tag: 'a', inner: 'Down', class: 'down', title: 'Download as File!', style: 'border-radius: 10px; margin: 3px; outline:0;appearance:button;font-size: smaller;padding:3px;border-style: solid;border-width: thin;background-color: white;color:initial;border-color: lightgrey;' },
+                { tag: 'button', inner: 'Copy', class: 'copy', title: 'Copy to ClipBoard', onclick: copyToClipBoard, style: 'border-radius: 10px; margin: 3px; outline:0;' },
                 { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
               ]
             }
@@ -66,8 +67,40 @@
         // get DOM element of <pre><code>
         var main_elem = self.element.querySelector('pre code');
 
+        var copy_button = self.element.querySelector('.copy');
+
+        // https://stackoverflow.com/questions/23211018/copy-to-clipboard-with-jquery-js-in-chrome
+        copy_button.addEventListener('copy', function (e) {
+          e.preventDefault();
+          if (e.clipboardData) {
+            e.clipboardData.setData('text/html', main_elem.innerHTML );
+          } else if (window.clipboardData) {
+            window.clipboardData.setData('Text', main_elem.innerText );
+          }
+        });
+
+        function copyToClipBoard(e) {
+          var range = document.createRange();
+          range.selectNode( main_elem );
+          var selection = window.getSelection();
+          selection.removeAllRanges();
+          if( ! selection.containsNode( main_elem ) ) selection.addRange(range);
+          document.execCommand("copy");
+          // window.getSelection().empty();
+          // e.preventDefault();
+          // e.stopPropagation();
+          // return false;
+        }
+
         // set main element content to config or lightDOM content
         var textContent = self.content || ( self.inner || self.root ).innerHTML;
+
+        // fill download link with Blob filled with textContent
+        let blob = new Blob( [ textContent ], { type: 'text/plain' } );
+        let a = self.element.querySelector('.down');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ClassName.java';
+        a.textContent = 'Download';
         
         // skip first and last new line
         // var firstBreak = textContent.indexOf('\n');
@@ -97,18 +130,6 @@
           for (var c = div.childNodes, i = c.length; i--; ) {
             if (c[i].nodeType == 1) return true;
           }
-          return false;
-        }
-        
-        function copyToClipBoard(e) {
-          var range = document.createRange();
-          range.selectNode( main_elem );
-          var selection = window.getSelection();
-          if( ! selection.containsNode( main_elem ) ) selection.addRange(range);
-          document.execCommand("Copy");
-          // window.getSelection().empty();
-          e.preventDefault();
-          e.stopPropagation();
           return false;
         }
         
