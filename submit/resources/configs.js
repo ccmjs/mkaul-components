@@ -77,6 +77,35 @@ ccm.files[ 'configs.js' ] = {
         "user": false
       }
     }
+  },
+
+  "nts": {
+    "content": [ "ccm.component", "https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.js" ],
+    "user": [ "ccm.instance", "https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.js", { "sign_on": "hbrsinfkaul" } ],
+    "logger": [ "ccm.instance", "https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.js", [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/configs.js', 'greedy' ] ],
+    "data": {
+      "store": [ "ccm.store", { "store": "se_ws17_nts_fragebogen", "url": "https://ccm.inf.h-brs.de" } ],
+      "key": "test"
+    },
+    "onfinish": {
+      "log": true,
+      "store": {
+        "settings": { "store": "se_ws17_nts_fragebogen", "url": "https://ccm.inf.h-brs.de" },
+        "key": "test",
+        "user": false,
+        "permissions": {
+          "group": {
+            "mkaul2m": true,
+            "akless2m": true
+          },
+          "access": {
+            "get": "group",
+            "set": "creator",
+            "del": "all"
+          }
+        }
+      }
+    }
   }
 
 };

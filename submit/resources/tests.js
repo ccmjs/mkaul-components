@@ -29,6 +29,7 @@ ccm.files[ 'tests.js' ] = {
         } ),
         onfinish: ( instance, results ) => suite.assertEquals( { foo: 'bar' }, results )
       }, instance => {
+        console.log( suite );
         console.log( instance.element, instance.element.querySelector( '#submit' ) );
         instance.element.querySelector( '#submit' ).click();
       } );
