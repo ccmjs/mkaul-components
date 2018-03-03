@@ -35,16 +35,202 @@
         ['Erwartungen-entsprochen', 'nicht-entsprochen'],
         ['unerfreulich', 'erfreulich'],
         ['unverständlich', 'verständlich'],
-        ['leicht zu lernen', 'schwer zu lernen']
+        ['leicht zu lernen', 'schwer zu lernen'],
+        ['erfrischend', 'einschläfernd'],
+        ['langweilig', 'spannend'],
+        ['uninteressant', 'interessant'],
+        ['unberechenbar', 'voraussagbar'],
+        ['schnell', 'langsam'],
+        ['neu', 'alt'],
+        ['unbedienbar', 'bedienbar'],
+        ['gut', 'schlecht'],
+        ['kompliziert', 'einfach'],
+        ['abstoßend', 'anziehend'],
+        ['veraltet', 'modern'],
+        ['unangenehm', 'angenehm'],
+        ['problemorientiert', 'theoretisch'],
+        ['abwechslungsreich', 'eintönig'],
+        ['zuverlässig', 'unzuverlässig'],
+        ['ineffizient', 'effizient'],
+        ['übersichtlich', 'verwirrend'],
+        ['stockend', 'flüssig'],
+        ['aufgeräumt', 'überladen'],
+        ['nützlich', 'zeitverschwendend'],
+        ['sympathisch', 'unsympathisch'],
+        ['unauffällig', 'auffällig'],
+        ['strukturiert', 'chaotisch'],
+        ['Konstruktiv', 'Destruktiv'],
+        ['Aktiv', 'Passiv'],
+        ['Kooperativ', 'Nicht-kooperativ'],
+        ['Zweckbestimmt', 'Zweckfrei'],
+        ['Kontext-orientiert', 'Kontextlos'],
+        ['Vorwissen-berücksichtigend', 'Vorwissen-ignorierend'],
+        ['Praktisch', 'Theoretisch'],
+        ['Reflektierend', 'Gedankenlos'],
+        ['Fließend', 'Stockend'],
+        ['Innovativ', 'Alt-bekannt']
       ],
       values: [
-        [ 1, 3, 4 ],
-        [ 4, 3, 1 ],
-        [ 2, 4, 5 ],
-        [ 3, 5, 2 ]
+        [
+          "3.01",
+          "5.12",
+          "5.40",
+          "4.13",
+          "3.80",
+          "5.05",
+          "5.19",
+          "4.41",
+          "4.65",
+          "4.43",
+          "4.78",
+          "4.00",
+          "4.46",
+          "4.76",
+          "5.17",
+          "4.77",
+          "4.08",
+          "3.70",
+          "4.63",
+          "4.69",
+          "4.08",
+          "4.66",
+          "4.12",
+          "4.28",
+          "3.62",
+          "4.38",
+          "4.25",
+          "3.81",
+          "3.69",
+          "3.58",
+          "3.70",
+          "3.55",
+          "3.78",
+          "4.08",
+          "3.71",
+          "4.29",
+          "4.35"
+        ],
+        [
+          "2.54",
+          "4.92",
+          "5.11",
+          "3.61",
+          "3.99",
+          "4.42",
+          "4.54",
+          "4.33",
+          "3.85",
+          "4.28",
+          "4.65",
+          "3.62",
+          "4.63",
+          "4.43",
+          "4.92",
+          "4.70",
+          "4.10",
+          "3.84",
+          "3.75",
+          "4.92",
+          "3.23",
+          "4.73",
+          "3.48",
+          "3.83",
+          "3.28",
+          "3.94",
+          "3.47",
+          "3.35",
+          "3.36",
+          "3.24",
+          "3.06",
+          "3.10",
+          "3.65",
+          "4.10",
+          "3.47",
+          "3.91",
+          "4.18"
+        ],
+        [
+          "3.09",
+          "4.77",
+          "5.02",
+          "4.09",
+          "4.16",
+          "4.95",
+          "5.02",
+          "4.09",
+          "4.76",
+          "3.95",
+          "4.58",
+          "4.05",
+          "4.35",
+          "4.63",
+          "5.21",
+          "4.63",
+          "3.93",
+          "3.88",
+          "4.86",
+          "4.33",
+          "4.12",
+          "4.30",
+          "4.28",
+          "4.40",
+          "3.56",
+          "4.67",
+          "4.21",
+          "3.83",
+          "3.74",
+          "3.95",
+          "3.64",
+          "3.65",
+          "3.47",
+          "3.93",
+          "3.72",
+          "4.36",
+          "4.35"
+        ],
+        [
+          "2.47",
+          "5.30",
+          "5.25",
+          "3.58",
+          "3.73",
+          "4.82",
+          "4.91",
+          "4.14",
+          "3.74",
+          "3.43",
+          "4.86",
+          "3.42",
+          "4.23",
+          "4.65",
+          "5.30",
+          "5.00",
+          "4.28",
+          "3.67",
+          "3.79",
+          "5.16",
+          "3.48",
+          "4.88",
+          "3.77",
+          "3.72",
+          "3.19",
+          "4.53",
+          "3.63",
+          "3.35",
+          "3.19",
+          "2.98",
+          "2.93",
+          "3.00",
+          "3.44",
+          "4.28",
+          "3.40",
+          "3.77",
+          "3.53"
+        ]
       ],
       raster: [1,2,3,4,5,6,7],
       colors: ['red','blue','orange','green'],
+      // ignore: [0,2],
       html: {
         main:  {
           tag: 'svg', // no width and height meaning responsive 100%
@@ -121,8 +307,12 @@
         const svg_element_list = self.html.main.inner;
         const start = { x: svg_element_list[0].x, y: svg_element_list[0].y };
         const raster_width = svg_element_list[0].width / (self.raster.length+1);
-        const fontSize = 14;
+        const fontSize = 15;
         const viewBox = self.html.main.viewBox.split(' ');
+
+        if (self.ignore){
+          self.ignore.map(i=>delete self.values[i]);
+        }
 
         // Draw vertical raster lines
         self.raster.map((next,index)=>{
@@ -144,8 +334,8 @@
 
         // write legend texts left and right of rectangle
         self.pairs.map((pair, index)=>{
-          svg_element_list.push({ tag: 'text', fill: 'black', x: 4, y: start.y+index*fontSize, class: 'legend', inner: pair[0] });
-          svg_element_list.push({ tag: 'text', fill: 'black', x: 0.75*viewBox[2], y: start.y+index*fontSize, class: 'legend', inner: pair[1] });
+          svg_element_list.push({ tag: 'text', fill: 'black', x: 4, y: 4+start.y+index*fontSize, class: 'legend', inner: pair[0] });
+          svg_element_list.push({ tag: 'text', fill: 'black', x: 0.75*viewBox[2], y: 4+start.y+index*fontSize, class: 'legend', inner: pair[1] });
         });
 
         // Draw Polyline for every value line ( = series )
@@ -155,15 +345,39 @@
             const x = start.x+raster_width*value;
             path.d = 'M '+ x +' '+start.y+' ';
             svg_element_list.push( { tag: 'circle', cx: x, cy: start.y, r: 2, fill: self.colors[series_index] } );
+            svg_element_list.push({ tag: 'text', "font-size": 6, fill: self.colors[series_index], x: x-8, y: start.y-4, class: 'legend', inner: value });
           });
           series.slice(1).map((value,value_index)=>{
             const x = start.x+raster_width*value;
             const y = (value_index+1)*fontSize+start.y;
             path.d += 'L '+x+' '+y+' ';
             svg_element_list.push( { tag: 'circle', cx: x, cy: y, r: 2, fill: self.colors[series_index] } );
+            svg_element_list.push({ tag: 'text', "font-size": 6, fill: self.colors[series_index], x: x-8, y: y-4, class: 'legend', inner: value });
           });
           svg_element_list.push( path );
         });
+
+        // Collision detection
+        const all_texts = svg_element_list.filter(elem=>elem.tag==='text');
+        let ready = false;
+        while ( ! ready ){
+          ready = true;
+          all_texts.map(text1=>{
+            all_texts.map(text2=>{
+              if ((text1 !== text2) && (text1.y===text2.y) && (Math.abs(text1.x-text2.x)<10)){
+                // make the great one even greater (more distance)
+                ready = false;
+                let diff = text1.x - text2.x;
+                // if (parseFloat(text1.value)<parseFloat(text2.value)){
+                if (diff < 0){
+                  text2.x += 12-Math.abs(diff);
+                } else {
+                  text1.x += 12-Math.abs(diff);
+                }
+              }
+            });
+          });
+        }
 
         // prepare main HTML structure
         const main_elem = $.html( self.html.main );
