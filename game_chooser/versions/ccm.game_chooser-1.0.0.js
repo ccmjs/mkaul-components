@@ -14,11 +14,7 @@
     name: 'game_chooser',
     version: [ 1, 0, 0 ],
   
-    ccm: {
-      url: 'https://akless.github.io/ccm/version/ccm-10.0.0.min.js',
-      integrity: 'sha384-EyEx2M7vmFe85ReAzY7pE8lPePRHb5YyEuVBKrfI3RugbCER4bn+9rmPAmC3vn9Y',
-      crossorigin: 'anonymous'
-    },
+    ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
   
     config: {
       
