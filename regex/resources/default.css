@@ -14,12 +14,12 @@ input.regex, input.options {
     border-width: 0.3em;
 }
 
-ul {
+ul .feedback_list {
     margin: 0.2em;
     padding: 0;
 }
 
-li {
+li .feedback_list {
     list-style-type: none;
     margin: 0.2em;
     padding-left: 0.2em;

@@ -87,7 +87,7 @@ h4 {
     background-color: #d4d4d4;
 }
 
-button.crypto {
+button {
     margin-top: 1em;
     margin-bottom: 1em;
     display: block;
@@ -121,7 +121,7 @@ label {
   white-space: nowrap;
 }
 
-input.crypto {
+input {
     width: 90%;
     font-size: 1.2em;
     line-height: 1.2em;
@@ -132,7 +132,7 @@ input.crypto {
     font-family: monospace;
 }
 
-textarea.crypto {
+textarea {
     display: block;
     width: 90%;
     height: 10em;
@@ -164,29 +164,28 @@ textarea.crypto {
               { tag: 'label', for: 'blockchain_number', title: 'Number of Block in Chain  ', inner: [
                 { tag: 'h4', inner: 'Block:' },
                 { tag: 'span', class: 'number', inner: '#' },
-                { tag: 'input', id: 'blockchain_number', class: 'crypto', type: 'text', value: 1, onkeyup: '%onkeyup%' }
+                { tag: 'input', id: 'blockchain_number', type: 'text', value: 1, onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'nonce', title: 'number to be changed until the difficulty is met', inner: [
                 { tag: 'h4', inner: 'Nonce:' },
-                { tag: 'input', id: 'nonce', class: 'crypto', type: 'text', value: 11316, onkeyup: '%onkeyup%' }
+                { tag: 'input', id: 'nonce', type: 'text', value: 11316, onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'data', title: 'data area', inner: [
                 { tag: 'h4', inner: 'Data:' },
-                { tag: 'textarea', class: 'crypto', id: 'data', rows: 10, placeholder: 'Enter your data here', onkeyup: '%onkeyup%' }
+                { tag: 'textarea', id: 'data', rows: 10, placeholder: 'Enter your data here', onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'prev', title: 'hash value of previous block', inner: [
                 { tag: 'h4', inner: 'Prev:' },
-                { tag: 'input', id: 'prev', class: 'crypto', type: 'text' }
+                { tag: 'input', id: 'prev', type: 'text' }
               ] },
               { tag: 'label', for: 'hash', title: 'hash value of all fields above together', inner: [
                 { tag: 'h4', inner: 'Hash:' },
-                { tag: 'input', id: 'hash', class: 'crypto', type: 'text', disabled: 'disabled' }
+                { tag: 'input', id: 'hash', type: 'text', disabled: 'disabled' }
               ] },
-              { tag: 'button', class: 'mine crypto', inner: 'Mine', onclick: '%mine%', title: 'Block Mining: Compute Hash with difficulty' }
+              { tag: 'button', class: 'mine', inner: 'Mine', onclick: '%mine%', title: 'Block Mining: Compute Hash with difficulty' }
             ] }
           ]
-        },
-        plus: { tag: 'button', class: 'plus crypto', inner: '+', onclick: '%plus%', title: 'Generate next block in blockchain' },
+        }
       },
       logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_cryptoblock' ] ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/cryptoblock/resources/default.css' ],
@@ -262,12 +261,9 @@ textarea.crypto {
           PATTERN += '0';
         }
 
-        plus({ block: block, initial_minining: false }, callback ).call( self, self );
+        plus(block).call( self, self );
 
-        if ( callback ) callback();
-
-        function plus( args, callback ){
-          let block = args.block;
+        function plus(block){
           return function(e){
             if ( e && ( e === self || e.target.classList.contains('plus') ) ){
               e && e.preventDefault && e.preventDefault();
@@ -279,12 +275,7 @@ textarea.crypto {
               self.logger && self.logger.log( 'plus', { block_number: block.block_number } );
 
               // prepare main HTML structure
-              const main_elem = $.html( self.html.main,
-                { onkeyup: onkeyup(block),
-                  mine: mine_click(block),
-                  plus: plus({ block: block, initial_minining: true })
-                }
-              );
+              const main_elem = $.html( self.html.main, { onkeyup: onkeyup(block), mine: mine_click(block), plus: plus(block) } );
 
               // select inner containers
               block.block_element = main_elem.querySelector( '#block' );
@@ -301,10 +292,9 @@ textarea.crypto {
               block.blockchain_number.addEventListener('keyup', onkeyup(block));
               block.nonce.addEventListener('keyup', onkeyup(block));
               block.data.addEventListener('keyup', onkeyup(block));
-              block.prev.addEventListener('keyup', onkeyup(block));
               block.mine_button.addEventListener('click', mine_click(block));
 
-              if ( args.initial_minining ) mine_click(block).call(self);
+              mine_click(block).call(self);
 
               const prev_block = chain[chain.length-2];
               block.prev.value = prev_block.hash.value;
@@ -318,8 +308,8 @@ textarea.crypto {
                 block.plus_button = block.previous.plus_button;
                 main_elem.appendChild( block.plus_button );
               } else {
-                block.plus_button = $.html(self.html.plus, { plus: plus({ block: block, initial_minining: true }) });
-                // block.plus_button.addEventListener( 'click', plus({ block: block, initial_minining: true }) );
+                block.plus_button = $.html({ tag: 'button', class: 'plus', inner: '+', onclick: '%plus%', title: 'Generate next block in blockchain' }, { plus: plus(block) });
+                // block.plus_button.addEventListener( 'click', plus(block) );
                 main_elem.appendChild( block.plus_button );
               }
 
@@ -335,9 +325,8 @@ textarea.crypto {
               self.element.appendChild( block_div );
 
               updateHash(block);
-
             }
-          };
+          }
         }
 
         function updateHash(block) {
@@ -427,6 +416,7 @@ textarea.crypto {
           return block.blockchain_number.value + block.nonce.value + block.data.value + block.prev.value;
         }
 
+        if ( callback ) callback();
       };
 
     }

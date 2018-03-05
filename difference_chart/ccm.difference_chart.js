@@ -23,7 +23,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-12.8.0.min.js',
+    // ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
     ccm: '//akless.github.io/ccm/ccm.js',
 
     /**

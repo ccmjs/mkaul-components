@@ -6,12 +6,12 @@
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
- * TODO: multilingualism
+ * TODO: i18n
  */
 
 {
 
-  const component  = {
+  var component  = {
 
     /**
      * unique component name
@@ -33,7 +33,7 @@
     config: {
       server: 'https://kaul.inf.h-brs.de/data/2017/se1/',
 
-      // additional config parameters tobe merged into loader config
+      // additional config parameters to be merged into loader config
       keys: { semester: "172", fach: "se" },
 
       // menu item format = [ button label, title label, filename ]

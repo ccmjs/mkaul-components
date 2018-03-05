@@ -9,6 +9,8 @@
   var component  = {
 
     name: 'parkhaus',
+
+    version: [ 1, 0, 0 ],
   
     ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
     // ccm: '//akless.github.io/ccm/ccm.js',
@@ -103,77 +105,39 @@
             }, self.delay);
           }
         }
-
-        class Parkhaus {
-          constructor(x,y){
-            this._x = x;
-            this._y = y;
-            this._map = new Map();
-            this._empty = '_';
-          }
-          index(i,j){
-            return j*this._x + i;
-          }
-          getSlot(i,j){
-            if (i>=this._x) throw new Error('x too large ' + i);
-            if (j>=this._y) throw new Error('y too large ' + j);
-            return this._map.get(this.index(i,j)).toString() || this._empty;
-          }
-          setSlot(i,j,value){
-            if (i>=this._x) throw new Error('x too large ' + i);
-            if (j>=this._y) throw new Error('y too large ' + j);
-            this._map.set(this.index(i,j), value);
-          }
-          toHTML(){
-            let i,j,table;
-            table = '<table>';
-            for (i=0; i<this._x;i++){
-              table += '<tr>';
-              for (j=0; j<this._y;j++){
-                table += '<td>' + this.getSlot(i,j) + '</td>';
-              }
-              table += '</tr>';
-            }
-            table += '</table>';
-            return table;
-          }
-        }
   
-        class Counter {
-          constructor( init ){
-            this._value = init;
-          }
-          increment() { this._value += 1; };
-          decrement() { this._value -= 1; };
-          toString() { return this._value.toString(); }
+        function Counter(init) {
+          this.value = init;
+          this.increment = function () { this.value += 1; };
+          this.decrement = function () { this.value -= 1; };
+          this.toString = function () { return this.value.toString(); }
         }
         
-        class Car {
-          constructor(){
-            total += 1;
-            this.nr = total;
-          }
-          enter() {
+        function Car(){
+          total += 1;
+          this.nr = total;
+          this.enter = function () {
             cars.push( this );
             this.timer = (new Date()).getTime();
           };
-          leave() {
+          this.leave = function () {
             this.duration = (new Date()).getTime() - this.timer;
             return this.duration;
           };
-          von() {
+          this.von = function () {
             return this.timer - begin;
           };
-          bis() {
+          this.bis = function () {
             return this.von() + this.dauer();
           };
-          dauer() {
+          this.dauer = function () {
             return this.duration;
           };
-          preis() {
+          this.preis = function () {
             return ' € ' + parseFloat(Math.round(this.dauer() * price_factor * 100) / 100).toFixed(2);
           }
         }
+        
       };
 
     }

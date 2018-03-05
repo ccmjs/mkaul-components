@@ -1,18 +1,19 @@
 /**
  * @overview generator for directories and files of a new component
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
  */
 
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'd3_donut';
-var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2017';
+var component_name = 'difference_chart';
+var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2018';
 var account = 'mkaul';
 
 var index_html = `<!DOCTYPE html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="${author}">
 <meta name="license" content="The MIT License (MIT)">
 <!--<script src="https://${account}.github.io/ccm-components/${component_name}/ccm.${component_name}.js"></script>-->
@@ -32,7 +33,7 @@ var ccm_component = `/**
 
 {
 
-  const component  = {
+  var component  = {   // const not working in Safari
 
     /**
      * unique component name

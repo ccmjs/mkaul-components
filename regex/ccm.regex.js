@@ -11,7 +11,7 @@
 
 {
 
-  const component  = {
+  var component  = {
 
     /**
      * unique component name
@@ -42,24 +42,24 @@
           inner: [
             { tag: 'input', type: 'text', class: 'regex', size: 40, value: '%regex%', title: 'Regulärer Ausdruck' },
             { tag: 'input', type: 'text', class: 'options', size: 5, value: '%options%', title: 'Options, e.g. ignoreCase' },
-            { tag: 'ul', inner: [
-              { tag: 'li', inner: [
+            { tag: 'ul', class: 'feedback_list', inner: [
+              { tag: 'li', class: 'feedback_list', inner: [
                 { tag: 'span', class: 'feedback' },
                 { tag: 'input', type: 'text', class: 'matching', size: 40, value: '%matching%', title: 'Text zum Testen des regulären Ausdrucks' },
                 { tag: 'span', class: 'result' }
               ] },
-              { tag: 'li', inner: [
+              { tag: 'li', class: 'feedback_list', inner: [
                 { tag: 'span', class: 'feedback' },
                 { tag: 'input', type: 'text', class: 'matching', size: 40, value: '%non_matching%', title: 'Text zum Testen des regulären Ausdrucks' },
                 { tag: 'span', class: 'result' }
               ] }
             ] },
-            { tag: 'button', class: 'plus', inner: '+', title: 'Nächster Text' },
+            { tag: 'button', class: 'plus', inner: '+', title: 'Weiteren Test hinzu fügen' },
             { tag: 'button', class: 'regex', inner: 'Eval', title: 'Neu auswerten!' },
             { class: 'result' }  // ToDo where used?
           ]
         },
-        new_li: { tag: 'li', inner: [
+        new_li: { tag: 'li', class: 'feedback_list', inner: [
           { tag: 'span', class: 'feedback' },
           { tag: 'input', type: 'text', class: 'matching', size: 40, placeholder: 'type new matching string here ...' },
           { tag: 'span', class: 'result' }
@@ -68,7 +68,7 @@
       css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/regex/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/regex/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_regex' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -124,7 +124,7 @@
       this.start = callback => {
       
         // has logger instance? => log 'start' event
-        if ( self.logger ) self.logger.log( 'start' );
+        if ( self.logger ) self.logger.log( 'start', self.data );
         
         // prepare main HTML structure
         const main_elem = $.html( self.html.main, self.data );
@@ -138,9 +138,14 @@
         const plus_button = main_elem.querySelector('button.plus');
 
         regex_button.addEventListener('click', e => {
-          all_input_fields.map(field=>{
+          all_input_fields.map( field => {
             handle_input( field );
           });
+          // has logger instance? => log 'eval' event
+          self.logger && self.logger.log( 'eval' );
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         });
 
         plus_button.addEventListener('click', e => {
@@ -152,6 +157,12 @@
           all_feedbacks.push(new_li.querySelector('span.feedback'));
           all_input_fields.push( input_field );
           handle_input( input_field );
+
+          // has logger instance? => log 'plus' event
+          self.logger && self.logger.log( 'plus' );
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
         });
 
         // 'input' is the new HTML5 event for any input or change
@@ -162,14 +173,15 @@
         // set content of own website area
         $.setContent( self.element, main_elem );
 
-        regex_input.focus();
-
         all_input_fields.map(field=>{
           handle_input( field );
         });
 
         function input_handler( event ){
           handle_input( this, event );
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
         }
 
         function handle_input( target, event ){
@@ -189,6 +201,11 @@
             regex = new RegExp( regex_input.value, options_input.value );
             if ( typeof target.value === 'string' ){
               result = regex.exec( target.value.trim() );
+              self.logger && self.logger.log( 'regex', {
+                regex_input: regex_input.value,
+                options: options_input.value,
+                result: JSON.stringify( result )
+              } );
             } else {
               event && event.preventDefault();
               event && event.stopPropagation();
@@ -227,7 +244,7 @@
 
         }
 
-        function escapeHtml( data ) {
+        function escapeHtml( data ) { // ToDo
           const map = {
             '&': '&amp;',
             '<': '&lt;',
@@ -241,7 +258,7 @@
           return data;
         }
 
-        if ( callback ) callback();
+        if ( callback && typeof callback === 'function' ) callback();
       };
 
     }

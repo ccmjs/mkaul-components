@@ -16,6 +16,10 @@ form {
     overflow: auto;
 }
 
+input {
+    /* width: 40em; */
+}
+
 code {
     font-family: monospace;
     font-size: larger;
@@ -25,6 +29,8 @@ code {
 
 fieldset {
     margin-bottom: 0.3rem;
+    margin-right: 10em;
+    background-color: lightgrey;
 }
 
 textarea {
@@ -34,8 +40,8 @@ textarea {
 }
 
 label {
-    white-space:normal;
-    /* white-space:nowrap; */
+    /* white-space:normal; */
+    white-space:nowrap;
 }
 
 .wrappable {
@@ -43,6 +49,17 @@ label {
 }
 
 button[type=submit] {
+    margin: 1.0rem;
+    padding: 0.5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border-width: 6px;
+    border-radius: 20px;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+input[type=submit] {
     margin: 1.0rem;
     padding: 0.5rem;
     padding-left: 3rem;
@@ -67,6 +84,12 @@ table {
 
 table td{
     border:1px solid;
+}
+
+img {
+    border-collapse:collapse;
+    border-style: solid;
+    border-width: thin;
 }
 
 

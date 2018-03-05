@@ -11,7 +11,7 @@
 
 {
 
-  const component  = {
+  var component  = {
 
     /**
      * unique component name
@@ -23,8 +23,8 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-12.8.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -146,9 +146,11 @@
 
           // add a radiant for every dimension
           radiants.push({ tag: 'line', x1: 100, y1: 100, x2: endx, y2: endy, class: 'radiants', "stroke-width":"0.1", stroke:"black", "stroke-dasharray":"5, 2"  });
+
+          // add text, not for every data
           if ( index % self.radiant_text === 0 ){
-            radiants.push({ tag: 'circle', cx: endx, cy: endy, r: 2, fill:"black", "stroke-width":"0.1", stroke:"black" });
-            radiants.push({ tag: 'text', x: endx-10, y: endy-5, class: 'radiant_text', inner: self.dimensions[ index ] });
+            radiants.push({ tag: 'circle', cx: endx, cy: endy, r: 2, fill:"grey", "stroke-width":"0.1", stroke:"grey" });
+            radiants.push({ tag: 'text', fill: 'grey', x: endx-3*(''+self.dimensions[ index ]).length, y: endy-5, class: 'radiant_text', inner: self.dimensions[ index ] });
           }
 
           // calculate polygons for all candidates
@@ -169,7 +171,7 @@
         list.push(...radiants);
 
         [50,100].map( radius => {
-          list.push({ tag: 'circle', cx: 100, cy: 100, r: radius, fill:"none", "stroke-width":"1", stroke:"black", "stroke-dasharray":"5, 2" });
+          list.push({ tag: 'circle', cx: 100, cy: 100, r: radius, fill:"none", "stroke-width":"0.4", stroke:"black", "stroke-dasharray":"5, 2" });
         });
         
         // prepare main HTML structure

@@ -101,7 +101,7 @@
         // console.log( 'starting exercise ' + self.for + ' in parent ' + self.parent.index );
       
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        if ( self.logger ) self.logger.log( 'start', { fkey: self.fkey, id: self.id } );
   
         if(!String.linkify) {
           String.prototype.linkify = function() {
@@ -160,7 +160,7 @@
             self.value = question_values;
           }
           
-          if ( self.logger ) self.logger.log( self.value ); // log value
+          if ( self.logger ) self.logger.log( self.value, { fkey: self.fkey, id: self.id } ); // log value
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
             event_or_value.stopPropagation();

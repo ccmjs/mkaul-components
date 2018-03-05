@@ -29,9 +29,9 @@
         main: {
           inner: [
             { tag: 'input', id: '%id%', type: 'checkbox' },
-            { tag: 'label', for: '%id%', inner: 'Zeige Liste aller eingereichten Lösungen' },
+            { tag: 'label', for: '%id%', inner: ' &nbsp; Zeige Liste aller eingereichten Lösungen ' },
             { class: 'solutions' },
-            { tag: 'a', class: 'more', inner: { tag: 'i', inner: '...more' } }
+            { tag: 'a', id: 'more', class: 'more', inner: { tag: 'i', inner: ' ...more ' }, title: 'Click for more solutions!' }
           ]
         },
         error: {
@@ -68,7 +68,7 @@
       css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/show_solutions/resources/default.css' ],
       
       user: [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js', { "sign_on": "hbrsinfkaul" } ],
-      comment: [ 'ccm.component', 'https://tkless.github.io/ccm-components/comment/versions/ccm.comment-1.0.0.js', {
+      comment: [ 'ccm.component', 'https://kaul.inf.h-brs.de/data/ccm/comment/versions/ccm.comment-1.0.0.js', {
         data: {
           store: ['ccm.store', { store: 'hbrs_ss17_se1_comments', url: 'https://ccm.inf.h-brs.de' } ],
           "permission_settings": { "access": "group" }
@@ -76,7 +76,7 @@
         logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_comment' ] ]
       } ],
       
-      voting: [ 'ccm.component', 'https://tkless.github.io/ccm-components/thumb_rating/versions/ccm.thumb_rating-1.0.0.js', {
+      voting: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/thumb_rating/versions/ccm.thumb_rating-1.0.0.js', {
         data: {
           store: ['ccm.store', { store: 'hbrs_ss17_se1_voting', url: 'wss://ccm.inf.h-brs.de' } ],
           "permission_settings": { "access": "group" }
@@ -133,6 +133,14 @@
           fach: self.fach || self.ccm.context.find(self,'fach')
         };
         if ( ! self.for ) self.for = self.root.getAttribute('for');
+
+        var default_length = 0;
+
+        if (  self.root.parentNode
+          &&  self.root.parentNode.querySelector('#'+self.for)
+          &&  self.root.parentNode.querySelector('#'+self.for).getAttribute('default') ) {
+          default_length = self.root.parentNode.querySelector('#'+self.for).getAttribute('default').length;
+        }
         
         // has logger instance? => log 'start' event
         // if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, for: self.for } );
@@ -144,10 +152,12 @@
         var solutions_div = main_elem.querySelector( '.solutions' );
         var more_link = main_elem.querySelector( '.more' );
         more_link.style.display = 'none';
-        var offset = 1;
+        var offset = 0;
 
         more_link.addEventListener('click', e => {
           offset += 10;
+          // has logger instance? => log 'more' event
+          if ( self.logger ) self.logger.log( 'more', { component: self.index, fkey: self.fkey, for: self.for } );
           proceed();
         });
 
@@ -195,6 +205,7 @@
               token: self.user.data().token,
               semester: self.keys.semester,
               fach: self.keys.fach,
+              default_length: default_length,
               all: offset
             }
           };

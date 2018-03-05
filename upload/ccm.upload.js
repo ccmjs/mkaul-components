@@ -25,10 +25,10 @@
       upload_size: 100, // max. 100 MB, see php.ini upload_max_filesize = 120M
       upload_time: 80,  // max 80 sec,  see php.ini max_execution_time = 90
       
-      content_type:  'image/*',  // which types to accept by file chooser
+      content_type:  'image/*,.jpeg,.jpg,.png',  // which types to accept by file chooser
           // see https://stackoverflow.com/questions/181214/file-input-accept-attribute-is-it-useful
       type_regex:    'image/.*', // check type via regex, or see next line:
-      suffix_regex:  '\.jpeg$|\.jpg$|\.png$|\.pdf$', // or check via name suffix
+      suffix_regex:  '\.jpeg$|\.jpg$|\.png$', // or check via name suffix
             // both regex are alternatives or may both be omitted
       html: {
         main: {
@@ -88,7 +88,7 @@
       this.start = function ( callback ) {
   
         // has logger instance? => log 'start' event
-        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
+        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
         
         // prepare main HTML structure
         var main_elem = self.ccm.helper.html( self.html.main, { accept: self.content_type } );
@@ -127,7 +127,7 @@
           }
           Object.assign( params, self.value );
           report_file_link();
-          if ( self.logger ) self.logger.log( params );
+          if ( self.logger ) self.logger.log( 'sync', params );
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
             event_or_value.stopPropagation();
@@ -155,7 +155,7 @@
             }
             Object.assign( params, self.value );
             report_file_link();
-            if ( self.logger ) self.logger.log( params );
+            if ( self.logger ) self.logger.log( 'sync', params );
             if( event_or_value instanceof Event ){
               event_or_value.preventDefault();
               event_or_value.stopPropagation();
@@ -245,7 +245,7 @@
             if (this.status == 200) {
               report_file_link();
               // has logger instance? => log 'success' event
-              if ( self.logger ) self.logger.log( 'success', { params: params } );
+              if ( self.logger ) self.logger.log( 'success', params );
             }
           };
   
