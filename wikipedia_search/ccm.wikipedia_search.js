@@ -145,7 +145,7 @@
           data => {
             results
               .empty()
-              .append(jQuery.map(data[1], value => `<li><a href="https://en.wikipedia.org/wiki/${value}" target="_blank">${value}</a></li>`));
+              .append( data[1].map( value => `<li><a href="https://en.wikipedia.org/wiki/${value}" target="_blank">${value}</a></li>`) );
           },
           error => {
             results
@@ -156,23 +156,6 @@
         
         // set content of own website area
         $.setContent( self.element, main_elem );
-
-        function createCORSRequest(method, url) {
-          // https://www.html5rocks.com/en/tutorials/cors/
-          let xhr = new XMLHttpRequest();
-          if ("withCredentials" in xhr) {
-            // XHR for Chrome/Firefox/Opera/Safari.
-            xhr.open(method, url, true);
-          } else if (typeof XDomainRequest != "undefined") {
-            // XDomainRequest for IE.
-            xhr = new XDomainRequest();
-            xhr.open(method, url);
-          } else {
-            // CORS not supported.
-            xhr = null;
-          }
-          return xhr;
-        }
 
         if ( callback ) callback();
       };
