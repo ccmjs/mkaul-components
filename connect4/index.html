@@ -3,7 +3,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
 <meta name="license" content="The MIT License (MIT)">
-<!--<script src="https://mkaul.github.io/ccm-components/connect4/ccm.connect4.js"></script>-->
+<!--<script src="https://mkaul.github.io/ccm-components/connect4/ccm.connect4.js"></script>
+
+<ccm-connect4 key='["ccm.get","resources/configs.js","demo"]'></ccm-connect4>
+
+
+-->
+<style>
+    div {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    ccm-connect4 {
+        width: 110px;
+    }
+</style>
 <script src="ccm.connect4.js"></script>
-<ccm-connect4></ccm-connect4>
-<ccm-connect4></ccm-connect4>
+<div>
+    <ccm-connect4></ccm-connect4>
+    <ccm-connect4></ccm-connect4>
+    <ccm-connect4 key='["ccm.get","resources/configs.js","demo"]'></ccm-connect4>
+</div>
+
