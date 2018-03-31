@@ -36,14 +36,24 @@
         main: {
           inner: [
             { tag: 'svg', id: 'view', xmlns: "http://www.w3.org/2000/svg",
-              viewport: "0 0 240 480",
+              // viewport: "0 0 240 480",
               inner: [
-                { tag: 'g', id: 'stage' }
-                // { tag: 'rect', x:"20", y: "284", width: 200, height: 20, fill: "white" },
-                // { tag: "text", id: "text-result", x:"20", y: "300", "font-family": "Verdana", "font-size": "18", style: "background-color: white" }
+                { tag: 'g', id: 'stage' },
+                { tag: 'rect', id: "rect-repeat", x:"20", y: "284", width: 200, height: 20, fill: "white", display: "none" },
+                { tag: "text", id: "text-repeat", x:"20", y: "300", "font-family": "Verdana", "font-size": "18", display: "none",
+                  inner: "___Press Space!___" }
               ]
             },
-            { tag: 'p', id: "text-result", "font-family": "Verdana", "font-size": "18", style: "text-align: center; color: red; background-color: lightgrey;" }
+            { tag: 'p', id: "text-result", "font-family": "Verdana", "font-size": "18", style: "text-align: center; color: red; background-color: lightgrey;" },
+            { tag: 'input',
+              id: 'speed-slider',
+              type: 'range',
+              min: 1,
+              max: 300,
+              step: 1,
+              value: 10
+            },
+            { tag: "span", id: "speed" }
           ]
         }
       },
@@ -55,8 +65,12 @@
         width: 10,
         height: 20,
         cursor: 50,
-        input: 100,
+        input: 10,
         fall: 3,
+        result: "text-result",
+        repeat: "text-repeat",
+        slider: "speed-slider",
+        speed: "speed"
       }
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/tetris/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/tetris/resources/default.css' ],
@@ -128,10 +142,49 @@
         // === SVG root structure ===
         const svg = self.element.querySelector('#' + self.opt.svgid);
         const view = svg.querySelector('#' + self.opt.stageid);
+        const text_result = self.element.querySelector('#' + self.opt.result);
+        const text_repeat = self.element.querySelector('#' + self.opt.repeat);
+        const rect_repeat = self.element.querySelector(('#' + self.opt.repeat).split('text').join('rect'));
 
         svg.setAttribute("width", self.opt.scale * self.opt.width);
         svg.setAttribute("height", self.opt.scale * self.opt.height);
         svg.style.backgroundColor = "grey";
+
+        const speed_slider = self.element.querySelector('#' + self.opt.slider);
+        const speed = self.element.querySelector('#' + self.opt.speed);
+        if ( speed_slider ){
+          speed_slider.setAttribute("width", self.opt.scale * self.opt.width + "px");
+          speed_slider.addEventListener( 'input', function(ev) {
+            if ( ! loop ){
+              self.opt.input  = this.value;
+              speed.innerText = this.value;
+            }
+            ev.preventDefault();
+          });
+          // disable key input
+          speed_slider.addEventListener( 'keydown', function(ev) {
+            switch ( ev.code ){
+              case "ArrowLeft":
+                this.value -= 1;
+                self.opt.input  = this.value;
+                speed.innerText = this.value;
+                break;
+              case "ArrowRight":
+                this.value = parseInt( this.value ) + 1;
+                self.opt.input  = this.value;
+                speed.innerText = this.value;
+                break;
+              default:
+                debugger;
+            }
+            ev.preventDefault();
+          });
+        }
+        if ( speed ){
+          speed.innerText = self.opt.input;
+        }
+
+        svg.focus();
 
         // shape of block
         const Shape = function Shape(name, color, form) {
@@ -540,7 +593,6 @@
 
         var RESET = false;
         var count_blocks = 0;
-        const text_result = self.element.querySelector('#text-result');
         var start_time = performance.now();
 
         const time_elapsed = function(){
@@ -548,7 +600,9 @@
         };
 
         const show_result = function(){
-          text_result.innerHTML = " Fill Factor = " + 2 * ( count_blocks - 1 ) + "%,<br> Time = " + time_elapsed()/1000 + " sec" ;
+          if (text_result) text_result.innerHTML = " Fill Factor = " + 2 * ( count_blocks - 1 ) + "%,<br> Time = " + time_elapsed()/1000 + " sec" ;
+          if (rect_repeat) rect_repeat.style.display = "block";
+          if (text_repeat) text_repeat.style.display = "block";
         };
 
         const tryFall = function() {
@@ -575,40 +629,52 @@
         };
 
         const keyHandler = function(event){
-          switch ( event.code ){
-            case "ArrowLeft":
+          if ( loop ){
+            svg.focus();
+            switch ( event.code ){
+              case "ArrowLeft":
+                self.logger && self.logger.log( event.code );
+                tryLeft();
+                break;
+              case "ArrowRight":
+                self.logger && self.logger.log( event.code );
+                tryRight();
+                break;
+              case "ArrowUp":
+                self.logger && self.logger.log( event.code );
+                tryRotate();
+                break;
+              case "ArrowDown":
+                self.logger && self.logger.log( event.code );
+                tryFall();
+                break;
+              case "Space":
+                self.logger && self.logger.log( event.code );
+                if ( mousePosition && mousePosition.inside() ){
+                  stop_loop();
+                }
+                break;
+              default:
+                self.logger && self.logger.log( event.code );
+                debugger;
+            }
+          } else {
+            if ( event.code === "Space" ){
               self.logger && self.logger.log( event.code );
-              tryLeft();
-              break;
-            case "ArrowRight":
-              self.logger && self.logger.log( event.code );
-              tryRight();
-              break;
-            case "ArrowUp":
-              self.logger && self.logger.log( event.code );
-              tryRotate();
-              break;
-            case "ArrowDown":
-              self.logger && self.logger.log( event.code );
-              tryFall();
-              break;
-            case "Space":
-              self.logger && self.logger.log( event.code );
-              if ( loop && mousePosition && mousePosition.inside() ){
-                stop_loop();
-              } else {
+              if ( mousePosition && mousePosition.inside() ){
                 if ( RESET ) {
                   stage.reset();
                   RESET = false;
                   count_blocks = 0;
+                  start_time = performance.now();
+                  if (rect_repeat) rect_repeat.style.display = "none";
+                  if (text_repeat) text_repeat.style.display = "none";
                 }
                 start_loop();
               }
-              break;
-            default:
-              self.logger && self.logger.log( event.code );
-              debugger;
+            }
           }
+          event.preventDefault();
         };
 
         // SVG UI for Tetris
@@ -644,7 +710,6 @@
         }
 
         const start_loop = function(){
-          start_time = performance.now();
           loop = window.setInterval(function () {
             count = (count + 1) % self.opt.fall;
             if (cursor.move.y < -0.5) tryRotate();
