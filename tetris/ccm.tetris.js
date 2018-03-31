@@ -639,24 +639,29 @@
               case "ArrowLeft":
                 self.logger && self.logger.log( event.code );
                 tryLeft();
+                event.preventDefault();
                 break;
               case "ArrowRight":
                 self.logger && self.logger.log( event.code );
                 tryRight();
+                event.preventDefault();
                 break;
               case "ArrowUp":
                 self.logger && self.logger.log( event.code );
                 tryRotate();
+                event.preventDefault();
                 break;
               case "ArrowDown":
                 self.logger && self.logger.log( event.code );
                 tryFall();
+                event.preventDefault();
                 break;
               case "Space":
                 self.logger && self.logger.log( event.code );
                 if ( mousePosition && mousePosition.inside() ){
                   stop_loop();
                 }
+                event.preventDefault();
                 break;
               default:
                 self.logger && self.logger.log( event.code );
@@ -675,10 +680,10 @@
                   if (text_repeat) text_repeat.style.display = "none";
                 }
                 start_loop();
+                event.preventDefault();
               }
             }
           }
-          event.preventDefault();
         };
 
         // SVG UI for Tetris
