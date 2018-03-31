@@ -36,10 +36,14 @@
         main: {
           inner: [
             { tag: 'svg', id: 'view', xmlns: "http://www.w3.org/2000/svg",
+              viewport: "0 0 240 480",
               inner: [
                 { tag: 'g', id: 'stage' }
+                // { tag: 'rect', x:"20", y: "284", width: 200, height: 20, fill: "white" },
+                // { tag: "text", id: "text-result", x:"20", y: "300", "font-family": "Verdana", "font-size": "18", style: "background-color: white" }
               ]
             },
+            { tag: 'p', id: "text-result", "font-family": "Verdana", "font-size": "18", style: "text-align: center; color: red; background-color: lightgrey;" }
           ]
         }
       },
@@ -424,16 +428,19 @@
 
           var listeners = {
             mousedown: function (ev) {
+              getMousePosition(ev);
               if (g.parentNode) return;
               onStart(ev);
               ev.preventDefault();
             },
             mousemove: function (ev) {
+              getMousePosition(ev);
               if (!g.parentNode) return;
               onMove(ev);
               ev.preventDefault();
             },
             mouseup: function (ev) {
+              getMousePosition(ev);
               if (!g.parentNode) return;
               onEnd();
               ev.preventDefault();
@@ -483,6 +490,7 @@
 
 
         const newBlock = function() {
+          count_blocks += 1;
           return Tetris.Block(
             0|(self.opt.width / 2) - 2, 0, 0,
             Tetris.shapes[0|(Math.random() * Tetris.shapes.length)]);
@@ -530,6 +538,19 @@
           render();
         };
 
+        var RESET = false;
+        var count_blocks = 0;
+        const text_result = self.element.querySelector('#text-result');
+        var start_time = performance.now();
+
+        const time_elapsed = function(){
+          return performance.now() - start_time;
+        };
+
+        const show_result = function(){
+          text_result.innerHTML = " Fill Factor = " + 2 * ( count_blocks - 1 ) + "%,<br> Time = " + time_elapsed()/1000 + " sec" ;
+        };
+
         const tryFall = function() {
           var next = block.fall();
           if (next.ok(stage)) {
@@ -543,7 +564,10 @@
               block = newBlock();
               if (!block.ok(stage)) {
                 // gameover
-                stage.reset();
+                stop_loop();
+                // remember to reset stage by stage.reset(); on next SPACE key
+                RESET = true;
+                show_result();
               }
               render();
             }, 10);
@@ -551,29 +575,38 @@
         };
 
         const keyHandler = function(event){
-          switch (event.key){
+          switch ( event.code ){
             case "ArrowLeft":
-              self.logger && self.logger.log( event.key );
+              self.logger && self.logger.log( event.code );
               tryLeft();
               break;
             case "ArrowRight":
-              self.logger && self.logger.log( event.key );
+              self.logger && self.logger.log( event.code );
               tryRight();
               break;
             case "ArrowUp":
-              self.logger && self.logger.log( event.key );
+              self.logger && self.logger.log( event.code );
               tryRotate();
               break;
             case "ArrowDown":
-              self.logger && self.logger.log( event.key );
+              self.logger && self.logger.log( event.code );
               tryFall();
               break;
             case "Space":
-              self.logger && self.logger.log( event.key );
-              debugger;
+              self.logger && self.logger.log( event.code );
+              if ( loop && mousePosition && mousePosition.inside() ){
+                stop_loop();
+              } else {
+                if ( RESET ) {
+                  stage.reset();
+                  RESET = false;
+                  count_blocks = 0;
+                }
+                start_loop();
+              }
               break;
             default:
-              self.logger && self.logger.log( event.key );
+              self.logger && self.logger.log( event.code );
               debugger;
           }
         };
@@ -588,14 +621,46 @@
         render();
         var cursor = SVGCursor(svg, self.opt.cursor);
         var count = 0;
-        var loop = window.setInterval(function () {
-          count = (count + 1) % self.opt.fall;
-          if (cursor.move.y < -0.5) tryRotate();
-          if (cursor.move.x < -0.5) tryLeft();
-          if (cursor.move.x > 0.5) tryRight();
-          if (cursor.move.y > 0.5) tryFall();
-          if (count === 0) tryFall();
-        }, self.opt.input);
+
+        var loop = null;
+        var mousePosition = null;
+
+        function getMousePosition(event) {
+          mousePosition = {
+            x: event.clientX,
+            y: event.clientY,
+            inside: inside
+          };
+        }
+        document.addEventListener("click", getMousePosition);
+
+        function inside(){
+          let domRect = self.element.getClientRects()[0];
+          let inner = mousePosition.x >= domRect.left &&
+            mousePosition.x <= domRect.right &&
+            mousePosition.y >= domRect.top &&
+            mousePosition.y <= domRect.bottom;
+          return inner;
+        }
+
+        const start_loop = function(){
+          start_time = performance.now();
+          loop = window.setInterval(function () {
+            count = (count + 1) % self.opt.fall;
+            if (cursor.move.y < -0.5) tryRotate();
+            if (cursor.move.x < -0.5) tryLeft();
+            if (cursor.move.x > 0.5) tryRight();
+            if (cursor.move.y > 0.5) tryFall();
+            if (count === 0) tryFall();
+          }, self.opt.input);
+        };
+
+        start_loop();
+
+        function stop_loop(){
+          window.clearInterval(loop);
+          loop = null;
+        }
 
         if ( callback ) callback();
       };
