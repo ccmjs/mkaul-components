@@ -168,16 +168,20 @@
                 this.value -= 1;
                 self.opt.input  = this.value;
                 speed.innerText = this.value;
+                ev.preventDefault();
                 break;
               case "ArrowRight":
                 this.value = parseInt( this.value ) + 1;
                 self.opt.input  = this.value;
                 speed.innerText = this.value;
+                ev.preventDefault();
+                break;
+              case "Space":
+                svg.focus();
                 break;
               default:
                 debugger;
             }
-            ev.preventDefault();
           });
         }
         if ( speed ){
