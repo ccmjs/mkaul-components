@@ -36,7 +36,10 @@
         main: {
           inner: [
             { tag: 'h1', inner: 'WebGL Demo with three.js' },
-            { tag: 'button', class: 'start', inner: 'Rotate!' }
+            { tag: 'button', class: 'start', inner: 'Stopp!' },
+            { tag: 'input', class: 'range', type: 'range', min: 1, max: 50, step: 1, value: 1 },
+            { tag: 'span', inner: '1' },
+            { tag: 'br' }
           ]
         }
       },
@@ -108,8 +111,21 @@
         // select inner containers (mostly for buttons)
         const start_button = main_elem.querySelector( 'button.start' );
         let started = true;
-        start_button.addEventListener( "click", event => { started = ! started; });
-        
+        start_button.addEventListener( "click", event => {
+          started = ! started;
+          start_button.innerText = started ? 'Stopp' : 'Rotate!';
+          event.preventDefault();
+        });
+
+        const speed_span = main_elem.querySelector( 'span' );
+        const slider = main_elem.querySelector( 'input.range' );
+        let speed = 1;
+        slider.addEventListener( "input", event => {
+          speed = event.target.valueAsNumber;
+          speed_span.innerText = speed;
+          event.preventDefault();
+        });
+
         // set content of own website area
         $.setContent( self.element, main_elem );
 
@@ -131,8 +147,8 @@
           requestAnimationFrame( animate );
 
           if ( started ){
-            mesh.rotation.x += 0.01;
-            mesh.rotation.y += 0.02;
+            mesh.rotation.x += speed * 0.01;
+            mesh.rotation.y += speed * 0.02;
 
             renderer.render( scene, camera );
           }
