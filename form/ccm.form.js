@@ -176,14 +176,17 @@
 
       this.init = function ( callback ) {
 
-        if ( ! isNaN( self.fkey.slice(-2) )) document.title = self.keys.fach.toUpperCase() + self.fkey.slice(-2);
-
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
         self.keys = {
           semester: self.semester || self.ccm.context.find(self,'semester'),
           fach: self.fach || self.ccm.context.find(self,'fach')
         };
+
+        if ( ! isNaN( self.fkey.slice(-2) )){
+          // is number
+          // document.title = self.keys.fach.toUpperCase() + self.fkey.slice(-2);
+        }
 
         // Collect the types of all inner elements with ids in this object.
         // Initially, DEADLINE and POINTS are set.

@@ -11,16 +11,18 @@
   var component  = {
 
     name: 'clock',
+
+    version: [1,0,0],
     
-    // ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       html: {
         main: { class: 'main' }
       },
-      width: "100px",
-      lit_html: [ 'ccm.module', '//kaul.inf.h-brs.de/data/ccm/lib/lit-html.js' ]
+      width: "100%",
+      lit_html: [ 'ccm.module', '//kaul.inf.h-brs.de/data/ccm/lib/lit-html.min.js' ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/clock/resources/default.css' ],
       // lit_html: [ 'ccm.load', { url: '//kaul.inf.h-brs.de/data/ccm/clock/resources/lit-html.js', attr: { type: 'module' } } ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/clock/resources/default.css' ],
@@ -44,8 +46,6 @@
       };
 
       this.start = callback => {
-        self.element.style.display = "inline";
-
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render', this.date );
 
@@ -83,12 +83,22 @@
               :host {
                 display: inline;
               }
+              .square {
+                position: relative;
+                width: ${self.width};
+                height: 0;
+                padding-bottom: 100%;
+              }
               
-             .clock-face {
+              svg {
+                position: absolute;
+              }
+              
+              .clock-face {
                 stroke: #333;
                 fill: white;
               }
-                           
+              
               .minor {
                 stroke: #999;
                 stroke-width: 0.5;
@@ -115,9 +125,9 @@
                 stroke-width: 3;
               }
             </style>
-            
+            <div class='square'> <!-- so the SVG keeps its aspect ratio -->
               
-              <svg width="${self.width}" height="${self.width}" viewBox='0 0 100 100'>
+              <svg viewBox='0 0 100 100'>
                 
                 <!-- first create a group and move it to 50,50 so
                     all co-ords are relative to the center -->
@@ -141,7 +151,7 @@
                   </g>
                 </g>
               </svg>
-
+            </div>
           `
         });
 

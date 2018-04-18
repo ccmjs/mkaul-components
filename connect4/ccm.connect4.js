@@ -35,14 +35,18 @@
     config: {
       html: {
         main: {
-          // style: "display: inline; width: 300;",
           inner: [
             { tag: "h3", inner: "Vier gewinnt!" },
             { tag: "svg" }
-            // { tag: "svg", "xml:space": "preserve", "preserveAspectRatio": "xMidYMid meet", "style": "fill-rule:evenodd", "viewBox": "-20 -140 840 840" }
           ]
         }
       },
+      color: {
+        human: "yellow",
+        machine: "red",
+        box: "blue",
+        shadow: "darkblue"
+      }
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/connect4/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/connect4/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
@@ -101,6 +105,32 @@
        */
       this.start = callback => {
 
+        Object.prototype.has = function( search ){
+          const self = this;
+          return Object.keys( search ).every( key => self[key] === search[key] );
+        };
+
+        // find sub-object in object similar to Array.prototype.find
+        // e.g. html.find(elem => elem.has({tag:"svg"}))
+        Object.prototype.find = function( search ){
+          if ( Array.isArray( this ) ){
+            for (let i=0; i<this.length; i++){
+              if ( search( this[i] ) ){
+                return this[i];
+              } else {
+                let found = this[i].find( search );
+                if ( found ) return found;
+              }
+            }
+          } else {
+            if ( search( this ) ) return this;
+            for (let elem of Object.values(this) ) {
+              let found = elem.find( search );
+              if ( found ) return found;
+            }
+          }
+        };
+
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
 
@@ -115,10 +145,10 @@
           <path id="gb"  d="M57 0l644 0c31,0 57,27 57,59l0 519c0,32 -26,58 -57,58l-644 0c-32,0 -58,-26 -58,-58l0 -519c0,-32 26,-59 58,-59zm107 13c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm105 -1c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm104 0c25,0 47,21 47,47 0,25 -22,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-627 105c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c25,0 47,21 47,47 0,26 -22,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm103 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-26 22,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c25,0 46,22 46,47 0,26 -21,47 -46,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm-631 106c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-26 22,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-629 107c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-25 22,-46 47,-46zm105 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm104 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm104 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm106 -1c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm-629 104c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c25,0 47,21 47,47 0,26 -22,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-629 102c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm104 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm104 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm106 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm-629 -514c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46z"/>
         
           <symbol viewBox="0 0 128 128" id="bluestone">
-          <circle fill="yellow" cx="64" cy="64" r="64"/>
+          <circle fill="${self.color.human}" cx="64" cy="64" r="64"/>
         </symbol>
           <symbol viewBox="0 0 128 128" id="redstone">
-          <circle fill="red" cx="64" cy="64" r="64"/>
+          <circle fill="${self.color.machine}" cx="64" cy="64" r="64"/>
         </symbol>
           <symbol viewBox="0 0 128 128" id="shadowstone">
           <circle fill="black" cx="64" cy="64" r="64" fill-opacity="0.5"/>
@@ -131,7 +161,7 @@
         </g>
         
         <g  transform="translate(9 -7)">
-        <use xlink:href="#gb" x="10" y="0" fill="darkblue"/>
+        <use xlink:href="#gb" x="10" y="0" fill="${self.color.shadow}"/>
         </g>
         
         <g id="swCurrent">
@@ -149,7 +179,7 @@
         <g id="board">
         
         </g>
-        <use xlink:href="#gb" x="10" y="0" fill="blue"/>
+        <use xlink:href="#gb" x="10" y="0" fill="${self.color.box}"/>
         
         <g fill-opacity="0">
         <rect id="r1" x="10" y="-200" width="105" height="835" />
@@ -171,19 +201,19 @@
         
           <text pointer-events="none" x="425" y="350" font-size="115" fill="red" stroke="red" stroke-width="50" text-anchor="middle">gAmE oVeR</text>
           <text pointer-events="none" x="425" y="350" font-size="115" fill="green" stroke="green" stroke-width="40" text-anchor="middle">gAmE oVeR</text>
-          <text pointer-events="none" x="425" y="350" font-size="115"  fill="blue" stroke="blue" stroke-width="30"  text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115"  fill="${self.color.box}" stroke="${self.color.box}" stroke-width="30"  text-anchor="middle">gAmE oVeR</text>
           <text pointer-events="none" x="425" y="350" font-size="115"  fill="red" stroke="red" stroke-width="20"  text-anchor="middle">gAmE oVeR</text>
           <text pointer-events="none" x="425" y="350" font-size="115"  fill="green" stroke="green" stroke-width="10"  text-anchor="middle">gAmE oVeR</text>
         
-          <text pointer-events="none" x="425" y="350" font-size="115" fill="blue" text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="${self.color.box}" text-anchor="middle">gAmE oVeR</text>
           <text id="wintext" pointer-events="none" x="425" y="700" font-size="55" fill="black" text-anchor="middle">draw ! score: 0/0</text>
         
            </g>
         </svg>`;
 
         // prepare main HTML structure
+        self.html.main.find(elem => elem.has({tag:"svg"})).inner = svg;
         const main_elem = $.html( self.html.main );
-        main_elem.children[1].innerHTML = svg;
 
         // select inner containers
         const r1 = main_elem.querySelector('#r1');

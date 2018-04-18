@@ -11,7 +11,7 @@
 
 {
 
-  const component  = {
+  var component  = {
 
     /**
      * unique component name
@@ -142,8 +142,8 @@
 
           const rect = { tag: 'rect',
             x: index * width,
-            y: height - self.boxes[ dim ] - self.styles[ dim ]["stroke-width"],
-            width: width - self.styles[ dim ]["stroke-width"],
+            y: height - self.boxes[ dim ] - self.styles[ dim ]["stroke-width"] || 1,
+            width: width - self.styles[ dim ]["stroke-width"] || 1,
             height: self.boxes[ dim ],
             inner: { tag: 'title', inner: dim + ': ' + self.boxes[ dim ] }
           };

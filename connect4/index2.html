@@ -7,18 +7,16 @@
     div {
         display: flex;
         flex-wrap: wrap;
-
     }
     ccm-connect4 {
         width: 110px;
-
     }
 </style>
 <script src="ccm.connect4.js"></script>
 <div>
-    <ccm-connect4></ccm-connect4>
-    <ccm-connect4 key='["ccm.get","resources/configs.js","green"]'></ccm-connect4>
+    <ccm-connect4 color='{"human": "yellow", "machine": "red", "box": "blue", "shadow": "darkblue"}'></ccm-connect4>
+    <ccm-connect4 color='{"human": "orange", "machine": "pink", "box": "green", "shadow": "darkgreen"}'></ccm-connect4>
     <ccm-connect4 key='["ccm.get","resources/configs.js","demo"]'></ccm-connect4>
-
+    <ccm-connect4 key='["ccm.get","resources/configs.js","green"]'></ccm-connect4>
 </div>
 

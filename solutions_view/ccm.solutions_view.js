@@ -18,7 +18,7 @@
       preset_values: {
         semester: 172,
         fach: 'se',
-        points: '+'
+        // points: '+'
       },
       solution_format: [ 'keyword', 'id', 'solution', 'points', 'stamp', 'deadline', 'uid' ],
       all_solutions: [ ["le01_program","loes01_1","package se_01;\r\n\r\npublic class HelloWorld {\r\n\tString greetings(String name){\r\n\t\treturn \"Hello \" + name;\r\n\t}\r\n}",null,"2017-10-14 19:43:44",1,'xyz'], ["le01_program","loes01_2","package se_02;",null,"2017-10-14 19:43:45",1,'xyz'] ],
@@ -64,11 +64,12 @@
             'Anonym:', { tag: 'input', type: "checkbox", name: "anonym", id: "anonym" }
           ]
         },
-        solution: { id: 'nr_%nr%', class: 'solution  g%gruppe%',
+        solution: { id: 'nr_%nr%', class: 'solution  g%gruppe% %keyword%',
           inner: [
             { tag: 'hr' },
             // { tag: 'h3', inner: ' %keyword%.%id% ' },
             { inner: [
+              ' %keyword%.%id%: ',
               { tag: 'span', class: 'solution_head anonym', inner:' %anrede% %vorname% %nachname% (%uid%) ' },
               ' Gruppe: %gruppe%, ',
               ' am %stamp%, mit %points% Punkten, Deadline: %deadline% ',
@@ -85,7 +86,13 @@
             ] },
             { class: 'solution_body' }
           ]
-        }
+        },
+        file_link: {
+          tag: 'a', href: '%href%', target: '_blank', inner: '%inner%'
+        },
+      },
+      file_link: {
+        tag: 'a', href: '%href%', target: '_blank', inner: '%inner%'
       },
       final_values: function( values, members ){ // final corrections and polishing of values
         var uid = values.uid.trim().toLowerCase();
@@ -102,8 +109,26 @@
     },
 
     Instance: function () {
+
+      /**
+       * shortcut to help functions
+       * @type {Object}
+       */
+      let $;
     
-      var self = this;
+      let self = this;
+
+      /**
+       * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
+       */
+      this.ready = callback => {
+
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
+        callback();
+      };
 
       this.start = function ( callback ) {
       
@@ -111,7 +136,7 @@
         if ( self.logger ) self.logger.log( 'render' );
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main );
+        var main_elem = $.html( self.html.main );
         var count_span = main_elem.querySelector('span.count');
 
         // select group via checkbox
@@ -155,7 +180,7 @@
         }
 
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
 
         // render all solutions
         self.all_solutions.map(function (rec, nr) {
@@ -170,183 +195,235 @@
 
             uid = uid.toLowerCase().trim();
 
-            if ( ! self.members[uid] ) console.log( "Not member: ", uid ); else {
-
-              var values = {
-                nr: nr,
-                uid: uid
-              };
-
-              values = Object.assign( values, self.preset_values );
-
-              Object.keys( self.members[ uid ] ).map( field => {
-                values[ field ] = self.members[uid][field];
-              });
-
-              self.solution_format.map( field => {
-                values[ field ] = get( rec, field ) || self.preset_values[ field ];
-              });
-
-              // final corrections and polishing of values
-              self.final_values( values, self.members );
-
-              // deep copy
-              var structure = JSON.parse(JSON.stringify(self.html.solution));
-
-              // combine solution and values
-              var single_solution = self.ccm.helper.html( structure, values );
-
-              // restore original value
-              values.solution = get(rec, 'solution'); // ToDo Workaround for Bug in ccm.helper.html transforming double quotes into single quotes
-              var solution_body = single_solution.querySelector('.solution_body');
-
-              var code_selector = single_solution.querySelector('.code_selector');
-              code_selector.addEventListener('change', (e)=>{
-                var code = (e.toElement || e.srcElement).selectedOptions[0].value;
-                var newChild;
-                switch ( code ){
-                  case 'textarea':
-                      single_solution.replaceChild( self.ccm.helper.html( {tag:'textarea', inner: values.solution } ), single_solution.lastElementChild );
-                    break;
-                  case "java":
-                    newChild = document.createElement('div');
-                    single_solution.replaceChild( newChild, single_solution.lastElementChild );
-                    self.highlight.start({root: newChild, clazz: 'java', content: values.solution});
-                    break;
-                  case "plain":
-                    newChild = document.createElement('div');
-                    single_solution.replaceChild( newChild, single_solution.lastElementChild );
-                    self.highlight.start({root: newChild, clazz: 'plain', content: values.solution});
-                    break;
-                  case "link":
-                    single_solution.replaceChild( self.ccm.helper.html( {tag:'a', target: '_blank', href: values.solution, inner: values.solution } ), single_solution.lastElementChild );
-                    break;
-                  case "editor":
-                    newChild = document.createElement('div');
-                    single_solution.replaceChild( newChild, single_solution.lastElementChild );
-                    if ( ! values.solution.ops ){
-
-                    }
-                    self.editor.start( { root: newChild }, instance => {
-                        instance.get().setContents( values.solution );
-                      });
-                    break;
-                  default:
-                    debugger;
-                    div_start( code, (inst, value) => inst.inner = value );
-                }
-              });
-
-              function typing( solution ){
-                var typ = typeof solution;
-                if ( typ === "string" ){
-                  if ( solution.startsWith('{') ) return "json";
-                  else return "string"
-                }
-                if ( typ === "object" ){
-                  if ( solution.ccm_type ) return solution.ccm_type; // ccm typing
-                  if ( solution.uml ) return "uml";
-                  if ( solution.ops ) return "editor";
-                  if ( solution.type ) return "upload";
-                  if ( Array.isArray( solution ) ) return "array";
-                  else return "object";
-                }
-                return typ;
+            if ( ! self.members[uid] ){
+              console.log( "Not member: ", uid );
+              self.members[uid] =  {
+                  "id": uid,
+                  "name": uid,
+                  "email": uid + "@smail.inf.h-brs.de",
+                  "gruppe": 0,
+                  "matrikel": "9000000",
+                  "uid": uid,
+                  "nachname": uid,
+                  "vorname": uid,
+                  "studiengang": "B.Inf",
+                  "semester": "5",
+                  "geschlecht": "M",
+                  "stamp": "2017-11-22 10:00:00"
               }
+            }
 
-              // different renderings of solution
-              var solution_type = typing( values.solution );
-              switch( solution_type ) {
-                case "textarea":
-                  solution_body.appendChild(self.ccm.helper.html({ tag: 'textarea', inner: values.solution }));
-                  code_selector.value = "textarea";
+            var values = {
+              nr: nr,
+              uid: uid
+            };
+
+            values = Object.assign( values, self.preset_values );
+
+            Object.keys( self.members[ uid ] ).map( field => {
+              if ( field !== 'id' && field !== 'semester' ) // do not overwrite reserved fields
+                values[ field ] = self.members[uid][field];
+            });
+
+            self.solution_format.map( field => {
+              values[ field ] = get( rec, field ) || self.preset_values[ field ];
+            });
+
+            // final corrections and polishing of values
+            self.final_values( values, self.members );
+
+            // deep copy
+            var structure = JSON.parse(JSON.stringify(self.html.solution));
+
+            // combine solution and values
+            var single_solution = $.html( structure, values );
+
+            // restore original value
+            values.solution = get(rec, 'solution'); // ToDo Workaround for Bug in ccm.helper.html transforming double quotes into single quotes
+            var solution_body = single_solution.querySelector('.solution_body');
+
+            var code_selector = single_solution.querySelector('.code_selector');
+            code_selector.addEventListener('change', (e)=>{
+              var code = (e.toElement || e.srcElement).selectedOptions[0].value;
+              var newChild;
+              switch ( code ){
+                case 'textarea':
+                    single_solution.replaceChild( $.html( {tag:'textarea', inner: values.solution } ), single_solution.lastElementChild );
+                  break;
+                case "java":
+                  newChild = document.createElement('div');
+                  single_solution.replaceChild( newChild, single_solution.lastElementChild );
+                  self.highlight.start({root: newChild, clazz: 'java', content: values.solution});
+                  break;
+                case "plain":
+                  newChild = document.createElement('div');
+                  single_solution.replaceChild( newChild, single_solution.lastElementChild );
+                  self.highlight.start({root: newChild, clazz: 'plain', content: values.solution});
+                  break;
+                case "link":
+                  single_solution.replaceChild( $.html( {tag:'a', target: '_blank', href: values.solution, inner: values.solution } ), single_solution.lastElementChild );
                   break;
                 case "editor":
-                  self.editor.start({root: solution_body}, function(instance){
-                      // solution_body.appendChild( instance.root );
+                  newChild = document.createElement('div');
+                  single_solution.replaceChild( newChild, single_solution.lastElementChild );
+                  if ( ! values.solution.ops ){
+                    debugger;
+                  }
+                  self.editor.start( { root: newChild }, instance => {
                       instance.get().setContents( values.solution );
                   });
-                  code_selector.value = solution_type;
-                  break;
-                case "string":
-                  self.highlight.start({ root: solution_body, class: 'java', content: values.solution.split('<').join('&lt;').split('>').join('&gt;') });
-                  code_selector.value = "java";
-                  // .replace(/(?:\\[rn])+/g, "\n").replace(/(?:\\[t])+/g, "\t") });
-                  break;
-                case "object":
-                  Object.keys( values.solution ).map(( key )=>{
-                    solution_body.appendChild(self.ccm.helper.html({ tag: 'textarea', inner: values.solution[key] }));
-                    solution_body.appendChild(self.ccm.helper.html({ tag: 'br' }));
-                  });
-                  code_selector.value = "textarea";
-                  break;
-                case "uml":
-                  self.uml.start({root: solution_body, default: values.solution.uml }, instance => {
-                    instance.sync( values.solution.uml );
-                  });
-                  code_selector.value = solution_type;
-                  break;
-                case "upload":
-                  if ( values.solution.type.startsWith('image') ){
-                    solution_body.appendChild( image_tag( get(rec, 'keyword' ), values ) );
-                  } else {
-                    self.upload.start({ root: solution_body, fkey: get(rec, 'keyword'), keys: { semester: self.preset_values.semester, fach: self.preset_values.fach, id: values.id } }, instance => {
-                      instance.sync( JSON.stringify( values.solution ) );
-                    });
-                  }
-                  code_selector.value = solution_type;
                   break;
                 default:
-                  if ( self[ solution_type ] ){
-                    self[ solution_type ].start({ root: solution_body, content: values.solution }, function(instance){
-                      // solution_body.appendChild( instance.root );
-                      instance.value = values.solution;
-                    });
-                    solution_body.appendChild( self.ccm.helper.html( { tag: 'textarea', inner: values.solution } ) );
-                  } else {
-                    solution_body.appendChild( self.ccm.helper.html( { inner: JSON.stringify( values.solution ) } ) );
-                  }
-                  code_selector.value = solution_type;
+                  debugger;
+                  div_start( code, (inst, value) => inst.inner = value );
               }
+            });
 
-              var null_button = single_solution.querySelector('.null_button');
+            function typing( solution ){
+              var typ = typeof solution;
+              if ( typ === "string" ){
+                if ( solution.startsWith('{') ) return "json";
+                else return "string"
+              }
+              if ( typ === "object" ){
+                if ( solution.ccm_type ) return solution.ccm_type; // ccm typing
+                if ( solution.uml ) return "uml";
+                if ( solution.ops ) return "editor";
+                if ( solution.type ) return "upload";
+                if ( Array.isArray( solution ) ) return "array";
+                else return "object";
+              }
+              return typ;
+            }
+
+            // different renderings of solution
+            var solution_type = typing( values.solution );
+            let file_link;
+            switch( solution_type ) {
+              case "textarea":
+                solution_body.appendChild($.html({ tag: 'textarea', inner: values.solution }));
+                code_selector.value = "textarea";
+                break;
+              case "editor":
+                self.editor.start({root: solution_body}, function(instance){
+                    // solution_body.appendChild( instance.root );
+                    instance.get().setContents( values.solution );
+                });
+                code_selector.value = solution_type;
+                break;
+              case "string":
+                self.highlight.start({ root: solution_body, class: 'java', content: values.solution.split('<').join('&lt;').split('>').join('&gt;') });
+                code_selector.value = "java";
+                // .replace(/(?:\\[rn])+/g, "\n").replace(/(?:\\[t])+/g, "\t") });
+                break;
+              case "object":
+                Object.keys( values.solution ).map(( key )=>{
+                  solution_body.appendChild($.html({ tag: 'textarea', inner: values.solution[key] }));
+                  solution_body.appendChild($.html({ tag: 'br' }));
+                });
+                code_selector.value = "textarea";
+                break;
+              case "uml":
+                self.uml.start({root: solution_body, default: values.solution.uml }, instance => {
+                  instance.sync( values.solution.uml );
+                });
+                code_selector.value = solution_type;
+                break;
+              case "upload":
+                if ( values.solution.type.startsWith('image') ){
+                  solution_body.appendChild( image_tag( get(rec, 'keyword' ), values ) );
+                } else {
+                  // https://kaul.inf.h-brs.de/data/form.php?key=ausarbeitung&semester=172&fach=sem&user=mkaul2m&token=d28a23a025b27fc0dc308565eb86be65
+                  file_link = document.createElement('a');
+                  file_link.target = '_blank';
+                  file_link.href = get_url( {
+                    url: self.server,
+                    params: { key: values.keyword, id: values.id, semester: values.semester, fach: values.fach, uid: values.uid, user: self.user.data().id, token: self.user.data().token } } );
+                  file_link.innerText = values.solution.name;
+                  solution_body.appendChild( file_link );
+                  // solution_body.appendChild( $.html( self.file_link, {
+                  //   href: get_url( {
+                  //       url: self.server,
+                  //       params: { key: values.keyword, semester: values.semester, fach: values.fach, uid: values.uid, user: self.user.data().id, token: self.user.data().token } } ),
+                  //   inner: values.solution.name }
+                  // ) );
+                  // self.upload.start({ root: solution_body, fkey: get(rec, 'keyword'), keys: { semester: self.preset_values.semester, fach: self.preset_values.fach, id: values.id, uid: values.uid } }, instance => {
+                  //   instance.sync( JSON.stringify( values.solution ) );
+                  // });
+                }
+                code_selector.value = solution_type;
+                break;
+              default:
+                if ( self[ solution_type ] ){
+                  self[ solution_type ].start({ root: solution_body, content: values.solution }, function(instance){
+                    // solution_body.appendChild( instance.root );
+                    instance.value = values.solution;
+                  });
+                  solution_body.appendChild( $.html( { tag: 'textarea', inner: values.solution } ) );
+                } else {
+                  solution_body.appendChild( $.html( { inner: JSON.stringify( values.solution ) } ) );
+                }
+                code_selector.value = solution_type;
+            }
+
+            function points_button( selector, message, service_url ){
+              var null_button = single_solution.querySelector( selector );
               if ( null_button ){
                 null_button.addEventListener('click', (e)=>{
-                  self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_nullify.php', params: { key: keyword, id: id, uid: uid } }, (result)=>{
+                  if ( confirm( message + ' für '+ values.fullname +' eintragen?' ) ){
+                    self.ccm.load({ url: service_url, params: { key: values.keyword, id: values.id, uid: uid } }, (result)=>{
+                      if (result.result) alert( message + ' für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
+                    });
+                  }
+                });
+              }
+            }
+            // ToDo points_button('.null_button', 'Null Punkte', 'https://kaul.inf.h-brs.de/data/form_nullify.php');
+
+            var null_button = single_solution.querySelector('.null_button');
+            if ( null_button ){
+              null_button.addEventListener('click', (e)=>{
+                if ( confirm( 'Null Punkte für '+ values.fullname +' eintragen?' ) ){
+                  self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_nullify.php', params: { key: values.keyword, id: values.id, uid: uid } }, (result)=>{
                     if (result.result) alert( 'Null Punkte für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
                   });
-                });
-              }
-
-              var one_button = single_solution.querySelector('.one_button');
-              if ( one_button ){
-                one_button.addEventListener('click', (e)=>{
-                  self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_onify.php', params: { key: keyword, id: id, uid: uid } }, (result)=>{
-                    if (result.result) alert( 'Einen Punkt für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
-                  });
-                });
-              }
-
-              var voll_button = single_solution.querySelector('.voll_button');
-              if ( voll_button ){
-                voll_button.addEventListener('click', (e)=>{
-                  self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_fullify.php', params: { key: keyword, id: id, uid: uid } }, (result)=>{
-                    if (result.result) alert( 'Volle Punkte für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
-                  });
-                });
-              }
-
-              self.element.appendChild( single_solution );
-
+                }
+              });
             }
+
+            var one_button = single_solution.querySelector('.one_button');
+            if ( one_button ){
+              one_button.addEventListener('click', (e)=>{
+                self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_onify.php', params: { key: values.keyword, id: values.id, uid: uid } }, (result)=>{
+                  if (result.result) alert( 'Einen Punkt für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
+                });
+              });
+            }
+
+            var voll_button = single_solution.querySelector('.voll_button');
+            if ( voll_button ){
+              voll_button.addEventListener('click', (e)=>{
+                self.ccm.load({ url: 'https://kaul.inf.h-brs.de/data/form_fullify.php', params: { key: values.keyword, id: values.id, uid: uid } }, (result)=>{
+                  if (result.result) alert( 'Volle Punkte für '+ values.fullname +' eingetragen.' ); else alert( 'Error: ' + result.result );
+                });
+              });
+            }
+
+            self.element.appendChild( single_solution );
 
           }
         });
 
         [ ...self.element.querySelectorAll('.solution') ].map( (solution_div) => {
+          if ( [...solution_div.classList].indexOf( location.hash.replace('#','') ) >= 0 ){
+            solution_div.scrollIntoView(); // ToDo
+          }
           solution_div.style.display = 'none';
         });
-        if ( groups ) checkbox[ self.group_selected ].click();
+        if ( groups && self.group_selected ) checkbox[ self.group_selected ].click();
+
+
+
         count();
 
         // ================= Helper Functions ==============
@@ -372,7 +449,7 @@
         function image_tag( key, values ) {
           var image = document.createElement('img');
           image.style = 'width: 50%; height:auto';
-          image.src = get_url({ url: self.server, params: { semester: self.semester, fach: self.fach, key: key, id: values.id, user: self.user.data().id, token: self.user.data().token } });
+          image.src = get_url({ url: self.server, params: { semester: values.semester, fach: values.fach, key: values.keyword, id: values.id, uid: values.uid, user: self.user.data().id, token: self.user.data().token } });
           return image;
         }
 

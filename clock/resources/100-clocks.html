@@ -1,0 +1,27 @@
+<!doctype html>
+<style>
+    #root {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    ccm-clock {
+        width: 100px;
+    }
+</style>
+
+<div id="root"></div>
+
+<script src="//akless.github.io/ccm/ccm.js"></script>
+<script src="//kaul.inf.h-brs.de/data/ccm/clock/ccm.clock.js"></script>
+<script>
+    const root = document.getElementById('root');
+    let newChild = null;
+    for (let i=0; i<100; i++) {
+      newChild = document.createElement('div');
+      root.appendChild( newChild );
+      ccm.start('clock', { root: newChild },
+        function () { // callback
+          // console.log("start(" + filename + ")");
+        });
+    }
+</script>

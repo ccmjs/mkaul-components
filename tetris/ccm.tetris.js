@@ -40,8 +40,8 @@
               inner: [
                 { tag: 'g', id: 'stage' },
                 { tag: 'rect', id: "rect-repeat", x:"20", y: "284", width: 200, height: 20, fill: "white", display: "none" },
-                { tag: "text", id: "text-repeat", x:"20", y: "300", "font-family": "Verdana", "font-size": "18", display: "none",
-                  inner: "___Press Space!___" }
+                { tag: "text", id: "text-repeat", x:"20", y: "300", "font-family": "Verdana", "font-size": "18", display: "none", "text-anchor": "right",
+                  inner: "Press Space!" }
               ]
             },
             { tag: 'p', id: "text-result", "font-family": "Verdana", "font-size": "18", style: "text-align: center; color: red; background-color: lightgrey;" },
@@ -51,9 +51,10 @@
               min: 1,
               max: 300,
               step: 1,
-              value: 10
+              value: 30
             },
-            { tag: "span", id: "speed" }
+            { tag: "span", id: "speed" },
+            { tag: "button", id: "repeat", inner: "Repeat!" }
           ]
         }
       },
@@ -65,12 +66,13 @@
         width: 10,
         height: 20,
         cursor: 50,
-        input: 10,
+        input: 30,
         fall: 3,
         result: "text-result",
         repeat: "text-repeat",
         slider: "speed-slider",
-        speed: "speed"
+        speed: "speed",
+        button: "repeat"
       }
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/tetris/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/tetris/resources/default.css' ],
@@ -145,6 +147,7 @@
         const text_result = self.element.querySelector('#' + self.opt.result);
         const text_repeat = self.element.querySelector('#' + self.opt.repeat);
         const rect_repeat = self.element.querySelector(('#' + self.opt.repeat).split('text').join('rect'));
+        const button_repeat = self.element.querySelector('#' + self.opt.button);
 
         svg.setAttribute("width", self.opt.scale * self.opt.width);
         svg.setAttribute("height", self.opt.scale * self.opt.height);
@@ -161,7 +164,7 @@
             }
             ev.preventDefault();
           });
-          // disable key input
+          // ensable key input
           speed_slider.addEventListener( 'keydown', function(ev) {
             switch ( ev.code ){
               case "ArrowLeft":
@@ -186,6 +189,11 @@
         }
         if ( speed ){
           speed.innerText = self.opt.input;
+        }
+        if ( button_repeat ){
+          button_repeat.addEventListener( "click", function(ev){
+            repeat(ev);
+          });
         }
 
         svg.focus();
@@ -521,7 +529,7 @@
               touchId = -1;
               onEnd();
               ev.preventDefault();
-            },
+            }
           };
 
           svg.addEventListener("mousedown", listeners.mousedown, false);
@@ -604,7 +612,7 @@
         };
 
         const show_result = function(){
-          if (text_result) text_result.innerHTML = " Fill Factor = " + 2 * ( count_blocks - 1 ) + "%,<br> Time = " + time_elapsed()/1000 + " sec" ;
+          if (text_result) text_result.innerHTML = " Fill Factor = " + (2 * ( count_blocks - 1 )).toFixed(2) + "%,<br> Time = " + (time_elapsed()/1000).toFixed(2) + " sec<br>Blocks per Sec = " + (1000 * count_blocks / time_elapsed()).toFixed(2) ;
           if (rect_repeat) rect_repeat.style.display = "block";
           if (text_repeat) text_repeat.style.display = "block";
         };
@@ -671,18 +679,26 @@
             if ( event.code === "Space" ){
               self.logger && self.logger.log( event.code );
               if ( mousePosition && mousePosition.inside() ){
-                if ( RESET ) {
-                  stage.reset();
-                  RESET = false;
-                  count_blocks = 0;
-                  start_time = performance.now();
-                  if (rect_repeat) rect_repeat.style.display = "none";
-                  if (text_repeat) text_repeat.style.display = "none";
-                }
-                start_loop();
-                event.preventDefault();
+                repeat();
               }
             }
+          }
+        };
+
+        const repeat = function(event){
+          if ( loop ){
+            stop_loop();
+          } else {
+            if ( RESET ) {
+              stage.reset();
+              RESET = false;
+              count_blocks = 0;
+              start_time = performance.now();
+              if (rect_repeat) rect_repeat.style.display = "none";
+              if (text_repeat) text_repeat.style.display = "none";
+            }
+            start_loop();
+            event && event.preventDefault();
           }
         };
 

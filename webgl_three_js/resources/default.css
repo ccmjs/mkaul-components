@@ -5,5 +5,9 @@
  */
 
 body {
+    margin: 0;
+}
+
+ccm-webgl_three_js {
     margin: 3px;
 }

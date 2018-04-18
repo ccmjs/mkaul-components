@@ -7,7 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var component_name = 'difference_chart';
+var component_name = 'webgl_three_js';
 var author = 'Manfred Kaul <manfred.kaul@h-brs.de> 2018';
 var account = 'mkaul';
 
@@ -45,8 +45,8 @@ var ccm_component = `/**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
+    ccm: '//akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration

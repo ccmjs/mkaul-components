@@ -23,7 +23,7 @@
       // teambuild: [ 'ccm.component', '//kaul.inf.h-brs.de/data/ccm/teambuild/versions/ccm.teambuild-1.0.0.js' ],
       html: {
         main: { inner: [
-          { tag: 'h1', inner: [ 'Teams für Gruppe ', { tag: 'span', class: 'group' } ] },
+          { tag: 'h1', inner: [ 'Alle Teams der Gruppe ', { tag: 'span', class: 'group' } ] },
           { class: 'teambuild' }
         ] }
       },
