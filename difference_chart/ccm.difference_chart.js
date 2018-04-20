@@ -88,12 +88,18 @@
        * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
       this.init = callback => {
-      
+
         //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
-        
-        // ToDo interprete LightDOM
+        if ( self.inner && self.inner.innerHTML.trim() ){
+
+          // interprete LightDOM
+          self.lightDOM = JSON.parse( self.inner.innerHTML );
+
+          // merge into config
+          Object.assign(self, self.lightDOM);
+
+        }
 
         callback();
       };
