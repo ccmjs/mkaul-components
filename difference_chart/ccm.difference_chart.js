@@ -24,28 +24,18 @@
      * @type {string}
      */
     // ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
-      pairs: [
-        ['Erwartungen-entsprochen', 'nicht-entsprochen'],
-        ['unerfreulich', 'erfreulich'],
-        ['unverständlich', 'verständlich'],
-        ['leicht zu lernen', 'schwer zu lernen']
-      ],
-      values: [
-        [ 1, 3, 4 ],
-        [ 4, 3, 1 ],
-        [ 2, 4, 5 ],
-        [ 3, 5, 2 ]
-      ],
+
       raster: [1,2,3,4,5,6,7],
       colors: ['red','blue','orange','green'],
       lineHeight: 15,
+      font_size: 6,
       html: {
         main:  {
           tag: 'svg', // no width and height meaning responsive 100%
@@ -58,7 +48,7 @@
         }
       },
 
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/difference_chart/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/difference_chart/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/difference_chart/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -135,15 +125,16 @@
         }
 
         // Draw vertical raster lines
+        let start_raster = self.raster[0];
         self.raster.map((next,index)=>{
-          svg_element_list.push({ tag: 'path', stroke: 'grey', "stroke-dasharray": "10, 5", "stroke-width": 0.2, d: `M${start.x+next*raster_width} ${start.y} V${svg_element_list[0].height+self.lineHeight}`  });
-          svg_element_list.push({ tag: 'text', fill: 'black', x: start.x+next*raster_width-self.lineHeight/3, y: start.y-4, class: 'legend', inner: next });
+          svg_element_list.push({ tag: 'path', stroke: 'grey', "stroke-dasharray": "10, 5", "stroke-width": 0.2, d: `M${start.x+(next-start_raster+1)*raster_width} ${start.y} V${svg_element_list[0].height+self.lineHeight}`  });
+          svg_element_list.push({ tag: 'text', fill: 'black', x: start.x+(next-start_raster+1)*raster_width-self.lineHeight/3, y: start.y-4, class: 'legend', inner: next });
         });
 
         start.y += 0.75*self.lineHeight;
 
         // Draw horizontal raster lines
-        draw_horizontal_raster_lines( self.pairs.length );
+        draw_horizontal_raster_lines( self.pairs && self.pairs.length || self.questions && self.questions.length );
 
         function draw_horizontal_raster_lines( count ){
           let i=0;
@@ -152,29 +143,56 @@
           }
         }
 
-        // write legend texts left and right of rectangle
-        self.pairs.map((pair, index)=>{
-          svg_element_list.push({ tag: 'text', fill: 'black', x: 4, y: 4+start.y+index*self.lineHeight, class: 'legend', inner: pair[0] });
-          svg_element_list.push({ tag: 'text', fill: 'black', x: 0.75*viewBox[2], y: 4+start.y+index*self.lineHeight, class: 'legend', inner: pair[1] });
-        });
+        if ( self.questions ){
+          self.questions.map((question, index)=>{
+            svg_element_list.push({ tag: 'text', "font-size": self.font_size, fill: 'black', x: 4, y: start.y+index*self.lineHeight, class: 'legend', inner: (index+1) + ". "
+                + ( self.truncate_middle ?
+                      truncate_middle(
+                        (self.truncate ?
+                            truncate(question, self.truncate) : question), self.truncate_middle )
+                        : (self.truncate ?
+                            truncate(question, self.truncate) : question)
+                  )
+            });
+          });
+        }
+
+        if ( self.pairs ){
+          // write legend texts left and right of rectangle
+          self.pairs.map((pair, index)=>{
+            svg_element_list.push({ tag: 'text', fill: 'black', x: 4, y: 4+start.y+index*self.lineHeight, class: 'legend', inner: pair[0] });
+            svg_element_list.push({ tag: 'text', fill: 'black', x: 0.75*viewBox[2], y: 4+start.y+index*self.lineHeight, class: 'legend', inner: pair[1] });
+          });
+        }
 
         // Draw Polyline for every value line ( = series )
         self.values.map((series,series_index)=>{
-          const path = { tag: 'path', stroke: self.colors[series_index], "stroke-width": 1, fill: "transparent" };
+          const path = { tag: 'path', stroke: getColor(series_index), "stroke-width": 1, fill: "transparent" };
           series.slice(0,1).map((value,value_index)=>{
             const x = start.x+raster_width*value;
             path.d = 'M '+ x +' '+start.y+' ';
-            svg_element_list.push( { tag: 'circle', cx: x, cy: start.y, r: 2, fill: self.colors[series_index] } );
-            svg_element_list.push({ tag: 'text', "font-size": 6, fill: self.colors[series_index], x: x-8, y: start.y-4, class: 'legend', inner: value });
           });
           series.slice(1).map((value,value_index)=>{
             const x = start.x+raster_width*value;
             const y = (value_index+1)*self.lineHeight+start.y;
             path.d += 'L '+x+' '+y+' ';
-            svg_element_list.push( { tag: 'circle', cx: x, cy: y, r: 2, fill: self.colors[series_index] } );
-            svg_element_list.push({ tag: 'text', "font-size": 6, fill: self.colors[series_index], x: x-8, y: y-4, class: 'legend', inner: value });
           });
           svg_element_list.push( path );
+        });
+
+        // Draw circles on top
+        self.values.map((series,series_index)=>{
+          series.slice(0,1).map((value,value_index)=>{
+            const x = start.x+raster_width*value;
+            svg_element_list.push( { tag: 'circle', cx: x, cy: start.y, r: 2, fill: getColor(series_index), inner: { tag: 'title', inner: value + " " + getSeriesTitles( series_index ) } } );
+            svg_element_list.push({ tag: 'text', "font-size": 6, fill: getColor(series_index), x: x-8, y: start.y-4, class: 'legend', inner: value });
+          });
+          series.slice(1).map((value,value_index)=>{
+            const x = start.x+raster_width*value;
+            const y = (value_index+1)*self.lineHeight+start.y;
+            svg_element_list.push( { tag: 'circle', cx: x, cy: y, r: 2, fill: getColor(series_index), inner: { tag: 'title', inner: value + " " + getSeriesTitles( series_index ) } } );
+            svg_element_list.push({ tag: 'text', "font-size": 6, fill: getColor(series_index), x: x-8, y: y-4, class: 'legend', inner: value });
+          });
         });
 
         // Collision detection
@@ -209,7 +227,86 @@
         self.element.innerHTML += '';
 
         if ( callback ) callback();
+
+
+        function truncate_middle( str, max, sep ) {
+
+          // Default to 10 characters
+          max = max || 10;
+
+          var len = str.length;
+          if (len > max) {
+
+            // Default to elipsis
+            sep = sep || "...";
+
+            var seplen = sep.length;
+
+            // If seperator is larger than character limit,
+            // well then we don't want to just show the seperator,
+            // so just show right hand side of the string.
+            if (seplen > max) {
+              return str.substr(len - max);
+            }
+
+            // Half the difference between max and string length.
+            // Multiply negative because small minus big.
+            // Must account for length of separator too.
+            var n = Math.floor(-0.5 * (max - len - seplen));
+
+            // This gives us the centerline.
+            var center = Math.floor(len / 2);
+
+            var front = str.substr(0, center - n);
+            var back = str.substr(len - center + n); // without second arg, will automatically go to end of line.
+
+            return front + sep + back;
+
+          } else return str;
+        }
       };
+
+      function truncate(str, length, ending) {
+        if (length == null) {
+          length = 100;
+        }
+        if (ending == null) {
+          ending = '...';
+        }
+        if (str.length > length) {
+          return str.substring(0, length - ending.length) + ending;
+        } else {
+          return str;
+        }
+      }
+
+      function getRandomColor() {
+        "use strict";
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      function getColor( series_index ){
+        "use strict";
+        if ( series_index < self.colors.length )
+          return self.colors[ series_index ];
+        else {
+          self.colors.push( getRandomColor() );
+          return getColor( series_index );
+        }
+      }
+
+      function getSeriesTitles( series_index ){
+        "use strict";
+        if ( self.series_titles && ( series_index < self.series_titles.length ) )
+          return self.series_titles[ series_index ];
+        else
+          return "getSeriesTitles(" + series_index + " )";
+      }
 
     }
 
