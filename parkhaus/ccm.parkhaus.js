@@ -48,6 +48,15 @@
       var self = this;
 
       this.start = function ( callback ) {
+
+        class Counter {
+          constructor( init ){
+            this._value = init;
+          }
+          increment() { this._value += 1; };
+          decrement() { this._value -= 1; };
+          toString() { return this._value.toString(); }
+        }
         
         var counter = new Counter(0);
         var total = 0;
@@ -137,15 +146,6 @@
             table += '</table>';
             return table;
           }
-        }
-  
-        class Counter {
-          constructor( init ){
-            this._value = init;
-          }
-          increment() { this._value += 1; };
-          decrement() { this._value -= 1; };
-          toString() { return this._value.toString(); }
         }
         
         class Car {
