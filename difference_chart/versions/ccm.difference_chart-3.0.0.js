@@ -18,13 +18,14 @@
      * @type {string}
      */
     name: 'difference_chart',
+    version: [ 3, 0, 0 ],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.1.min.js',
+    // ccm: 'https://akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
