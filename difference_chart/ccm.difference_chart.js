@@ -84,10 +84,64 @@
         if ( self.inner && self.inner.innerHTML.trim() ){
 
           // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
+          if ( self.inner.innerHTML.trim().startsWith('<') ){ // try XML parsing
+
+            self.lightDOM = xml2json( self.inner );
+
+          } else { // try JSON parsing
+
+            self.lightDOM = JSON.parse( self.inner.innerHTML );
+          }
+
+          // console.log( JSON.stringify( self.lightDOM, null, 2 ) );
 
           // merge into config
-          Object.assign(self, self.lightDOM);
+          Object.assign( self, self.lightDOM );
+
+        }
+
+        // returns object { "node.tag": children contents ... }
+        function xml2json( node, parent ){
+          "use strict";
+
+          const tagName = node.tagName.toUpperCase();
+          const result = {};
+          node.getAttributeNames().map(a=>{result[a]=node.getAttribute(a);});
+          if ( !result.tag ) result.tag = node.tagName.toLowerCase();
+
+          switch ( tagName ) {
+            case "DIV": // root of lightDOM
+              [...node.children].map( child => {
+                const key = child.getAttribute('tag') || child.tagName.toLowerCase();
+                result[ key ]
+                  = child.children.length === 1
+                  ? xml2json( child.firstElementChild, result )
+                  : [...child.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              });
+              return result;
+            case "MAIN":
+              result[tagName.toLowerCase()] = xml2json( node.firstElementChild );
+              return result;
+            case "ARRAY":
+              return node.innerText.trim().split(',').map(x => x.trim());
+            case "MAKE":
+              return result;
+            case "QUESTIONS": case "VALUES":
+              result[tagName.toLowerCase()] = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              return result;
+            case "SVG":
+              result.inner = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              return result;
+            case "RASTER":
+              return xml2json( node.firstElementChild );
+            case "QUESTION": case "RECT":
+              if ( node.innerText )
+                return node.innerText.trim();
+              else
+                return result;
+            default:
+              debugger;
+          }
 
         }
 
