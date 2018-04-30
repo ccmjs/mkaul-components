@@ -24,11 +24,8 @@
      * reference to used framework version
      * @type {Object}
      */
-    ccm: {
-      url: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.2.js',
-      integrity: 'sha384-TV18s4Ot1nWu1t+AbWgIHtDNxOTM2K4C+nmOfF2NOiMgf6Vz0ChipVQglQpA09YI',
-      crossorigin: 'anonymous'
-    },
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.3.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
