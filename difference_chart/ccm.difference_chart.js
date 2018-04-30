@@ -23,8 +23,8 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.2.js',
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -93,7 +93,7 @@
             self.lightDOM = JSON.parse( self.inner.innerHTML );
           }
 
-          // console.log( JSON.stringify( self.lightDOM, null, 2 ) );
+          console.log( JSON.stringify( self.lightDOM, null, 2 ) );
 
           // merge into config
           Object.assign( self, self.lightDOM );
@@ -123,7 +123,7 @@
               result[tagName.toLowerCase()] = xml2json( node.firstElementChild );
               return result;
             case "ARRAY":
-              return node.innerText.trim().split(',').map(x => x.trim());
+              return node.innerText.trim().split(',').map(x => parseInt(x.trim()));
             case "MAKE":
               return result;
             case "QUESTIONS": case "VALUES":
@@ -170,8 +170,8 @@
         if ( self.logger ) self.logger.log( 'start' );
 
         const svg_element_list = self.html.main.inner;
-        const start = { x: svg_element_list[0].x, y: svg_element_list[0].y };
-        const raster_width = svg_element_list[0].width / (self.raster.length+1);
+        const start = { x: parseInt(svg_element_list[0].x), y: parseInt(svg_element_list[0].y) };
+        const raster_width = parseInt(svg_element_list[0].width) / (self.raster.length+1);
         const viewBox = self.html.main.viewBox.split(' ');
 
         if (self.ignore){

@@ -2,7 +2,7 @@
  * @overview ccm component for difference_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version 3.0.0
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -21,11 +21,14 @@
     version: [ 3, 0, 0 ],
 
     /**
-     * recommended used framework version
-     * @type {string}
+     * reference to used framework version
+     * @type {Object}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.1.min.js',
-    // ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: {
+      url: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.2.js',
+      integrity: 'sha384-TV18s4Ot1nWu1t+AbWgIHtDNxOTM2K4C+nmOfF2NOiMgf6Vz0ChipVQglQpA09YI',
+      crossorigin: 'anonymous'
+    },
 
     /**
      * default instance configuration
@@ -85,10 +88,64 @@
         if ( self.inner && self.inner.innerHTML.trim() ){
 
           // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
+          if ( self.inner.innerHTML.trim().startsWith('<') ){ // try XML parsing
+
+            self.lightDOM = xml2json( self.inner );
+
+          } else { // try JSON parsing
+
+            self.lightDOM = JSON.parse( self.inner.innerHTML );
+          }
+
+          console.log( JSON.stringify( self.lightDOM, null, 2 ) );
 
           // merge into config
-          Object.assign(self, self.lightDOM);
+          Object.assign( self, self.lightDOM );
+
+        }
+
+        // returns object { "node.tag": children contents ... }
+        function xml2json( node, parent ){
+          "use strict";
+
+          const tagName = node.tagName.toUpperCase();
+          const result = {};
+          node.getAttributeNames().map(a=>{result[a]=node.getAttribute(a);});
+          if ( !result.tag ) result.tag = node.tagName.toLowerCase();
+
+          switch ( tagName ) {
+            case "DIV": // root of lightDOM
+              [...node.children].map( child => {
+                const key = child.getAttribute('tag') || child.tagName.toLowerCase();
+                result[ key ]
+                  = child.children.length === 1
+                  ? xml2json( child.firstElementChild, result )
+                  : [...child.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              });
+              return result;
+            case "MAIN":
+              result[tagName.toLowerCase()] = xml2json( node.firstElementChild );
+              return result;
+            case "ARRAY":
+              return node.innerText.trim().split(',').map(x => parseInt(x.trim()));
+            case "MAKE":
+              return result;
+            case "QUESTIONS": case "VALUES":
+              result[tagName.toLowerCase()] = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              return result;
+            case "SVG":
+              result.inner = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+              return result;
+            case "RASTER":
+              return xml2json( node.firstElementChild );
+            case "QUESTION": case "RECT":
+              if ( node.innerText )
+                return node.innerText.trim();
+              else
+                return result;
+            default:
+              debugger;
+          }
 
         }
 
@@ -117,8 +174,8 @@
         if ( self.logger ) self.logger.log( 'start' );
 
         const svg_element_list = self.html.main.inner;
-        const start = { x: svg_element_list[0].x, y: svg_element_list[0].y };
-        const raster_width = svg_element_list[0].width / (self.raster.length+1);
+        const start = { x: parseInt(svg_element_list[0].x), y: parseInt(svg_element_list[0].y) };
+        const raster_width = parseInt(svg_element_list[0].width) / (self.raster.length+1);
         const viewBox = self.html.main.viewBox.split(' ');
 
         if (self.ignore){

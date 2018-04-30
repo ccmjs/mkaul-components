@@ -2,7 +2,7 @@
  * @overview ccm component for difference_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version 2.0.0
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
