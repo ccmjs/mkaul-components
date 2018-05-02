@@ -24,6 +24,9 @@
      * @type {string}
      */
     // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.3.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    // ccm: 'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/lib/ccm.js',
+    // ccm: '../lib/ccm.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -53,6 +56,7 @@
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
+
     },
 
     /**
@@ -60,7 +64,8 @@
      * @constructor
      */
     Instance: function () {
-    
+      "use strict";
+
       /**
        * own reference for inner functions
        * @type {Instance}
@@ -97,51 +102,6 @@
 
           // merge into config
           Object.assign( self, self.lightDOM );
-
-        }
-
-        // returns object { "node.tag": children contents ... }
-        function xml2json( node, parent ){
-          "use strict";
-
-          const tagName = node.tagName.toUpperCase();
-          const result = {};
-          node.getAttributeNames().map(a=>{result[a]=node.getAttribute(a);});
-          if ( !result.tag ) result.tag = node.tagName.toLowerCase();
-
-          switch ( tagName ) {
-            case "DIV": // root of lightDOM
-              [...node.children].map( child => {
-                const key = child.getAttribute('tag') || child.tagName.toLowerCase();
-                result[ key ]
-                  = child.children.length === 1
-                  ? xml2json( child.firstElementChild, result )
-                  : [...child.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
-              });
-              return result;
-            case "MAIN":
-              result[tagName.toLowerCase()] = xml2json( node.firstElementChild );
-              return result;
-            case "ARRAY":
-              return node.innerText.trim().split(',').map(x => parseInt(x.trim()));
-            case "MAKE":
-              return result;
-            case "QUESTIONS": case "VALUES":
-              result[tagName.toLowerCase()] = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
-              return result;
-            case "SVG":
-              result.inner = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
-              return result;
-            case "RASTER":
-              return xml2json( node.firstElementChild );
-            case "QUESTION": case "RECT":
-              if ( node.innerText )
-                return node.innerText.trim();
-              else
-                return result;
-            default:
-              debugger;
-          }
 
         }
 
@@ -329,6 +289,22 @@
         }
       };
 
+      this.update = function( key, newValue ){
+        "use strict";
+
+        switch( key ){
+          case "update_json":
+            Object.assign( this, JSON.parse( newValue ) );
+            break;
+          case "update_xml":
+            Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html") ) );
+            break;
+          default:
+            debugger;
+        }
+        this.start();
+      };
+
       function truncate(str, length, ending) {
         if (length == null) {
           length = 100;
@@ -369,6 +345,51 @@
           return self.series_titles[ series_index ];
         else
           return "getSeriesTitles(" + series_index + " )";
+      }
+
+      // returns object { "node.tag": children contents ... }
+      function xml2json( node, parent ){
+        "use strict";
+
+        const tagName = node.tagName.toUpperCase();
+        const result = {};
+        node.getAttributeNames().map(a=>{result[a]=node.getAttribute(a);});
+        if ( !result.tag ) result.tag = node.tagName.toLowerCase();
+
+        switch ( tagName ) {
+          case "DIV": // root of lightDOM
+            [...node.children].map( child => {
+              const key = child.getAttribute('tag') || child.tagName.toLowerCase();
+              result[ key ]
+                = child.children.length === 1
+                ? xml2json( child.firstElementChild, result )
+                : [...child.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+            });
+            return result;
+          case "MAIN":
+            result[tagName.toLowerCase()] = xml2json( node.firstElementChild );
+            return result;
+          case "ARRAY":
+            return node.innerText.trim().split(',').map(x => parseInt(x.trim()));
+          case "MAKE":
+            return result;
+          case "QUESTIONS": case "VALUES":
+          result[tagName.toLowerCase()] = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+          return result;
+          case "SVG":
+            result.inner = [...node.children].reduce((a,b)=>{a.push(xml2json(b, result));return a;},[]);
+            return result;
+          case "RASTER":
+            return xml2json( node.firstElementChild );
+          case "QUESTION": case "RECT":
+          if ( node.innerText )
+            return node.innerText.trim();
+          else
+            return result;
+          default:
+            debugger;
+        }
+
       }
 
     }
