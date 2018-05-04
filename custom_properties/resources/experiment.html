@@ -1,0 +1,28 @@
+<!doctype html>
+<style>
+    :root {
+        --param: 200px;
+    }
+    .main {
+        height: calc( 2 * var(--param) );
+        width: calc( 2 * var(--param) );
+        background-color: #00abc7;
+        border: thin solid black;
+    }
+    .sub {
+        height: var(--param);
+        width: var(--param);
+        background-color: #8959a8;
+        border: thin solid black;
+        margin: calc( 0.1 * var(--param) );
+    }
+</style>
+<div class="main">
+    <div class="sub"></div>
+</div>
+<script>
+  document.documentElement.style.setProperty('--param', '200px');
+  document.addEventListener('click', e => {
+    document.documentElement.style.setProperty('--param', e.clientX + 'px');
+  });
+</script>

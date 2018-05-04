@@ -1,0 +1,29 @@
+/**
+ * @overview default layout of ccm component custom_properties
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+
+:root {
+    --first-color: #488cff;
+    --second-color: #ffff8c;
+}
+
+#firstParagraph {
+    background-color: var(--first-color);
+    color: var(--second-color);
+}
+
+#secondParagraph {
+    background-color: var(--second-color);
+    color: var(--first-color);
+}
+
+#container {
+    --first-color: #48ff32;
+}
+
+#thirdParagraph {
+    background-color: var(--first-color);
+    color: var(--second-color);
+}
