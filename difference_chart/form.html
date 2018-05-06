@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
+<meta name="license" content="The MIT License (MIT)">
+<!--<script src="https://ccmjs.github.io/mkaul-components/difference_chart/ccm.difference_chart.js"></script>-->
+<style>
+    textarea {
+        width: 50vw;
+        height: 50vh;
+    }
+</style>
+<script src="ccm.difference_chart.js"></script>
+<ccm-difference_chart id="diff" key='["ccm.get","resources/configs.js","edit"]'></ccm-difference_chart>
+<textarea id="in"></textarea>
+<script>
+  const textarea = document.getElementById("in");
+  const diff = document.getElementById("diff");
+
+  textarea.onkeyup = function(e){
+    // diff.changeconfig = textarea.value;
+    diff.setAttribute("update_json", textarea.value);
+  };
+
+  textarea.value = `{
+      "pairs": [
+        ["Erwartungen-entsprochen", "nicht-entsprochen"],
+        ["unerfreulich", "erfreulich"],
+        ["unverständlich", "verständlich"],
+        ["leicht zu lernen", "schwer zu lernen"]
+      ],
+      "values": [
+        [ 1, 3, 4, 5 ],
+        [ 5, 4, 3, 1 ],
+        [ 2, 4, 5, 5 ],
+        [ 3, 5, 2, 4 ]
+      ],
+      "raster": [1,2,3,4,5],
+      "colors": ["red","blue","orange","green"],
+      "html": {
+        "main":  {
+          "tag": "svg",
+          "style": "border: green solid; margin: 2px;",
+          "viewBox": "0 0 600 110",
+          "inner": [
+            { "tag": "rect", "stroke": "grey", "x": 180, "y": 20, "width": 250, "height": 80, "fill": "transparent" }]}
+      }}`;
+</script>

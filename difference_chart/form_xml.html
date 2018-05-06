@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
+<meta name="license" content="The MIT License (MIT)">
+<!--<script src="https://ccmjs.github.io/mkaul-components/difference_chart/ccm.difference_chart.js"></script>-->
+<style>
+    textarea {
+        display: inline-block;
+        width: 40vw;
+        height: 50vh;
+    }
+</style>
+<script src="ccm.difference_chart.js"></script>
+<ccm-difference_chart id="diff" key='["ccm.get","resources/configs.js","edit"]'></ccm-difference_chart>
+<textarea id="injson"></textarea>
+<textarea id="inxml"></textarea>
+<script>
+  const injson = document.getElementById("injson");
+  const inxml = document.getElementById("inxml");
+  const diff = document.getElementById("diff");
+
+  injson.onkeyup = function(e){
+    // diff.changeconfig = textarea.value;
+    diff.setAttribute("update_json", injson.value);
+  };
+
+  inxml.onkeyup = function(e){
+    // diff.changeconfig = textarea.value;
+    diff.setAttribute("update_xml", inxml.value);
+  };
+
+  injson.value = `{
+      "pairs": [
+        ["Erwartungen-entsprochen", "nicht-entsprochen"],
+        ["unerfreulich", "erfreulich"],
+        ["unverständlich", "verständlich"],
+        ["leicht zu lernen", "schwer zu lernen"]
+      ],
+      "values": [
+        [ 1, 3, 4, 5 ],
+        [ 5, 4, 3, 1 ],
+        [ 2, 4, 5, 5 ],
+        [ 3, 5, 2, 4 ]
+      ],
+      "raster": [1,2,3,4,5],
+      "colors": ["red","blue","orange","green"],
+      "html": {
+        "main":  {
+          "tag": "svg",
+          "style": "border: green solid; margin: 2px;",
+          "viewBox": "0 0 600 110",
+          "inner": [
+            { "tag": "rect", "stroke": "grey", "x": 180, "y": 20, "width": 250, "height": 80, "fill": "transparent" }]}
+      }}`;
+
+  inxml.value = ` <questions>
+        <question>5 - Nutzung digitaler Angebote der deutschen Verwaltung</question>
+        <question>6 - Erreichbarkeit der Behörden</question>
+        <question>7 - Zufriedenheit</question>
+        <question>8 - Vertrauen in fachgerechte Behandlung</question>
+        <question>9 - Stand der Verwaltungsmodernisierung</question>
+        <question>24 - Once-Only-Prinzip als Bestandteil einer modernen, zukunftsgerichteten Behörde</question>
+        <question>26 - Transparenzfrage</question>
+        <question>30 - Datenschutz beim Once-Only-Prinzi</question>
+    </questions>
+    <values>
+        <array>
+            32, 44, 53, 39, 44, 54, 38, 43
+        </array>
+        <array>
+            63, 51, 42, 56, 51, 41, 57, 52
+        </array>
+    </values>
+    <raster>
+        <array>40, 50, 60</array>
+    </raster>
+    <make tag="html">
+        <main>
+            <svg style="border: thin black solid; margin: 2px;" viewBox="0 0 600 160">
+                <rect stroke="grey" x="290" y="20" width="300" height="130" fill="transparent" />
+            </svg>
+        </main>
+    </make> `;
+</script>

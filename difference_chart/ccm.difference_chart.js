@@ -23,7 +23,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.3.3.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.5.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     // ccm: 'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/lib/ccm.js',
     // ccm: '../lib/ccm.js',
@@ -297,7 +297,7 @@
             Object.assign( this, JSON.parse( newValue ) );
             break;
           case "update_xml":
-            Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html") ) );
+            Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html").body ) );
             break;
           default:
             debugger;
@@ -357,7 +357,7 @@
         if ( !result.tag ) result.tag = node.tagName.toLowerCase();
 
         switch ( tagName ) {
-          case "DIV": // root of lightDOM
+          case "BODY": case "DIV": // root of lightDOM
             [...node.children].map( child => {
               const key = child.getAttribute('tag') || child.tagName.toLowerCase();
               result[ key ]

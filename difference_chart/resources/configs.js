@@ -5,6 +5,32 @@
  */
 
 ccm.files[ 'configs.js' ] = {
+  "edit": {
+    "pairs": [
+      ["Erwartungen-entsprochen", "nicht-entsprochen"],
+      ["unerfreulich", "erfreulich"],
+      ["unverständlich", "verständlich"],
+      ["leicht zu lernen", "schwer zu lernen"]
+    ],
+    "values": [
+      [1, 3, 4, 5],
+      [5, 4, 3, 1],
+      [2, 4, 5, 5],
+      [3, 5, 2, 4]
+    ],
+    "raster": [1, 2, 3, 4, 5],
+    "colors": ["red", "blue", "orange", "green"],
+    "html": {
+      "main": {
+        "tag": "svg",
+        "style": "border: green solid; margin: 2px;",
+        "viewBox": "0 0 600 110",
+        "inner": [
+          {"tag": "rect", "stroke": "grey", "x": 180, "y": 20, "width": 250, "height": 80, "fill": "transparent"}]
+      }
+    }
+  },
+
   "demo": {
     pairs: [
       ['Erwartungen-entsprochen', 'nicht-entsprochen'],
@@ -13,21 +39,21 @@ ccm.files[ 'configs.js' ] = {
       ['leicht zu lernen', 'schwer zu lernen']
     ],
     values: [
-      [ 1, 3, 4 ],
-      [ 4, 3, 1 ],
-      [ 2, 4, 5 ],
-      [ 3, 5, 2 ]
+      [ 1, 3, 4, 5 ],
+      [ 5, 4, 3, 1 ],
+      [ 2, 4, 5, 5 ],
+      [ 3, 5, 2, 4 ]
     ],
-    raster: [1,2,3,4,5,6,7],
+    raster: [1,2,3,4,5],
     colors: ['red','blue','orange','green'],
     html: {
       main:  {
         tag: 'svg', // no width and height meaning responsive 100%
         style: 'border: green solid; margin: 2px;',
-        viewBox: "0 0 600 600", // user coordinates
+        viewBox: "0 0 600 110", // user coordinates
         // transform: "translate(10, 10)",
         inner: [
-          { tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 576, fill: "transparent" }
+          { tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 80, fill: "transparent" }
         ]
       }
     },

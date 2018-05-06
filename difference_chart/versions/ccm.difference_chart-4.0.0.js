@@ -298,7 +298,7 @@
             Object.assign( this, JSON.parse( newValue ) );
             break;
           case "update_xml":
-            Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html") ) );
+            Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html").body ) );
             break;
           default:
             debugger;
@@ -358,7 +358,7 @@
         if ( !result.tag ) result.tag = node.tagName.toLowerCase();
 
         switch ( tagName ) {
-          case "DIV": // root of lightDOM
+          case "BODY": case "DIV": // root of lightDOM
             [...node.children].map( child => {
               const key = child.getAttribute('tag') || child.tagName.toLowerCase();
               result[ key ]
