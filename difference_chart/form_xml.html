@@ -10,15 +10,22 @@
         width: 40vw;
         height: 50vh;
     }
+    button {
+        display: block;
+        margin-bottom: 1em;
+    }
 </style>
 <script src="ccm.difference_chart.js"></script>
 <ccm-difference_chart id="diff" key='["ccm.get","resources/configs.js","edit"]'></ccm-difference_chart>
+<button id="clear_button">clear</button>
 <textarea id="injson"></textarea>
 <textarea id="inxml"></textarea>
 <script>
   const injson = document.getElementById("injson");
+  document.querySelectorAll(".myClass")
   const inxml = document.getElementById("inxml");
   const diff = document.getElementById("diff");
+  const clear_button = document.getElementById("clear_button");
 
   injson.onkeyup = function(e){
     // diff.changeconfig = textarea.value;
@@ -29,6 +36,10 @@
     // diff.changeconfig = textarea.value;
     diff.setAttribute("update_xml", inxml.value);
   };
+
+  clear_button.addEventListener("click", e => {
+    diff.setAttribute("clear", "clear");
+  });
 
   injson.value = `{
       "pairs": [

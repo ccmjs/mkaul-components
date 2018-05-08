@@ -299,6 +299,12 @@
           case "update_xml":
             Object.assign( this, xml2json( new DOMParser().parseFromString( newValue, "text/html").body ) );
             break;
+          case "clear":
+            this.values = [];
+            delete this.questions;
+            delete this.pairs;
+            this.raster = [];
+            break;
           default:
             debugger;
         }
