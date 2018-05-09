@@ -116,8 +116,8 @@
             var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
       
             return this
-              .replace(urlPattern, '<a target="_blank" href="$&">$&</a>')
-              .replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>')
+              .replace(urlPattern, '<a target="_blank" rel="noopener" href="$&">$&</a>')
+              .replace(pseudoUrlPattern, '$1<a target="_blank" rel="noopener" href="http://$2">$2</a>')
               .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
           };
         }

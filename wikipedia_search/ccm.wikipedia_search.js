@@ -145,7 +145,7 @@
           data => {
             results
               .empty()
-              .append( data[1].map( value => `<li><a href="https://en.wikipedia.org/wiki/${value}" target="_blank">${value}</a></li>`) );
+              .append( data[1].map( value => `<li><a href="https://en.wikipedia.org/wiki/${value}" target="_blank" rel="noopener">${value}</a></li>`) );
           },
           error => {
             results
