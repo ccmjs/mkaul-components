@@ -21,3 +21,9 @@ body {
     font-size: larger;
     background-color: #d5ff52;
 }
+#menu_wrapper {
+    text-align: center;
+}
+#menu {
+    display: inline-block;
+}
