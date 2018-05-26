@@ -23,42 +23,57 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.2.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
-      server: 'https://kaul.inf.h-brs.de/data/2017/se1/',
+      server: 'https://kaul.inf.h-brs.de/data/2018/we/',
 
       // additional config parameters to be merged into loader config
-      keys: { semester: "172", fach: "se" },
+      keys: {
+        semester: "181",
+        fach: "we"
+      },
+
+      subconfig: [ "https://kaul.inf.h-brs.de/data/2018/we/configs.js", "le" ],
+
+      deadlines: {
+        le01: "Do, 19. April, 8:00 Uhr",
+        le02: "Do, 26. April, 8:00 Uhr"
+      },
+
+      deadline_db: {
+        le01: "2018-04-19T08:00",
+        le02: "2018-04-26T08:00"
+      },
 
       // menu item format = [ button label, title label, filename ]
       // is also the location hash format (anchor)
       menu: [ [ 'Orga', 'OG', 'orga' ], [ 'LE01', '01', 'le01' ] ],
 
       // default is comma separated format for location.hash (anchor)
-      separation_char: ',',
+      separation_char: '/',
 
       // dependencies
-      content: [ 'ccm.instance', 'https://akless.github.io/ccm-components/content/versions/ccm.content-2.0.0.min.js' ],
+      content: [ 'ccm.component', 'https://ccmjs.github.io/akless-components/content/versions/ccm.content-4.0.0.js' ],
 
       // feedback: [ 'ccm.instance', '//kaul.inf.h-brs.de/data/ccm/feedback/versions/ccm.feedback-1.0.0.js', { position: 'right', from_above: '50%', data: { key: 'se1_ws17', store: [ 'ccm.store', { store: 'feedback', url: 'https://ccm.inf.h-brs.de' } ] } } ],
 
       html: {
         main: {
           inner: [
-            { tag: 'h1', class: 'center', inner: 'Einführung in Software Engineering' },
+            { tag: 'h1', class: 'center', inner: 'Einführung in Web Engineering' },
             { id: 'menu' },
             { id: 'content' },
             { id: 'feedback' }
           ]
         }
       },
-      css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/router/resources/default.css' ],
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/router/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/router/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -96,6 +111,9 @@
           self.text = self.inner.innerHTML;
           self.menu = JSON.parse( '[' + self.text + ']' );
         }
+
+        self.subconfig.unshift( "ccm.get" );
+
         callback();
       };
       
@@ -171,8 +189,21 @@
           const oldChild = content.firstChild;
           const newChild = document.createElement('div');
           if (oldChild) content.replaceChild(newChild,oldChild); else content.appendChild(newChild);
-          const config =  $.integrate({ root: newChild, inner: [ 'ccm.load', self.server + filename + '.html' ] } , self.keys );
-          self.ccm.start( self.content.component.index, config );
+
+          const config =  $.integrate(
+            {
+              root: newChild,
+              inner: [ 'ccm.load', self.server + filename + '.html' ],
+              key: self.subconfig
+            },
+            {
+              "placeholder.deadline":    self.deadlines[ filename ],
+              "placeholder.deadline_db": self.deadline_db[ filename ]
+            },
+            self.keys
+          );
+
+          self.content.start( config );
         }
 
         if ( self.feedback ) self.feedback.start( ( instance ) => {
