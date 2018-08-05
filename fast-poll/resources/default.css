@@ -1,0 +1,47 @@
+/**
+ * @overview default layout of ccm component fast-poll
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+
+div {
+    text-align: center;
+    padding: 0.1rem;
+    margin: 0.1rem;
+}
+
+div#title {
+    font-size: larger;
+}
+
+div#timer {
+    color: #ffffff;
+    background-color: grey;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bolder;
+    font-size: larger;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    border: ridge;
+}
+
+div.choice {
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: normal;
+    color: black;
+    margin: 0.2rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: outset;
+    border-width: 6px;
+    border-radius: 20px;
+    font-weight: bolder;
+    font-size: larger;
+    background-color: #d5ff52;
+}
+
+div.choice:hover {
+    cursor: pointer;
+}
