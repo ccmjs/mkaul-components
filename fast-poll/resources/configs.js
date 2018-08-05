@@ -24,8 +24,8 @@ ccm.files[ 'configs.js' ] = {
   },
 
   "agile_manifesto": {
-    css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast-poll/resources/default.css' ],
-    // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast-poll/resources/default.css' ],
+    // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast-poll/resources/default.css' ],
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast-poll/resources/default.css' ],
     language: 'de',
     labels: {
       en: {
