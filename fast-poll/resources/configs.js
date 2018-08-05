@@ -19,8 +19,51 @@ ccm.files[ 'configs.js' ] = {
         ['A',  'B'],
         ['1',  '2']
       ]
+    }
+    // onfinish: function( instance, results ){ console.log( results ); }
+  },
+
+  "questions_answers": {
+    labels: {
+      en: {
+        intro: "Instead of a quiz take a fast poll:",
+        label: "Finished!"
+      },
+      de: {
+        intro: "Statt eines Quiz mit Radio-Buttons geht auch ein Fast Poll:",
+        label: "Fertig!"
+      }
     },
-    onfinish: function( instance, results ){ console.log( results ); }
+    questions: {
+      en: [
+        'Question 1',
+        'Question 2',
+        'Question 3',
+        'Question 4',
+        'Thank you!'
+      ],
+      de: [
+        'Frage 1',
+        'Frage 2',
+        'Frage 3',
+        'Frage 4',
+        'Vielen Dank!'
+      ]
+    },
+    choices: {
+      en: [
+        ['Answer 1a',  'Answer 1b'],
+        ['Answer 2a',  'Answer 2b', 'Answer 2c'],
+        [ 1,2,3,4,5,6,7,8,9,10 ],
+        ['Only one Answer']
+      ],
+      de: [
+        ['Antwort 1a',  'Antwort 1b'],
+        ['Antwort 2a',  'Antwort 2b', 'Antwort 2c'],
+        [ 1,2,3,4,5,6,7,8,9,10 ],
+        ['Nur eine Antwort']
+      ]
+    },
   },
 
   "agile_manifesto": {
@@ -53,8 +96,8 @@ ccm.files[ 'configs.js' ] = {
         ['Reagieren auf Veränderung',  'Befolgen eines Plans']
       ]
     },
-    user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ],
+    user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ]
     // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
-    onfinish: function( instance, results ){ console.log( results ); }
+    // onfinish: function( instance, results ){ console.log( results ); }
   }
 };
