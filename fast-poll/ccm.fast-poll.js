@@ -138,23 +138,23 @@
       
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
+
+        // collect results in results object
+        let results = { texts: [], indices: [], counter: [], timer: [] };
         
         // prepare main HTML structure, language dependent
         const main_elem = $.html( self.html.main, self.labels[ self.language ] );
         
-        // select inner containers
-        const timer = main_elem.querySelector( '#timer' );
-        const choices = main_elem.querySelector( '#choices' );
-
         // timer
+        const timer = main_elem.querySelector( '#timer' );
         let counter = 0;
-        let intervalID = window.setInterval( () => {
-          counter += 1;
-          timer.innerHTML = ( counter / 10 ).toFixed(1);
-        }, 100);
+        timer.innerText = '--';
+        let intervalID;
 
         // choices
-        let results = { texts: [], indices: [], counter: [], timer: [] };
+        const choices = main_elem.querySelector( '#choices' );
+        // prepend start button
+        self.choices[ self.language ].unshift(['Start!']);
         let number_of_choice = 0;
         render_next_choice( number_of_choice );
         
@@ -169,7 +169,16 @@
         function render_next_choice( number_of_choice ){
 
           // clear children
-          choices.innerHTML = '';
+          choices.innerText = '';
+
+          if ( number_of_choice === 1 ){
+            // timer
+            counter = 0;
+            intervalID = window.setInterval( () => {
+              counter += 1;
+              timer.innerText = ( counter / 10 ).toFixed(1);
+            }, 100);
+          }
 
           // render next choices as buttons
           self.choices[ self.language ][number_of_choice].forEach( (label, index) => {
@@ -177,7 +186,11 @@
             // use template for rendering
             const child = $.html( self.html.choice, { label: label } );
 
-            child.addEventListener('click', ()=>{
+            child.addEventListener( 'click', clickHandler );
+
+            choices.appendChild( child );
+
+            function clickHandler(){
 
               // record the user choices in results
               results.texts.push(label);
@@ -195,9 +208,7 @@
               } else {
                 onFinish();
               }
-            });
-
-            choices.appendChild( child );
+            }
           });
         }
 
@@ -213,7 +224,7 @@
           function proceed() {
 
             window.clearInterval( intervalID );
-            choices.innerHTML = '';
+            choices.innerText = '';
             choices.appendChild( $.html( self.html.choice, self.labels[ self.language ] ) );
 
             // finalize result data
