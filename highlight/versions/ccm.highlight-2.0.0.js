@@ -10,14 +10,16 @@
 
     name: 'highlight',
 
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    version: [ 2, 0, 0 ],
+  
+    ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
       hljs:  [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
       css:   [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
       css_alternatives: [ 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
-
+      
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
@@ -27,11 +29,11 @@
     },
 
     Instance: function () {
-
+    
       const self = this;
-
+  
       this.style = 0;
-
+      
       this.setStyle = function( style_nr ) {
         self.style = style_nr;
         self.style %= self.css_alternatives.length;
@@ -39,7 +41,7 @@
       };
 
       this.start = async () => {
-
+      
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
 
@@ -61,9 +63,9 @@
                 { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
               ]
             }
-          ]
-        } ) );
-
+           ]
+         } ) );
+        
         // get DOM element of <pre><code>
         const main_elem = self.element.querySelector('pre code');
 
@@ -101,18 +103,18 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'ClassName.java';
         a.textContent = 'Download';
-
+        
         // skip first and last new line
         // var firstBreak = textContent.indexOf('\n');
         // textContent = textContent.substr(firstBreak+1);
         // var lastBreak = textContent.lastIndexOf('\n');
         // textContent = textContent.substring(0, lastBreak);
-
+        
         main_elem.textContent = htmlDecode( textContent );
-
+  
         hljs.highlightBlock( main_elem );
-
-
+        
+  
         // Converting sanitised html back to displayable html
         // back replacement of "<" instead of "&lt;"
         // https://stackoverflow.com/questions/1248849/converting-sanitised-html-back-to-displayable-html
@@ -121,7 +123,7 @@
           elem.innerHTML = input;
           return input ? elem.childNodes[0].nodeValue : input;
         }
-
+  
         function isHTML(str) { // ToDo to be deleted
           const div = document.createElement('div');
           div.innerHTML = str;
@@ -130,7 +132,7 @@
           }
           return false;
         }
-
+        
         function changeStyle(e) {
           self.style += 1;
           self.setStyle( self.style );
@@ -138,7 +140,7 @@
           e.stopPropagation();
           return false;
         }
-
+        
       };
 
     }

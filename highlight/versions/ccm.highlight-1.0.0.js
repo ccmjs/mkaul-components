@@ -6,18 +6,20 @@
 
 ( function () {
 
-  const component  = {
+  var component  = {
 
     name: 'highlight',
 
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    version: [ 1, 0, 0 ],
+  
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       hljs:  [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
       css:   [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
       css_alternatives: [ 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
-
+      
       // clazz: 'java',
       // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
@@ -27,19 +29,19 @@
     },
 
     Instance: function () {
-
-      const self = this;
-
+    
+      var self = this;
+  
       this.style = 0;
-
+      
       this.setStyle = function( style_nr ) {
         self.style = style_nr;
         self.style %= self.css_alternatives.length;
         self.element.parentNode.querySelector('link').href = self.css_alternatives[ self.style ] ;
       };
 
-      this.start = async () => {
-
+      this.start = function ( callback ) {
+      
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
 
@@ -61,13 +63,13 @@
                 { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
               ]
             }
-          ]
-        } ) );
-
+           ]
+         } ) );
+        
         // get DOM element of <pre><code>
-        const main_elem = self.element.querySelector('pre code');
+        var main_elem = self.element.querySelector('pre code');
 
-        const copy_button = self.element.querySelector('.copy');
+        var copy_button = self.element.querySelector('.copy');
 
         // https://stackoverflow.com/questions/23211018/copy-to-clipboard-with-jquery-js-in-chrome
         copy_button.addEventListener('copy', function (e) {
@@ -80,9 +82,9 @@
         });
 
         function copyToClipBoard(e) {
-          const range = document.createRange();
+          var range = document.createRange();
           range.selectNode( main_elem );
-          const selection = window.getSelection();
+          var selection = window.getSelection();
           selection.removeAllRanges();
           if( ! selection.containsNode( main_elem ) ) selection.addRange(range);
           document.execCommand("copy");
@@ -93,7 +95,7 @@
         }
 
         // set main element content to config or lightDOM content
-        const textContent = self.content || ( self.inner || self.root ).innerHTML;
+        var textContent = self.content || ( self.inner || self.root ).innerHTML;
 
         // fill download link with Blob filled with textContent
         let blob = new Blob( [ textContent ], { type: 'text/plain' } );
@@ -101,36 +103,38 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'ClassName.java';
         a.textContent = 'Download';
-
+        
         // skip first and last new line
         // var firstBreak = textContent.indexOf('\n');
         // textContent = textContent.substr(firstBreak+1);
         // var lastBreak = textContent.lastIndexOf('\n');
         // textContent = textContent.substring(0, lastBreak);
-
+        
         main_elem.textContent = htmlDecode( textContent );
-
+  
         hljs.highlightBlock( main_elem );
 
-
+        if ( callback ) callback();
+        
+  
         // Converting sanitised html back to displayable html
         // back replacement of "<" instead of "&lt;"
         // https://stackoverflow.com/questions/1248849/converting-sanitised-html-back-to-displayable-html
         function htmlDecode(input){
-          const elem = document.createElement('div');
+          var elem = document.createElement('div');
           elem.innerHTML = input;
           return input ? elem.childNodes[0].nodeValue : input;
         }
-
+  
         function isHTML(str) { // ToDo to be deleted
-          const div = document.createElement('div');
+          var div = document.createElement('div');
           div.innerHTML = str;
-          for (const c = div.childNodes, i = c.length; i--; ) {
+          for (var c = div.childNodes, i = c.length; i--; ) {
             if (c[i].nodeType == 1) return true;
           }
           return false;
         }
-
+        
         function changeStyle(e) {
           self.style += 1;
           self.setStyle( self.style );
@@ -138,12 +142,12 @@
           e.stopPropagation();
           return false;
         }
-
+        
       };
 
     }
 
   };
 
-  let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||["latest"])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){window.ccm[c].component(component);document.head.removeChild(a)};a.src=component.ccm.url}
+  function p(){window.ccm[v].component(component)}var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
 }() );
