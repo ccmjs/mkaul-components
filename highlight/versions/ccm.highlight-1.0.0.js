@@ -12,8 +12,8 @@
 
     version: [ 1, 0, 0 ],
   
-    ccm: 'https://akless.github.io/ccm/versions/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-11.5.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
       hljs:  [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
