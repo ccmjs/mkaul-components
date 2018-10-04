@@ -19,8 +19,71 @@ ccm.files[ 'configs.js' ] = {
         ['A',  'B'],
         ['1',  '2']
       ]
+    },
+
+    chart: [ "ccm.component", "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js" ],
+
+    onfinish: function( instance, results ){
+      const self = instance;
+
+      console.log( results );
+
+      // self.element.appendChild( self.ccm.helper.html( self.html.results, {results: JSON.stringify(results,null,2)} ) );
+
+      // prepare data for chart rendering
+      const categories = [];
+      const data = []; // in 100 msec
+      const nano = []; // in msec with nano seconds as fractions
+      results.counter.forEach( (time, i) =>{
+        if (i===0) return;
+        data[i-1] = (time - results.counter[i-1]) * 100;
+        nano[i-1] = (results.timer[i] - results.timer[i-1]);
+        categories[i-1] = results.texts[i];
+      });
+
+      const chart_elem = document.createElement('div');
+
+      // render chart
+      self.chart.start( {
+        root: chart_elem,
+        settings: {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: ''
+          },
+          xAxis: {
+            categories: categories,
+            title: {
+              text: 'Choice'
+            }
+          },
+          yAxis: {
+            min: 0,
+            max: results.length,
+            title: {
+              text: 'Time to choose (msec)'
+            },
+            allowDecimals: false
+          },
+          tooltip: {
+            enabled: false
+          },
+          legend: {
+            enabled: false
+          },
+          series: [
+            {
+              data: nano // or data
+            }
+          ]
+        }
+      } );
+
+      self.element.appendChild( chart_elem );
     }
-    // onfinish: function( instance, results ){ console.log( results ); }
+
   },
 
   "questions_answers": {

@@ -39,7 +39,7 @@ div.choice {
     border-radius: 20px;
     font-weight: bolder;
     font-size: larger;
-    background-color: #d5ff52;
+    background-color: #a1f5ff /* #d5ff52; */
 }
 
 div.choice:hover {

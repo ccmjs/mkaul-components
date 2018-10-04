@@ -17,6 +17,8 @@
      * @type {string}
      */
     name: 'fast-poll',
+
+    version: [ 1, 0, 0 ],
     
     /**
      * recommended used framework version
@@ -41,6 +43,9 @@
         },
         choice: {
           class: 'choice', inner: '%label%'
+        },
+        results: {
+          inner: '%results%'
         }
       },
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast-poll/resources/default.css' ],
@@ -73,8 +78,71 @@
         ]
       },
       user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ],
+
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
-      onfinish: function( instance, results ){ console.log( results ); }
+
+      chart: [ "ccm.component", "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js" ],
+
+      onfinish: function( instance, results ){
+        const self = instance;
+
+        console.log( results );
+
+        // self.element.appendChild( self.ccm.helper.html( self.html.results, {results: JSON.stringify(results,null,2)} ) );
+
+        // prepare data for chart rendering
+        const categories = [];
+        const data = []; // in 100 msec
+        const nano = []; // in msec with nano seconds as fractions
+        results.counter.forEach( (time, i) =>{
+          if (i===0) return;
+          data[i-1] = (time - results.counter[i-1]) * 100;
+          nano[i-1] = (results.timer[i] - results.timer[i-1]);
+          categories[i-1] = results.texts[i];
+        });
+
+        const chart_elem = document.createElement('div');
+
+        // render chart
+        self.chart.start( {
+          root: chart_elem,
+          settings: {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: categories,
+              title: {
+                text: 'Choice'
+              }
+            },
+            yAxis: {
+              min: 0,
+              max: results.length,
+              title: {
+                text: 'Time to choose (msec)'
+              },
+              allowDecimals: false
+            },
+            tooltip: {
+              enabled: false
+            },
+            legend: {
+              enabled: false
+            },
+            series: [
+              {
+                data: nano // or data
+              }
+            ]
+          }
+        } );
+
+        self.element.appendChild( chart_elem );
+      }
     },
 
     /**
@@ -138,23 +206,26 @@
       
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
+
+        // collect results in results object
+        let results = { texts: [], indices: [], counter: [], timer: [] };
         
         // prepare main HTML structure, language dependent
         const main_elem = $.html( self.html.main, self.labels[ self.language ] );
-        
-        // select inner containers
-        const timer = main_elem.querySelector( '#timer' );
-        const choices = main_elem.querySelector( '#choices' );
 
+        // title
+        const title = main_elem.querySelector( '#title' );
+        
         // timer
+        const timer = main_elem.querySelector( '#timer' );
         let counter = 0;
-        let intervalID = window.setInterval( () => {
-          counter += 1;
-          timer.innerHTML = ( counter / 10 ).toFixed(1);
-        }, 100);
+        timer.innerText = '00:00';
+        let intervalID;
 
         // choices
-        let results = { texts: [], indices: [], counter: [], timer: [] };
+        const choices = main_elem.querySelector( '#choices' );
+        // prepend start button
+        self.choices[ self.language ].unshift(['Start!']);
         let number_of_choice = 0;
         render_next_choice( number_of_choice );
         
@@ -169,7 +240,20 @@
         function render_next_choice( number_of_choice ){
 
           // clear children
-          choices.innerHTML = '';
+          choices.innerText = '';
+
+          if ( number_of_choice === 1 ){
+            // timer
+            counter = 0;
+            intervalID = window.setInterval( () => {
+              counter += 1;
+              timer.innerText = ( counter / 10 ).toFixed(2).replace('.',':').padStart(5,"000");
+            }, 100);
+          }
+
+          if ( self.questions && self.questions[ self.language ] && self.questions[ self.language ][ number_of_choice - 1 ] ){
+            title.innerText = self.questions[ self.language ][ number_of_choice - 1 ];
+          }
 
           // render next choices as buttons
           self.choices[ self.language ][number_of_choice].forEach( (label, index) => {
@@ -177,7 +261,11 @@
             // use template for rendering
             const child = $.html( self.html.choice, { label: label } );
 
-            child.addEventListener('click', ()=>{
+            child.addEventListener( 'click', clickHandler );
+
+            choices.appendChild( child );
+
+            function clickHandler(){
 
               // record the user choices in results
               results.texts.push(label);
@@ -193,16 +281,21 @@
               if ( number_of_choice < self.choices[ self.language ].length ){
                 render_next_choice( number_of_choice );
               } else {
+                if ( self.questions && self.questions[ self.language ] && self.questions[ self.language ][ number_of_choice - 1 ] ){
+                  title.innerText = self.questions[ self.language ][ number_of_choice - 1 ];
+                }
                 onFinish();
               }
-            });
-
-            choices.appendChild( child );
+            }
           });
         }
 
         /** finishes the fast poll */
         function onFinish() {
+
+          window.clearInterval( intervalID );
+          choices.innerText = '';
+          choices.appendChild( $.html( self.html.choice, self.labels[ self.language ] ) );
 
           // no finish => abort
           if ( !self.onfinish ) return;
@@ -211,10 +304,6 @@
           if ( self.user ) self.user.login( proceed ); else proceed();
 
           function proceed() {
-
-            window.clearInterval( intervalID );
-            choices.innerHTML = '';
-            choices.appendChild( $.html( self.html.choice, self.labels[ self.language ] ) );
 
             // finalize result data
             if ( self.user ) results.user = self.user.data().user;
