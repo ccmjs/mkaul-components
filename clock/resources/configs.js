@@ -6,9 +6,11 @@
 
 ccm.files[ 'configs.js' ] = {
   "small": {
+    key: "small",
     width: "100px"
   },
   "large": {
+    key: "large",
     width: "600px"
   }
 };
