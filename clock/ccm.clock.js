@@ -20,7 +20,7 @@
         main: { class: 'main' }
       },
       width: "100px",
-      lit_html: [ 'ccm.module', 'https://ccmjs.github.io/mkaul-components/lib/lit-html.js' ]
+      lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/clock/resources/default.css' ],
       // lit_html: [ 'ccm.load', { url: '//kaul.inf.h-brs.de/data/ccm/clock/resources/lit-html.js', attr: { type: 'module' } } ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/clock/resources/default.css' ],
