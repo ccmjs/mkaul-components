@@ -2,7 +2,7 @@
  * @overview ccm component for fast-poll
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version 1.0.0
+ * @version 1.0.1
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -18,7 +18,7 @@
      */
     name: 'fast-poll',
 
-    version: [ 1, 0, 0 ],
+    version: [ 1, 0, 1 ],
     
     /**
      * recommended used framework version
@@ -33,6 +33,7 @@
      * @type {object}
      */
     config: {
+
       html: {
         main: {
           inner: [
@@ -48,8 +49,9 @@
           inner: '%results%'
         }
       },
-      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast-poll/resources/default.css' ],
+
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast-poll/resources/default.css' ],
+
       language: 'de',
       labels: {
         en: {
@@ -77,7 +79,6 @@
           ['Reagieren auf Veränderung',  'Befolgen eines Plans']
         ]
       },
-      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ],
 
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
 
@@ -87,8 +88,6 @@
         const self = instance;
 
         console.log( results );
-
-        // self.element.appendChild( self.ccm.helper.html( self.html.results, {results: JSON.stringify(results,null,2)} ) );
 
         // prepare data for chart rendering
         const categories = [];
@@ -295,32 +294,25 @@
 
           window.clearInterval( intervalID );
           choices.innerText = '';
-          choices.appendChild( $.html( self.html.choice, self.labels[ self.language ] ) );
+          const newChild = $.html( self.html.choice, self.labels[ self.language ] );
+          choices.appendChild( newChild );
+
+          if ( self.finishListener ) newChild.addEventListener('click', self.finishListener );
 
           // no finish => abort
           if ( !self.onfinish ) return;
 
-          // has user instance? => login user (if not already logged in)
-          if ( self.user ) self.user.login( proceed ); else proceed();
+          // has logger instance? => log 'finish' event
+          self.logger && self.logger.log( 'finish', $.clone( results ) );
 
-          function proceed() {
-
-            // finalize result data
-            if ( self.user ) results.user = self.user.data().user;
-
-            // has logger instance? => log 'finish' event
-            self.logger && self.logger.log( 'finish', $.clone( results ) );
-
-            // perform 'finish' actions and provide result data
-            $.onFinish( self, results );
-
-          }
+          // perform 'finish' actions and provide result data
+          $.onFinish( self, results );
 
         }
       };
 
       /** react to config or attribute changes at runtime */
-      this.update = function( key, newValue ){
+      this.update = ( key, newValue ) => {
         // key = attribute name or config key
         switch( key ){
           case "update_json":
