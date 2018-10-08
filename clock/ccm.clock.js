@@ -1,6 +1,6 @@
 /**
  * @overview ccm component for clock
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017, 2018
  * @license The BSD License (BSD)
  *
  * Adapted from the lit-html clock example: https://github.com/PolymerLabs/lit-html/blob/master/demo/clock.js
