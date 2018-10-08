@@ -87,6 +87,7 @@ ccm.files[ 'configs.js' ] = {
   },
 
   "questions_answers": {
+    "key": "questions_answers",
     labels: {
       en: {
         intro: "Instead of a quiz take a fast poll:",
