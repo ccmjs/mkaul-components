@@ -1,8 +1,8 @@
 /**
- * @overview ccm component for fast-poll
+ * @overview ccm component for fast_poll
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version 1.0.1
+ * @version latest (1.0.0)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -16,17 +16,15 @@
      * unique component name
      * @type {string}
      */
-    name: 'fast-poll',
-
-    version: [ 1, 0, 1 ],
+    name: 'fast_poll',
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.7.0.min.js',
+
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.6.0.min.js', // same as  user.js
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
 
     /**
      * default instance configuration
@@ -50,7 +48,7 @@
         }
       },
 
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast-poll/resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast_poll/resources/default.css' ],
 
       language: 'de',
       labels: {
@@ -163,12 +161,11 @@
        * @type {Object.<string,function>}
        */
       let $;
-      
+
       /**
        * init is called once after all dependencies are solved and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = callback => {
+      this.init = async () => {
 
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
@@ -182,26 +179,23 @@
 
         }
 
-        callback();
       };
-      
+
       /**
        * is called once after the initialization and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = callback => {
+      this.ready = async () => {
+
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-        
-        callback();
-      };  
-        
+
+      };
+
       /**
        * starts the instance
-       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = callback => {
+      this.start = async () => {
       
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
@@ -230,9 +224,6 @@
         
         // set content of own website area
         $.setContent( self.element, main_elem );
-
-        // rendering completed => perform callback
-        callback && callback();
 
 
         /** render the next buttons */

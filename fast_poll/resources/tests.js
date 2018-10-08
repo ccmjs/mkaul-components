@@ -1,13 +1,13 @@
 
 /**
- * @overview unit tests of ccm component for fast-poll
+ * @overview unit tests of ccm component for fast_poll
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
  */
 
 ccm.files[ 'tests.js' ] = {
   setup: ( suite, callback ) => {
-    suite.ccm.component( '../fast-poll/ccm.fast-poll.js', component => {
+    suite.ccm.component( '../fast_poll/ccm.fast_poll.js', component => {
       suite.component = component;
       callback();
     } );
@@ -15,7 +15,7 @@ ccm.files[ 'tests.js' ] = {
   fundamental: {
     tests: {
       componentName: suite => {
-        suite.component.instance( instance => suite.assertSame( 'fast-poll', instance.component.name ) );
+        suite.component.instance( instance => suite.assertSame( 'fast_poll', instance.component.name ) );
       }
     }
   },
@@ -31,7 +31,7 @@ ccm.files[ 'tests.js' ] = {
         onfinish: ( instance, result ) => suite.assertEquals( { foo: 'bar' }, result )
       }, instance => {
         console.log( instance.element );
-        instance.element.querySelector( '#fast-poll' ).click();
+        instance.element.querySelector( '#fast_poll' ).click();
       } );
     }
   }
