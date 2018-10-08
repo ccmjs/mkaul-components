@@ -5,11 +5,10 @@
  */
 
 ccm.files[ 'configs.js' ] = {
-  "localhost": {
-    html: {
-      main: { class: 'main' }
-    },
-    width: "100px",
-    lit_html: [ 'ccm.module', 'https://ccmjs.github.io/mkaul-components/lib/lit-html.js' ]
+  "small": {
+    width: "100px"
+  },
+  "large": {
+    width: "600px"
   }
 };
