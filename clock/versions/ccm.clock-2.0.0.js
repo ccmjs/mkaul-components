@@ -11,9 +11,11 @@
   var component  = {
 
     name: 'clock',
-    
-    // ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+
+    version: [ 2, 0, 0 ],
+
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     config: {
       html: {
