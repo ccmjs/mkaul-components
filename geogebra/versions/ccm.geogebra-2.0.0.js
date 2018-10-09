@@ -13,9 +13,10 @@
   var component = {
     
     name: 'geogebra',
+    version: [2,0,0],
   
-    // ccm: '//akless.github.io/ccm/version/ccm-18.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-18.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       // https://www.geogebra.org/wiki/en/Reference:Applet_Embedding
@@ -44,7 +45,7 @@
         // make GeoGebra Applet
         var applet = new GGBApplet( self.applet, true );
         applet.inject( self.div_id, 'preferHTML5' );
-
+        
       };
 
     }
