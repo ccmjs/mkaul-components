@@ -2,7 +2,7 @@
  * @overview ccm component for cryptoblock
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version 1.0.0
+ * @version 2.0.0
  * @link https://anders.com/blockchain/block.html
  * TODO: docu comments -> API
  * TODO: unit tests
@@ -19,21 +19,21 @@
      * @type {string}
      */
     name: 'cryptoblock',
-    version: [1,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
-      cryptojs: [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/lib/sha256.js' ],
+      cryptojs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/lib/sha256.js' ],
 
       difficulty: 4, // number of zeros required at front of hash
       maximumNonce: 600000, // limit the nonce to this so we don't mine too long
@@ -88,7 +88,7 @@ h4 {
     background-color: #d4d4d4;
 }
 
-button {
+button.crypto {
     margin-top: 1em;
     margin-bottom: 1em;
     display: block;
@@ -122,7 +122,7 @@ label {
   white-space: nowrap;
 }
 
-input {
+input.crypto {
     width: 90%;
     font-size: 1.2em;
     line-height: 1.2em;
@@ -133,7 +133,7 @@ input {
     font-family: monospace;
 }
 
-textarea {
+textarea.crypto {
     display: block;
     width: 90%;
     height: 10em;
@@ -165,30 +165,31 @@ textarea {
               { tag: 'label', for: 'blockchain_number', title: 'Number of Block in Chain  ', inner: [
                 { tag: 'h4', inner: 'Block:' },
                 { tag: 'span', class: 'number', inner: '#' },
-                { tag: 'input', id: 'blockchain_number', type: 'text', value: 1, onkeyup: '%onkeyup%' }
+                { tag: 'input', id: 'blockchain_number', class: 'crypto', type: 'text', value: 1, onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'nonce', title: 'number to be changed until the difficulty is met', inner: [
                 { tag: 'h4', inner: 'Nonce:' },
-                { tag: 'input', id: 'nonce', type: 'text', value: 11316, onkeyup: '%onkeyup%' }
+                { tag: 'input', id: 'nonce', class: 'crypto', type: 'text', value: 11316, onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'data', title: 'data area', inner: [
                 { tag: 'h4', inner: 'Data:' },
-                { tag: 'textarea', id: 'data', rows: 10, placeholder: 'Enter your data here', onkeyup: '%onkeyup%' }
+                { tag: 'textarea', class: 'crypto', id: 'data', rows: 10, placeholder: 'Enter your data here', onkeyup: '%onkeyup%' }
               ] },
               { tag: 'label', for: 'prev', title: 'hash value of previous block', inner: [
                 { tag: 'h4', inner: 'Prev:' },
-                { tag: 'input', id: 'prev', type: 'text' }
+                { tag: 'input', id: 'prev', class: 'crypto', type: 'text' }
               ] },
               { tag: 'label', for: 'hash', title: 'hash value of all fields above together', inner: [
                 { tag: 'h4', inner: 'Hash:' },
-                { tag: 'input', id: 'hash', type: 'text', disabled: 'disabled' }
+                { tag: 'input', id: 'hash', class: 'crypto', type: 'text', disabled: 'disabled' }
               ] },
-              { tag: 'button', class: 'mine', inner: 'Mine', onclick: '%mine%', title: 'Block Mining: Compute Hash with difficulty' }
+              { tag: 'button', class: 'mine crypto', inner: 'Mine', onclick: '%mine%', title: 'Block Mining: Compute Hash with difficulty' }
             ] }
           ]
-        }
+        },
+        plus: { tag: 'button', class: 'plus crypto', inner: '+', onclick: '%plus%', title: 'Generate next block in blockchain' },
       },
-      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_cryptoblock' ] ]
+      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_cryptoblock' ] ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/cryptoblock/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/cryptoblock/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
@@ -213,39 +214,40 @@ textarea {
        * @type {Object}
        */
       let $;
-      
+
       /**
        * init is called once after all dependencies are solved and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = callback => {
-      
-        //  Is content given via LightDOM (inner HTML of Custom Element)?
-        //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
-        
-        // ToDo interprete LightDOM
+      this.init = async () => {
 
-        callback();
+        //  Is config given via LightDOM (inner HTML of Custom Element)?
+        //  Then use it with higher priority
+        if ( self.inner && self.inner.innerHTML.trim() ){
+
+          // interprete LightDOM
+          self.lightDOM = JSON.parse( self.inner.innerHTML );
+
+          // merge into config
+          Object.assign( self, self.lightDOM );
+
+        }
+
       };
-      
+
       /**
        * is called once after the initialization and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = callback => {
+      this.ready = async () => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-        
-        callback();
-      };  
-        
+
+      };
+
       /**
        * starts the instance
-       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = callback => {
+      this.start = async () => {
       
         // has logger instance? => log 'start' event
         self.logger && self.logger.log( 'start', { difficulty: self.difficulty, maximumNonce: self.maximumNonce } );
@@ -262,9 +264,10 @@ textarea {
           PATTERN += '0';
         }
 
-        plus(block).call( self, self );
+        plus({ block: block, initial_minining: false } ).call( self, self );
 
-        function plus(block){
+        async function plus( args ){
+          let block = args.block;
           return function(e){
             if ( e && ( e === self || e.target.classList.contains('plus') ) ){
               e && e.preventDefault && e.preventDefault();
@@ -276,7 +279,12 @@ textarea {
               self.logger && self.logger.log( 'plus', { block_number: block.block_number } );
 
               // prepare main HTML structure
-              const main_elem = $.html( self.html.main, { onkeyup: onkeyup(block), mine: mine_click(block), plus: plus(block) } );
+              const main_elem = $.html( self.html.main,
+                { onkeyup: onkeyup(block),
+                  mine: mine_click(block),
+                  plus: plus({ block: block, initial_minining: true })
+                }
+              );
 
               // select inner containers
               block.block_element = main_elem.querySelector( '#block' );
@@ -293,9 +301,10 @@ textarea {
               block.blockchain_number.addEventListener('keyup', onkeyup(block));
               block.nonce.addEventListener('keyup', onkeyup(block));
               block.data.addEventListener('keyup', onkeyup(block));
+              block.prev.addEventListener('keyup', onkeyup(block));
               block.mine_button.addEventListener('click', mine_click(block));
 
-              mine_click(block).call(self);
+              if ( args.initial_minining ) mine_click(block).call(self);
 
               const prev_block = chain[chain.length-2];
               block.prev.value = prev_block.hash.value;
@@ -309,8 +318,8 @@ textarea {
                 block.plus_button = block.previous.plus_button;
                 main_elem.appendChild( block.plus_button );
               } else {
-                block.plus_button = $.html({ tag: 'button', class: 'plus', inner: '+', onclick: '%plus%', title: 'Generate next block in blockchain' }, { plus: plus(block) });
-                // block.plus_button.addEventListener( 'click', plus(block) );
+                block.plus_button = $.html(self.html.plus, { plus: plus({ block: block, initial_minining: true }) });
+                // block.plus_button.addEventListener( 'click', plus({ block: block, initial_minining: true }) );
                 main_elem.appendChild( block.plus_button );
               }
 
@@ -326,8 +335,9 @@ textarea {
               self.element.appendChild( block_div );
 
               updateHash(block);
+
             }
-          }
+          };
         }
 
         function updateHash(block) {
@@ -417,7 +427,6 @@ textarea {
           return block.blockchain_number.value + block.nonce.value + block.data.value + block.prev.value;
         }
 
-        if ( callback ) callback();
       };
 
     }

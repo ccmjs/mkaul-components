@@ -2,7 +2,7 @@
  * @overview ccm component for cryptoblock
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.0.0)
  * @link https://anders.com/blockchain/block.html
  * TODO: docu comments -> API
  * TODO: unit tests
@@ -24,15 +24,15 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    // ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
-      cryptojs: [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/lib/sha256.js' ],
+      cryptojs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/lib/sha256.js' ],
 
       difficulty: 4, // number of zeros required at front of hash
       maximumNonce: 600000, // limit the nonce to this so we don't mine too long
@@ -188,7 +188,7 @@ textarea.crypto {
         },
         plus: { tag: 'button', class: 'plus crypto', inner: '+', onclick: '%plus%', title: 'Generate next block in blockchain' },
       },
-      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_cryptoblock' ] ]
+      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_cryptoblock' ] ]
       // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/cryptoblock/resources/default.css' ],
       // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/cryptoblock/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
@@ -213,39 +213,40 @@ textarea.crypto {
        * @type {Object}
        */
       let $;
-      
+
       /**
        * init is called once after all dependencies are solved and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = callback => {
-      
-        //  Is content given via LightDOM (inner HTML of Custom Element)?
-        //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
-        
-        // ToDo interprete LightDOM
+      this.init = async () => {
 
-        callback();
+        //  Is config given via LightDOM (inner HTML of Custom Element)?
+        //  Then use it with higher priority
+        if ( self.inner && self.inner.innerHTML.trim() ){
+
+          // interprete LightDOM
+          self.lightDOM = JSON.parse( self.inner.innerHTML );
+
+          // merge into config
+          Object.assign( self, self.lightDOM );
+
+        }
+
       };
-      
+
       /**
        * is called once after the initialization and is then deleted
-       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = callback => {
+      this.ready = async () => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-        
-        callback();
-      };  
-        
+
+      };
+
       /**
        * starts the instance
-       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = callback => {
+      this.start = async () => {
       
         // has logger instance? => log 'start' event
         self.logger && self.logger.log( 'start', { difficulty: self.difficulty, maximumNonce: self.maximumNonce } );
@@ -262,11 +263,9 @@ textarea.crypto {
           PATTERN += '0';
         }
 
-        plus({ block: block, initial_minining: false }, callback ).call( self, self );
+        plus({ block: block, initial_minining: false } ).call( self, self );
 
-        if ( callback ) callback();
-
-        function plus( args, callback ){
+        async function plus( args ){
           let block = args.block;
           return function(e){
             if ( e && ( e === self || e.target.classList.contains('plus') ) ){
