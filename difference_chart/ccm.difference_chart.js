@@ -188,7 +188,7 @@
         }
 
         // Draw Polyline for every value line ( = series )
-        self.values.map((series,series_index)=>{
+        self.values && self.values.map((series,series_index)=>{
           const path = { tag: 'path', stroke: getColor(series_index), "stroke-width": 1, fill: "transparent" };
           series.slice(0,1).map((value,value_index)=>{
             let x = x_coord( value, value_index );
@@ -205,7 +205,7 @@
         });
 
         // Draw circles on top
-        self.values.map((series,series_index)=>{
+        self.values && self.values.map((series,series_index)=>{
           series.slice(0,1).map((value,value_index)=>{
             const x = x_coord( value, value_index );
             svg_element_list.push( { tag: 'circle', cx: x + delta_x(series_index), cy: start.y, r: 2, fill: getColor(series_index), inner: { tag: 'title', inner: value + " (" + getSeriesTitles( series_index ) + ")" } } );
