@@ -6,6 +6,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "edit": {
+    "key": "edit",
     "pairs": [
       ["Erwartungen-entsprochen", "nicht-entsprochen"],
       ["unerfreulich", "erfreulich"],
@@ -32,6 +33,7 @@ ccm.files[ 'configs.js' ] = {
   },
 
   "demo": {
+    key: "demo",
     pairs: [
       ['Erwartungen-entsprochen', 'nicht-entsprochen'],
       ['unerfreulich', 'erfreulich'],
@@ -65,6 +67,7 @@ ccm.files[ 'configs.js' ] = {
     // onfinish: function( instance, results ){ console.log( results ); }
   },
   "research": {
+    key: "research",
     pairs: [
       ['Erwartungen-entsprochen', 'nicht-entsprochen'],
       ['unerfreulich', 'erfreulich'],
