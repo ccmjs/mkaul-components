@@ -1,5 +1,6 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
+    key: "demo",
     html: {
       main: {
         inner: [
@@ -16,6 +17,7 @@ ccm.files[ 'configs.js' ] = {
     }
   },
   "green": {
+    key: "green",
     html: {
       main: {
         inner: [
