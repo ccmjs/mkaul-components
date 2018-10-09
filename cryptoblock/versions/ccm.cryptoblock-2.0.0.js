@@ -266,7 +266,7 @@ textarea.crypto {
 
         plus({ block: block, initial_minining: false } ).call( self, self );
 
-        async function plus( args ){
+        function plus( args ){
           let block = args.block;
           return function(e){
             if ( e && ( e === self || e.target.classList.contains('plus') ) ){
