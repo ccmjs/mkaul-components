@@ -23,7 +23,9 @@
       // https://wiki.geogebra.org/en/Reference:Math_Apps_Embedding
       geogebra:  [ 'ccm.load', '//cdn.geogebra.org/apps/deployggb.js' ],
       applet: { material_id: "17499", borderColor:"#55FF00" },
-      div_id: "applet_container"
+      html: {
+        id: "applet_container"
+      }
       
       // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
@@ -31,8 +33,30 @@
     },
 
     Instance: function () {
-    
-      var self = this;
+
+      "use strict";
+
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
+      const self = this;
+
+      /**
+       * shortcut to help functions
+       * @type {Object.<string,function>}
+       */
+      let $;
+
+      /**
+       * is called once after the initialization and is then deleted
+       */
+      this.ready = async () => {
+
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
+      };
 
       /**
        * starts the instance
@@ -41,11 +65,14 @@
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
+
+        // set content of own website area
+        $.setContent( self.element, $.html( self.html ) );
         
         // make GeoGebra Applet
-        var applet = new GGBApplet( self.applet, true );
-        applet.inject( self.div_id, 'preferHTML5' );
-        
+        const applet = new GGBApplet( self.applet, true );
+        applet.inject( self.html.id, 'preferHTML5' );
+
       };
 
     }
