@@ -12,9 +12,10 @@
   var component = {
     
     name: 'game_chooser',
+    version: [1,0,1],
   
-    // ccm: '//akless.github.io/ccm/version/ccm-14.3.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: '//akless.github.io/ccm/version/ccm-14.3.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
   
     config: {
       
@@ -100,11 +101,8 @@
   
       var self = this;
 
-      /**
-       * starts the instance
-       */
-      this.start = async () => {
-
+      this.start = function ( callback ) {
+        
         // next number for game
         var next_number;
         var list_of_numbers = [];
@@ -281,7 +279,11 @@
         function beep() {
           if (self.beep) snd.play();
         }
-
+  
+        // perform callback
+        if ( callback ) callback();
+  
+  
       };
 
     }

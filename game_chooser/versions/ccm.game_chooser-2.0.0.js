@@ -12,9 +12,10 @@
   var component = {
     
     name: 'game_chooser',
+    version: [2,0,0],
   
-    // ccm: '//akless.github.io/ccm/version/ccm-14.3.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
   
     config: {
       
@@ -281,7 +282,7 @@
         function beep() {
           if (self.beep) snd.play();
         }
-
+        
       };
 
     }
