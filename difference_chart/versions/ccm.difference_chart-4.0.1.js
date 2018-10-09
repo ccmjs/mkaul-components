@@ -2,7 +2,7 @@
  * @overview ccm component for difference_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (5.0.0)
+ * @version 4.0.1
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -18,12 +18,16 @@
      * @type {string}
      */
     name: 'difference_chart',
+    version: [4,0,1],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-16.5.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    // ccm: 'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/lib/ccm.js',
+    // ccm: '../lib/ccm.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -74,11 +78,12 @@
        * @type {Object}
        */
       let $;
-
+      
       /**
        * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = async () => {
+      this.init = callback => {
 
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
@@ -101,23 +106,27 @@
 
         }
 
+        callback();
       };
-
+      
       /**
        * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = async () => {
+      this.ready = callback => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-
-      };
-
+        
+        callback();
+      };  
+        
       /**
        * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = async () => {
-
+      this.start = callback => {
+      
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
 
@@ -249,6 +258,9 @@
 
         // Hack in order to get SVG rendered inside the shadow root
         self.element.innerHTML += '';
+
+        if ( callback ) callback();
+
 
         function truncate_middle( str, max, sep ) {
 

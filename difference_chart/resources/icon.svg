@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg enable-background="new 0 0 64 64" height="64px" id="Layer_1" version="1.1" viewBox="0 0 64 64" width="64px" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" fill="#F5CF87" r="32"/>
+  <path d="M 31 53 L 31 52 C 31 47 36 47 36 41 C 36 34 30 33 30 27 C 30 21 33 22 33 15 L 31 9" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="6" transform="matrix(-1, 0, 0, -1, 65, 62)" style="stroke: rgb(12, 102, 245);"/>
+  <path d="M 17 53 L 17 52 C 17 47 27 47 27 41 C 27 34 10 33 10 27 C 10 21 21 22 21 15 L 17 9" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="6" transform="matrix(-1, 0, 0, -1, 37, 62)" style="stroke: rgb(232, 16, 214);"/>
+  <path d="M 48 53 L 48 50 C 48 45 43 45 43 39 C 43 32 37 34 37 28 C 37 22 48 24 48 17 L 44 9" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="6" transform="matrix(-1, 0, 0, -1, 91, 62)" style="stroke: rgb(238, 29, 29);"/>
+</svg>
