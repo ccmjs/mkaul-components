@@ -2,7 +2,7 @@
  * @overview ccm component for connect4 game ("4 gewinnt")
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version 1.0.1
  * @see full document version see https://developer.mozilla.org/de/docs/Web/SVG
  * @see http://www.treebuilder.de/svg/connect4.svg
  * TODO: docu comments -> API
@@ -20,13 +20,15 @@
      * @type {string}
      */
     name: 'connect4',
+    version: [1,0,1],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    // ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-15.0.2.min.js',
 
     /**
      * default instance configuration
@@ -74,38 +76,36 @@
 
       /**
        * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = async () => {
+      this.init = callback => {
 
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
 
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
+        // ToDo interprete LightDOM
 
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
+        callback();
       };
 
       /**
        * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = async () => {
-
+      this.ready = callback => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
 
+        callback();
       };
 
       /**
        * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = async () => {
+      this.start = callback => {
 
         Object.prototype.has = function( search ){
           const self = this;
@@ -602,6 +602,7 @@
         // set content of own website area
         $.setContent( self.element, main_elem );
 
+        if ( callback ) callback();
       };
 
     }

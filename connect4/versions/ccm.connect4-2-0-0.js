@@ -2,7 +2,7 @@
  * @overview ccm component for connect4 game ("4 gewinnt")
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version 2.0.0
  * @see full document version see https://developer.mozilla.org/de/docs/Web/SVG
  * @see http://www.treebuilder.de/svg/connect4.svg
  * TODO: docu comments -> API
@@ -20,13 +20,14 @@
      * @type {string}
      */
     name: 'connect4',
+    version: [2,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
+    // ccm: 'https://akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
