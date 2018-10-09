@@ -23,10 +23,10 @@ ccm.files[ 'configs.js' ] = {
   },
   "difficulty5": {
     "difficulty": 5, // number of zeros required at front of hash
-    "maximumNonce": 6000000
+    "maximumNonce": 60000000
   },
   "difficulty6": {
     "difficulty": 6, // number of zeros required at front of hash
-    "maximumNonce": 60000000
+    "maximumNonce": 60000000000
   }
 };
