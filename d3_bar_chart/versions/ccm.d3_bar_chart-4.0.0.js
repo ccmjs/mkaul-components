@@ -19,12 +19,14 @@
      */
     name: 'd3_bar_chart',
 
+    version: [4,0,0],
+
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -206,7 +208,7 @@
           // Hack in order to get SVG rendered inside the shadow root
           // Otherwise the SVG elements are part of the DOM, but not rendered.
           self.element.innerHTML += '';
-
+          
 
         });
 

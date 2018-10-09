@@ -2,7 +2,7 @@
  * @overview ccm component for d3_bar_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (4.0.0)
+ * @version 3.0.1
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -18,13 +18,14 @@
      * @type {string}
      */
     name: 'd3_bar_chart',
+    version: [3,0,1],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -32,7 +33,7 @@
      */
     config: {
 
-      d3: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/lib/d3.v4.min.js" ],
+      d3: [ "ccm.load", "//kaul.inf.h-brs.de/data/ccm/lib/d3.v4.min.js" ],
 
       data: "https://ccmjs.github.io/mkaul-components/resources/sales.csv",
 
@@ -89,37 +90,36 @@
 
       /**
        * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = async () => {
+      this.init = callback => {
 
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
 
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
+        // ToDo interprete LightDOM
 
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
+        callback();
       };
 
       /**
        * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = async () => {
+      this.ready = callback => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
 
+        callback();
       };
 
       /**
        * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = async () => {
+      this.start = callback => {
 
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
@@ -207,6 +207,7 @@
           // Otherwise the SVG elements are part of the DOM, but not rendered.
           self.element.innerHTML += '';
 
+          if ( callback ) callback();
 
         });
 

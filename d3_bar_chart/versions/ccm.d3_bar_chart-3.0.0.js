@@ -2,7 +2,7 @@
  * @overview ccm component for d3_bar_chart
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version 3.0.0
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -36,7 +36,7 @@
 
       d3: [ "ccm.load", "//kaul.inf.h-brs.de/data/ccm/lib/d3.v4.min.js" ],
 
-      data: "//kaul.inf.h-brs.de/data/ccm/d3_bar_chart/sales.csv",
+      data: "https://ccmjs.github.io/mkaul-components/resources/sales.csv",
 
       data_dimensions: {
         x: 'salesperson',
