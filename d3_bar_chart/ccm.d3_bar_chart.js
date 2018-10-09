@@ -34,7 +34,7 @@
 
       d3: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/lib/d3.v4.min.js" ],
 
-      data: "https://ccmjs.github.io/mkaul-components/resources/sales.csv",
+      data: "https://ccmjs.github.io/mkaul-components/d3_bar_chart/resources/sales.csv",
 
       data_dimensions: {
         x: 'salesperson',
