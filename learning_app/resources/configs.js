@@ -9,8 +9,16 @@ ccm.files[ 'configs.js' ] = {
     "key": "demo",
     "learn_id": "1661469"
   },
-  "2957798": {
-    "key": "2957798",
+  "la_2957798": {
+    "key": "la_2957798",
     "learn_id": "2957798"
+  },
+  "Demokratie": {
+    "key": "Demokratie",
+    "learn_id": "3948686"
+  },
+  "Deckungsbeitragsrechnung": {
+    "key": "Deckungsbeitragsrechnung",
+    "learn_id": "4084919"
   }
 };
