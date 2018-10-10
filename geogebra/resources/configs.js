@@ -8,7 +8,7 @@ ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
     applet: {
-      material_id: "123"
+      material_id: "fzubtcta"
     }
   },
   "animation": {

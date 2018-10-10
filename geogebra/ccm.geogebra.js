@@ -21,14 +21,8 @@
       // https://www.geogebra.org/wiki/en/Reference:Applet_Embedding
       // https://wiki.geogebra.org/en/Reference:Math_Apps_Embedding
       geogebra:  [ 'ccm.load', '//cdn.geogebra.org/apps/deployggb.js' ],
-      applet: { material_id: "17499", borderColor:"#55FF00" },
-      html: {
-        id: "applet_container"
-      }
-      
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
-      // onfinish: function( instance, results ){ console.log( results ); }
+      applet: { material_id: "17499", borderColor:"#55FF00" }
+
     },
 
     Instance: function () {
@@ -36,41 +30,20 @@
       "use strict";
 
       /**
-       * own reference for inner functions
-       * @type {Instance}
-       */
-      const self = this;
-
-      /**
-       * shortcut to help functions
-       * @type {Object.<string,function>}
-       */
-      let $;
-
-      /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // set shortcut to help functions
-        $ = self.ccm.helper;
-
-      };
-
-      /**
        * starts the instance
        */
       this.start = async () => {
       
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        if ( this.logger ) this.logger.log( 'render' );
 
-        // set content of own website area
-        $.setContent( self.element, $.html( self.html ) );
-        
+        var container = document.createElement('div');
+        container.id = "applet_container_" + this.index;
+        document.body.appendChild(container);
+
         // make GeoGebra Applet
-        const applet = new GGBApplet( self.applet, true );
-        applet.inject( self.html.id, 'preferHTML5' );
+        const applet = new GGBApplet( this.applet, true );
+        applet.inject( container, 'preferHTML5' );
 
       };
 
