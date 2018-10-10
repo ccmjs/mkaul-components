@@ -6,6 +6,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
+    "key": "demo",
     data: "https://ccmjs.github.io/mkaul-components/d3_bar_chart/resources/sales.csv",
 
     data_dimensions: {

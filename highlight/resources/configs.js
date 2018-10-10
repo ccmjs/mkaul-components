@@ -7,6 +7,7 @@
 ccm.files[ 'configs.js' ] = {
 
   "demo": {
+    key: "demo",
     "css": [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
     "content":
 `class HelloWorld {

@@ -186,7 +186,6 @@
        */
       this.ready = async () => {
 
-
         // set shortcut to help functions
         $ = self.ccm.helper;
 
