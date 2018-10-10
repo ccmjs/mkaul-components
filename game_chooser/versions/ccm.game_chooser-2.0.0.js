@@ -19,7 +19,7 @@
   
     config: {
       
-      css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/game_chooser/resources/default.css' ],
       html: {
         main: {
           inner: [
