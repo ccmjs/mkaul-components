@@ -11,11 +11,11 @@
     
     name: 'learning_app',
   
-    // ccm: '//akless.github.io/ccm/version/ccm-14.3.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {
-      key: '1661469', // key of learning app, see http://learningapps.org
+      learn_id: '1661469', // key of learning app, see http://learningapps.org
       html: {
         main: {
           id: 'main',
@@ -30,32 +30,31 @@
           ]
         }
       },
-      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/learning_app/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/learning_app/resources/default.css' ]
+
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
     Instance: function () {
-    
-      var self = this;
 
-      this.start = function ( callback ) {
+      /**
+       * starts the instance
+       */
+      this.start = async () => {
       
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        if ( this.logger ) this.logger.log( 'render' );
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main );
-        var iframe = main_elem.querySelector('iframe');
+        const main_elem = this.ccm.helper.html( this.html.main );
+        const iframe = main_elem.querySelector('iframe');
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        this.ccm.helper.setContent( this.element, main_elem );
   
         // load with same protocol http or https as this component
-        iframe.src = '//LearningApps.org/watch?app=' + self.key ;
+        iframe.src = '//LearningApps.org/watch?app=' + this.learn_id ;
 
-        if ( callback ) callback();
       };
 
     }
