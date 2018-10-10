@@ -6,6 +6,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
+    key: "demo",
     beep: true,  // sound is on
     html: {
       main: { class: "digital_clock",
