@@ -1,7 +1,7 @@
 /**
- * @overview ccm component for d3_bar_chart
+ * @overview ccm component for a bar chart using the D3.js library
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
- * @license The MIT License (MIT)
+ * @license The MIT License (MIT) and BSD for D3.js
  * @version latest (4.0.0)
  * TODO: docu comments -> API
  * TODO: unit tests
