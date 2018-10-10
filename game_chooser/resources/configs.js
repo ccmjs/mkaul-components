@@ -6,6 +6,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
+    key: "demo",
     language: 'en',
     languages: {
       en: {
