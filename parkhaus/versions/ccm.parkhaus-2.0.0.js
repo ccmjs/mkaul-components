@@ -9,9 +9,11 @@
   var component  = {
 
     name: 'parkhaus',
+
+    version: [ 2, 0, 0 ],
   
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       delay: 500,
@@ -22,10 +24,10 @@
               'Autos im Parkhaus: &nbsp; ',
               { tag: 'span', class: 'counter', inner: '0' }
             ] },
-            { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '202', height: '74' },
-            { tag: 'img', class: 'ampel', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/traffic-light-red.png', width: '55', height: '155' },
-            { tag: 'img', class: 'garage', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
-            { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '202', height: '74' },
+            { tag: 'img', class: 'entry', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/car.png', width: '202', height: '74' },
+            { tag: 'img', class: 'ampel', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/traffic-light-red.png', width: '55', height: '155' },
+            { tag: 'img', class: 'garage', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
+            { tag: 'img', class: 'exit', src: 'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/empty.png', width: '202', height: '74' },
             { tag: 'hr' },
             { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
             { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
@@ -37,62 +39,17 @@
         },
         row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%preis%' } ] }
       },
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/parkhaus/resources/default.css' ]
+      // user:   [ 'ccm.instance', '//akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
+      // logger: [ 'ccm.instance', '//akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', '//akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+      // onfinish: function( instance, results ){ console.log( results ); }
     },
 
-    /**
-     * for creating instances of this component
-     * @constructor
-     */
     Instance: function () {
+    
+      var self = this;
 
-      "use strict";
-
-      /**
-       * own reference for inner functions
-       * @type {Instance}
-       */
-      const self = this;
-
-      /**
-       * shortcut to help functions
-       * @type {Object.<string,function>}
-       */
-      let $;
-
-      /**
-       * init is called once after all dependencies are solved and is then deleted
-       */
-      this.init = async () => {
-
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
-        //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
-
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
-
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
-      };
-
-      /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // set shortcut to help functions
-        $ = self.ccm.helper;
-
-      };
-
-      /**
-       * starts the instance
-       */
-      this.start = async () => {
+      this.start = function ( callback ) {
 
         class Counter {
           constructor( init ){
@@ -103,25 +60,27 @@
           toString() { return this._value.toString(); }
         }
         
-        const counter = new Counter(0);
-        let total = 0;
-        const cars = [];
-        const begin = (new Date()).getTime();
-        const price_factor = 0.001;
+        var counter = new Counter(0);
+        var total = 0;
+        var cars = [];
+        var begin = (new Date()).getTime();
+        var price_factor = 0.001;
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
         
         // prepare main HTML structure
-        const main_elem = self.ccm.helper.html( self.html.main, { enter: enter, leave: leave } );
+        var main_elem = self.ccm.helper.html( self.html.main, { enter: enter, leave: leave } );
         
         // select inner containers (mostly for buttons)
-        const enter_button = main_elem.querySelector( 'button.enter' );
-        const leave_button = main_elem.querySelector( 'button.leave' );
-        const table = main_elem.querySelector( 'table' );
+        var enter_button = main_elem.querySelector( 'button.enter' );
+        var leave_button = main_elem.querySelector( 'button.leave' );
+        var table = main_elem.querySelector( 'table' );
         
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
+   
+        if ( callback ) callback();
   
         function enter() {
           setTimeout(function () {
@@ -141,7 +100,7 @@
         }
   
         function leave() {
-          const last_car = cars.pop();
+          var last_car = cars.pop();
           if ( last_car ){
             counter.decrement();
             last_car.leave();

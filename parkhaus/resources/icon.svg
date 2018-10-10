@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg enable-background="new 0 0 64 64" height="64px" version="1.1" viewBox="0 0 64 64" width="64px" xmlns="http://www.w3.org/2000/svg">
+  <g id="Layer_1">
+    <g>
+      <circle cx="32" cy="32" fill="#77B3D4" r="32"/>
+    </g>
+    <g opacity="0.2" transform="matrix(1, 0, 0, 1, 9, -1)">
+      <path d="M44,54c0,1.657-1.343,3-3,3H23c-1.657,0-3-1.343-3-3V14c0-1.657,1.343-3,3-3h18c1.657,0,3,1.343,3,3V54z" fill="#231F20"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 9, -1)">
+      <path d="M44,52c0,1.657-1.343,3-3,3H23c-1.657,0-3-1.343-3-3V12c0-1.657,1.343-3,3-3h18c1.657,0,3,1.343,3,3V52z" fill="#4F5D73"/>
+    </g>
+    <g opacity="0.2" transform="matrix(1, 0, 0, 1, 9, -0.91763)">
+      <circle cx="32" cy="34" fill="#231F20" r="5"/>
+    </g>
+    <g opacity="0.2" transform="matrix(1, 0, 0, 1, 9, -1)">
+      <circle cx="32" cy="21" fill="#231F20" r="5"/>
+    </g>
+    <g opacity="0.2" transform="matrix(1, 0, 0, 1, 9, -1)">
+      <circle cx="32" cy="47" fill="#231F20" r="5"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 9, -1)">
+      <circle cx="32" cy="32" fill="#F5CF87" r="5"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 9, -1)">
+      <circle cx="32" cy="19" fill="#C75C5C" r="5"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 9, -1)">
+      <circle cx="32" cy="45" fill="#76C2AF" r="5"/>
+    </g>
+  </g>
+  <g id="Layer_2"/>
+  <rect style="fill: rgb(2, 107, 172); stroke-width: 21px; stroke-linecap: round; stroke-linejoin: round;" x="6" y="19" width="27" height="26" rx="2" ry="2"/>
+  <polyline style="stroke-width: 2px; stroke: rgb(254, 254, 254); fill: rgba(216, 216, 216, 0);" points="9 29 20 22 30 29"/>
+  <text transform="matrix(1, 0, 0, 1, -4.53024, 4.56628)" style="fill: rgb(253, 253, 253); font-size: 21px; font-weight: bold; white-space: pre;"><tspan x="18" y="38">P</tspan><tspan x="18" dy="1em">​</tspan></text>
+</svg>

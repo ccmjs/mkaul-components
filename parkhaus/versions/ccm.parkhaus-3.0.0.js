@@ -9,9 +9,10 @@
   var component  = {
 
     name: 'parkhaus',
+    version: [3,0,0],
   
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     
     config: {
       delay: 500,
