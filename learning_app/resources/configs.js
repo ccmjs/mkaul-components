@@ -17,8 +17,8 @@ ccm.files[ 'configs.js' ] = {
     "key": "Demokratie",
     "learn_id": "3948686"
   },
-  "Deckungsbeitragsrechnung": {
-    "key": "Deckungsbeitragsrechnung",
+  "Deckungsrechnung": {
+    "key": "Deckungsrechnung",
     "learn_id": "4084919"
   }
 };
