@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg enable-background="new 0 0 64 64" height="64px" version="1.1" viewBox="0 0 64 64" width="64px" xmlns="http://www.w3.org/2000/svg">
+  <g id="Layer_1">
+    <g>
+      <circle cx="32" cy="32" fill="#E0995E" r="32"/>
+    </g>
+    <g>
+      <g opacity="0.2"/>
+      <g/>
+      <g/>
+      <g opacity="0.2">
+        <g>
+          <rect x="2" y="21" width="60" height="21"/>
+          <text style="fill: rgb(255, 255, 255); font-size: 16px; font-weight: bold; letter-spacing: -0.7px; word-spacing: -10.6px; white-space: pre;" x="2" y="37">01:02:45</text>
+        </g>
+      </g>
+      <g/>
+    </g>
+  </g>
+  <g id="Layer_2"/>
+</svg>
