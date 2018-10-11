@@ -12,13 +12,14 @@
   var component = {
     
     name: 'uml',
-
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    version: [ 2, 0, 0 ],
+  
+    ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
+    // ccm: '//akless.github.io/ccm/ccm.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
-      rawdeflate: ['ccm.load', 'https://ccmjs.github.io/mkaul-components/uml/resources/rawdeflate.js'], // helper library for PlantUML
+      rawdeflate: ['ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
       onchange: function ( instance, results, name ) { console.log( name, results ); },
       data: {
@@ -105,103 +106,63 @@
           hide: 'Verberge Hilfetext',
           sync: 'Synchronisiere Text und Diagramm'
         }
-      }
+      },
 
+      // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/uml/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/uml/resources/default.css' ],
+      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
+      logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://kaul.inf.h-brs.de/data/2017/se1/json/log_configs.js', 'se_ws17_uml' ] ]
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
-    /**
-     * for creating instances of this component
-     * @constructor
-     */
     Instance: function () {
-
-      "use strict";
-
-      /**
-       * own reference for inner functions
-       * @type {Instance}
-       */
-      const self = this;
-
-      /**
-       * shortcut to help functions
-       * @type {Object.<string,function>}
-       */
-      let $;
-
-      /**
-       * init is called once after all dependencies are solved and is then deleted
-       */
-      this.init = async () => {
-
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
-        //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
-
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
-
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
+    
+      var self = this;
+  
+      this.init = function ( callback ) {
         // inherit context parameter
         if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
         self.keys = {
           semester: self.semester || self.ccm.context.find(self,'semester'),
           fach: self.fach || self.ccm.context.find(self,'fach')
         };
-
-      };
-
-      /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // set shortcut to help functions
-        $ = self.ccm.helper;
-
+    
+        callback();
       };
 
       this.getValue = function (  ) {
         return this.element.querySelector( 'textarea' ).value;
       };
-
-      /**
-       * starts the instance
-       */
-      this.start = async () => {
+      
+      this.start = function ( callback ) {
       
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
 
         // prepare main HTML structure
-        const main_elem = self.ccm.helper.html( self.html.main,
+        var main_elem = self.ccm.helper.html( self.html.main,
           { plantUML: self.plantUML,
             default: self.value? self.value.uml : self.default,
             compressed_default: compress_uml( self.value? self.value.uml : self.default )
           } );
         
         // select inner containers
-        const uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
+        var uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
         self.ccm.helper.setContent( uml_helper_text, self.ccm.helper.html( self.html.help[self.language] ) );
-        const img = main_elem.querySelector( 'img' );
+        var img = main_elem.querySelector( 'img' );
         if ( self.width ){
           img.style.width = self.width;
         }
         if ( self.format ){
           img.format = self.format;
         }
-        const textarea = main_elem.querySelector( 'textarea' );
+        var textarea = main_elem.querySelector( 'textarea' );
 
         // use tab key for indent, not for jumping to the next input field
         textarea.onkeydown = function(e){
           if(e.keyCode==9 || e.which==9){
             e.preventDefault();
-            const s = this.selectionStart;
+            var s = this.selectionStart;
             this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
             this.selectionEnd = s+1;
           }
@@ -227,7 +188,7 @@
           }
         };
 
-        const help_button = main_elem.querySelector( 'button.help' );
+        var help_button = main_elem.querySelector( 'button.help' );
 
         help_button.addEventListener('click', help, false);
 
@@ -245,7 +206,7 @@
           return false;
         }
         
-        const sync_button = main_elem.querySelector( 'button.sync' );
+        var sync_button = main_elem.querySelector( 'button.sync' );
         sync_button.title = self.messages[self.language].sync;
 
         sync_button.addEventListener('click', self.sync, false);
@@ -265,8 +226,8 @@
   
         // helper functions for PlantUML
         function encode64(data) {
-          let r = "";
-          for (let i=0; i<data.length; i+=3) {
+          var r = "";
+          for (var i=0; i<data.length; i+=3) {
             if (i+2==data.length) {
               r +=append3bytes(data.charCodeAt(i), data.charCodeAt(i+1), 0);
             } else if (i+1==data.length) {
@@ -281,11 +242,11 @@
   
         // helper function for PlantUML
         function append3bytes(b1, b2, b3) {
-          const c1 = b1 >> 2;
-          const c2 = ((b1 & 0x3) << 4) | (b2 >> 4);
-          const c3 = ((b2 & 0xF) << 2) | (b3 >> 6);
-          const c4 = b3 & 0x3F;
-          let r = "";
+          var c1 = b1 >> 2;
+          var c2 = ((b1 & 0x3) << 4) | (b2 >> 4);
+          var c3 = ((b2 & 0xF) << 2) | (b3 >> 6);
+          var c4 = b3 & 0x3F;
+          var r = "";
           r += encode6bit(c1 & 0x3F);
           r += encode6bit(c2 & 0x3F);
           r += encode6bit(c3 & 0x3F);
@@ -326,6 +287,7 @@
           return encode64( deflate( s, 9 ) );
         }
 
+        if ( callback ) callback();
       };
 
     }
