@@ -15,7 +15,7 @@
     version: [3,0,0],
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.1.min.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
