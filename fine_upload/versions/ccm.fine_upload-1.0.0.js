@@ -12,7 +12,7 @@
     name: 'fine_upload',
     version: [ 1, 0, 0 ],
     
-    ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-14.3.0.min.js',
     
     config: {
       upload_url: 'https://kaul.inf.h-brs.de/upload',
@@ -21,8 +21,8 @@
           id: 'uploader'
         }
       },
-      css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader-gallery.min.css' ],
-      fine_uploader_lib: [ 'ccm.load', 'https://mkaul.github.io/ccm-components/fine_upload/resources/fine-uploader.min.js' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fine_upload/resources/fine-uploader-gallery.min.css' ],
+      fine_uploader_lib: [ 'ccm.load', 'hhttps://ccmjs.github.io/mkaul-components/fine_upload/resources/fine-uploader.min.js' ],
       template: `<div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
                 <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
@@ -97,9 +97,7 @@
                 </div>
             </dialog>
         </div>`
-      
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
+
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
