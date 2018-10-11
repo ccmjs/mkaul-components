@@ -40,8 +40,8 @@
           ]
         }
       },
-      rxjs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/resources/rx.lite.js'],
-      jquery: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/resources/jquery.js'],
+      rxjs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/wikipedia_search/resources/rx.lite.js'],
+      jquery: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/wikipedia_search/resources/jquery.js'],
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
