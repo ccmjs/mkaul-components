@@ -19,13 +19,14 @@
      * @type {string}
      */
     name: 'wikipedia_search',
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-15.0.2.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -40,9 +41,12 @@
           ]
         }
       },
-      rxjs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/resources/rx.lite.js'],
-      jquery: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/resources/jquery.js'],
-
+      rxjs: [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/lib/rx.lite.js'],
+      jquery: [ 'ccm.load', '//kaul.inf.h-brs.de/data/ccm/lib/jquery.js'],
+      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/wikipedia_search/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/wikipedia_search/resources/default.css' ],
+      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
+      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -51,54 +55,51 @@
      * @constructor
      */
     Instance: function () {
-
-      "use strict";
-
+    
       /**
        * own reference for inner functions
        * @type {Instance}
        */
       const self = this;
-
+      
       /**
        * shortcut to help functions
-       * @type {Object.<string,function>}
+       * @type {Object}
        */
       let $;
-
+      
       /**
        * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = async () => {
-
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
+      this.init = callback => {
+      
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
+        
+        // ToDo interprete LightDOM
 
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
-
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
+        callback();
       };
-
+      
       /**
        * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = async () => {
+      this.ready = callback => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-
-      };
-
+        
+        callback();
+      };  
+        
       /**
        * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = async () => {
+      this.start = callback => {
 
         // has logger instance? => log 'start' event
         if (self.logger) self.logger.log('start');
@@ -157,6 +158,7 @@
         // set content of own website area
         $.setContent( self.element, main_elem );
 
+        if ( callback ) callback();
       };
 
     }
