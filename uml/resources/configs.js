@@ -6,6 +6,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
+    "key": "demo",
     default: 'Bob->Alice : hello',
     style: {
       img: {
@@ -19,6 +20,7 @@ ccm.files[ 'configs.js' ] = {
     }
   },
   "class_diagram": {
+    "key": "class_diagram",
     default: '@startuml\n' +
     'class Car\n' +
     '\n' +
@@ -29,6 +31,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "sequence_diagram": {
+    "key": "sequence_diagram",
     default: '@startuml\n' +
     'Alice -> Bob: Authentication Request\n' +
     'Bob --> Alice: Authentication Response\n' +
@@ -38,6 +41,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "use_case_diagram": {
+    "key": "use_case_diagram",
     default: '@startuml\n' +
     'left to right direction\n' +
     'skinparam packageStyle rectangle\n' +
@@ -52,6 +56,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "component_diagram": {
+    "key": "component_diagram",
     default: '@startuml\n' +
     '\n' +
     'interface "Data Access" as DA\n' +
@@ -69,6 +74,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "activity_diagram": {
+    "key": "activity_diagram",
     default: '@startuml\n' +
     '(*) --> "Initialization"\n' +
     '\n' +
@@ -84,6 +90,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "state_chart": {
+    "key": "state_chart",
     default: '@startuml\n' +
     '\n' +
     '[*] --> State1\n' +
@@ -97,6 +104,7 @@ ccm.files[ 'configs.js' ] = {
     '@enduml'
   },
   "gantt_chart": {
+    "key": "gantt_chart",
     default: '@startgantt\n' +
     '[Task1] lasts 10 days\n' +
     'then [Task2] lasts 4 days\n' +
