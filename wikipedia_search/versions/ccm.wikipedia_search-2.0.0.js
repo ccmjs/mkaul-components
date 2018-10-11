@@ -36,13 +36,15 @@
       html: {
         main: {
           inner: [
-            { tag: 'input', id: 'input', placeholder: 'search term' },
+            { tag: 'input', id: 'input', placeholder: 'type search term here' },
             { id: 'results' }
           ]
         }
       },
       rxjs: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/wikipedia_search/resources/rx.lite.js'],
       jquery: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/wikipedia_search/resources/jquery.js'],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/wikipedia_search/resources/default.css' ]
+
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
