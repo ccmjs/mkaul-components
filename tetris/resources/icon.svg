@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" viewBox="0.0 0.0 300 440" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns="http://www.w3.org/2000/svg">
+  <clipPath id="p.0">
+    <path d="m0 0l960.0 0l0 720.0l-960.0 0l0 -720.0z" clip-rule="nonzero"/>
+  </clipPath>
+  <g clip-path="url(#p.0)" transform="matrix(1, 0, 0, 1, -129.09537, -79.80441)">
+    <path fill="#000000" fill-opacity="0.0" d="m0 0l960.0 0l0 720.0l-960.0 0z" fill-rule="evenodd"/>
+    <path fill="#00ffff" d="m163.49869 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m163.49869 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#00ffff" d="m219.87665 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m219.87665 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#00ffff" d="m276.2546 432.70078l56.37793 0l0 55.3071l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 432.70078l56.37793 0l0 55.3071l-56.37793 0z" fill-rule="evenodd"/>
+    <path fill="#00ffff" d="m332.63254 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 432.70078l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ff9900" d="m219.87665 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m219.87665 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ff9900" d="m276.2546 377.3937l56.37793 0l0 55.307068l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 377.3937l56.37793 0l0 55.307068l-56.37793 0z" fill-rule="evenodd"/>
+    <path fill="#ff9900" d="m332.63254 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ff9900" d="m332.63254 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ffff00" d="m163.49869 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m163.49869 377.3937l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ffff00" d="m163.49869 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m163.49869 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ffff00" d="m219.87665 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m219.87665 322.0866l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ffff00" d="m219.87665 266.77954l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m219.87665 266.77954l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ff0000" d="m332.63254 266.77954l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 266.77954l56.37796 0l0 55.307068l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#ff0000" d="m276.2546 266.77954l56.37793 0l0 55.307068l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 266.77954l56.37793 0l0 55.307068l-56.37793 0z" fill-rule="evenodd"/>
+    <path fill="#ff0000" d="m276.2546 211.47244l56.37793 0l0 55.3071l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 211.47244l56.37793 0l0 55.3071l-56.37793 0z" fill-rule="evenodd"/>
+    <path fill="#ff0000" d="m332.63254 211.47244l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 211.47244l56.37796 0l0 55.3071l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#0000ff" d="m332.63254 156.16536l56.37796 0l0 55.307083l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m332.63254 156.16536l56.37796 0l0 55.307083l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#0000ff" d="m276.2546 156.16536l56.37793 0l0 55.307083l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 156.16536l56.37793 0l0 55.307083l-56.37793 0z" fill-rule="evenodd"/>
+    <path fill="#0000ff" d="m219.87665 156.16536l56.37796 0l0 55.307083l-56.37796 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m219.87665 156.16536l56.37796 0l0 55.307083l-56.37796 0z" fill-rule="evenodd"/>
+    <path fill="#0000ff" d="m276.2546 100.85827l56.37793 0l0 55.30709l-56.37793 0z" fill-rule="evenodd"/>
+    <path stroke="#000000" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="butt" d="m276.2546 100.85827l56.37793 0l0 55.30709l-56.37793 0z" fill-rule="evenodd"/>
+  </g>
+</svg>
