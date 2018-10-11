@@ -16,7 +16,7 @@
      */
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
     
     config: {
       fkey:           'test',  // ToDo Use fkey instead of key
@@ -70,7 +70,7 @@
       
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/upload/resources/default.css' ],
 
-      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { sign_on: "hbrsinfkaul" } ]
+      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: "hbrsinfkaul" } ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -140,14 +140,14 @@
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
         
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main, { accept: self.content_type } );
+        const main_elem = self.ccm.helper.html( self.html.main, { accept: self.content_type } );
         
         // select inner containers
-        var input = main_elem.querySelector( 'input' );
-        var progress_bar = main_elem.querySelector( 'progress' );
-        var abort_button = main_elem.querySelector( '#abort' );
-        var reports = main_elem.querySelector( '#reports' );
-        var failure = main_elem.querySelector( '#failure' );
+        const input = main_elem.querySelector( 'input' );
+        const progress_bar = main_elem.querySelector( 'progress' );
+        const abort_button = main_elem.querySelector( '#abort' );
+        const reports = main_elem.querySelector( '#reports' );
+        const failure = main_elem.querySelector( '#failure' );
         
         // set content of own website area
         self.ccm.helper.setContent( self.element, main_elem );
@@ -156,10 +156,10 @@
         self.root.ccm_instance = self;
   
         // placeholder for all upcoming AJAX requests
-        var xhr;
+        let xhr;
         
         // parameters for input dialog
-        var params = { key: self.fkey };
+        const params = { key: self.fkey };
         Object.assign( params, self.keys );
         
         // id from root
@@ -188,7 +188,7 @@
         function selectFile() {
   
           // get file
-          var file = this.files[0];
+          const file = this.files[0];
           params.name = file.name;
   
           // sync function after file is selected
@@ -252,7 +252,7 @@
           failure.textContent = ''; // clear old error messages
           
           // prepare form data
-          var formData = new FormData();
+          const formData = new FormData();
           formData.append('key', self.fkey);
           formData.append("file", file);
   
@@ -269,7 +269,7 @@
   
           // handle all kinds of errors during upload
           function error_message( event ){
-            var msg = ' Status: '+ xhr.status
+            const msg = ' Status: '+ xhr.status
               + ', Event: ' + JSON.stringify(event)
               + ', Response: ' + xhr.response + '.';
             // has logger instance? => log 'error' event
@@ -302,7 +302,7 @@
           if (self.user) self.user.login(proceed); else proceed();
   
           function proceed() {
-            Object.assign( params, { user: self.user.data().id, token: self.user.data().token } );
+            Object.assign( params, { user: self.user.data().user, token: self.user.data().token } );
             Object.keys( params ).map(function (key) {
               formData.append(key, params[key] );
             });
@@ -311,8 +311,8 @@
   
           function log_form(x) { // for debugging only
             console.log(x);
-            var result = {};
-            for (var entry of formData.entries()) { // ToDo ES6
+            let result = {};
+            for (let entry of formData.entries()) { // ToDo ES6
               result[entry[0]] = entry[1];
             }
             result = JSON.stringify(result);
@@ -333,21 +333,21 @@
         
         function report_file_link(){
           reports.textContent = self.messages[self.language].success;
-          var element = self.ccm.helper.html( self.html.response, params );
-          var src = file_url( self.server, params );
+          const element = self.ccm.helper.html( self.html.response, params );
+          const src = file_url( self.server, params );
           element.src = src;
           element.href = src;
           reports.appendChild(element);
         }
   
         function file_url( server, params ) {
-          var url = server;
+          let url = server;
           
           // Whitelist of legal parameters
-          var whitelist = [ 'key', 'id', 'user', 'token' ].concat( Object.keys( self.keys ) );
+          const whitelist = [ 'key', 'id', 'user', 'token' ].concat( Object.keys( self.keys ) );
           
           // add user parameters
-          Object.assign( params, { user: self.user.data().id, token: self.user.data().token } );
+          Object.assign( params, { user: self.user.data().user, token: self.user.data().token } );
           Object.keys(params).map(function (key, i) {
             if ( whitelist.indexOf( key ) > -1 ) {
               url += (i===0?'?':'&') + key + '=' + encodeURIComponent( params[ key ] );
