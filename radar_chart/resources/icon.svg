@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 255 210" xmlns="http://www.w3.org/2000/svg">
-  <polygon id="first" points="132 115 148 118 161 98 150 69 110 60 74 92 77 149" style="fill: orange; stroke: red; stroke-width: 3; fill-opacity: 0.5;"/>
-  <polygon id="second" points="132 175 179 142 181 94 150 69 119 78 113 101 124 111" style="fill: lime; stroke: purple; stroke-width: 3; fill-opacity: 0.5;"/>
-  <line x1="132" y1="105" x2="132" y2="205" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="132" cy="205" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <polygon id="first" points="121 115 143 118 161 98 146 69 90 60 40 92 44 149" style="fill: orange; stroke: red; stroke-width: 3; fill-opacity: 0.5;"/>
+  <polygon id="second" points="137 175 197 125 200 54 160 16 121 29 113 65 127 79" style="fill: lime; stroke: purple; stroke-width: 3; fill-opacity: 0.5;"/>
+  <line x1="132" y1="105" x2="132" y2="205" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="132" cy="205" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="105" y="200" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">pünktlich</text>
-  <line x1="132" y1="105" x2="210" y2="167" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="210" cy="167" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="210" y2="167" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="210" cy="167" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="177" y="162" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">zuverlässig</text>
-  <line x1="132" y1="105" x2="230" y2="83" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="230" cy="83" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="230" y2="83" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="230" cy="83" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="200" y="78" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">kooperativ</text>
-  <line x1="132" y1="105" x2="176" y2="15" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="176" cy="15" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="176" y2="15" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="176" cy="15" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="146" y="10" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">erreichbar</text>
-  <line x1="132" y1="105" x2="89" y2="15" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="89" cy="15" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="89" y2="15" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="89" cy="15" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="65" y="10" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">effektiv</text>
-  <line x1="132" y1="105" x2="35" y2="83" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="35" cy="83" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="35" y2="83" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="35" cy="83" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="2" y="78" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">hilfsbereit</text>
-  <line x1="132" y1="105" x2="54" y2="167" class="radiants" stroke-width="0.1" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="54" cy="167" r="2" fill="grey" stroke-width="0.1" stroke="grey"/>
+  <line x1="132" y1="105" x2="54" y2="167" class="radiants" stroke-width="1" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="54" cy="167" r="2" fill="grey" stroke-width="1" stroke="grey"/>
   <text fill="grey" x="0" y="162" class="radiant_text" style="font-family: Verdana; font-size: 10px; white-space: pre;">durchsetzungsstark</text>
   <circle cx="132" cy="105" r="50" fill="none" stroke-width="0.4" stroke="black" stroke-dasharray="5, 2"/>
-  <circle cx="132" cy="105" r="100" fill="none" stroke-width="0.4" stroke="black" stroke-dasharray="5, 2"/>
+  <circle cx="132" cy="105" r="100" fill="none" stroke-width="1.0" stroke="black" stroke-dasharray="5, 2"/>
 </svg>
