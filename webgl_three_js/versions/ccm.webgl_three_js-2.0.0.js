@@ -46,7 +46,7 @@
         }
       },
       three_js: [ 'ccm.load',  '//cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js' ],
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/resources/default.css' ]
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/webgl_three_js/resources/default.css' ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
