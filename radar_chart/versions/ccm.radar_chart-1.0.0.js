@@ -18,13 +18,10 @@
      * @type {string}
      */
     name: 'radar_chart',
+    version: [1,0,0],
 
-    /**
-     * recommended used framework version
-     * @type {string}
-     */
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-14.3.0.js',
 
     /**
      * default instance configuration
@@ -81,54 +78,51 @@
      * @constructor
      */
     Instance: function () {
-
-      "use strict";
-
+    
       /**
        * own reference for inner functions
        * @type {Instance}
        */
       const self = this;
-
+      
       /**
        * shortcut to help functions
-       * @type {Object.<string,function>}
+       * @type {Object}
        */
       let $;
-
+      
       /**
        * init is called once after all dependencies are solved and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.init = async () => {
-
-        //  Is config given via LightDOM (inner HTML of Custom Element)?
+      this.init = callback => {
+      
+        //  Is content given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+        if ( self.inner && self.inner.innerHTML.trim() ) self.text = self.inner.innerHTML;
 
-          // interprete LightDOM
-          self.lightDOM = JSON.parse( self.inner.innerHTML );
+        // ToDo interprete LightDOM
 
-          // merge into config
-          Object.assign( self, self.lightDOM );
-
-        }
-
+        callback();
       };
-
+      
       /**
        * is called once after the initialization and is then deleted
+       * @param {function} callback - called after all synchronous and asynchronous operations are complete
        */
-      this.ready = async () => {
+      this.ready = callback => {
 
         // set shortcut to help functions
         $ = self.ccm.helper;
-
-      };
-
+        
+        callback();
+      };  
+        
       /**
        * starts the instance
+       * @param {function} [callback] - called after all synchronous and asynchronous operations are complete
        */
-      this.start = async () => {
+      this.start = callback => {
       
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
@@ -202,6 +196,7 @@
            });
         });
 
+        if ( callback ) callback();
       };
 
     }
