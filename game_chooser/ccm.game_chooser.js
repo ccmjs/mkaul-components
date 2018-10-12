@@ -12,9 +12,9 @@
   var component = {
     
     name: 'game_chooser',
-  
-    // ccm: '//akless.github.io/ccm/version/ccm-14.3.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
   
     config: {
       
