@@ -217,7 +217,7 @@
             if ( self.logger ) self.logger.log( results );
             
             // display
-            self.ccm.helper.integrate(self.languages[self.language], results);
+            results = self.ccm.helper.integrate(self.languages[self.language], results);
             self.ccm.helper.setContent( div_result, self.ccm.helper.html(self.html.message, results) );
             
             // on finish?
