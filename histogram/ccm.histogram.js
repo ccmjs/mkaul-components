@@ -80,6 +80,9 @@
        */
       this.init = async () => {
 
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
         if ( self.inner && self.inner.innerHTML.trim() ){
@@ -95,16 +98,6 @@
       };
 
       /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // set shortcut to help functions
-        $ = self.ccm.helper;
-
-      };
-
-      /**
        * starts the instance
        */
       this.start = async () => {
@@ -112,9 +105,17 @@
         // has logger instance? => log 'start' event
         self.logger && self.logger.log( 'start' );
 
+        // Default values
+        self.html.main = $.integrate( self.html.main, {
+          tag: 'svg',
+          width:"100",
+          height:"100",
+          inner: []
+        } );
+
         const dimensions = Object.keys( self.data );
         const dim_count = dimensions.length;
-        let list = self.html.main.inner;
+        const list = self.html.main.inner;
 
         dimensions.map( (dim, index) => {
           const width  = parseFloat( self.html.main.width ) / dim_count;
@@ -129,7 +130,7 @@
             height: self.data[ dim ],
             inner: { tag: 'title', inner: dim + ': ' + self.data[ dim ] }
           };
-          list.push( $.integrate(rect, $.integrate( self.styles, self.styles[ dim ])) );
+          list.push( $.integrate(rect, $.integrate( self.styles[ dim ], self.styles ) ) );
           list.push( $.clone( $.integrate( { tag:'text',
             x: index * width + 0.5 * width,
             y: height - 10,
