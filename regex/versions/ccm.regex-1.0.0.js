@@ -18,6 +18,7 @@
      * @type {string}
      */
     name: 'regex',
+    version: [1,0,0],
     
     /**
      * recommended used framework version
