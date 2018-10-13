@@ -2,7 +2,7 @@
  * @overview ccm component for histogram
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version 1.0.0
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -18,6 +18,7 @@
      * @type {string}
      */
     name: 'histogram',
+    version: [1,0,0],
     
     /**
      * recommended used framework version
