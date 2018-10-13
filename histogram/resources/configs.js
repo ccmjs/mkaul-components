@@ -11,10 +11,10 @@ ccm.files[ 'configs.js' ] = {
     key: "demo",
 
     data: {
-      anton: 33,
-      berta: 23,
-      caesar: 18,
-      dora: 50
+      anton: 30,
+      berta: 230,
+      caesar: 100,
+      dora: 290
     },
 
     html: {
@@ -22,7 +22,7 @@ ccm.files[ 'configs.js' ] = {
       main:  {
         tag: 'svg',
         width:"300",
-        height:"100",
+        height:"300",
         inner: []
       }
     },
@@ -30,7 +30,7 @@ ccm.files[ 'configs.js' ] = {
     styles: {
       "fill": "coral",
       "text": {
-        "font-size": 8,
+        "font-size": 16,
         "fill": "white"
       }
     }
@@ -40,16 +40,16 @@ ccm.files[ 'configs.js' ] = {
     key: "EU_US_CHN",
 
     data: {
-      "EU":  30,
-      "US":  70,
-      "CHN": 50
+      "EU":  100,
+      "US":  290,
+      "CHN": 230
     },
     html: {
       // size of SVG image
       main:  {
         tag: 'svg',
         width:"300",
-        height:"100",
+        height:"300",
         inner: []
       }
     },
@@ -74,7 +74,7 @@ ccm.files[ 'configs.js' ] = {
       },
       "text": {
         "font-family": "Verdana",
-        "font-size": 8
+        "font-size": 18
       }
     }
   }
