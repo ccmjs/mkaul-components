@@ -21,8 +21,8 @@ ccm.files[ 'configs.js' ] = {
       // size of SVG image
       main:  {
         tag: 'svg',
-        width:"100",
-        height:"100",
+        width:"300",
+        height:"300",
         inner: []
       }
     },
@@ -48,8 +48,8 @@ ccm.files[ 'configs.js' ] = {
       // size of SVG image
       main:  {
         tag: 'svg',
-        width:"100",
-        height:"100",
+        width:"300",
+        height:"300",
         inner: []
       }
     },
