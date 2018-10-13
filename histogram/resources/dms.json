@@ -1,0 +1,50 @@
+{
+    "_id": "histogram",
+    "title": "Histogram",
+    "icon": "https://ccmjs.github.io/mkaul-components/histogram/resources/icon.svg",
+    "abstract": "<a href=https://en.wikipedia.org/wiki/Histogram>Histogram</a> in <a href=https://www.w3schools.com/graphics/svg_intro.asp>SVG</a>",
+    "description": "<a href=https://en.wikipedia.org/wiki/Histogram>Histogram</a> is an accurate representation of the distribution of numerical data. It is an estimate of the probability distribution of a continuous variable (quantitative variable) and was first introduced by Karl Pearson, see <a href=https://en.wikipedia.org/wiki/Histogram>Wikipedia</a>. The histogram is rendered as <a href=https://www.w3schools.com/graphics/svg_intro.asp>SVG</a> graph.",
+    "url": "https://ccmjs.github.io/mkaul-components/histogram/versions/ccm.histogram-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/histogram/resources/configs.js",
+                    "demo"
+                ]
+            },
+            {
+                "title": "EU US CHN",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/histogram/resources/configs.js",
+                    "EU_US_CHN"
+                ]
+            }
+        ],
+        "builder": [
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+  "updated_at": "2018-10-12T14:41:22+02:00",
+  "created_at": "2018-10-12T14:41:22+02:00"
+}
