@@ -55,7 +55,7 @@
 
       plot_config: {},
 
-      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ]
+      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-1.41.3.min.js'  ]
 
       // css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
