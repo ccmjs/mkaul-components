@@ -17,7 +17,7 @@
      */
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
     
     config: {
       upload_url: 'https://kaul.inf.h-brs.de/upload',

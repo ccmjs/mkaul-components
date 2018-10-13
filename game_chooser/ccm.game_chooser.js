@@ -14,7 +14,7 @@
     name: 'game_chooser',
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.2.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
   
     config: {
       
@@ -97,8 +97,28 @@
     },
 
     Instance: function () {
-  
-      var self = this;
+
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
+      const self = this;
+
+      /**
+       * shortcut to help functions
+       * @type {Object.<string,function>}
+       */
+      let $;
+
+      /**
+       * is called once after the initialization and is then deleted
+       */
+      this.ready = async () => {
+
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
+      };
 
       /**
        * starts the instance
@@ -106,8 +126,8 @@
       this.start = async () => {
 
         // next number for game
-        var next_number;
-        var list_of_numbers = [];
+        let next_number;
+        const list_of_numbers = [];
   
         // public functions for accessing numbers
         self.get_next_number = function(){
@@ -122,31 +142,31 @@
         if ( self.logger ) self.logger.log( 'render' );
   
         // prepare main HTML structure
-        var main_elem = self.ccm.helper.html( self.html.main,
-          self.ccm.helper.integrate( self.languages[self.language], {
+        const main_elem = $.html( self.html.main,
+          $.integrate( self.languages[self.language], {
             number_range_max_exponent: self. number_range_max_exponent,
             number_range_exponent: self.number_range_exponent
         } ) );
   
         // select inner containers (mostly for buttons)
-        var digit_count       = main_elem.querySelector( 'input.digit_count' );
-        var digit_count_value = main_elem.querySelector( 'span.digit_count' );
-        var div_result        = main_elem.querySelector( 'div.result' );
-        var left_button       = main_elem.querySelector( 'button.left' );
-        var right_button      = main_elem.querySelector( 'button.right' );
-        var number_area       = main_elem.querySelector( 'p.number' );
-        var exit_button       = main_elem.querySelector( 'button.exit' );
+        const digit_count       = main_elem.querySelector( 'input.digit_count' );
+        const digit_count_value = main_elem.querySelector( 'span.digit_count' );
+        const div_result        = main_elem.querySelector( 'div.result' );
+        const left_button       = main_elem.querySelector( 'button.left' );
+        const right_button      = main_elem.querySelector( 'button.right' );
+        const number_area       = main_elem.querySelector( 'p.number' );
+        const exit_button       = main_elem.querySelector( 'button.exit' );
   
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
 
         show_next_number();
   
-        var number_of_clicks = 0;
-        var number_of_success = 0;
-        var last_click_time = 0;
+        let number_of_clicks = 0;
+        let number_of_success = 0;
+        let last_click_time = 0;
   
-        var digit_count_val = digit_count.value;
+        let digit_count_val = digit_count.value;
         digit_count_value.innerHTML = digit_count_val ;
   
         digit_count.addEventListener( 'input', function() {
@@ -176,9 +196,9 @@
           }
         }
   
-        var millisec = 0;
-        var seconds = 0;
-        var timer;
+        let millisec = 0;
+        let seconds = 0;
+        let timer;
   
   
         exit_button.onclick = function() {
@@ -197,11 +217,11 @@
           } else {
       
             clearTimeout(timer);
-            var duration = Date.now() - last_click_time;
-            var average = duration / number_of_clicks;
+            let duration = Date.now() - last_click_time;
+            let average = duration / number_of_clicks;
             
             // compute results
-            var results = {
+            let results = {
               component: 'game_chooser',
               success_rate_number: ( number_of_clicks === 0 ? 0 : 100.0 * number_of_success / number_of_clicks ).toFixed(2) + '% in ' +
               (duration/1000).toFixed(2),
@@ -216,8 +236,8 @@
             if ( self.logger ) self.logger.log( results );
             
             // display
-            results = self.ccm.helper.integrate(self.languages[self.language], results);
-            self.ccm.helper.setContent( div_result, self.ccm.helper.html(self.html.message, results) );
+            results = $.integrate(self.languages[self.language], results);
+            $.setContent( div_result, $.html(self.html.message, results) );
             
             // on finish?
             if (self.onfinish) self.onfinish( self, results );
@@ -254,10 +274,10 @@
         }
   
         function digit_sum(number) {
-          var string = number.toString();
+          let string = number.toString();
           string = string.split('');                 //split into individual characters
-          var sum = 0;                               //have a storage ready
-          for (var i = 0; i < string.length; i++) {  //iterate through
+          let sum = 0;                               //have a storage ready
+          for (let i = 0; i < string.length; i++) {  //iterate through
             sum += parseInt(string[i],10);           //convert from string to int
           }
           return sum;                                //return when done
@@ -268,15 +288,15 @@
          *  turns 1 into 10, 2 into 100, 3 into 1000
          **/
         function number_range(digit_count){
-          var result = 10;
-          for (var i=1; i<digit_count; i++){
+          let result = 10;
+          for (let i=1; i<digit_count; i++){
             result *= 10;
           }
           return result;
         }
   
         // base64 encoding of beep sound in config
-        var snd = new Audio(self.beepSound);
+        const snd = new Audio(self.beepSound);
   
         function beep() {
           if (self.beep) snd.play();
