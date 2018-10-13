@@ -22,7 +22,7 @@ ccm.files[ 'configs.js' ] = {
       main:  {
         tag: 'svg',
         width:"300",
-        height:"300",
+        height:"100",
         inner: []
       }
     },
@@ -49,7 +49,7 @@ ccm.files[ 'configs.js' ] = {
       main:  {
         tag: 'svg',
         width:"300",
-        height:"300",
+        height:"100",
         inner: []
       }
     },
