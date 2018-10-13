@@ -1,0 +1,82 @@
+{
+    "_id": "regex",
+    "title": "Regex",
+    "icon": "https://ccmjs.github.io/mkaul-components/regex/resources/icon.svg",
+    "abstract": "<a href=https://en.wikipedia.org/wiki/Regular_expression>Regular Expression</a>",
+    "description": "A <a href=https://en.wikipedia.org/wiki/Regular_expression>Regular Expression</a>, regex or regexp (sometimes called a rational expression) is, in theoretical computer science and formal language theory, a sequence of characters that define a search pattern. Usually this pattern is then used by string searching algorithms for \"find\" or \"find and replace\" operations on strings, or for input validation, see <a href=https://en.wikipedia.org/wiki/Regular_expression>Wikipedia</a>",
+    "url": "https://ccmjs.github.io/mkaul-components/regex/versions/ccm.regex-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "a*b",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "ab"
+                ]
+            },
+            {
+                "title": "Zip Code",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "zipcode"
+                ]
+            },
+            {
+                "title": "Landline Telefon Number",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "landline_number"
+                ]
+            },
+            {
+                "title": "License Plate",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "license_plate"
+                ]
+            },
+            {
+                "title": "E-Mail",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "e-mail"
+                ]
+            },
+            {
+                "title": "Web Address (URL)",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "web_address"
+                ]
+            }
+        ],
+        "builder": [
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+  "updated_at": "2018-10-12T14:41:22+02:00",
+  "created_at": "2018-10-12T14:41:22+02:00"
+}
