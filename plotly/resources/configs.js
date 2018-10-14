@@ -158,18 +158,20 @@ ccm.files[ 'configs.js' ] = {
   "area_chart": {
     key: "area_chart",
 
-    data: [{
-      x: [1, 2, 3, 4],
-      y: [0, 2, 3, 5],
-      fill: 'tozeroy',
-      type: 'scatter'
-    }, {
-      x: [1, 2, 3, 4],
-      y: [3, 5, 1, 7],
-      fill: 'tonexty',
-      type: 'scatter'
-    }]
-
+    data: [
+      {
+        x: [1, 2, 3, 4],
+        y: [0, 2, 3, 5],
+        fill: 'tozeroy',
+        type: 'scatter'
+      },
+      {
+        x: [1, 2, 3, 4],
+        y: [3, 5, 1, 7],
+        fill: 'tonexty',
+        type: 'scatter'
+      }
+    ]
   },
 
   // https://plot.ly/javascript/box-plots/
@@ -212,6 +214,39 @@ ccm.files[ 'configs.js' ] = {
       boxmode: 'group'
     }
 
+  },
+
+  // https://plot.ly/python/radar-chart/
+
+  "radar_chart": {
+    key: "radar_chart",
+
+    data: [
+      {
+        type: 'scatterpolar',
+        r: [39, 28, 8, 7, 28, 39],
+        theta: ['A','B','C', 'D', 'E', 'A'],
+        fill: 'toself',
+        name: 'Group A'
+      },
+      {
+        type: 'scatterpolar',
+        r: [1.5, 10, 39, 31, 15, 1.5],
+        theta: ['A','B','C', 'D', 'E', 'A'],
+        fill: 'toself',
+        name: 'Group B'
+      }
+    ],
+
+    layout: {
+      polar: {
+        radialaxis: {
+          visible: true,
+          range: [0, 50]
+        }
+      },
+      // showlegend: false
+    }
   }
 
 
