@@ -14,7 +14,7 @@ ccm.files[ 'configs.js' ] = {
 
     html: {
       main: {
-        style: "width:600px;height:400px;"
+        style: "width:700px;height:450px;"
       }
     },
 

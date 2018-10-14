@@ -38,7 +38,7 @@
 
       html: {
         main: {
-          style: "width:600px;height:350px;"
+          style: "width:700px;height:450px;"
         }
       },
 

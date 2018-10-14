@@ -3,9 +3,6 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
  */
-#element {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
 
 /* plotly require those class to render correctly
   see https://github.com/plotly/plotly.js/issues/1433
@@ -15,6 +12,14 @@
   top: 0;
   left: 0;
   pointer-events: none;
+}
+
+*/
+
+/*  For testing:
+
+.svg-container {
+  border: thin solid black;
 }
 
 */
@@ -262,7 +267,7 @@
 
 .js-plotly-plot .plotly .select-outline-2 {
   stroke:black;
-  stroke-dasharray:2px 2px;
+  stroke-dasharray:2px;
 }
 
 .plotly-notifier {
