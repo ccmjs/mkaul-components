@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RunKit</title>
+    <script src="https://embed.runkit.com"></script>
+</head>
+<body>
+    <div id="my-element"></div>
+</body>
+<script>var notebook = RunKit.createNotebook({
+  // the parent element for the new notebook
+  element: document.getElementById("my-element"),
+  // specify the source of the notebook
+  source: `
+    // GeoJSON!
+    var getJSON = require("async-get-json");
+    await getJSON("https://storage.googleapis.com/maps-devrel/google.json");
+  `
+})</script>
+</html>
