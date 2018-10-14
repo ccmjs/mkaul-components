@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.5.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -38,7 +38,7 @@
 
       html: {
         main: {
-          style: "width:600px;height:400px;"
+          style: "width:600px;height:350px;"
         }
       },
 
@@ -54,9 +54,9 @@
 
       plot_config: {},
 
-      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ]
+      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
 
-      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
