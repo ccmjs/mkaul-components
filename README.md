@@ -47,12 +47,10 @@ Click on a link for online demo. Include the following HTML code for including t
 
 ## Multiple Embedding Techniques for HTML including _ccm_ Components
 
-```
 * via HTML tags
 ```
 <script src="https://ccmjs.github.io/akless-components/menu/versions/ccm.menu-2.4.0.js"></script>
 <ccm-menu-2-4-0 key='["ccm.get","https://ccmjs.github.io/akless-components/menu/resources/configs.js","demo"]'></ccm-menu-2-4-0>
-
 ```
 * via content und HTML import (attention: JSON-Format with Double Quotes used in HTML attributes)
 ```
@@ -74,9 +72,9 @@ Click on a link for online demo. Include the following HTML code for including t
   ccm.start('content',{ root: document.body, inner: [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/2017/se1/le00.html' ] });
 </script>
 
-
 ```
 * via content und remote config
 ```
 <script src="https://ccmjs.github.io/akless-components/content/ccm.content.js"></script>
 <ccm-content key='["ccm.get","https://kaul.inf.h-brs.de/data/2017/se1/json/configs.js", "le04"]'></ccm-content>
+```
