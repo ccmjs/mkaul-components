@@ -23,8 +23,8 @@
      * @type {string}
      */
 
-    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.6.min.js',
 
     /**
      * default instance configuration
@@ -167,6 +167,9 @@
        */
       this.init = async () => {
 
+        // set shortcut to help functions
+        $ = self.ccm.helper;
+
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
         if ( self.inner && self.inner.innerHTML.trim() ){
@@ -182,22 +185,12 @@
       };
 
       /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // set shortcut to help functions
-        $ = self.ccm.helper;
-
-      };
-
-      /**
        * starts the instance
        */
       this.start = async () => {
       
         // has logger instance? => log 'start' event
-        if ( self.logger ) self.logger.log( 'start' );
+        self.logger && self.logger.log( 'start' );
 
         // collect results in results object
         let results = { texts: [], indices: [], counter: [], timer: [] };
