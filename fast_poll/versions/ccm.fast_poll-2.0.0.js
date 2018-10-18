@@ -82,7 +82,7 @@
 
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
 
-      chart: [ "ccm.component", "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js" ],
+      // chart: [ "ccm.component", "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js" ],
 
       onfinish: function( instance, results ){
         const self = instance;
@@ -103,7 +103,7 @@
         const chart_elem = document.createElement('div');
 
         // render chart
-        self.chart.start( {
+        ccm.start( "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js", {
           root: chart_elem,
           settings: {
             chart: {
