@@ -7,23 +7,18 @@
 ccm.files[ 'configs.js' ] = {
   "localhost": {
     css: [ 'ccm.load',  '../fast_poll/resources/default.css' ],
-    language: 'de',
     labels: {
-      de: {
         intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
         label: "Fertig!"
-      }
     },
-    choices: {
-      de: [
-        ['A',  'B'],
-        ['1',  '2']
-      ]
-    },
+    choices: [
+      { A: 'A', B: 'B' },
+      { A: 1, B: 2 },
+    ],
 
-    chart: [ "ccm.component", "https://ccmjs.github.io/akless-components/highchart/ccm.highchart.js" ],
+    chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
 
-    onfinish: function( instance, results ){
+    onfinish: async function( instance, results ){
       const self = instance;
 
       console.log( results );
@@ -44,40 +39,11 @@ ccm.files[ 'configs.js' ] = {
       const chart_elem = document.createElement('div');
 
       // render chart
-      self.chart.start( {
+      await self.chart.start( {
         root: chart_elem,
-        settings: {
-          chart: {
-            type: 'column'
-          },
-          title: {
-            text: ''
-          },
-          xAxis: {
-            categories: categories,
-            title: {
-              text: 'Choice'
-            }
-          },
-          yAxis: {
-            min: 0,
-            max: results.length,
-            title: {
-              text: 'Time to choose (msec)'
-            },
-            allowDecimals: false
-          },
-          tooltip: {
-            enabled: false
-          },
-          legend: {
-            enabled: false
-          },
-          series: [
-            {
-              data: nano // or data
-            }
-          ]
+        data: {
+          x: categories,
+          y: nano
         }
       } );
 
@@ -89,77 +55,40 @@ ccm.files[ 'configs.js' ] = {
   "questions_answers": {
     "key": "questions_answers",
     labels: {
-      en: {
-        intro: "Instead of a quiz take a fast poll:",
-        label: "Finished!"
-      },
-      de: {
-        intro: "Statt eines Quiz mit Radio-Buttons geht auch ein Fast Poll:",
+       intro: "Statt eines Quiz mit Radio-Buttons geht auch ein Fast Poll:",
         label: "Fertig!"
-      }
     },
-    questions: {
-      en: [
-        'Question 1',
-        'Question 2',
-        'Question 3',
-        'Question 4',
-        'Thank you!'
-      ],
-      de: [
-        'Frage 1',
-        'Frage 2',
-        'Frage 3',
-        'Frage 4',
-        'Vielen Dank!'
-      ]
-    },
-    choices: {
-      en: [
-        ['Answer 1a',  'Answer 1b'],
-        ['Answer 2a',  'Answer 2b', 'Answer 2c'],
-        [ 1,2,3,4,5,6,7,8,9,10 ],
-        ['Only one Answer']
-      ],
-      de: [
-        ['Antwort 1a',  'Antwort 1b'],
-        ['Antwort 2a',  'Antwort 2b', 'Antwort 2c'],
-        [ 1,2,3,4,5,6,7,8,9,10 ],
-        ['Nur eine Antwort']
-      ]
-    },
+    questions: [
+      'Frage 1',
+      'Frage 2',
+      'Frage 3',
+      'Frage 4',
+      'Vielen Dank!'
+    ],
+    choices: [
+      { A: 'Antwort 1a', B: 'Antwort 1b' },
+      { A: 'Antwort 2a', B: 'Antwort 2b', C: 'Antwort 2c' },
+      { A: 'Nur eine Antwort' },
+      { A: 1, B: 2, C: 3  },
+      { A: 1, B: 2, C: 3, D: 4 },
+      { A: 1, B: 2, C: 3, D: 4, E: 5, F: 6 }
+    ],
   },
 
   "agile_manifesto": {
     // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast_poll/resources/default.css' ],
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast_poll/resources/default.css' ],
-    language: 'de',
+
     labels: {
-      en: {
-        intro: "Decide immediately (without pondering):<br><b>What is really important to you?</b>",
-        label: "Finished!"
-      },
-      de: {
         intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
         label: "Fertig!"
-      }
     },
-    choices: {
-      en: [
-        // http://agilemanifesto.org/iso/en/manifesto.html
-        ['Individuals and interactions',  'processes and tools'],
-        ['Working software',  'comprehensive documentation'],
-        ['Customer collaboration',  'contract negotiation'],
-        ['Responding to change',  'following a plan']
+    choices: [// http://agilemanifesto.org/iso/de/manifesto.html
+        {agil: 'Individuen und Interaktionen', plan: 'Prozesse und Werkzeuge'},
+        {agil: 'Funktionierende Software', plan: 'umfassende Dokumentation'},
+        {agil: 'Zusammenarbeit mit dem Kunden', plan: 'Vertragsverhandlung'},
+        {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'}
       ],
-      de: [
-        // http://agilemanifesto.org/iso/de/manifesto.html
-        ['Individuen und Interaktionen',  'Prozesse und Werkzeuge'],
-        ['Funktionierende Software',  'umfassende Dokumentation'],
-        ['Zusammenarbeit mit dem Kunden',  'Vertragsverhandlung'],
-        ['Reagieren auf Veränderung',  'Befolgen eines Plans']
-      ]
-    },
     user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ]
     // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
     // onfinish: function( instance, results ){ console.log( results ); }
