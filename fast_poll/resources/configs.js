@@ -48,8 +48,6 @@ ccm.files[ 'configs.js' ] = {
   },
 
   "agile_manifesto": {
-    // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccmjs/mkaul-components/fast_poll/resources/default.css' ],
-    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/fast_poll/resources/default.css' ],
 
     labels: {
         intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
@@ -60,9 +58,6 @@ ccm.files[ 'configs.js' ] = {
         {agil: 'Funktionierende Software', plan: 'umfassende Dokumentation'},
         {agil: 'Zusammenarbeit mit dem Kunden', plan: 'Vertragsverhandlung'},
         {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'}
-      ],
-    user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-6.0.0.js', { realm: 'hbrsinfkaul' } ]
-    // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/akless-components/log/resources/configs.js', 'greedy' ] ],
-    // onfinish: function( instance, results ){ console.log( results ); }
+        ]
   }
 };
