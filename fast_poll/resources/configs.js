@@ -48,7 +48,7 @@ ccm.files[ 'configs.js' ] = {
   },
 
   "agile_manifesto": {
-
+    "key": "agile_manifesto",
     labels: {
         intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
         label: "Fertig!"
