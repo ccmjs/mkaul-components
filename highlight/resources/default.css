@@ -4,5 +4,5 @@
  * @license The MIT License (MIT)
  */
 div {
-    font-size: xx-small;
+    min-width: fit-content;
 }

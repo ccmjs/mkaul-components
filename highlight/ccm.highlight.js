@@ -18,7 +18,7 @@
       extension: 'java',
       html: {
         main: {
-          style: 'position: relative; border: thin solid black;',
+          style: 'position: relative;',
           inner: [
             {
               tag: 'pre',

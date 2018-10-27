@@ -1,7 +1,7 @@
 {
   "_id": "highlight",
   "title": "Code Highlighting",
-  "abstract": "For Code Highlighting based on <a href=https://highlightjs.org target=_blank>hightlight.js</a>",
+  "abstract": "For Code Highlighting based on <a href=https://highlightjs.org target=_blank>hightlight.js</a>. Configuration options see <a href=https://highlightjs.readthedocs.io/en/latest/api.html#configure-options target=_blank>API</a>",
   "description": "Switch between different CSS styles for highlighting code based on <a href=https://highlightjs.org target=_blank>hightlight.js</a>",
   "icon": "https://ccmjs.github.io/mkaul-components/highlight/resources/icon.svg",
   "url": "https://ccmjs.github.io/mkaul-components/highlight/versions/ccm.highlight-3.0.0.js",
@@ -16,15 +16,23 @@
         "config": [
           "ccm.get",
           "https://ccmjs.github.io/mkaul-components/highlight/resources/configs.js",
-          "demo"
+          "java"
         ]
       },
       {
-        "title": "all configuration options",
+        "title": "Plaintext",
         "config": [
           "ccm.get",
           "https://ccmjs.github.io/mkaul-components/highlight/resources/configs.js",
-          "full_configuration"
+          "plaintext"
+        ]
+      },
+      {
+        "title": "HTML Code Highlighting ",
+        "config": [
+          "ccm.get",
+          "https://ccmjs.github.io/mkaul-components/highlight/resources/configs.js",
+          "html"
         ]
       }
     ],
@@ -35,9 +43,9 @@
         "config": {
           "builder": [
             "ccm.component",
-            "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.0.0.js",
+            "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.1.0.js",
             {
-              "inner": "<fieldset><legend>Code Language:</legend> <select name=\"clazz\"><option value=\"plaintext\">Plaintext</option><option value=\"html\">HTML</option><option value=\"css\">CSS</option><option value=\"js\">JavaScript</option><option value=\"java\">Java</option><option value=\"php\">PHP</option><option value=\"ruby\">Ruby</option> </select></fieldset><fieldset><legend>Code</legend><textarea name=\"content\"></textarea></fieldset><input type=\"submit\">"
+              "inner": "<fieldset><legend>Code Language:</legend> <select name=\"clazz\"><option value=\"plaintext\">Plaintext</option><option value=\"html\">HTML</option><option value=\"css\">CSS</option><option value=\"js\">JavaScript</option><option value=\"java\">Java</option><option value=\"php\">PHP</option><option value=\"ruby\">Ruby</option> </select></fieldset><fieldset><legend>Code</legend><textarea name=\"content\"></textarea></fieldset>"
             }
           ]
         }
@@ -58,6 +66,6 @@
       }
     ]
   },
-  "updated_at": "2018-10-12T11:38:29+02:00",
+  "updated_at": "2018-10-27T19:47:29+02:00",
   "created_at": "2018-10-12T11:38:29+02:00"
 }
