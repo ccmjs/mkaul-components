@@ -15,6 +15,30 @@
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
+      filename: 'Classname',
+      extension: 'java',
+      html: {
+        main: {
+          style: 'position: relative; border: thin solid black;',
+          inner: [
+            {
+              tag: 'pre',
+              style: 'padding: 3px; padding-top: 12px;',
+              inner: {
+                tag: 'code',
+                class: '%clazz%' || 'java'  // hljs class attribute in config
+                // see https://highlightjs.org/usage/
+              }
+            },
+            { style: 'position: absolute; top: 0; right: 0; margin: 3px;', inner: [
+                { tag: 'a', inner: 'Download', class: 'down', title: 'Download as File!', style: 'border-radius: 12px; margin: 2px; outline:0;appearance:button;font-size: smaller;padding:2px;border-style: solid;border-width: thin;background-color: white;color:initial;border-color: lightgrey;' },
+                { tag: 'button', inner: 'Copy', class: 'copy', title: 'Copy to ClipBoard', onclick: '%copyToClipBoard%', style: 'border-radius: 10px; margin: 3px; outline:0;' },
+                { tag: 'button', inner: 'Style', title: 'Change Style', onclick: '%changeStyle%', style: 'border-radius: 10px; margin: 3px; outline:0;' }
+              ]
+            }
+          ]
+        }
+      },
       hljs:  [ 'ccm.load',
         // 'https://ccmjs.github.io/mkaul-components/highlight/resources/highlight.min.js'
         '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js'
@@ -26,7 +50,7 @@
         'https://ccmjs.github.io/mkaul-components/highlight/resources/github.min.css'
       ],
 
-      // data: { content: 'code to be highlighted' }
+      // content: 'code to be highlighted'
 
       // configuration of highlight
       // see https://highlightjs.readthedocs.io/en/latest/api.html#configure-options
@@ -36,7 +60,7 @@
       // classPrefix: '', // a string prefix added before class names in the generated markup, used for backwards compatibility with stylesheets.
       // languages: ['java', 'php', 'html', 'css', 'javascript' ] // an array of language names and aliases restricting auto detection to only these languages.
 
-      // data: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
+      // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ]
     },
 
@@ -78,25 +102,10 @@
         self.logger && self.logger.log( 'render' );
 
         // set content of own website area
-        $.setContent( self.element, $.html( {
-          style: 'position: relative;',
-          inner: [
-            {
-              tag: 'pre',
-              style: 'padding: 3px;',
-              inner: {
-                tag: 'code',
-                class: self.clazz || 'java'  // hljs class attribute in config
-                // see https://highlightjs.org/usage/
-              }
-            },
-            { style: 'position: absolute; top: 0; right: 0; margin: 3px;', inner: [
-                { tag: 'a', inner: 'Down', class: 'down', title: 'Download as File!', style: 'border-radius: 10px; margin: 3px; outline:0;appearance:button;font-size: smaller;padding:3px;border-style: solid;border-width: thin;background-color: white;color:initial;border-color: lightgrey;' },
-                { tag: 'button', inner: 'Copy', class: 'copy', title: 'Copy to ClipBoard', onclick: copyToClipBoard, style: 'border-radius: 10px; margin: 3px; outline:0;' },
-                { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
-              ]
-            }
-          ]
+        $.setContent( self.element, $.html( self.html.main, {
+          clazz: self.clazz,
+          copyToClipBoard: copyToClipBoard,
+          changeStyle: changeStyle
         } ) );
 
         // get DOM element of <pre><code>
@@ -123,7 +132,7 @@
         }
 
         // set main element content to config or lightDOM content
-        const textContent = (self.data && self.data.content) || ( self.inner || self.root ).innerHTML;
+        const textContent = self.content || ( self.inner || self.root ).innerHTML;
 
         self.getValue = () => {
           return textContent;
@@ -133,12 +142,18 @@
         let blob = new Blob( [ textContent ], { type: 'text/plain' } );
         let a = self.element.querySelector('.down');
         a.href = URL.createObjectURL(blob);
-        a.download = 'ClassName.java';
-        a.textContent = 'Download';
+        a.download = ( 'Filename' || self.filename ) + '.' + ( self.extension || self.clazz );
 
         main_elem.textContent = htmlDecode( textContent );
 
-        hljs.configure(Object.assign({}, self));
+        // extract highlight options from config
+        const { tabReplace, useBR, classPrefix, languages } = self;
+
+        // remove undefined values
+        const configuration = Object.entries({ tabReplace, useBR, classPrefix, languages }).reduce((acc, [key, val]) => { if (val) acc[key] = val; return acc; }, {});
+
+        // https://highlightjs.readthedocs.io/en/latest/api.html#configure-options
+        if (Object.keys(configuration).length>0) hljs.configure( configuration );
 
         hljs.highlightBlock( main_elem );
 

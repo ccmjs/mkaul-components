@@ -6,35 +6,25 @@
 
 ccm.files[ 'configs.js' ] = {
 
-  "demo": {
-    key: "demo",
+  "java": {
+    key: "java",
     clazz: 'java',
-
-    css: [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
-
-    data: {
-      content: `class HelloWorld {
+    content: `class HelloWorld {
     public static void main(String[] args){
         System.out.println("Hello World");
     }
 }`
-    }
-
   },
 
-  "full_configuration": {
-    key: "full_configuration",
-    css: ["ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css"],
-    //  class: 'java',
-    languages: ['java', 'php', 'html', 'css', 'javascript'],
-    data: {
-      content:
-        `class HelloWorld {
-    public static void main(String[] args){
-        System.out.println("Hello World");
-    }
-}`
-    }
-  }
+  "plaintext": {
+    key: "plaintext",
+    clazz: "plaintext",
+    content: `This is a normal text.`,
+  },
 
+  "html": {
+    key: "html",
+    clazz: 'html',
+    content: `<html><h1>Title</h1><script>alert('XSS')</script></html>`
+  }
 };
