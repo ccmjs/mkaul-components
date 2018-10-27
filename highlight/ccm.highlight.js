@@ -25,6 +25,8 @@
         'https://ccmjs.github.io/mkaul-components/highlight/resources/github.min.css'
       ],
 
+      // data: { content: 'code to be highlighted' }
+
       // configuration of highlight
       // see https://highlightjs.readthedocs.io/en/latest/api.html#configure-options
       // clazz: 'java', // language of highlighting
@@ -120,7 +122,7 @@
         }
 
         // set main element content to config or lightDOM content
-        const textContent = self.data || ( self.inner || self.root ).innerHTML;
+        const textContent = (self.data && self.data.content) || ( self.inner || self.root ).innerHTML;
 
         self.getValue = () => {
           return textContent;

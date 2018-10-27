@@ -12,25 +12,29 @@ ccm.files[ 'configs.js' ] = {
 
     css: [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
 
-    data:
-`class HelloWorld {
+    data: {
+      content: `class HelloWorld {
     public static void main(String[] args){
         System.out.println("Hello World");
     }
 }`
+    }
+
   },
 
   "full_configuration": {
     key: "full_configuration",
-    css: [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
+    css: ["ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css"],
     //  class: 'java',
-    languages: ['java', 'php', 'html', 'css', 'javascript' ],
-    data:
-`class HelloWorld {
+    languages: ['java', 'php', 'html', 'css', 'javascript'],
+    data: {
+      content:
+        `class HelloWorld {
     public static void main(String[] args){
         System.out.println("Hello World");
     }
 }`
+    }
   }
 
 };
