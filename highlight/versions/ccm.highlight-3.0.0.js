@@ -26,7 +26,7 @@
               style: 'padding: 3px; padding-top: 12px;',
               inner: {
                 tag: 'code',
-                class: '%clazz%' || 'java'  // hljs class attribute in config
+                class: '%clazz%'  // hljs class attribute in config
                 // see https://highlightjs.org/usage/
               }
             },
@@ -134,17 +134,15 @@
         // set main element content to config or lightDOM content
         const textContent = self.content || ( self.inner || self.root ).innerHTML;
 
-        self.getValue = () => {
-          return textContent;
-        };
+        self.getValue = () =>  textContent;
 
         // fill download link with Blob filled with textContent
-        let blob = new Blob( [ textContent ], { type: 'text/plain' } );
-        let a = self.element.querySelector('.down');
+        const blob = new Blob( [ textContent ], { type: 'text/plain' } );
+        const a = self.element.querySelector('.down');
         a.href = URL.createObjectURL(blob);
-        a.download = ( 'Filename' || self.filename ) + '.' + ( self.extension || self.clazz );
+        a.download = ( self.filename || 'Filename' ) + '.' + ( self.extension || self.clazz );
 
-        main_elem.textContent = htmlDecode( textContent );
+        main_elem.textContent = textContent; // htmlDecode( textContent );
 
         // extract highlight options from config
         const { tabReplace, useBR, classPrefix, languages } = self;
@@ -153,7 +151,7 @@
         const configuration = Object.entries({ tabReplace, useBR, classPrefix, languages }).reduce((acc, [key, val]) => { if (val) acc[key] = val; return acc; }, {});
 
         // https://highlightjs.readthedocs.io/en/latest/api.html#configure-options
-        if (Object.keys(configuration).length>0) hljs.configure( configuration );
+        if ( Object.keys(configuration).length > 0 ) hljs.configure( configuration );
 
         hljs.highlightBlock( main_elem );
 
