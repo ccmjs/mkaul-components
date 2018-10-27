@@ -25,6 +25,6 @@ ccm.files[ 'configs.js' ] = {
   "html": {
     key: "html",
     clazz: 'html',
-    content: `<html><h1>Title</h1><script>alert('XSS')</script></html>`
+    content: `<h1>Title</h1><section><p>some text here</p></section>`
   }
 };
