@@ -142,6 +142,10 @@
         a.href = URL.createObjectURL(blob);
         a.download = ( self.filename || 'Filename' ) + '.' + ( self.extension || self.clazz );
 
+        a.addEventListener('click', ()=>{
+          a.download = window.prompt('Enter Filename:', a.download);
+        }); 
+
         main_elem.textContent = textContent; // htmlDecode( textContent );
 
         // extract highlight options from config
@@ -154,7 +158,6 @@
         if ( Object.keys(configuration).length > 0 ) hljs.configure( configuration );
 
         hljs.highlightBlock( main_elem );
-
 
         // Converting sanitised html back to displayable html
         // back replacement of "<" instead of "&lt;"
