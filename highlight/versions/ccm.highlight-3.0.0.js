@@ -9,31 +9,61 @@
   const component  = {
 
     name: 'highlight',
+    version: [3,0,0]
 
-    version: [ 2, 0, 0 ],
-  
     ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
-      hljs:  [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/highlight.min.js' ],
-      css:   [ 'ccm.load', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css' ],
-      css_alternatives: [ 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/tomorrow.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/zenburn.min.css', 'https://kaul.inf.h-brs.de/data/ccm/highlight/resources/github.min.css' ]
-      
-      // clazz: 'java',
-      // content: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
-      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/highlight/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-1.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
-      // onfinish: function( instance, results ){ console.log( results ); }
+      hljs:  [ 'ccm.load',
+        // 'https://ccmjs.github.io/mkaul-components/highlight/resources/highlight.min.js'
+        '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js'
+      ],
+      css:   [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/highlight/resources/monokai-sublime.min.css' ],
+      css_alternatives: [ 'https://ccmjs.github.io/mkaul-components/highlight/resources/monokai-sublime.min.css',
+        'https://ccmjs.github.io/mkaul-components/highlight/resources/tomorrow.min.css',
+        'https://ccmjs.github.io/mkaul-components/highlight/resources/zenburn.min.css',
+        'https://ccmjs.github.io/mkaul-components/highlight/resources/github.min.css'
+      ],
+
+      // configuration of highlight
+      // see https://highlightjs.readthedocs.io/en/latest/api.html#configure-options
+      // clazz: 'java', // language of highlighting
+      // tabReplace: "\t", // a string used to replace TAB characters in indentation.
+      // useBR: true, // a flag to generate <br> tags instead of new-line characters in the output, useful when code is marked up using a non-<pre> container.
+      // classPrefix: '', // a string prefix added before class names in the generated markup, used for backwards compatibility with stylesheets.
+      // languages: ['java', 'php', 'html', 'css', 'javascript' ] // an array of language names and aliases restricting auto detection to only these languages.
+
+      // data: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/2017/se1/01/HelloWorld.java' ]
+      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ]
     },
 
     Instance: function () {
-    
+
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
       const self = this;
-  
+
+      /**
+       * shortcut to help functions
+       * @type {Object.<string,function>}
+       */
+      let $;
+
+      /**
+       * init is called once after all dependencies are solved and is then deleted
+       */
+      this.init = async () => {
+
+        // set shortcut to help functions
+        $ = this.ccm.helper;
+
+      };
+
       this.style = 0;
-      
+
       this.setStyle = function( style_nr ) {
         self.style = style_nr;
         self.style %= self.css_alternatives.length;
@@ -41,12 +71,12 @@
       };
 
       this.start = async () => {
-      
+
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render' );
+        self.logger && self.logger.log( 'render' );
 
         // set content of own website area
-        self.ccm.helper.setContent( self.element, self.ccm.helper.html( {
+        $.setContent( self.element, $.html( {
           style: 'position: relative;',
           inner: [
             {
@@ -54,7 +84,8 @@
               style: 'padding: 3px;',
               inner: {
                 tag: 'code',
-                class: ( self.clazz || self.root.classList.value ) // config or lightDOM
+                class: self.clazz || 'java'  // hljs class attribute in config
+                // see https://highlightjs.org/usage/
               }
             },
             { style: 'position: absolute; top: 0; right: 0; margin: 3px;', inner: [
@@ -63,12 +94,11 @@
                 { tag: 'button', inner: 'Style', title: 'Change Style', onclick: changeStyle, style: 'border-radius: 10px; margin: 3px; outline:0;' }
               ]
             }
-           ]
-         } ) );
-        
+          ]
+        } ) );
+
         // get DOM element of <pre><code>
         const main_elem = self.element.querySelector('pre code');
-
         const copy_button = self.element.querySelector('.copy');
 
         // https://stackoverflow.com/questions/23211018/copy-to-clipboard-with-jquery-js-in-chrome
@@ -88,14 +118,14 @@
           selection.removeAllRanges();
           if( ! selection.containsNode( main_elem ) ) selection.addRange(range);
           document.execCommand("copy");
-          // window.getSelection().empty();
-          // e.preventDefault();
-          // e.stopPropagation();
-          // return false;
         }
 
         // set main element content to config or lightDOM content
-        const textContent = self.content || ( self.inner || self.root ).innerHTML;
+        const textContent = self.data || ( self.inner || self.root ).innerHTML;
+
+        self.getValue = () => {
+          return textContent;
+        };
 
         // fill download link with Blob filled with textContent
         let blob = new Blob( [ textContent ], { type: 'text/plain' } );
@@ -103,18 +133,14 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'ClassName.java';
         a.textContent = 'Download';
-        
-        // skip first and last new line
-        // var firstBreak = textContent.indexOf('\n');
-        // textContent = textContent.substr(firstBreak+1);
-        // var lastBreak = textContent.lastIndexOf('\n');
-        // textContent = textContent.substring(0, lastBreak);
-        
+
         main_elem.textContent = htmlDecode( textContent );
-  
+
+        hljs.configure(Object.assign({}, self));
+
         hljs.highlightBlock( main_elem );
-        
-  
+
+
         // Converting sanitised html back to displayable html
         // back replacement of "<" instead of "&lt;"
         // https://stackoverflow.com/questions/1248849/converting-sanitised-html-back-to-displayable-html
@@ -123,16 +149,7 @@
           elem.innerHTML = input;
           return input ? elem.childNodes[0].nodeValue : input;
         }
-  
-        function isHTML(str) { // ToDo to be deleted
-          const div = document.createElement('div');
-          div.innerHTML = str;
-          for (const c = div.childNodes, i = c.length; i--; ) {
-            if (c[i].nodeType == 1) return true;
-          }
-          return false;
-        }
-        
+
         function changeStyle(e) {
           self.style += 1;
           self.setStyle( self.style );
@@ -140,7 +157,7 @@
           e.stopPropagation();
           return false;
         }
-        
+
       };
 
     }

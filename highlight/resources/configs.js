@@ -8,8 +8,24 @@ ccm.files[ 'configs.js' ] = {
 
   "demo": {
     key: "demo",
-    "css": [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
-    "content":
+    clazz: 'java',
+
+    css: [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
+
+    data:
+`class HelloWorld {
+    public static void main(String[] args){
+        System.out.println("Hello World");
+    }
+}`
+  },
+
+  "full_configuration": {
+    key: "full_configuration",
+    css: [ "ccm.load", "https://kaul.inf.h-brs.de/data/ccm/highlight/resources/monokai-sublime.min.css" ],
+    //  class: 'java',
+    languages: ['java', 'php', 'html', 'css', 'javascript' ],
+    data:
 `class HelloWorld {
     public static void main(String[] args){
         System.out.println("Hello World");
