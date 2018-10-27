@@ -24,7 +24,7 @@
      */
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
 
     /**
      * default instance configuration
@@ -250,6 +250,7 @@
           $.onFinish(self, results);
 
         }
+
       }
 
     }
