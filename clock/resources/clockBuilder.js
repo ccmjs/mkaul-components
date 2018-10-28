@@ -6,8 +6,8 @@
  */
 
 export function clockBuilder( json ) {
-  json.width = json.width + ( json.suffix || 'px' );
-  delete json.suffix;
+  json.width = json.width + ( json.unit || 'px' );
+  delete json.unit;
   return json;
 }
  
