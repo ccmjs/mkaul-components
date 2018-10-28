@@ -22,7 +22,7 @@ ccm.files[ 'configs.js' ] = {
           { id: 'clock' },
           { id: 'date', inner: '%date%' },
           { id: 'time', inner: '%time%' },
-          { id: 'title', inner: '%title%' }
+          { id: 'title', inner: '%title%', style: 'width: %width%' }
         ]
       }
     },
