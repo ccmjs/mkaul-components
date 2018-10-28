@@ -181,9 +181,9 @@
         });
 
         setInterval(() => { // re-render every second
-          self.lit_html.render( svg_render(), clock_div );
-          date_div.innerText = this.getValue().toLocaleDateString();
-          time_div.innerText = this.getValue().toLocaleTimeString();
+          clock_div && self.lit_html.render( svg_render(), clock_div );
+          if ( date_div ) date_div.innerText = this.getValue().toLocaleDateString();
+          if ( time_div ) time_div.innerText = this.getValue().toLocaleTimeString();
         }, 1000);
 
         // set content of own website area

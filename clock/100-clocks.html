@@ -4,24 +4,26 @@
         display: flex;
         flex-wrap: wrap;
     }
-    ccm-clock {
+    ccm-clock-3-0-0 {
         width: 100px;
     }
 </style>
 
 <div id="root"></div>
 
-<script src="//akless.github.io/ccm/ccm.js"></script>
-<script src="//kaul.inf.h-brs.de/data/ccm/clock/ccm.clock.js"></script>
+<script src="//ccmjs.github.io/ccm/versions/ccm-18.0.7.js"></script>
+<script src="//ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.0.js"></script>
 <script>
     const root = document.getElementById('root');
     let newChild = null;
     for (let i=0; i<100; i++) {
       newChild = document.createElement('div');
       root.appendChild( newChild );
-      ccm.start('clock', { root: newChild },
-        function () { // callback
-          // console.log("start(" + filename + ")");
-        });
+      ccm.start('clock-3-0-0', { root: newChild, width: "50px", html: {
+          main: { id: 'main', inner: [
+              { id: 'clock' }
+            ]
+          }
+        } } );
     }
 </script>

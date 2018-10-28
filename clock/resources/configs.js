@@ -16,7 +16,17 @@ ccm.files[ 'configs.js' ] = {
     title: "New York",
     delay: -5,
     color: "white",
-    background: "black"
+    background: "black",
+    html: {
+      main: { id: 'main', inner: [
+          { id: 'clock' },
+          { id: 'date', inner: '%date%' },
+          { id: 'time', inner: '%time%' },
+          { id: 'title', inner: '%title%' }
+        ]
+      }
+    },
+    css: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/clock/resources/default.css" ]
   },
   "small": {
     key: "small",
