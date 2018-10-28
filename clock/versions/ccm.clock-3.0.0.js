@@ -13,7 +13,7 @@
     name: 'clock',
     version: [3,0,0],
 
-    ccm: '//ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
+    ccm: '//ccmjs.github.io/ccm/versions/ccm-18.1.0.min.js',
     // ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {
@@ -70,8 +70,6 @@
 
       this.start = async () => {
 
-        self.element.style.display = "inline";
-
         const main_div = $.html( self.html.main, {
           date: this.getValue().toLocaleDateString(),
           time: this.getValue().toLocaleTimeString(),
@@ -117,10 +115,7 @@
         const svg_render = (() =>{
           return self.lit_html.html`
             <style>
-              :host {
-                display: inline;
-              }
-              
+                          
              .clock-face {
                 stroke: ${self.color};
                 fill: ${self.background};
