@@ -21,7 +21,7 @@
             { id: 'clock' },
             { id: 'date', inner: '%date%' },
             { id: 'time', inner: '%time%' },
-            { id: 'title', inner: '%title%' }
+            { id: 'title', inner: '%title%', style: 'width: %width%' }
           ]
         }
       },
@@ -74,7 +74,8 @@
         const main_div = $.html( self.html.main, {
           date: this.getValue().toLocaleDateString(),
           time: this.getValue().toLocaleTimeString(),
-          title: self.title
+          title: self.title,
+          width: self.width
         } );
 
         const clock_div = main_div.querySelector('#clock');

@@ -13,8 +13,8 @@
     name: 'clock',
     version: [3,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
-    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: '//ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
+    // ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {
       html: {
@@ -22,7 +22,7 @@
             { id: 'clock' },
             { id: 'date', inner: '%date%' },
             { id: 'time', inner: '%time%' },
-            { id: 'title', inner: '%title%' }
+            { id: 'title', inner: '%title%', style: 'width: %width%' }
           ]
         }
       },
@@ -31,8 +31,8 @@
       // title: 'Berlin',
       color: 'black',
       background: 'white',
-      css: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/clock/resources/default.css" ],
-      lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ]
+      css: [ "ccm.load", "//ccmjs.github.io/mkaul-components/clock/resources/default.css" ],
+      lit_html: [ "ccm.load", { url: "//unpkg.com/lit-html?module", type: "module" } ]
       // lit_html: [ "ccm.load", { "url": "../lib/lit-html.js", "type": "module" } ]
       // lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ]
@@ -75,7 +75,8 @@
         const main_div = $.html( self.html.main, {
           date: this.getValue().toLocaleDateString(),
           time: this.getValue().toLocaleTimeString(),
-          title: self.title
+          title: self.title,
+          width: self.width
         } );
 
         const clock_div = main_div.querySelector('#clock');
