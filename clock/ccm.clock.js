@@ -11,36 +11,78 @@
   var component  = {
 
     name: 'clock',
-    
-    // ccm: 'https://akless.github.io/ccm/version/ccm-11.5.0.min.js',
-    ccm: '//akless.github.io/ccm/ccm.js',
+
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.7.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
       html: {
-        main: { class: 'main' }
+        main: { id: 'main', inner: [
+            { id: 'clock' },
+            { id: 'date', inner: '%date%' },
+            { id: 'time', inner: '%time%' },
+            { id: 'title', inner: '%title%' }
+          ]
+        }
       },
-      width: "100px",
-      lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
-      // css: [ 'ccm.load',  '//kaul.inf.h-brs.de/data/ccm/clock/resources/default.css' ],
-      // lit_html: [ 'ccm.load', { url: '//kaul.inf.h-brs.de/data/ccm/clock/resources/lit-html.js', attr: { type: 'module' } } ],
-      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/clock/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
-      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
-      // onfinish: function( instance, results ){ console.log( results ); }
+      width: "200px",
+      // delay: 0,
+      // title: 'Berlin',
+      color: 'black',
+      background: 'white',
+      css: [ "ccm.load", "./resources/default.css" ],
+      lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ]
+      // lit_html: [ "ccm.load", { "url": "../lib/lit-html.js", "type": "module" } ]
+      // lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
+      // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ]
     },
 
     Instance: function () {
-    
+
+      /**
+       * own reference for inner functions
+       * @type {Instance}
+       */
       const self = this;
 
-      this.date = new Date();
+      /**
+       * shortcut to help functions
+       * @type {Object.<string,function>}
+       */
+      let $;
+
+      /**
+       * init is called once after all dependencies are solved and is then deleted
+       */
+      this.init = async () => {
+
+        // set shortcut to help functions
+        $ = this.ccm.helper;
+
+      };
+
+      this.getValue = () => {
+        const date = new Date();
+        date.setHours( ( date.getHours() + parseInt( self.delay || 0 ) ) % 24 );
+        return date;
+      };
 
       this.start = async () => {
 
         self.element.style.display = "inline";
 
+        const main_div = $.html( self.html.main, {
+          date: this.getValue().toLocaleDateString(),
+          time: this.getValue().toLocaleTimeString(),
+          title: self.title
+        } );
+
+        const clock_div = main_div.querySelector('#clock');
+        const date_div = main_div.querySelector('#date');
+        const time_div = main_div.querySelector('#time');
+
         // has logger instance? => log 'render' event
-        if ( self.logger ) self.logger.log( 'render', this.date );
+        self.logger && self.logger.log( 'render', this.getValue() );
 
         const minuteTicks = (() => {
           const lines = [];
@@ -78,26 +120,26 @@
               }
               
              .clock-face {
-                stroke: #333;
-                fill: white;
+                stroke: ${self.color};
+                fill: ${self.background};
               }
                            
               .minor {
-                stroke: #999;
-                stroke-width: 0.5;
+                stroke: ${self.color};
+                stroke-width: 0.5px;
               }
               
               .major {
-                stroke: #333;
-                stroke-width: 1;
+                stroke: ${self.color};
+                stroke-width: 1px;
               }
               
               .hour {
-                stroke: #333;
+                stroke: ${self.color};
               }
               
               .minute {
-                stroke: #666;
+                stroke: ${self.color};
               }
               
               .second, .second-counterweight {
@@ -105,7 +147,7 @@
               }
               
               .second-counterweight {
-                stroke-width: 3;
+                stroke-width: 3px;
               }
             </style>
             
@@ -121,14 +163,14 @@
           
                   <!-- hour hand -->
                   <line class='hour' y1='2' y2='-20'
-                    transform='rotate(${ 30 * this.date.getHours() + this.date.getMinutes() / 2 })'/>
+                    transform='rotate(${ 30 * this.getValue().getHours() + this.getValue().getMinutes() / 2 })'/>
           
                   <!-- minute hand -->
                   <line class='minute' y1='4' y2='-30'
-                    transform='rotate(${ 6 * this.date.getMinutes() + this.date.getSeconds() / 10 })'/>
+                    transform='rotate(${ 6 * this.getValue().getMinutes() + this.getValue().getSeconds() / 10 })'/>
           
                   <!-- second hand -->
-                  <g transform='rotate(${ 6 * this.date.getSeconds() })'>
+                  <g transform='rotate(${ 6 * this.getValue().getSeconds() })'>
                     <line class='second' y1='10' y2='-38'/>
                     <line class='second-counterweight' y1='10' y2='2'/>
                   </g>
@@ -138,10 +180,15 @@
           `
         });
 
-        setInterval(() => {
-          this.date = new Date();
-          self.lit_html.render( svg_render(), self.element ); // re-render every second
+        setInterval(() => { // re-render every second
+          self.lit_html.render( svg_render(), clock_div );
+          date_div.innerText = this.getValue().toLocaleDateString();
+          time_div.innerText = this.getValue().toLocaleTimeString();
         }, 1000);
+
+        // set content of own website area
+        $.setContent( self.element, main_div );
+
       };
 
     }

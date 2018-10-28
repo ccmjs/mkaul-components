@@ -1,0 +1,18 @@
+/**
+ * @overview default layout of ccm component clock
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+
+ccm-clock {
+    display: inline;
+    border: thin solid black;
+}
+#main {
+    text-align: center;
+}
+#title {
+    border: thin solid black;
+    width: 50vw;
+    margin: 0 auto;
+}
