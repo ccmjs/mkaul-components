@@ -8,7 +8,12 @@ ccm.files[ 'configs.js' ] = {
   "Berlin": {
     key: "Berlin",
     width: "200px",
-    title: "Berlin"
+    title: "Berlin",
+    html: {
+      main: {
+        id: 'main', inner: {id: 'clock'}
+      }
+    }
   },
   "New_York": {
     key: "New_York",
@@ -30,10 +35,24 @@ ccm.files[ 'configs.js' ] = {
   },
   "small": {
     key: "small",
-    width: "100px"
+    width: "100px",
+    html: {
+      main: {
+        id: 'main', inner: {id: 'clock'}
+      }
+    }
   },
   "large": {
     key: "large",
-    width: "600px"
+    width: "600px",
+    html: {
+      main: { id: 'main', inner: [
+          { id: 'clock' },
+          { id: 'date', inner: '%date%' },
+          { id: 'time', inner: '%time%' },
+          { id: 'title', inner: '%title%', style: 'width: %width%' }
+        ]
+      }
+    }
   }
 };
