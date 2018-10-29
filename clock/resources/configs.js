@@ -15,8 +15,8 @@ ccm.files[ 'configs.js' ] = {
     width: "200px",
     title: "New York",
     delay: -5,
-    color: "white",
-    background: "black",
+    color: '#ffffff', // white
+    background: '#000000', // black
     html: {
       main: { id: 'main', inner: [
           { id: 'clock' },
