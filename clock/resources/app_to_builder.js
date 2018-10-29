@@ -7,8 +7,13 @@
 
 export function app_to_builder( json ) {
   const old_width = json.width;
-  json.width = parseInt(old_width);
-  json.unit = old_width.slice(-2);
+  if ( old_width ){
+    json.width = parseInt(old_width);
+    json.unit = old_width.slice(-2);
+  } else { // Default
+    json.width = 200;
+    json.unit = "px";
+  }
   return json;
 }
  
