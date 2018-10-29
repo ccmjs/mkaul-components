@@ -29,8 +29,8 @@
       width: "200px",
       // delay: 0,
       // title: 'Berlin',
-      color: 'black',
-      background: 'white',
+      color: '#000000', // black
+      background: '#ffffff', // white
       css: [ "ccm.load", "//ccmjs.github.io/mkaul-components/clock/resources/default.css" ],
       lit_html: [ "ccm.load", { url: "//unpkg.com/lit-html?module", type: "module" } ]
       // lit_html: [ "ccm.load", { "url": "../lib/lit-html.js", "type": "module" } ]
