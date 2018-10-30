@@ -1,0 +1,30 @@
+/**
+ * @overview default layout of ccm component for building apps adapted from app_builder/default.css
+ * @author André Kless <andre.kless@web.de> 2018
+ * @license The MIT License (MIT)
+ * https://ccmjs.github.io/mkaul-components/learning_app/resources/app_builder_css.css
+ */
+
+#element {
+    padding: 0.5em;
+}
+
+#maker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#app {
+    margin-left: 0.5em;
+}
+
+#preview {
+    border: 3px double #ccc;
+    min-width: 30em;
+    min-height: 20em;
+}
+
+#buttons {
+    padding: 1em 0;
+}
