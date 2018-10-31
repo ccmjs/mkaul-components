@@ -1,1 +1,75 @@
-<?xml version="1.0" ?><svg enable-background="new 0 0 64 64" height="64px" id="Layer_1" version="1.1" viewBox="0 0 64 64" width="64px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="32" cy="32" fill="#76C2AF" r="32"/><path d="M32,39.799c9.2,0,9.55,3.051,13,6.102c3.45,3.051,10,4.063,10-6.102  c0-10.166-4.6-16.273-4.6-16.273S46,16,40,21.885c-4.274,4.192-11.726,4.192-16,0C18,16,13.6,23.527,13.6,23.527S9,29.634,9,39.799  c0,10.166,6.55,9.154,10,6.102C22.45,42.851,22.8,39.799,32,39.799z" fill="#231F20" opacity="0.2"/><path d="M32,36.799c9.2,0,9.55,3.051,13,6.102c3.45,3.051,10,4.063,10-6.102c0-10.166-4.6-16.273-4.6-16.273  S46,13,40,18.885c-4.274,4.192-11.726,4.192-16,0C18,13,13.6,20.527,13.6,20.527S9,26.634,9,36.799c0,10.166,6.55,9.154,10,6.102  C22.45,39.851,22.8,36.799,32,36.799z" fill="#4F5D73"/><circle cx="44" cy="34" fill="#E0E0D1" r="2"/><circle cx="48" cy="29" fill="#E0E0D1" r="2"/><path d="M19,35.495C19,36.326,18.328,37,17.5,37l0,0c-0.828,0-1.5-0.674-1.5-1.505v-6.991  C16,27.674,16.672,27,17.5,27l0,0c0.828,0,1.5,0.674,1.5,1.505V35.495z" fill="#E0E0D1"/><path d="M14.005,33.5c-0.831,0-1.505-0.672-1.505-1.5l0,0c0-0.828,0.674-1.5,1.505-1.5h6.991  c0.831,0,1.505,0.672,1.505,1.5l0,0c0,0.828-0.674,1.5-1.505,1.5H14.005z" fill="#E0E0D1"/></svg>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" preserveAspectRatio="xMidYMid meet" style="fill-rule:evenodd" viewBox="-20 -140 840 840">
+         <title>connect4::svg game::treebuilder</title>
+         <desc>a simple example of ai in svg</desc>
+         <defs>
+
+         <path id="pfeil" d="M28 2l0 48 -25 0 45 49 46 -48 -25 -1 1 -48 -42 0zm0 24m-13 24m10 25m46 0m11 -24m-12 -25m-21 -24"></path>
+             <!-- the gameboard -->
+          <path id="gb" d="M57 0l644 0c31,0 57,27 57,59l0 519c0,32 -26,58 -57,58l-644 0c-32,0 -58,-26 -58,-58l0 -519c0,-32 26,-59 58,-59zm107 13c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm105 -1c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm104 0c25,0 47,21 47,47 0,25 -22,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-627 105c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c25,0 47,21 47,47 0,26 -22,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm103 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-26 22,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c25,0 46,22 46,47 0,26 -21,47 -46,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm-631 106c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-26 22,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-629 107c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -25,0 -47,-21 -47,-47 0,-25 22,-46 47,-46zm105 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm104 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm104 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm106 -1c26,0 47,21 47,47 0,25 -21,47 -47,47 -26,0 -47,-22 -47,-47 0,-26 21,-47 47,-47zm-629 104c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c25,0 47,21 47,47 0,26 -22,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm104 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm106 -1c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm-629 102c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 0c26,0 47,21 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-26 21,-47 47,-47zm105 -1c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm105 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm104 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm104 0c26,0 47,22 47,47 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-47 47,-47zm106 0c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46zm-629 -514c26,0 47,21 47,46 0,26 -21,47 -47,47 -26,0 -47,-21 -47,-47 0,-25 21,-46 47,-46z"></path>
+
+          <symbol viewBox="0 0 128 128" id="bluestone">
+          <circle fill="yellow" cx="64" cy="64" r="64"></circle>
+        </symbol>
+          <symbol viewBox="0 0 128 128" id="redstone">
+          <circle fill="red" cx="64" cy="64" r="64"></circle>
+        </symbol>
+          <symbol viewBox="0 0 128 128" id="shadowstone">
+          <circle fill="black" cx="64" cy="64" r="64" fill-opacity="0.5"></circle>
+        </symbol>
+
+        </defs>
+
+        <g transform="translate(20 7)" fill-opacity="0.5">
+        <use xlink:href="#gb" x="10" y="0" fill="black"></use>
+        </g>
+
+        <g transform="translate(9 -7)">
+        <use xlink:href="#gb" x="10" y="0" fill="darkblue"></use>
+        </g>
+
+        <g id="swCurrent" transform="translate(630 0)">
+        <use xlink:href="#pfeil" x="20" y="-110" fill="black" fill-opacity="0.5"></use>
+        <use xlink:href="#pfeil" x="10" y="-120" fill="black" stroke="red"></use>
+        <use id="shadow" xlink:href="#shadowstone" x="20" y="-245" width="100" height="100"></use>
+        <use id="currentStone" xlink:href="#bluestone" x="10" y="-250" width="100" height="100"></use>
+        </g>
+
+        <g id="sCurrent" visibility="hidden" transform="translate(420,0)">
+        <use id="shadow" xlink:href="#shadowstone" x="20" y="-245" width="100" height="100"></use>
+        <use id="playedStone" xlink:href="#redstone" x="10" y="-250" width="100" height="100"></use>
+        </g>
+
+        <g id="board">
+
+        <use id="feld37" xlink:href="#bluestone" x="125" y="519" width="100" height="100"></use><use id="feld39" xlink:href="#redstone" x="333" y="519" width="100" height="100"></use><use id="feld41" xlink:href="#bluestone" x="541" y="519" width="100" height="100"></use><use id="feld32" xlink:href="#redstone" x="333" y="417" width="100" height="100"></use><use id="feld25" xlink:href="#bluestone" x="333" y="315" width="100" height="100"></use><use id="feld18" xlink:href="#redstone" x="333" y="213" width="100" height="100"></use><use id="feld40" xlink:href="#bluestone" x="437" y="519" width="100" height="100"></use><use id="feld11" xlink:href="#redstone" x="333" y="111" width="100" height="100"></use><use id="feld33" xlink:href="#bluestone" x="437" y="417" width="100" height="100"></use><use id="feld26" xlink:href="#redstone" x="437" y="315" width="100" height="100"></use></g>
+        <use xlink:href="#gb" x="10" y="0" fill="blue"></use>
+
+        <g fill-opacity="0">
+        <rect id="r1" x="10" y="-200" width="105" height="835"></rect>
+        <rect id="r2" x="115" y="-200" width="105" height="835"></rect>
+        <rect id="r3" x="220" y="-200" width="105" height="835"></rect>
+        <rect id="r4" x="325" y="-200" width="105" height="835"></rect>
+        <rect id="r5" x="430" y="-200" width="105" height="835"></rect>
+        <rect id="r6" x="535" y="-200" width="105" height="835"></rect>
+        <rect id="r7" x="640" y="-200" width="105" height="835"></rect>
+        </g>
+        <g id="countW" visibility="hidden">
+        <rect x="-25" y="-250" width="800" height="1000" fill-opacity="0"></rect>
+        <text x="100" y="700" font-size="50" fill="red">please wait</text>
+        </g>
+        <g id="gow" visibility="hidden">
+        <rect id="r8" x="-25" y="-250" width="850" height="1000" fill-opacity="0"></rect>
+
+        <text stroke-opacity="0.5" pointer-events="none" x="435" y="360" font-size="95" fill="black" stroke="black" stroke-width="50" text-anchor="middle">gAmE oVeR</text>
+
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="red" stroke="red" stroke-width="50" text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="green" stroke="green" stroke-width="40" text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="blue" stroke="blue" stroke-width="30" text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="red" stroke="red" stroke-width="20" text-anchor="middle">gAmE oVeR</text>
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="green" stroke="green" stroke-width="10" text-anchor="middle">gAmE oVeR</text>
+
+          <text pointer-events="none" x="425" y="350" font-size="115" fill="blue" text-anchor="middle">gAmE oVeR</text>
+          <text id="wintext" pointer-events="none" x="425" y="700" font-size="55" fill="black" text-anchor="middle">draw ! score: 0/0</text>
+
+           </g>
+        </svg>
