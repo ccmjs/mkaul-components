@@ -10,10 +10,10 @@ ccm.files[ 'configs.js' ] = {
       }
     },
     color: {
-      human: "yellow",
-      machine: "red",
-      box: "blue",
-      shadow: "darkblue"
+      human: "#ffff00", // "yellow",
+      machine: "#ff0000", // "red",
+      box: "#0080ff", // "blue",
+      shadow: "#0000ff" // "darkblue"
     }
   },
   "green": {
@@ -27,10 +27,10 @@ ccm.files[ 'configs.js' ] = {
       }
     },
     color: {
-      human: "orange",
-      machine: "pink",
-      box: "green",
-      shadow: "darkgreen"
+      human: "#FFA500", // "orange",
+      machine: "#FFC0CB", // "pink",
+      box: "#00ff00", // "green",
+      shadow: "#A9A9A9", // "darkgreen"
     }
   }
 };
