@@ -4,7 +4,7 @@ ccm.files[ 'configs.js' ] = {
     html: {
       main: {
         inner: [
-          { tag: 'h3', inner: 'Vier gewinnt!' },
+          { tag: 'h1', inner: 'Connect Four!' },
           { tag: "svg" }
         ]
       }
@@ -21,7 +21,7 @@ ccm.files[ 'configs.js' ] = {
     html: {
       main: {
         inner: [
-          { tag: 'h3', inner: 'Vier gewinnt!' },
+          { tag: 'h1', inner: 'Vier gewinnt!' },
           { tag: "svg" }
         ]
       }

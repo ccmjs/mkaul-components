@@ -25,8 +25,8 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://akless.github.io/ccm/version/ccm-18.0.4.min.js',
-    ccm: 'https://akless.github.io/ccm/ccm.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.1.0.min.js',
+    ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
