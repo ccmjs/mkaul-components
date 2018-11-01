@@ -17,14 +17,14 @@
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js",
-                    "demo"
+                    "agile_values"
                 ]
             }
         ],
         "builder": [
             {
                 "title": "JSON Builder",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.0.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
                 "config": {
                     "builder": [
                         "ccm.component",
@@ -35,9 +35,25 @@
                         }
                     ]
                 }
-            }
+            },
+            {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.2.0.js",
+                        {
+                            "defaults": {
+                                "field_name": "default_value"
+                            },
+                            "inner": "<h1>Paper Generator</h1><p>Replace questions in config:</p>"
+                        }
+                        ]
+                 }
+             }
         ]
     },
-    "updated_at": "2018-10-12T14:41:22+02:00",
-    "created_at": "2018-10-12T14:41:22+02:00"
+    "updated_at": "2018-11-01T14:41:22+02:00",
+    "created_at": "2018-11-01T14:41:22+02:00"
 }
