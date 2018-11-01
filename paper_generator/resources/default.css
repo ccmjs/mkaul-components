@@ -1,0 +1,180 @@
+/**
+ * @overview default layout of ccm component paper_generator
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+:host {
+  background-image: url(img/background-blue.svg);
+  background-color: olive;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right;
+  background-attachment: fixed;
+}
+.logo {
+  margin-left: 15vw;
+  height: 3rem;
+  width: auto;
+
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#welcome, #survey, #result {
+  color: white;
+  font-size: large;
+  text-align: center;
+}
+button {
+  background: none;
+  transition-duration: 0.2s;
+  color: white;
+  font-size: x-large;
+  font-weight: bold;
+  border: thick solid white;
+  border-radius: 20px;
+  padding: 0.5rem;
+  margin: 2rem;
+}
+button:hover {
+  color: black;
+  font-weight: bolder;
+  background-color: white;
+  cursor: pointer;
+}
+div.cite button {
+  color: black;
+  border: thin solid black;
+}
+div.cite button:hover {}
+#welcome button sup {
+  font-weight: normal;
+}
+#survey, #result, #paper {
+  display: none;
+}
+header.paper {
+  margin-top: 3rem;
+  text-align: center;
+}
+header.paper > h1, header.paper > h2 {
+  margin: 0;
+}
+section.abstract, section.keywords {
+  margin-top: 1rem;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  margin-bottom: 1rem;
+}
+div#gliederung {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  background-color: #f9f5f3;
+}
+a:target {
+  background-color: #ffa;
+  transition: all 1s linear;
+}
+a:hover {
+  color: blue;
+  background-color: lightgrey;
+}
+ul.none-style {
+  list-style-type: none;
+  text-indent: 2rem;
+  margin: 0;
+  padding: 0;
+}
+.plot {
+  width: 100%;
+  height: auto;
+}
+p.cite {
+  border: thin solid black;
+  padding: 1em;
+  font-style: italic;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+div.cite {
+  border: thin solid black;
+  padding: 1em;
+  font-style: italic;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+div.center {
+  text-align: center;
+}
+ul.left {
+  text-align: left;
+  font-style: normal;
+}
+img {
+  margin-top: 0.5em;
+  width: 80vw;
+  height: auto;
+}
+hr.finish {
+  overflow: visible;
+  height: 30px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px 0 0 0;
+  border-radius: 20px;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+div.license {
+  text-align: center;
+  margin: 0;
+}
+@media screen {
+  div#paper {
+    margin: 0.2rem;
+    padding: 0.6rem;
+    border: thin solid black;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.55);
+  }
+  /*  https://wiki.selfhtml.org/wiki/CSS/Tutorials/Print-CSS */
+  * {
+    font-family: verdana,arial,sans-serif;
+  }
+}
+@media print {
+  /*  https://wiki.selfhtml.org/wiki/CSS/Tutorials/Print-CSS */
+  * {
+    font-family: "times new roman",times,serif;
+    text-align: justify;
+  }
+  a[href]::after {
+    content: " <"attr(href)">";
+    color: #888;
+    background-color: inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+  h1[id]::after,h2[id]::after,h3[id]::after {
+    content:" [#"attr(id)"]";
+    color: #888;
+    background-color: inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+  [title]::after {
+    content: " ("attr(title)")";
+    color: #888;
+    background-color:inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+  [cite]::after {
+    content: close-quote" (Quelle: "attr(cite)")";
+    font-size: 0.8rem;
+  }
+}

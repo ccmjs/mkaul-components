@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <circle cx="100" cy="100" r="100" style="fill: rgb(233, 227, 156);"/>
+  <path d="M 125 404 H 158 L 158 357 L 194 420 L 158 483 L 158 436 H 125 V 404 Z" transform="matrix(-0.0084, 0.99996, -0.99996, -0.0084, 520.07733, -64.38036)" style="fill: rgb(66, 119, 154);" bx:shape="arrow 125 357 69 126 32 36 0 1@a9a2e635"/>
+  <text style="fill: rgb(253, 5, 5); font-size: 64px; font-weight: bold; white-space: pre;" x="79" y="49">?</text>
+  <g transform="matrix(1, 0, 0, 0.68793, -43.11454, 5.24911)">
+    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 249 143 230 187 249 143 270"/>
+    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 235 143 216 187 235 143 256"/>
+    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 219 143 200 187 219 143 240"/>
+    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 205 143 186 187 205 143 226"/>
+  </g>
+</svg>
