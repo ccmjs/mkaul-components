@@ -197,7 +197,7 @@
 
         function change_state( newState ){
           global_state = newState;
-          window.location = '#' + newState;
+          // window.location = '#' + newState;
           switch( newState ){
             case 'welcome':
               div("survey").style.display = 'none';
