@@ -230,6 +230,7 @@
               div("result").style.display = 'none';
               div("paper_frame").style.animation = 'fadeIn 3s';
               div("paper_frame").style.display = 'block';
+              div("paper").style.display = 'block';
               generate_paper();
               break;
             default: debugger;
