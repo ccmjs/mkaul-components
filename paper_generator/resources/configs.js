@@ -7,6 +7,7 @@
 
 ccm.files[ 'configs.js' ] = {
   "agile_values": {
+    key: "agile_values",
     author: 'Manfred Kaul',
     address: 'Hochschule Bonn-Rhein-Sieg',
     email: 'Manfred.Kaul[at]h-brs.de',
