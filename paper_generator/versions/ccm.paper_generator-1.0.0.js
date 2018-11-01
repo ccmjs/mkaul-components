@@ -243,7 +243,7 @@
 
         change_state( 'welcome' );
 
-        div("questions").innerHTML = questions_html();
+        if ( div("questions") ) div("questions").innerHTML = questions_html();
 
 
         // Use Location API for hash changes
