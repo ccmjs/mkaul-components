@@ -140,10 +140,16 @@
 
         // set shortcut to help functions
         $ = this.ccm.helper;
-        
+
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( this.inner && this.inner.innerHTML.trim() ){
+        if ( this.inner ){
+
+          this.lightDOM = this.inner;
+
+        }
+
+        if ( this.inner && this.inner.innerHTML && this.inner.innerHTML.trim() ){
 
           // interprete LightDOM
           this.lightDOM = this.inner.innerHTML;
