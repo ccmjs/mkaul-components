@@ -1,0 +1,62 @@
+
+{
+    "_id": "html_template",
+    "title": "html_template",
+    "icon": "https://ccmjs.github.io/mkaul-components/html_template/resources/icon.svg",
+    "abstract": "Simple HTML Template Engine using <a target=_blank href=https://polymer.github.io/lit-html/ rel=noopener>lit-html</a>",
+    "description": "This HTML Template Engine uses <a target=_blank href=https://polymer.github.io/lit-html/ rel=noopener>lit-html</a>. lit-html is the next-generation HTML Template Engine in JavaScript. <em>ccm</em> configuration is used for defining variables and values. The inner HTML makes use of these variables in the ${x} notation. E.g. <br> <pre style=\"background-color:#ffffff;color:#000000;font-family:'Menlo';font-size:10.5pt;\"><span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">script </span><span style=\"color:#0000ff;background-color:#efefef;font-weight:bold;\">src=</span><span style=\"color:#008000;background-color:#efefef;font-weight:bold;\">\"ccm.html_template.js\"</span><span style=\"background-color:#efefef;\">&gt;&lt;/</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">script</span><span style=\"background-color:#efefef;\">&gt;</span><br><span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">ccm-html_template </span><span style=\"color:#0000ff;background-color:#efefef;font-weight:bold;\">x=</span><span style=\"color:#008000;background-color:#efefef;font-weight:bold;\">\"Hello World\"</span><span style=\"background-color:#efefef;\">&gt;</span><br> <span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">h1</span><span style=\"background-color:#efefef;\">&gt;</span>${x} and ${y} and ${z} and ${this.fn(1+2)}<span style=\"background-color:#efefef;\">&lt;/</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">h1</span><span style=\"background-color:#efefef;\">&gt;</span><br><span style=\"background-color:#efefef;\">&lt;/</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">ccm-html_template</span><span style=\"background-color:#efefef;\">&gt;</span></pre>",
+    "url": "https://ccmjs.github.io/mkaul-components/html_template/versions/ccm.html_template-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/html_template/resources/configs.js",
+                    "demo"
+                ]
+            }
+        ],
+        "builder": [
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.2.0.js",
+                        {
+                            "defaults": {
+                                "field_name": "default_value"
+                            },
+                            "inner": "<h1>Title</h1><form></form>"
+                        }
+                     ]
+                 }
+             }
+          ]
+        }
+      }
+        ]
+    },
+    "updated_at": "2018-11-03T14:41:22+02:00",
+    "created_at": "2018-11-03T14:41:22+02:00"
+}
