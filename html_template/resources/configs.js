@@ -11,7 +11,7 @@ ccm.files[ 'configs.js' ] = {
     x: "Hello World",
     y: "You",
     z: 3+4,
-    inner: '<h1>${x} and ${y} and ${z} and ${this.fn(1+2)}</h1>'
+    template: '<h1>${x} and ${y} and ${z} and ${this.fn(1+2)}</h1>'
   },
   "localhost": {
     key: "localhost",

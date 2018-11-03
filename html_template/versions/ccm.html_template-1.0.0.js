@@ -75,6 +75,10 @@
 
         }
 
+        if ( this.template ){
+          this.lightDOM = this.template;
+        }
+
       };
 
       /**
