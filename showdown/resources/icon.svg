@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <g id="Layer_1">
+    <g>
+      <circle cx="32" cy="32" r="32" style="fill: rgb(168, 224, 94);"/>
+    </g>
+  </g>
+  <g id="Layer_2"/>
+  <rect x="7" y="15" width="22" height="34" style="fill: rgb(216, 216, 216); stroke: rgb(116, 129, 74);"/>
+  <rect x="34" y="15" width="22" height="34" style="stroke: rgb(56, 58, 47); fill: rgb(247, 242, 242);"/>
+  <text style="fill: rgb(51, 51, 51); font-size: 7px; white-space: pre;"><tspan x="8" y="23" style="stroke-width: 0px;">#</tspan><tspan> Title</tspan><tspan x="8" dy="1em">​</tspan><tspan>* list</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(248, 4, 4); paint-order: stroke;">Mark-</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(248, 4, 4); paint-order: stroke;">down</tspan></text>
+  <text transform="matrix(1, 0, 0, 1, 27.26384, -0.32947)" style="fill: rgb(51, 51, 51); font-size: 7px; white-space: pre;"><tspan x="8" y="23">&lt;h1&gt;</tspan><tspan x="8" dy="1em">​</tspan><tspan>&lt;li&gt;</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(37, 5, 247); paint-order: stroke;">Mark-</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(37, 5, 247); paint-order: stroke;">up</tspan></text>
+</svg>

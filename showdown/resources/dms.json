@@ -1,0 +1,59 @@
+
+{
+    "_id": "showdown",
+    "title": "showdown",
+    "icon": "https://ccmjs.github.io/mkaul-components/showdown/resources/icon.svg",
+    "abstract": "",
+    "description": "",
+    "url": "https://ccmjs.github.io/mkaul-components/showdown/versions/ccm.showdown-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/showdown/resources/configs.js",
+                    "demo"
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.4.0.js",
+                        {
+                            "defaults": {
+                                "mark": "Hello World"
+                            },
+                            "inner": "<h1>Markdown Editor</h1>Configure your initial text here:<p><textarea name=markdown>"
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "updated_at": "2018-11-04T14:41:22+02:00",
+    "created_at": "2018-11-04T14:41:22+02:00"
+}
