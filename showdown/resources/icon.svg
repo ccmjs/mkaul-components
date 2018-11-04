@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <g id="Layer_1">
-    <g>
-      <circle cx="32" cy="32" r="32" style="fill: rgb(168, 224, 94);"/>
-    </g>
+<svg baseProfile="tiny" id="Layer_1" version="1.2" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <g id="XMLID_785_">
+    <rect height="19" id="XMLID_17_" width="227" x="120" y="102" style="fill: rgb(79, 118, 190);"/>
+    <rect height="19" id="XMLID_16_" width="227" x="120" y="133" style="fill: rgb(79, 118, 190);"/>
+    <rect height="19" id="XMLID_15_" width="227" x="120" y="164" style="fill: rgb(79, 118, 190);"/>
+    <rect height="19" id="XMLID_14_" width="227" x="120" y="195" style="fill: rgb(79, 118, 190);"/>
+    <rect height="19" id="XMLID_13_" width="177" x="120" y="226" style="fill: rgb(79, 118, 190);"/>
+    <path d="M 387 408 C 387 423 374 436 358 436 L 110 436 C 94 436 81 423 81 408 L 81 399 L 68 399 L 68 412 C 68 433 84 449 105 449 L 363 449 C 383 449 400 433 400 412 L 400 24 L 387 36 L 387 408 Z" id="XMLID_9_" style="fill: rgb(79, 118, 190);"/>
+    <path d="M 81 54 C 81 38 94 25 110 25 L 373 25 C 372 20 383 17 387 13 L 105 12 C 84 12 68 28 68 49 L 68 276 L 81 276 L 81 54 Z" id="XMLID_8_" style="fill: rgb(79, 118, 190);"/>
+    <path d="M 345 338 C 345 309 322 285 293 285 L 55 285 L 55 390 L 293 390 C 322 390 345 366 345 338" id="XMLID_788_" style="fill: rgb(79, 118, 190);" bx:origin="0 0"/>
+    <text style="fill: rgb(251, 249, 249); font-size: 108px; font-weight: bold; white-space: pre;" x="109" y="375">md</text>
+    <text style="fill: rgb(51, 51, 51); font-size: 53px; font-weight: bold; white-space: pre;" x="108" y="496">Markdown</text>
   </g>
-  <g id="Layer_2"/>
-  <rect x="7" y="15" width="22" height="34" style="fill: rgb(216, 216, 216); stroke: rgb(116, 129, 74);"/>
-  <rect x="34" y="15" width="22" height="34" style="stroke: rgb(56, 58, 47); fill: rgb(247, 242, 242);"/>
-  <text style="fill: rgb(51, 51, 51); font-size: 7px; white-space: pre;"><tspan x="8" y="23" style="stroke-width: 0px;">#</tspan><tspan> Title</tspan><tspan x="8" dy="1em">​</tspan><tspan>* list</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(248, 4, 4); paint-order: stroke;">Mark-</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(248, 4, 4); paint-order: stroke;">down</tspan></text>
-  <text transform="matrix(1, 0, 0, 1, 27.26384, -0.32947)" style="fill: rgb(51, 51, 51); font-size: 7px; white-space: pre;"><tspan x="8" y="23">&lt;h1&gt;</tspan><tspan x="8" dy="1em">​</tspan><tspan>&lt;li&gt;</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(37, 5, 247); paint-order: stroke;">Mark-</tspan><tspan x="8" dy="1em">​</tspan><tspan style="fill: rgb(37, 5, 247); paint-order: stroke;">up</tspan></text>
 </svg>
