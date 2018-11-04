@@ -6,16 +6,14 @@
  */
 
 ccm.files[ 'configs.js' ] = {
+  "demo": {
+    key: "demo",
+    markdown: "# Hello World in Markdown"
+  },
   "localhost": {
     key: "localhost",
     css: [ 'ccm.load',  '../showdown/resources/default.css' ],
-    language: 'de',
-    labels: {
-      de: {
-        intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
-        label: "Fertig!"
-      }
-    },
+
     onfinish: function( instance, results ){ console.log( results ); }
   }
 };
