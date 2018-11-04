@@ -36,10 +36,12 @@
      * @type {object}
      */
     config: {
-      x: "Hello World",
-      y: "You",
-      z: 3+4,
-      fn: (x) => {console.log( x ); return x;},
+      // x: "Hello World",
+      // y: "You",
+      // z: 3+4,
+      // fn: (x) => {console.log( x ); return x;},
+
+      // pairs: [ {param_key: "x", param_value: "Hello World"}, { param_key: "y", param_value: "You" }, {param_key: "z", param_value: 3+4 }, {param_key: "fn", param_value: (x) => {console.log( x ); return x;} } ],
 
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
@@ -76,10 +78,6 @@
 
         }
 
-        if ( this.template ){
-          this.lightDOM = this.template;
-        }
-
       };
 
       /**
@@ -90,34 +88,57 @@
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
-        const values = () => {
+        if ( this.template ){
+          this.lightDOM = this.template;
+          // this.lit_html_template = null; // clear cache
+        }
 
-          const values = [];
-          const match_regex = new RegExp(/\${([^}]+)}/g); // with groups
-          let match;
-          while(( match = match_regex.exec(this.lightDOM)) !== null) {
-            const first_match = match[1]; // first matching group
-            if ( this[ first_match ] ){
-              // part of this config
-              if ( 'function' === typeof this[ first_match ] ){
-                values.push( this[first_match].call(this, this) );
+        if ( this.pairs ){
+          this.pairs.forEach( pair => {
+            this[pair.param_key] = pair.param_value;
+          });
+        }
+
+        // cache lit-html template in this.lit_html_template
+        // recalculate this.lit_html_template only for the first run
+        if ( ! this.lit_html_template ){
+
+          const values = () => {
+
+            const values = [];
+            const match_regex = new RegExp(/\${([^}]+)}/g); // with groups
+            let match;
+            while(( match = match_regex.exec(this.lightDOM)) !== null) {
+              const first_match = match[1]; // first matching group
+              if ( this[ first_match ] ){
+                // part of this config
+                if ( 'function' === typeof this[ first_match ] ){
+                  values.push( this[first_match].call(this, this) );
+                } else {
+                  values.push( this[first_match] );
+                }
               } else {
-                values.push( this[first_match] );
+                // evaluate expression: TODO test many ways
+                // https://stackoverflow.com/questions/29182244/convert-a-string-to-a-template-string
+                // var name = "John Smith";
+                // var message = "Hello, my name is ${name}";
+                // console.log(new Function('return `' + message + '`;')());
+                const next1 = Function('"use strict";return (' + first_match + ')').call(this, this);
+                const next2 = this.lit_html.html`${first_match}`;
+                const next3 = eval( first_match );
+
+                values.push( next1 );
               }
-            } else {
-              // evaluate expression: TODO test many ways
-              const next1 = Function('"use strict";return (' + first_match + ')').call(this, this);
-              const next2 = this.lit_html.html`${first_match}`;
-              const next3 = eval( first_match );
-
-              values.push( next1 );
             }
-          }
-          return values;
-        };
+            return values;
+          };
 
-        // render template
-        this.lit_html.render( this.lit_html.html( this.lightDOM.split( /\${[^}]+}/g ), ...values() ), this.element );
+          // derive lit-html template object from Light DOM for the first run
+          this.lit_html_template = this.lit_html.html( this.lightDOM.split( /\${[^}]+}/g ), ...values() );
+        }
+
+        // re-render template with dynamic value update via lit-html caching mechanics
+        this.lit_html.render( this.lit_html_template, this.element );
 
       };
 
