@@ -37,7 +37,7 @@
      */
     config: {
 
-      markdown: '# Hello Markdown!\n<br>## Please edit here.',
+      markdown: '# Hello Markdown!<br>## Please edit here.',
 
       html: {
         main: {
@@ -126,7 +126,7 @@
 
         const main_div = $.html( this.html.main, {
           markdown: this.markdown,
-          html: this.converter.makeHtml( this.lightDOM || this.markdown )
+          html: this.converter.makeHtml( this.lightDOM || this.markdown.replace('<br>', "\n") )
         } );
 
         const markdown_div = main_div.querySelector('#markdown');

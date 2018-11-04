@@ -29,5 +29,6 @@
 }
 
 #markdown:hover{
-  background-color: white;
+  background-color: lightblue;
+  border: thick solid blue;
 }
