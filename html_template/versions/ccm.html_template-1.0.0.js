@@ -36,6 +36,7 @@
      * @type {object}
      */
     config: {
+      x: "Hello World",
       y: "You",
       z: 3+4,
       fn: (x) => {console.log( x ); return x;},
@@ -64,7 +65,7 @@
         //  Then use it with higher priority
         if ( this.inner ){
 
-          this.lightDOM = this.inner;
+          this.lightDOM = this.inner.cloneNode( true );
 
         }
 
