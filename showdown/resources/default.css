@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 
-#main {
+#editors {
   display: flex;
   flex-wrap: wrap;
 }

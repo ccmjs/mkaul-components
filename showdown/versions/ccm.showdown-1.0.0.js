@@ -38,21 +38,37 @@
      */
     config: {
 
-      markdown: '# Hello World!',
+      markdown: '# Hello Markdown!',
 
       html: {
         main: {
           id: 'main',
           inner: [
-            { id: 'markdown', inner: '%markdown%' },
-            { id: 'html', inner: '%html%' }
+            { id: "checkboxes", inner: [
+                { tag: 'label', inner: [
+                    'markdown',
+                    { tag: 'input', type: "checkbox", id: 'markdown_checkbox', name: "markdown", checked: true },
+                  ]
+                },
+                { tag: 'label', inner: [
+                    'html',
+                    { tag: 'input', type: "checkbox", id: 'html_checkbox', name: "html", checked: true },
+                  ]
+                }
+              ]
+            },
+            { id: "editors", inner: [
+                { id: 'markdown', inner: '%markdown%' },
+                { id: 'html', inner: '%html%' }
+              ]
+            }
           ]
         }
       },
 
       showdownjs: ["ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.7/showdown.js"],
 
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/showdown/resources/default.css' ],
+      css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/showdown/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/showdown/resources/configs.js', 'log' ] ],
@@ -116,6 +132,8 @@
 
         const markdown_div = main_div.querySelector('#markdown');
         const html_div = main_div.querySelector('#html');
+        const markdown_checkbox = main_div.querySelector('#markdown_checkbox');
+        const html_checkbox = main_div.querySelector('#html_checkbox');
 
         if ( this.lightDOM ) markdown_div.innerText = this.lightDOM;
 
@@ -125,6 +143,22 @@
         markdown_div.contentEditable = "true";
         markdown_div.addEventListener('keyup', (e) => {
           html_div.innerHTML = this.converter.makeHtml(markdown_div.innerText);
+        });
+
+        markdown_checkbox.addEventListener('click', (e) => {
+          if ( markdown_checkbox.checked ){
+            markdown_div.style.display = 'block';
+          } else {
+            markdown_div.style.display = 'none';
+          }
+        });
+
+        html_checkbox.addEventListener('click', (e) => {
+          if ( html_checkbox.checked ){
+            html_div.style.display = 'block';
+          } else {
+            html_div.style.display = 'none';
+          }
         });
 
       };

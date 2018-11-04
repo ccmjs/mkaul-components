@@ -37,14 +37,30 @@
      */
     config: {
 
-      markdown: '# Hello World!',
+      markdown: '# Hello Markdown!',
 
       html: {
         main: {
           id: 'main',
           inner: [
-            { id: 'markdown', inner: '%markdown%' },
-            { id: 'html', inner: '%html%' }
+            { id: "checkboxes", inner: [
+                { tag: 'label', inner: [
+                    'markdown',
+                    { tag: 'input', type: "checkbox", id: 'markdown_checkbox', name: "markdown", checked: true },
+                  ]
+                },
+                { tag: 'label', inner: [
+                    'html',
+                    { tag: 'input', type: "checkbox", id: 'html_checkbox', name: "html", checked: true },
+                  ]
+                }
+              ]
+            },
+            { id: "editors", inner: [
+                { id: 'markdown', inner: '%markdown%' },
+                { id: 'html', inner: '%html%' }
+              ]
+            }
           ]
         }
       },
@@ -115,6 +131,8 @@
 
         const markdown_div = main_div.querySelector('#markdown');
         const html_div = main_div.querySelector('#html');
+        const markdown_checkbox = main_div.querySelector('#markdown_checkbox');
+        const html_checkbox = main_div.querySelector('#html_checkbox');
 
         if ( this.lightDOM ) markdown_div.innerText = this.lightDOM;
 
@@ -124,6 +142,22 @@
         markdown_div.contentEditable = "true";
         markdown_div.addEventListener('keyup', (e) => {
           html_div.innerHTML = this.converter.makeHtml(markdown_div.innerText);
+        });
+
+        markdown_checkbox.addEventListener('click', (e) => {
+          if ( markdown_checkbox.checked ){
+            markdown_div.style.display = 'block';
+          } else {
+            markdown_div.style.display = 'none';
+          }
+        });
+
+        html_checkbox.addEventListener('click', (e) => {
+          if ( html_checkbox.checked ){
+            html_div.style.display = 'block';
+          } else {
+            html_div.style.display = 'none';
+          }
         });
 
       };

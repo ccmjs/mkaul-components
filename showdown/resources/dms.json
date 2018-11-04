@@ -31,9 +31,9 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.4.0.js",
                         {
                             "defaults": {
-                                "mark": "Hello World"
+                                "markdown": "Hello World"
                             },
-                            "inner": "<h1>Markdown Editor</h1>Configure your initial text here:<p><textarea name=markdown>"
+                            "inner": "<h1>Markdown Editor</h1>Configure your initial text here:<p><textarea name=markdown><p><hr><p>"
                         }
                     ]
                 }

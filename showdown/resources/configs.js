@@ -8,7 +8,37 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
-    markdown: "# Hello World in Markdown"
+    markdown: '# Hello Markdown!',
+
+    html: {
+      main: {
+        id: 'main',
+        inner: [
+          { id: "checkboxes", inner: [
+              { tag: 'label', inner: [
+                  'markdown',
+                  { tag: 'input', type: "checkbox", id: 'markdown_checkbox', name: "markdown", checked: true },
+                ]
+              },
+              { tag: 'label', inner: [
+                  'html',
+                  { tag: 'input', type: "checkbox", id: 'html_checkbox', name: "html", checked: true },
+                ]
+              }
+            ]
+          },
+          { id: "editors", inner: [
+              { id: 'markdown', inner: '%markdown%' },
+              { id: 'html', inner: '%html%' }
+            ]
+          }
+        ]
+      }
+    },
+
+    showdownjs: ["ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.7/showdown.js"],
+
+    css: [ 'ccm.load',  'resources/default.css' ]
   },
   "localhost": {
     key: "localhost",
