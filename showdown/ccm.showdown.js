@@ -37,7 +37,7 @@
      */
     config: {
 
-      markdown: '# Hello Markdown!\n## Please edit here.',
+      markdown: '# Hello Markdown!<br>## Please edit here.',
 
       html: {
         main: {
