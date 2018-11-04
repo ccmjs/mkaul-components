@@ -7,6 +7,10 @@
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+:host * {
+  box-sizing: border-box;
+}
+
 #main {
   display: flex;
   flex-wrap: wrap;
@@ -16,7 +20,10 @@
   border: thin solid black;
   margin: 0.5em;
   padding: 0.3em;
-  box-sizing: border-box;
+  min-width: 41%;
+}
+
+#markdown {
   width: 41%;
 }
 
