@@ -8,7 +8,7 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
-    markdown: '# Hello Markdown!',
+    markdown: '# Hello Markdown!\n## Please edit here.',
 
     html: {
       main: {
