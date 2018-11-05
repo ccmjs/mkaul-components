@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.1.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -36,11 +36,12 @@
      */
     config: {
 
-      author: 'Manfred Kaul',
-      address: 'Hochschule Bonn-Rhein-Sieg',
-      email: 'Manfred.Kaul[at]h-brs.de',
-      title: 'Agile Werte',
-      subtitle: 'Eine empirische Studie',
+      // optional configuration if there is no header in the inner html:
+      // author: 'Manfred Kaul',
+      // address: 'Hochschule Bonn-Rhein-Sieg',
+      // email: 'Manfred.Kaul[at]h-brs.de',
+      // title: 'Agile Werte',
+      // subtitle: 'Eine empirische Studie',
 
       questions: [
         // ["männlich","weiblich","divers"],
@@ -50,18 +51,7 @@
         {agil: 'Individuen und Interaktionen', plan: 'Prozesse und Werkzeuge'},
         {agil: 'Funktionierende Software', plan: 'Umfassende Dokumentation'},
         {agil: 'Zusammenarbeit mit dem Kunden', plan: 'Vertragsverhandlung'},
-        {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'},
-
-        // Gunter Dueck
-        {agil: "Individuelle Menschenentwicklung", plan: "Versetzung nach Standardstufen und Klassen"},
-        {agil: "Aktivierung von Selbstwirksamkeitsgefühl", plan: "Prüfungs- und Zeugnisdokumentation"},
-        {agil: "Folgen von gewecktem Interesse", plan: "Befolgung von Lehrplänen"},
-        {agil: "Zukunftsfähigkeit der Bildung", plan: "Bewahren klassischer Vorstellungen"},
-
-        // https://digitaleneuordnung.de/blog/agiles-manifest-fuer-unternehmensentwicklung/
-        {agil: "Konkrete Leistung mit Mehrwert", plan: "gute Präsentation mit Powerpoint"},
-        {agil: "(persönliche) Beziehung", plan: "Wasserdichter Vertrag"},
-        {agil: "sich an neue Herausforderungen anpassen können", plan: "einen festen Plan haben"}
+        {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'}
 
       ],
 
@@ -96,9 +86,15 @@
               ]
             },
             {
-              id: 'paper_frame',
-              inner: '%lightDOM%'
+              id: 'paper_frame'
             }
+          ]
+        },
+        header: {
+          inner: [
+            { tag: 'h1', inner: '%title%' },
+            { tag: 'h2', inner: '%subtitle%' },
+            { tag: 'p', inner: '<em>%author%</em><br>%address%<br>%email%' }
           ]
         }
       },
@@ -106,6 +102,8 @@
       survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-3.0.0.js" ],
 
       plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
+
+      lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
       css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
@@ -185,69 +183,44 @@
             change_state('paper');
           },
 
-          lightDOM: this.lightDOM,
-
           author: this.author,
           email: this.email,
           address: this.address,
           title: this.title,
-          subtitle: this.subtitle
+          subtitle: this.subtitle,
+          questions: questions_html()
 
         } );
 
-        function change_state( newState ){
-          global_state = newState;
-          // window.location = '#' + newState;
-          switch( newState ){
-            case 'welcome':
-              div("survey").style.display = 'none';
-              div("result").style.display = 'none';
-              div("paper_frame").style.display = 'none';
-              div("welcome").style.animation = 'fadeIn 2s';
-              div("welcome").style.display = 'block';
-              break;
-            case 'survey':
-              div("welcome").style.display = 'none';
-              div("paper_frame").style.display = 'none';
-              div("result").style.display = 'none';
-              button("start_result").style.display = 'none';
-              div("survey").style.animation = 'fadeIn 2s';
-              div("survey").style.display = 'block';
-              start_survey();
-              break;
-            case 'result':
-              div("welcome").style.display = 'none';
-              div("survey").style.display = 'none';
-              div("paper_frame").style.display = 'none';
-              div("result").style.animation = 'fadeIn 2s';
-              div("result").style.display = 'block';
-              draw_results(individual_results);
-              break;
-            case 'paper':
-              div("welcome").style.display = 'none';
-              div("survey").style.display = 'none';
-              div("result").style.display = 'none';
-              div("paper_frame").style.animation = 'fadeIn 3s';
-              div("paper_frame").style.display = 'block';
-              generate_paper();
-              break;
-            default: debugger;
-          }
+        // render LightDOM with variable substitution into main_div
+        const paper_frame = main_div.querySelector('#paper_frame');
+        paper_frame.innerHTML = self.lightDOM;
+        // self.lit_html.render( self.lit_html.html`${self.lightDOM}`, paper_frame );
+
+        // render header
+        const header = main_div.querySelector('header');
+        if ( ! header || ! header.innerHTML || ! header.innerHTML.trim() ){ // header is empty
+          $.setContent( header, $.html( this.html.header, {
+            author: this.author,
+            email: this.email,
+            address: this.address,
+            title: this.title,
+            subtitle: this.subtitle
+          } ) );
         }
 
+        if ( div("questions") ) div("questions").innerHTML = questions_html();
 
         // render main HTML structure
         $.setContent( this.element, main_div );
 
         change_state( 'welcome' );
 
-        if ( div("questions") ) div("questions").innerHTML = questions_html();
-
         // Use Location API for hash changes
         // https://developer.mozilla.org/en-US/docs/Web/API/Location
         window.onhashchange = function( e ) {
           // in-page anchor
-          const anchor = self.element.querySelector( 'li' + location.hash );
+          const anchor = main_div.querySelector( 'li' + location.hash );
           if ( anchor ){
             anchor.style.backgroundColor = "rgb(255, 237, 186)";
             anchor.style.transition = "all 3s linear";
@@ -294,7 +267,7 @@
                 }
               });
 
-              individual_results = Object.assign( {}, results ); // ccm.helper.clone( results );
+              individual_results = Object.assign( {}, results ); // $.clone( results );
 
               change_state( 'result' );
             }
@@ -340,7 +313,7 @@
 
           // automatic numbering of figures
           let fig_number = 1;
-          [...self.element.querySelectorAll('figcaption')].forEach(figcaption=>{
+          [...main_div.querySelectorAll('figcaption')].forEach(figcaption=>{
             figcaption.prepend('Abb. ' + (fig_number++) + ': ');
           });
 
@@ -528,15 +501,56 @@
 
         // universal functions for getting div and span elements from HTML
         function div( id ){
-          return self.element.querySelector('div#' + id);
+          return main_div.querySelector('div#' + id);
         }
 
         function span( class_name ){
-          return self.element.querySelectorAll('span.' + class_name);
+          return main_div.querySelectorAll('span.' + class_name);
         }
 
         function button( id ){
-          return self.element.querySelector('button#' + id);
+          return main_div.querySelector('button#' + id);
+        }
+
+        function change_state( newState ){
+          global_state = newState;
+          // window.location = '#' + newState;
+          switch( newState ){
+            case 'welcome':
+              div("survey").style.display = 'none';
+              div("result").style.display = 'none';
+              div("paper_frame").style.display = 'none';
+              div("welcome").style.animation = 'fadeIn 2s';
+              div("welcome").style.display = 'block';
+              break;
+            case 'survey':
+              div("welcome").style.display = 'none';
+              div("paper_frame").style.display = 'none';
+              div("result").style.display = 'none';
+              button("start_result").style.display = 'none';
+              div("survey").style.animation = 'fadeIn 2s';
+              div("survey").style.display = 'block';
+              start_survey();
+              break;
+            case 'result':
+              div("welcome").style.display = 'none';
+              div("survey").style.display = 'none';
+              div("paper_frame").style.display = 'none';
+              div("result").style.animation = 'fadeIn 2s';
+              div("result").style.display = 'block';
+              draw_results(individual_results);
+              break;
+            case 'paper':
+              div("welcome").style.display = 'none';
+              div("survey").style.display = 'none';
+              div("result").style.display = 'none';
+              div("paper_frame").style.animation = 'fadeIn 3s';
+              div("paper_frame").style.display = 'block';
+              div("paper").style.display = 'block';
+              generate_paper();
+              break;
+            default: debugger;
+          }
         }
 
         // convert JavaScript question array into HTML list
