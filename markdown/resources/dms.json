@@ -1,7 +1,7 @@
 
 {
     "_id": "markdown",
-    "title": "markdown",
+    "title": "Markdown",
     "icon": "https://ccmjs.github.io/mkaul-components/markdown/resources/icon.svg",
     "abstract": "Markdown Markup based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Markdown Syntax</a>",
     "description": "Markdown is something like the opposite of markup (HTML, XML, SGML, ...) and can simplify text editing. This Markdown <em>ccm</em> component delivers HTML Tags to write markup directly into your HTML file. It is based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a>. For the syntax of Markdown see <a target=_blank href=http://demo.showdownjs.com/ rel=noopener> demo.showdownjs.com </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Wikipedia on Markdown</a>. An editor is provided as well, see the showdown <em>ccm</em> component.",
@@ -31,8 +31,7 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-4.4.0.js",
                         {
                             "defaults": {
-                                "x": "Hello World",
-                                "template": "# Hello Markdown !"
+                                "markdown": "Hello World"
                             },
                             "inner": "<h1>Markdown</h1><fieldset><legend>Template</legend><textarea name=markdown value='# Hello Markdown !'></textarea></fieldset>"
                         }
@@ -55,6 +54,6 @@
             }
         ]
     },
-    "updated_at": "2018-11-04T14:41:22+02:00",
-    "created_at": "2018-11-04T14:41:22+02:00"
+    "updated_at": "2018-11-05T08:00:00+02:00",
+    "created_at": "2018-11-05T08:00:00+02:00"
 }

@@ -22,6 +22,7 @@
      * @type {string}
      */
     name: 'markdown',
+    version: [1,0,0],
     
     /**
      * recommended used framework version
