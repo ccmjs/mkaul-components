@@ -42,24 +42,29 @@
 
       html: {
         main: {
-          id: 'main',
           inner: [
-            { id: "checkboxes", inner: [
+            { class: 'checkboxes', inner: [
                 { tag: 'label', inner: [
-                    'markdown',
-                    { tag: 'input', type: "checkbox", id: 'markdown_checkbox', name: "markdown", checked: true },
+                    'Markdown',
+                    { tag: 'input', type: "checkbox", name: "markdown", checked: true },
                   ]
                 },
                 { tag: 'label', inner: [
-                    'html',
-                    { tag: 'input', type: "checkbox", id: 'html_checkbox', name: "html", checked: true },
+                    'HTML',
+                    { tag: 'input', type: "checkbox", name: "html", checked: false },
+                  ]
+                },
+                { tag: 'label', inner: [
+                    'Preview',
+                    { tag: 'input', type: "checkbox", name: "preview", checked: true },
                   ]
                 }
               ]
             },
-            { id: "editors", inner: [
+            { class: 'editors', inner: [
                 { id: 'markdown', inner: '%markdown%' },
-                { id: 'html', inner: '%html%' }
+                { id: 'html', inner: '%html%' },
+                { id: 'preview', inner: '%preview%' }
               ]
             }
           ]
@@ -68,8 +73,8 @@
 
       showdownjs: ["ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.7/showdown.min.js"],
 
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/showdown/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/showdown/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/showdown/resources/default.css' ]
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/showdown/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -125,41 +130,58 @@
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
+        const html_code = this.converter.makeHtml( this.lightDOM || this.markdown.replace('<br>', "\n") );
+
         const main_div = $.html( this.html.main, {
           markdown: this.markdown,
-          html: this.converter.makeHtml( this.lightDOM || this.markdown.replace('<br>', "\n") )
+          html: "",
+          preview: html_code
         } );
 
-        const markdown_div = main_div.querySelector('#markdown');
-        const html_div = main_div.querySelector('#html');
-        const markdown_checkbox = main_div.querySelector('#markdown_checkbox');
-        const html_checkbox = main_div.querySelector('#html_checkbox');
+        const div = {},      // container for all div elements with id
+              checkbox = {}; // container for all checkbox elements with name
 
-        if ( this.lightDOM ) markdown_div.innerText = this.lightDOM;
+        // collect all div elements with id into container
+        [...main_div.querySelectorAll('div[id]')].forEach( elem => {
+          div[ elem.id ] = elem;
+        });
+
+        // collect all checkbox elements into container
+        [...main_div.querySelectorAll('input[type=checkbox][name]')].forEach( elem => {
+          checkbox[ elem.name ] = elem;
+        });
+
+        div.html.innerText = html_code;
+
+        Object.keys(checkbox).forEach( name => {
+          toggle( name );
+          checkbox[name].addEventListener('click', () => {
+            toggle( name );
+          });
+        });
+
+        if ( this.lightDOM ) div.markdown.innerText = this.lightDOM;
 
         // render main HTML structure
         $.setContent( this.element, main_div );
 
-        markdown_div.contentEditable = "true";
-        markdown_div.addEventListener('keyup', (e) => {
-          html_div.innerHTML = this.converter.makeHtml(markdown_div.innerText);
+        div.markdown.contentEditable = "true";
+
+        div.markdown.addEventListener('keyup', (e) => {
+          const html_code = this.converter.makeHtml( div.markdown.innerText );
+          div.html.innerText = html_code;
+          div.preview.innerHTML = html_code;
         });
 
-        markdown_checkbox.addEventListener('click', (e) => {
-          if ( markdown_checkbox.checked ){
-            markdown_div.style.display = 'block';
-          } else {
-            markdown_div.style.display = 'none';
-          }
-        });
+        // Helper function
 
-        html_checkbox.addEventListener('click', (e) => {
-          if ( html_checkbox.checked ){
-            html_div.style.display = 'block';
+        function toggle( name ){
+          if ( checkbox[name].checked ){
+            div[name].style.display = 'block';
           } else {
-            html_div.style.display = 'none';
+            div[name].style.display = 'none';
           }
-        });
+        }
 
       };
 

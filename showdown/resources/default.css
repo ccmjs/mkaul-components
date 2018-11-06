@@ -11,21 +11,40 @@
   box-sizing: border-box;
 }
 
-#editors {
+.editors, .checkboxes {
   display: flex;
   flex-wrap: wrap;
 }
 
-#markdown, #html {
-  border: thin solid black;
-  background-color: lightgrey;
+#markdown, #html, #preview {
   margin: 0.5em;
   padding: 0.3em;
   max-width: 96%
 }
 
-#html {
+#html, #preview, label {
   flex: 1;
+}
+
+label {
+  margin-left: 1rem;
+}
+
+#markdown {
+  overflow: auto;
+  border: thin solid grey;
+  background-color: lightgrey;
+}
+
+#html {
+  overflow: auto;
+  border: thin solid blue;
+  background-color: lightblue;
+}
+
+#preview {
+  border: thin solid orange;
+  background-color: lightyellow;
 }
 
 #markdown:hover{

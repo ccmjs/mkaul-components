@@ -8,28 +8,33 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
-    markdown: '# Hello Markdown!\n<br>## Please edit here.',
+    markdown: '# Hello Markdown!<br>## Please edit here.',
 
     html: {
       main: {
-        id: 'main',
         inner: [
-          { id: "checkboxes", inner: [
+          { class: 'checkboxes', inner: [
               { tag: 'label', inner: [
-                  'markdown',
-                  { tag: 'input', type: "checkbox", id: 'markdown_checkbox', name: "markdown", checked: true },
+                  'Markdown',
+                  { tag: 'input', type: "checkbox", name: "markdown", checked: true },
                 ]
               },
               { tag: 'label', inner: [
-                  'html',
-                  { tag: 'input', type: "checkbox", id: 'html_checkbox', name: "html", checked: true },
+                  'HTML',
+                  { tag: 'input', type: "checkbox", name: "html", checked: false },
+                ]
+              },
+              { tag: 'label', inner: [
+                  'Preview',
+                  { tag: 'input', type: "checkbox", name: "preview", checked: true },
                 ]
               }
             ]
           },
-          { id: "editors", inner: [
+          { class: 'editors', inner: [
               { id: 'markdown', inner: '%markdown%' },
-              { id: 'html', inner: '%html%' }
+              { id: 'html', inner: '%html%' },
+              { id: 'preview', inner: '%preview%' }
             ]
           }
         ]
