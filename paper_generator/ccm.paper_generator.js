@@ -37,27 +37,130 @@
     config: {
 
       // optional configuration if there is no header in the inner html:
-      // author: 'Manfred Kaul',
-      // address: 'Hochschule Bonn-Rhein-Sieg',
-      // email: 'Manfred.Kaul[at]h-brs.de',
-      // title: 'Agile Werte',
-      // subtitle: 'Eine empirische Studie',
+      author: 'Manfred Kaul',
+      address: 'Hochschule Bonn-Rhein-Sieg',
+      email: 'Manfred.Kaul[at]h-brs.de',
+      title: 'Agile Werte',
+      subtitle: 'Eine empirische Studie',
 
       questions: [
-        // ["männlich","weiblich","divers"],
-        // ["Alter: 18-25", "Alter: 26-30", "Alter: 31-40", "Alter: 41-50", "jünger", "älter"],
+        // { man: "männlich", woman: "weiblich", other: "divers" },
+        // { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" },
 
         // Manifest // http://agilemanifesto.org/iso/de/manifesto.html
         {agil: 'Individuen und Interaktionen', plan: 'Prozesse und Werkzeuge'},
         {agil: 'Funktionierende Software', plan: 'Umfassende Dokumentation'},
         {agil: 'Zusammenarbeit mit dem Kunden', plan: 'Vertragsverhandlung'},
-        {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'}
+        {agil: 'Reagieren auf Veränderung', plan: 'Befolgen eines Plans'},
+
+        // Gunter Dueck
+        {agil: "Individuelle Menschenentwicklung", plan: "Versetzung nach Standardstufen und Klassen"},
+        {agil: "Aktivierung von Selbstwirksamkeitsgefühl", plan: "Prüfungs- und Zeugnisdokumentation"},
+        {agil: "Folgen von gewecktem Interesse", plan: "Befolgung von Lehrplänen"},
+        {agil: "Zukunftsfähigkeit der Bildung", plan: "Bewahren klassischer Vorstellungen"},
+
+        // https://digitaleneuordnung.de/blog/agiles-manifest-fuer-unternehmensentwicklung/
+        {agil: "Konkrete Leistung mit Mehrwert", plan: "gute Präsentation mit Powerpoint"},
+        {agil: "(persönliche) Beziehung", plan: "Wasserdichter Vertrag"},
+        {agil: "sich an neue Herausforderungen anpassen können", plan: "einen festen Plan haben"}
+
 
       ],
 
-      microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
+      figures: [
+        {
+          id: "histogram_categories_absolute",
+          type: "histogram_categories",
+          title: "Histogramm Kategorien absolut",
+          mapping: arg => arg.c
+        },
+        {
+          id: "histogram_categories_relative",
+          type: "histogram_categories",
+          title: "Histogramm Kategorien in Prozent",
+          mapping: arg => 100 * arg.c / arg.sum_categories
+        },
+        {
+          id: "histogram_absolute",
+          type: "histogram",
+          title: "Histogramm absolut",
+          mapping: arg => arg.c
+        },
+        {
+          id: "histogram_relative",
+          type: "histogram",
+          title: "Histogramm in Prozent",
+          mapping: arg => 100 * arg.c / arg.count_participants
+        },
+        {
+          id: "delay_cat_sum",
+          type: "delay_categories",
+          title: "Summe aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1])
+        },
+        {
+          id: "delay_cat_avg",
+          type: "delay_categories",
+          title: "Durchschnitt aller Verzögerungen in Millisekunden (msec) ",
+          mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1]) / arg.category_counters[arg.result.categories[arg.i]]
+        },
+        {
+          id: "delay_cat_max",
+          type: "delay_categories",
+          title: "Maximum aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] = Math.max( arg.delay_sums[ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) )
+        },
+        {
+          id: "delay_cat_min",
+          type: "delay_categories",
+          title: "Minimum aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => {
+            // avoid 0 as minimum
+            if ( arg.delay_sums[arg.result.categories[arg.i]] === 0 ) arg.delay_sums[arg.result.categories[arg.i]] = arg.result.timer[arg.i] - arg.result.timer[arg.i-1];
+            arg.delay_sums[arg.result.categories[arg.i]] = Math.min( arg.delay_sums[ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
+          }
+        },
+        {
+          id: "delay_sum",
+          type: "delays",
+          title: "Summe aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg =>
+            arg.delay_sums[arg.i][arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1])
+        },
+        {
+          id: "delay_avg",
+          type: "delays",
+          title: "Durchschnitt aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => arg.delay_sums[arg.i][arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1]) / arg.flat_counters[arg.result.categories[arg.i]]
+        },
+        {
+          id: "delay_max",
+          type: "delays",
+          title: "Maximum aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.max( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) )
+        },
+        {
+          id: "delay_min",
+          type: "delays",
+          title: "Minimum aller Verzögerungen in Millisekunden (msec)",
+          mapping: arg => {
+            // avoid 0 as minimum
+            if ( arg.delay_sums[arg.i][arg.result.categories[arg.i]] === 0 ) arg.delay_sums[arg.i][arg.result.categories[arg.i]] = arg.result.timer[arg.i] - arg.result.timer[arg.i-1];
+            arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.min( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
+          }
+        }
+      ],
 
       html: {
+
+        header: {
+          inner: [
+            { tag: 'h1', inner: '%title%' },
+            { tag: 'h2', inner: '%subtitle%' },
+            { tag: 'p', inner: '<em>%author%</em><br>%address%<br>%email%' }
+          ]
+        },
+
         main: {
           inner: [
             {
@@ -89,13 +192,6 @@
               id: 'paper_frame'
             }
           ]
-        },
-        header: {
-          inner: [
-            { tag: 'h1', inner: '%title%' },
-            { tag: 'h2', inner: '%subtitle%' },
-            { tag: 'p', inner: '<em>%author%</em><br>%address%<br>%email%' }
-          ]
         }
       },
 
@@ -104,6 +200,8 @@
       plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
 
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
+
+      microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
       css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
@@ -199,7 +297,7 @@
 
         // render header
         const header = main_div.querySelector('header');
-        if ( ! header || ! header.innerHTML || ! header.innerHTML.trim() ){ // header is empty
+        if ( header && ( ! header.innerHTML || ! header.innerHTML.trim() ) ){ // header is empty
           $.setContent( header, $.html( this.html.header, {
             author: this.author,
             email: this.email,
@@ -232,8 +330,8 @@
             root: div("ccm_poll"),
             choices: self.questions,
             randomize: {
-              row: true,
-              column: true
+              row: self.randomize && self.randomize.row,
+              column: self.randomize && self.randomize.column
             },
             finishListener: (e) => {
               change_state( 'paper' );
@@ -280,30 +378,32 @@
         */
         function draw_results( individual_results ){
 
-          // calculate percentage: How agile is the current user?
-          [...span('agile_percentage')].forEach(
-            span => span.innerText = individual_results.final_percentage.toFixed(2)
-          );
+          if ( div('poll_result') ){
+            // calculate percentage: How agile is the current user?
+            [...span('agile_percentage')].forEach(
+              span => span.innerText = individual_results.final_percentage.toFixed(2)
+            );
 
-          div('poll_result').style.display = 'block';
+            div('poll_result').style.display = 'block';
 
-          // plot cake chart
-          self.plotter.start( {
-            root: div('poll_result'),
-            data: [
-              {
-                "values": Object.values( individual_results.category_counters ),
-                "labels": Object.keys( individual_results.category_counters ),
-                "type": "pie"
+            // plot cake chart
+            self.plotter.start( {
+              root: div('poll_result'),
+              data: [
+                {
+                  "values": Object.values( individual_results.category_counters ),
+                  "labels": Object.keys( individual_results.category_counters ),
+                  "type": "pie"
+                }
+              ],
+              layout: {
+                title: 'Persönliches Ergebnis'
+              },
+              plot_config: {
+                responsive: true
               }
-            ],
-            layout: {
-              title: 'Persönliches Ergebnis'
-            },
-            plot_config: {
-              responsive: true
-            }
-          } );
+            } )
+          }
         }
 
         /*
@@ -329,6 +429,10 @@
           [...span('count_participants')].forEach( span => {
             span.innerText = count_participants;
           });
+
+          function make_title( title ){
+            return title + '( <em>n = ' +  count_participants + '</em>)';
+          }
 
           distribution( 'Verteilung des agilen Anteils', div('distribution'), [20,40,60,80,100], dataset, ccm );
 
@@ -379,123 +483,219 @@
             return counters;
           }
 
-          histogram_categories(
-            'Histogramm Kategorien absolut <i>(n = ' + count_participants + ')</i>',
-            category_counters,
-            div("histogram_categories_absolute")
-          );
+          draw_all_figures();
 
-          histogram_categories(
-            'Histogramm Kategorien in Prozent <i>(n = ' + count_participants + ')</i>',
-            category_counters,
-            div("histogram_categories_relative"),
-            c => 100 * c / sum_categories
-          );
+          function draw_all_figures(){
+            self.figures.forEach( figure =>
+              draw_figure( figure )
+          )}
 
-          histogram(
-            'Histogramm absolut <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("histogram_absolute")
-          );
-
-          histogram(
-            'Histogramm in Prozent <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("histogram_relative"),
-            c=>100*c/count_participants
-          );
-
-          // ============== Categories =================
-          // Sum
-          delay_categories(
-            'Summe aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            dataset,
-            category_counters,
-            div("delay_cat_sum"),
-            (delay_sums, result, i) => delay_sums[result.categories[i]] += (result.timer[i]-result.timer[i-1]) // sum
-          );
-
-          // Average
-          delay_categories(
-            'Durchschnitt aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            dataset,
-            category_counters,
-            div("delay_cat_avg"),
-            (delay_sums, result, i) => delay_sums[result.categories[i]] += (result.timer[i]-result.timer[i-1]) / category_counters[result.categories[i]]
-          );
-
-          // Maximum
-          delay_categories(
-            'Maximum aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            dataset,
-            category_counters,
-            div("delay_cat_max"),
-            (delay_sums, result, i) => delay_sums[result.categories[i]] = Math.max( delay_sums[ result.categories[i] ], ( result.timer[i] - result.timer[i-1] ) )
-          );
-
-          // Minimum
-          delay_categories(
-            'Minimum aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            dataset,
-            category_counters,
-            div("delay_cat_min"),
-            (delay_sums, result, i) => {
-              // avoid 0 as minimum
-              if ( delay_sums[result.categories[i]] === 0 ) delay_sums[result.categories[i]] = result.timer[i] - result.timer[i-1];
-              delay_sums[result.categories[i]] = Math.min( delay_sums[ result.categories[i] ], ( result.timer[i] - result.timer[i-1] ) );
+          function draw_figure( figure ){
+            switch ( figure.type ){
+              case "histogram_categories":
+                histogram_categories({
+                  title: make_title( figure.title ),
+                  category_counters,
+                  plot_div: div( figure.id ),
+                  mapping: figure.mapping || ( c => c ) // identity as default mapping
+                });
+                break;
+              case "histogram":
+                histogram({
+                  title: make_title( figure.title ),
+                  questions: self.questions,
+                  results: dataset,
+                  plot_div: div( figure.id ),
+                  mapping: figure.mapping || ( c => c ) // identity as default mapping
+                });
+                break;
+              case "delay_categories":
+                delay_categories({
+                  title: make_title( figure.title ),
+                  results: dataset,
+                  category_counters,
+                  plot_div: div( figure.id ),
+                  mapping: figure.mapping || ( c => c ) // identity as default mapping
+                });
+                break;
+              case "delays":
+                delays({
+                  title: make_title( figure.title ),
+                  questions: self.questions,
+                  results: dataset,
+                  counters,
+                  flat_counters,
+                  plot_div: div( figure.id ),
+                  mapping: figure.mapping || ( c => c ) // identity as default mapping
+                });
+                break;
+              default: debugger;
             }
-          );
+          }
 
-          // =============== Single Answer ==================
 
-          // Sum
-          delays(
-            'Summe aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("delay_sum"),
-            (delay_sums, result, i) =>
-              delay_sums[i][result.categories[i]] += (result.timer[i]-result.timer[i-1]) // sum
-          );
+          function histogram ( arg ){
 
-          // Average
-          delays(
-            'Durchschnitt aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("delay_avg"),
-            (delay_sums, result, i) => delay_sums[i][result.categories[i]] += (result.timer[i]-result.timer[i-1]) / flat_counters[result.categories[i]]
-          );
+            if ( ! arg.mapping ) arg.mapping = ( arg => arg );
+            const { title, questions, results, plot_div, mapping } = arg;
 
-          // Maximum
-          delays(
-            'Maximum aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("delay_max"),
-            (delay_sums, result, i) => delay_sums[i][result.categories[i]] = Math.max( delay_sums[i][ result.categories[i] ], ( result.timer[i] - result.timer[i-1] ) )
-          );
+            const data = [];
+            counters.forEach((counter, i)=>{
+              const group = {
+                name: 'Auswahl ' + (i+1),
+                type: 'bar'
+              };
+              group.x = [];
+              group.y = [];
+              Object.keys( counter ).forEach( key => {
+                group.x.push( questions[i][key] );
+                group.y.push( mapping( { c: counter[key], count_participants } ) );
+              });
+              data.push(group);
+            });
 
-          // Minimum
-          delays(
-            'Minimum aller Verzögerungen in Millisekunden (msec) <i>(n = ' + count_participants + ')</i>',
-            self.questions,
-            dataset,
-            counters,
-            div("delay_min"),
-            (delay_sums, result, i) => {
-              // avoid 0 as minimum
-              if ( delay_sums[i][result.categories[i]] === 0 ) delay_sums[i][result.categories[i]] = result.timer[i] - result.timer[i-1];
-              delay_sums[i][result.categories[i]] = Math.min( delay_sums[i][ result.categories[i] ], ( result.timer[i] - result.timer[i-1] ) );
+            // render chart
+            self.plotter.start( {
+              root: plot_div,
+              data: data,
+              layout: {
+                title: title,
+                barmode: 'group'
+              },
+              plot_config: {
+                responsive: true
+              }
+            } );
+
+            return data;
+
+          }
+
+          function histogram_categories ( arg ){
+
+            if ( ! arg.mapping ) arg.mapping = ( arg => arg );
+
+            const { title, category_counters, plot_div, mapping } = arg;
+
+            const data = [
+              {
+                "x": Object.keys(category_counters),
+                "y": Object.values(category_counters).map( counter => { return { c: counter, sum_categories} } ).map( mapping ),
+                "type": "bar"
+              }
+            ];
+
+            // render chart
+            self.plotter.start( {
+              root: plot_div,
+              data: data,
+              layout: {
+                title: title
+              },
+              plot_config: {
+                responsive: true
+              }
+            } );
+
+            return data;
+
+          }
+
+          function delays ( arg ){
+
+            if ( ! arg.mapping ) arg.mapping = ( arg => arg );
+
+            const { title, questions, results, counters, plot_div, mapping } = arg;
+
+            const delay_sums = [{"0":0}]; // Start Button
+
+            // one sum per question
+            questions.forEach( question => {
+              const sum = {};
+              Object.keys(question).forEach(key => {sum[key] = 0});
+              delay_sums.push( sum ) ;
+            });
+
+            for (const result of results){
+              for (let i=0; i<result.categories.length;i++){
+                if (i===0) continue;
+                // sum, average, min, max, std deviation, median
+                mapping({delay_sums, result, i, flat_counters});
+              }
             }
-          );
+
+            const data = [];
+            questions.forEach((question,i) => {
+              const group = {
+                name: 'Auswahl ' + (i+1),
+                type: 'bar'
+              };
+              group.x = [];
+              group.y = [];
+              Object.keys(question).forEach(key=>{
+                group.x.push( question[key] );
+                group.y.push( delay_sums[i+1][ key ] || 0 );
+              });
+              data.push(group);
+            });
+
+            // render chart
+            self.plotter.start( {
+              root: plot_div,
+              data: data,
+              layout: {
+                title: title,
+                barmode: 'group'
+              },
+              plot_config: {
+                responsive: true
+              }
+            } );
+
+            return data;
+
+          }
+
+          function delay_categories ( arg ){
+
+            if ( ! arg.mapping ) arg.mapping = ( arg => arg );
+
+            const { title, results, category_counters, plot_div, mapping } = arg;
+            const delay_sums = {};
+            for (const result of results){
+              for (let i=0; i<result.categories.length;i++){
+                if (i===0) continue;
+                if (!delay_sums[result.categories[i]]) delay_sums[result.categories[i]] = 0;
+                // sum, average, min, max, std deviation, median
+                mapping({delay_sums, result, i, category_counters});
+              }
+            }
+
+            const data = [
+              {
+                "x": Object.keys( category_counters ),
+                "y": Object.values( delay_sums ),
+                "type": "bar"
+              }
+            ];
+
+            // render chart
+            self.plotter.start( {
+              root: plot_div,
+              data: data,
+              layout: {
+                title: title
+              },
+              plot_config: {
+                responsive: true
+              }
+            } );
+
+            return data;
+
+          }
+
+
 
         }
 
@@ -588,155 +788,6 @@
           // render distribution graph
           ccm.start("https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js", {
             root: plot_div,
-            data: data,
-            layout: {
-              title: title
-            },
-            plot_config: {
-              responsive: true
-            }
-          } );
-
-          return data;
-
-        }
-
-        function histogram ( title, questions, results, counters, plot_result, mapping = c => c ){
-
-          const data = [];
-          counters.forEach((counter, i)=>{
-            const group = {
-              name: 'Auswahl ' + (i+1),
-              type: 'bar'
-            };
-            group.x = [];
-            group.y = [];
-            Object.keys( counter ).forEach( key => {
-              group.x.push( questions[i][key] );
-              group.y.push( mapping( counter[key] ) );
-            });
-            data.push(group);
-          });
-
-          // render chart
-          self.plotter.start( {
-            root: plot_result,
-            data: data,
-            layout: {
-              title: title,
-              barmode: 'group'
-            },
-            plot_config: {
-              responsive: true
-            }
-          } );
-
-          return data;
-
-        }
-
-        function histogram_categories ( title, category_counters, plot_result, mapping ){
-
-          // console.log(  title, results, counters, plot_result, mapping  );
-
-          const data = [
-            {
-              "x": Object.keys(category_counters),
-              "y": Object.values(category_counters).map( mapping || ( x => x ) ),
-              "type": "bar"
-            }
-          ];
-
-          // render chart
-          self.plotter.start( {
-            root: plot_result,
-            data: data,
-            layout: {
-              title: title
-            },
-            plot_config: {
-              responsive: true
-            }
-          } );
-
-          return data;
-
-        }
-
-        function delays ( title, questions, results, counters, plot_result, mapping ){
-
-          const delay_sums = [{"0":0}]; // Start Button
-
-          // one sum per question
-          questions.forEach( question => {
-            const sum = {};
-            Object.keys(question).forEach(key => {sum[key] = 0});
-            delay_sums.push( sum ) ;
-          });
-
-          for (const result of results){
-            for (let i=0; i<result.categories.length;i++){
-              if (i===0) continue;
-              // sum, average, min, max, std deviation, median
-              mapping(delay_sums, result, i);
-            }
-          }
-
-          const data = [];
-          questions.forEach((question,i) => {
-            const group = {
-              name: 'Auswahl ' + (i+1),
-              type: 'bar'
-            };
-            group.x = [];
-            group.y = [];
-            Object.keys(question).forEach(key=>{
-              group.x.push( question[key] );
-              group.y.push( delay_sums[i+1][ key ] || 0 );
-            });
-            data.push(group);
-          });
-
-          // render chart
-          self.plotter.start( {
-            root: plot_result,
-            data: data,
-            layout: {
-              title: title,
-              barmode: 'group'
-            },
-            plot_config: {
-              responsive: true
-            }
-          } );
-
-          return data;
-
-        }
-
-        function delay_categories (title, results, category_counters, plot_result, mapping ){
-
-          const delay_sums = {};
-          for (const result of results){
-            for (let i=0; i<result.categories.length;i++){
-              if (i===0) continue;
-              if (!delay_sums[result.categories[i]]) delay_sums[result.categories[i]] = 0;
-              // sum, average, min, max, std deviation, median
-              mapping(delay_sums, result, i);
-            }
-          }
-
-          const data = [
-            {
-              "x": Object.keys( category_counters ),
-              "y": Object.values( delay_sums ),
-              "type": "bar"
-            }
-          ];
-
-          // render chart
-          self.plotter.start( {
-            root: plot_result,
             data: data,
             layout: {
               title: title
