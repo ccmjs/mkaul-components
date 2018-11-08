@@ -293,7 +293,12 @@
 
         // render LightDOM with variable substitution into main_div
         const paper_frame = main_div.querySelector('#paper_frame');
-        paper_frame.innerHTML = self.lightDOM;
+        if ( typeof self.lightDOM === 'string' ){
+          paper_frame.innerHTML = self.lightDOM;
+        } else { // self.lightDOM is a document-fragment
+          paper_frame.inner = self.lightDOM;
+        }
+
         // self.lit_html.render( self.lit_html.html`${self.lightDOM}`, paper_frame );
 
         // render header
