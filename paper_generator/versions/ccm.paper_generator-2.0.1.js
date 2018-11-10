@@ -22,7 +22,7 @@
      * @type {string}
      */
     name: 'paper_generator',
-    versions: [2,0,1],
+    version: [2,0,1],
     
     /**
      * recommended used framework version
