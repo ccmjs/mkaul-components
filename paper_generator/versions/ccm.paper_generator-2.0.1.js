@@ -2,9 +2,9 @@
  * @overview ccm component for paper_generator
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version 2.0.1
  * @changes
- * version 1.0.0 11/1/2018
+ * @date 10.11.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,13 +22,14 @@
      * @type {string}
      */
     name: 'paper_generator',
+    versions: [2,0,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -208,8 +209,8 @@
 
       microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }

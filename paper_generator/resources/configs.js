@@ -15,6 +15,11 @@ ccm.files[ 'configs.js' ] = {
     title: 'Kleines Beispiel',
     subtitle: 'Eine empirische Studie',
 
+    headers: [
+      "Ihr Geschlecht?",
+      "Ihr Alter?"
+    ],
+
     questions: [
       { man: "männlich", woman: "weiblich", other: "divers" },
       { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" }
