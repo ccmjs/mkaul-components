@@ -35,7 +35,7 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       }
     ],
 
@@ -134,25 +134,25 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_categories_relative",
         type: "histogram_categories",
         title: "Histogramm Kategorien in Prozent",
-        mapping: arg => 100 * arg.c / arg.sum_categories
+        mapping: arg => 100 * arg.count / arg.sum_categories
       },
       {
         id: "histogram_absolute",
         type: "histogram",
         title: "Histogramm absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_relative",
         type: "histogram",
         title: "Histogramm in Prozent",
-        mapping: arg => 100 * arg.c / arg.count_participants
+        mapping: arg => 100 * arg.count / arg.count_participants
       },
       {
         id: "delay_cat_sum",
@@ -313,25 +313,25 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_categories_relative",
         type: "histogram_categories",
         title: "Histogramm Kategorien in Prozent",
-        mapping: arg => 100 * arg.c / arg.sum_categories
+        mapping: arg => 100 * arg.count / arg.sum_categories
       },
       {
         id: "histogram_absolute",
         type: "histogram",
         title: "Histogramm absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_relative",
         type: "histogram",
         title: "Histogramm in Prozent",
-        mapping: arg => 100 * arg.c / arg.count_participants
+        mapping: arg => 100 * arg.count / arg.count_participants
       },
       {
         id: "delay_cat_sum",
@@ -492,25 +492,25 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_categories_relative",
         type: "histogram_categories",
         title: "Histogramm Kategorien in Prozent",
-        mapping: arg => 100 * arg.c / arg.sum_categories
+        mapping: arg => 100 * arg.count / arg.sum_categories
       },
       {
         id: "histogram_absolute",
         type: "histogram",
         title: "Histogramm absolut",
-        mapping: arg => arg.c
+        mapping: arg => arg.count
       },
       {
         id: "histogram_relative",
         type: "histogram",
         title: "Histogramm in Prozent",
-        mapping: arg => 100 * arg.c / arg.count_participants
+        mapping: arg => 100 * arg.count / arg.count_participants
       },
       {
         id: "delay_cat_sum",
