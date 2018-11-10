@@ -7,6 +7,6 @@
     <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 219 143 200 187 219 143 240"/>
     <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 205 143 186 187 205 143 226"/>
   </g>
-  <path d="M 50 56 H 138 L 127 1 L 176 80 L 127 158 L 138 103 H 50 V 56 Z" transform="matrix(0, 1, -1, -0.01404, 177.98782, -41.76645)" style="fill: rgb(255, 255, 255);" bx:shape="arrow 50 1 126 157 47 49 11 1@ef84a788"/>
-  <path d="M 59 21 H 142 L 134 4 L 172 26 L 134 48 L 142 32 H 59 V 21 Z" transform="matrix(-0.00265, 1, -0.99996, -0.01669, 124.96945, -34.72742)" style="fill: rgb(255, 254, 254); stroke: rgb(0, 0, 0); stroke-width: 2.99999px;" bx:shape="arrow 59 4 113 44 11 38 8 1@5fcf2bf0"/>
+  <path d="M 50 27 H 138 L 127 1 L 176 38 L 127 75 L 138 49 H 50 V 27 Z" transform="matrix(0, 1, -1, -0.01404, 137.99992, -42.32788)" style="fill: rgb(255, 255, 255);" bx:shape="arrow 50 1 126 74 22 49 11 1@b4caeaf1"/>
+  <path d="M 65 20.5 H 157 L 148 4 L 190 26 L 148 48 L 157 31.5 H 65 V 20.5 Z" transform="matrix(-0.00265, 1, -0.99996, -0.01669, 125.0173, -52.78503)" style="fill: rgb(255, 254, 254); stroke: rgb(0, 0, 0); stroke-width: 2.99999px;" bx:shape="arrow 65 4 125 44 11 42 9 1@24851e6c"/>
 </svg>
