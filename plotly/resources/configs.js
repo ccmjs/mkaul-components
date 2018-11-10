@@ -31,7 +31,7 @@ ccm.files[ 'configs.js' ] = {
     },
 
     plot_config: {
-
+      responsive: true
     }
   },
 
@@ -64,7 +64,10 @@ ccm.files[ 'configs.js' ] = {
         type: 'bar'
       }
     ],
-    layout: {barmode: 'group'}
+    layout: {barmode: 'group'},
+    plot_config: {
+      responsive: true
+    }
   },
 
   // https://plot.ly/javascript/bar-charts/#stacked-bar-chart
@@ -82,7 +85,10 @@ ccm.files[ 'configs.js' ] = {
       type: 'bar'
     }],
 
-    layout: {barmode: 'stack'}
+    layout: {barmode: 'stack'},
+    plot_config: {
+      responsive: true
+    }
   },
 
   // https://plot.ly/javascript/pie-charts/#basic-pie-chart
@@ -97,6 +103,9 @@ ccm.files[ 'configs.js' ] = {
     layout: {
       height: 400,
       width: 500
+    },
+    plot_config: {
+      responsive: true
     }
   },
 
@@ -150,6 +159,9 @@ ccm.files[ 'configs.js' ] = {
       width: 600,
       showlegend: false,
       grid: {rows: 1, columns: 2}
+    },
+    plot_config: {
+      responsive: true
     }
   },
 
@@ -171,7 +183,10 @@ ccm.files[ 'configs.js' ] = {
         fill: 'tonexty',
         type: 'scatter'
       }
-    ]
+    ],
+    plot_config: {
+      responsive: true
+    }
   },
 
   // https://plot.ly/javascript/box-plots/
@@ -212,6 +227,9 @@ ccm.files[ 'configs.js' ] = {
         zeroline: false
       },
       boxmode: 'group'
+    },
+    plot_config: {
+      responsive: true
     }
 
   },
@@ -246,6 +264,9 @@ ccm.files[ 'configs.js' ] = {
         }
       },
       // showlegend: false
+    },
+    plot_config: {
+      responsive: true
     }
   }
 

@@ -27,6 +27,11 @@
 :host {
   width: 100%;
   height: auto;
+  display: flex;
+}
+
+.js-plotly-plot {
+  margin: auto; // center flexbox
 }
 
 /*  https://github.com/jdfergason/plotly-polymer-fix/  */
