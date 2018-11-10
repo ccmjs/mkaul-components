@@ -257,7 +257,7 @@ ccm.files[ 'configs.js' ] = {
       }
     },
 
-    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-3.0.0.js" ],
+    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
     plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
 
@@ -436,7 +436,7 @@ ccm.files[ 'configs.js' ] = {
       }
     },
 
-    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-3.0.0.js" ],
+    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
     plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
 
@@ -615,7 +615,7 @@ ccm.files[ 'configs.js' ] = {
       }
     },
 
-    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-3.0.0.js" ],
+    survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
     plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
 
