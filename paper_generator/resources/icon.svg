@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-  <defs>
-    <radialGradient id="gradient-2" gradientUnits="userSpaceOnUse" cx="160" cy="420" r="35">
-      <stop offset="0" style="stop-color: rgba(96, 166, 213, 1)"/>
-      <stop offset="1" style="stop-color: rgba(43, 116, 164, 1)"/>
-    </radialGradient>
-  </defs>
-  <circle cx="100" cy="100" r="100" style="fill: rgb(219, 153, 118);"/>
-  <path d="M 125 404 H 158 L 158 357 L 194 420 L 158 483 L 158 436 H 125 V 404 Z" transform="matrix(-0.0084, 0.99996, -0.99996, -0.0084, 520.07733, -64.38036)" style="paint-order: stroke; fill: url(#gradient-2);" bx:shape="arrow 125 357 69 126 32 36 0 1@a9a2e635"/>
-  <text style="fill: rgb(5, 13, 253); font-size: 130px; font-weight: bold; white-space: pre;" x="58" y="98">?</text>
-  <g transform="matrix(1, 0, 0, 0.68793, -43.11454, 5.24911)">
-    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 249 143 230 187 249 143 270"/>
-    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 235 143 216 187 235 143 256"/>
-    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 219 143 200 187 219 143 240"/>
-    <polygon style="stroke: rgb(0, 0, 0); fill: rgb(96, 166, 213);" points="100 205 143 186 187 205 143 226"/>
+  <rect x="16" y="39" width="168" height="156" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-dashoffset: -16px; stroke-width: 6px; stroke-miterlimit: 15; stroke-linejoin: round; fill-opacity: 0;"/>
+  <g transform="matrix(1, 0, 0, 0.68793, -42.59974, -5.0469)">
+    <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 249 143 230 187 249 143 270"/>
+    <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 235 143 216 187 235 143 256"/>
+    <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 219 143 200 187 219 143 240"/>
+    <polygon style="stroke: rgb(0, 0, 0); stroke-width: 5.92442px; fill: rgb(255, 255, 255);" points="100 205 143 186 187 205 143 226"/>
   </g>
+  <path d="M 50 27 H 138 L 127 1 L 176 38 L 127 75 L 138 49 H 50 V 27 Z" transform="matrix(0, 1, -1, -0.01404, 137.99992, -42.32788)" style="fill: rgb(255, 255, 255);" bx:shape="arrow 50 1 126 74 22 49 11 1@b4caeaf1"/>
+  <path d="M 65 20.5 H 157 L 148 4 L 190 26 L 148 48 L 157 31.5 H 65 V 20.5 Z" transform="matrix(-0.00265, 1, -0.99996, -0.01669, 125.0173, -52.78503)" style="fill: rgb(255, 254, 254); stroke: rgb(0, 0, 0); stroke-width: 2.99999px;" bx:shape="arrow 65 4 125 44 11 42 9 1@24851e6c"/>
 </svg>
