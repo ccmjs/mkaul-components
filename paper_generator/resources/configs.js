@@ -35,7 +35,12 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.count
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_count"
+        } ]
       }
     ],
 
@@ -134,82 +139,133 @@ ccm.files[ 'configs.js' ] = {
         id: "histogram_categories_absolute",
         type: "histogram_categories",
         title: "Histogramm Kategorien absolut",
-        mapping: arg => arg.count
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_count"
+        } ]
       },
       {
         id: "histogram_categories_relative",
         type: "histogram_categories",
         title: "Histogramm Kategorien in Prozent",
-        mapping: arg => 100 * arg.count / arg.sum_categories
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_percent"
+        } ]
       },
       {
         id: "histogram_absolute",
         type: "histogram",
         title: "Histogramm absolut",
-        mapping: arg => arg.count
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_count"
+        } ]
       },
       {
         id: "histogram_relative",
         type: "histogram",
         title: "Histogramm in Prozent",
-        mapping: arg => 100 * arg.count / arg.count_participants
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_percent"
+        } ]
       },
       {
         id: "delay_cat_sum",
         type: "delay_categories",
         title: "Summe aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1])
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_cat_sum"
+        } ]
       },
       {
         id: "delay_cat_avg",
         type: "delay_categories",
         title: "Durchschnitt aller Verzögerungen in Millisekunden (msec) ",
-        mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1]) / arg.category_counters[arg.result.categories[arg.i]]
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_cat_avg"
+        } ]
       },
       {
         id: "delay_cat_max",
         type: "delay_categories",
         title: "Maximum aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => arg.delay_sums[arg.result.categories[arg.i]] = Math.max( arg.delay_sums[ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) )
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_cat_max"
+        } ]
       },
       {
         id: "delay_cat_min",
         type: "delay_categories",
         title: "Minimum aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => {
-          // avoid 0 as minimum
-          if ( arg.delay_sums[arg.result.categories[arg.i]] === 0 ) arg.delay_sums[arg.result.categories[arg.i]] = arg.result.timer[arg.i] - arg.result.timer[arg.i-1];
-          arg.delay_sums[arg.result.categories[arg.i]] = Math.min( arg.delay_sums[ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
-        }
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_cat_min"
+        } ]
       },
       {
         id: "delay_sum",
         type: "delays",
         title: "Summe aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg =>
-          arg.delay_sums[arg.i][arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1])
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_sum"
+        } ]
       },
       {
         id: "delay_avg",
         type: "delays",
         title: "Durchschnitt aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => arg.delay_sums[arg.i][arg.result.categories[arg.i]] += (arg.result.timer[arg.i]-arg.result.timer[arg.i-1]) / arg.flat_counters[arg.result.categories[arg.i]]
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_avg"
+        } ]
       },
       {
         id: "delay_max",
         type: "delays",
         title: "Maximum aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.max( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) )
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_max"
+        } ]
       },
       {
         id: "delay_min",
         type: "delays",
         title: "Minimum aller Verzögerungen in Millisekunden (msec)",
-        mapping: arg => {
-          // avoid 0 as minimum
-          if ( arg.delay_sums[arg.i][arg.result.categories[arg.i]] === 0 ) arg.delay_sums[arg.i][arg.result.categories[arg.i]] = arg.result.timer[arg.i] - arg.result.timer[arg.i-1];
-          arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.min( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
-        }
+        mapping: [ "ccm.load", {
+          "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
+          // "url": "./resources/mappings.js",
+          "type": "module",
+          "import": "map_to_min"
+        } ]
       }
     ],
 

@@ -771,7 +771,7 @@
           for (const answers of self.questions){
             nr += 1;
             html += "<li>";
-            if ( self.headers ) html += "<h2>"+ self.headers[ nr ] +"</h2>";
+            if ( self.headers && self.headers[ nr ] ) html += "<b>"+ self.headers[ nr ] +"</b>";
             html += "<ol type='a'>";
             for (const answer of Object.values(answers)){
               html += "<li>" + answer + "</li>";

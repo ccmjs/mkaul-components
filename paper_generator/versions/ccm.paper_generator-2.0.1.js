@@ -4,7 +4,6 @@
  * @license The MIT License (MIT)
  * @version 2.0.1
  * @changes
- * @date 10.11.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -44,10 +43,10 @@
       title: 'Agile Werte',
       subtitle: 'Eine empirische Studie',
 
-      headers: [
-        "Individuelle Frage zur ersten Auswahl",
-        "Individuelle Frage zur zweiten Auswahl"
-      ],
+      // headers: [
+      //   "Individuelle Frage zur ersten Auswahl",
+      //   "Individuelle Frage zur zweiten Auswahl"
+      // ],
 
       questions: [
         // { man: "männlich", woman: "weiblich", other: "divers" },
@@ -210,7 +209,7 @@
       microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
       // css: [ 'ccm.load',  'resources/default.css' ],
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ]
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -772,7 +771,7 @@
           for (const answers of self.questions){
             nr += 1;
             html += "<li>";
-            if ( self.headers ) html += "<h2>"+ self.headers[ nr ] +"</h2>";
+            if ( self.headers && self.headers[ nr ] ) html += "<b>"+ self.headers[ nr ] +"</b>";
             html += "<ol type='a'>";
             for (const answer of Object.values(answers)){
               html += "<li>" + answer + "</li>";
