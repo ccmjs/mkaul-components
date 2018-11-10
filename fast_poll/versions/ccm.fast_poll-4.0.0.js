@@ -17,14 +17,15 @@
      * @type {string}
      */
     name: 'fast_poll',
+    version: [4,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
 
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
 
     /**
      * default instance configuration
