@@ -208,6 +208,7 @@
 
             if ( self.choices[number_of_choice].question ){
               title.innerHTML = self.choices[number_of_choice].question;
+              delete self.choices[number_of_choice].question;
             }
             choices.appendChild(child);
 
