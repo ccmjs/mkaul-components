@@ -1,0 +1,47 @@
+/**
+ * @overview default layout of ccm component jsonic
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+:host {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.editors, .checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#jsonic, #json {
+  margin: 0.5em;
+  padding: 0.3em;
+  max-width: 96%
+}
+
+#json, label {
+  flex: 1;
+}
+
+label {
+  margin-left: 1rem;
+}
+
+#jsonic {
+  overflow: auto;
+  border: thin solid grey;
+  background-color: lightgrey;
+}
+
+#json {
+  border: thin solid orange;
+  background-color: lightyellow;
+}
+
+#jsonic:hover{
+  background-color: white;
+  border: thin solid red;
+}
