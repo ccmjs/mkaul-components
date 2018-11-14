@@ -1,7 +1,7 @@
 
 {
     "_id": "jsonic",
-    "title": "jsonic",
+    "title": "Fix JSON",
     "icon": "https://ccmjs.github.io/mkaul-components/jsonic/resources/icon.svg",
     "abstract": "JSON editor with relaxed rules",
     "description": "JSON editor using <a target=_blank href='https://github.com/rjrodger/jsonic' rel='noopener'>jsonic</a> for allowing more relaxed rules. The JSON parser of jsonic can parse \"bad\" JSON. Mostly, this is about avoiding the need to quote everything! Use the left area for editing and see the live update of correct JSON in the right area.",
@@ -9,7 +9,7 @@
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
-    "license": "MIT License",    
+    "license": "MIT License",
     "ignore": {
         "demos": [
             {
@@ -22,7 +22,7 @@
             }
         ],
         "builder": [
-          {
+            {
                 "title": "Input Mask",
                 "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
                 "config": {
@@ -31,10 +31,16 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-5.1.1.js",
                         {
                             "defaults": {
-                                "x": "Hello World",
-                                "template": "<h1>${x}</h1>"
+                                "data": "foo:bar, red:1,"
                             },
-                            "inner": "<h1>HTML Templates</h1><fieldset><legend>Template</legend><textarea name=template value='<h1>${x}</h1>'></textarea></fieldset><fieldset>    <legend>Parameter</legend>    <several name=\"pairs\"> <fieldset>            <p><label> Name <nr></nr> :<br> <input type=\"text\" name=\"param_key\" value='x'> </label></p> <p><label> Value:<br> <input type=\"text\" name=\"param_value\" value='Hello World'> </label></p></fieldset> </several></fieldset>"
+                            "html.main": [
+                                {
+                                    "label": "<a target=_blank href='https://github.com/rjrodger/jsonic' rel='noopener'>JSONic</a>",
+                                    "name": "data",
+                                    "type": "text",
+                                    "info": "JSONic with relaxed rules"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -55,6 +61,6 @@
             }
         ]
     },
-    "updated_at": "2018-11-04T14:41:22+02:00",
-    "created_at": "2018-11-04T14:41:22+02:00"
+    "updated_at": "2018-11-14T15:49:12+01:00",
+    "created_at": "2018-11-14T15:49:12+01:00"
 }

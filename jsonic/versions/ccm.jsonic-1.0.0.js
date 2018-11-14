@@ -118,8 +118,7 @@
       this.start = async () => {
 
         const main_div = $.html( this.html.main, {
-          data: this.lightDOM || this.data,
-          json: JSON.stringify( jsonic( this.lightDOM || this.data ), null, 2)
+          data: this.lightDOM || this.data
         } );
 
         const div = {},      // container for all div elements with id
@@ -129,6 +128,8 @@
         [...main_div.querySelectorAll('div[id]')].forEach( elem => {
           div[ elem.id ] = elem;
         });
+
+        make_json();
 
         // collect all checkbox elements into container
         [...main_div.querySelectorAll('input[type=checkbox][name]')].forEach( elem => {
@@ -148,10 +149,25 @@
         div.jsonic.contentEditable = "true";
 
         div.jsonic.addEventListener('keyup', (e) => {
-          div.json.innerText = JSON.stringify( jsonic( div.jsonic.innerText ), null, 2) ;
+          make_json();
         });
 
         // Helper function
+
+        function make_json(){
+          const innerText = div.jsonic.innerText;
+          const jsonic_object = jsonic( innerText );
+          const stringified = JSON.stringify( jsonic_object, null, 2 );
+          div.json.innerText = stringified;
+          // div.json.innerText = stringified.replace(/\"/g, "\\\"");
+
+          // div.json.innerText = JSON.stringify(
+          // jsonic(
+          //   div.jsonic.innerText
+          // ),
+          // null,
+          // 2) ;
+        }
 
         function toggle( name ){
           if ( checkbox[name].checked ){

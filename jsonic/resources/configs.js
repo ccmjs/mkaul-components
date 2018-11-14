@@ -38,7 +38,7 @@ ccm.files[ 'configs.js' ] = {
 
     jsonic: [ "ccm.load", "https://cdn.jsdelivr.net/npm/jsonic@0.3.1/jsonic-min.js" ],
 
-    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/jsonic/resources/default.css' ],
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/jsonic/resources/default.css' ]
   },
   "localhost": {
     key: "localhost",
