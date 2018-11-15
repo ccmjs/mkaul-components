@@ -8,7 +8,9 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
-    x: "Hello World",
+    data: {
+      x: "Hello World"
+    },
     template: '<h1>${x}</h1>'
   },
   "localhost": {

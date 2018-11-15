@@ -21,13 +21,14 @@
      * @type {string}
      */
     name: 'html_template',
+    version: [3,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -47,9 +48,10 @@
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
       // ES3 implementation of the ES6 template string used to read and process the lightDOM
-      templatizer: [ "ccm.load", { url: "./resources/template.js", type: "module" } ],
+      templatizer: [ "ccm.load", { url: "https://ccmjs.github.io/mkaul-components/html_template/resources/template.js", type: "module" } ],
 
-      css: [ 'ccm.load',  'resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html_template/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html_template/resources/default.css' ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/html_template/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
