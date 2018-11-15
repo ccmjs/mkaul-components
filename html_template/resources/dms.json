@@ -4,8 +4,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/html_template/resources/icon.svg",
     "abstract": "Next-generation HTML Template Engine using <a target=_blank href=https://polymer.github.io/lit-html/ rel=noopener>lit-html</a>",
     "description": "This HTML Template Engine uses <a target=_blank href=https://polymer.github.io/lit-html/ rel=noopener>lit-html</a>. lit-html is the next-generation HTML Template Engine in JavaScript. <em>ccm</em> configuration is used for defining variables and values. The inner HTML makes use of these variables in the ${x} notation. E.g. <br> <pre style=\"background-color:#ffffff;color:#000000;font-family:'Menlo';font-size:10.5pt;\"><span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">script </span><span style=\"color:#0000ff;background-color:#efefef;font-weight:bold;\">src=</span><span style=\"color:#008000;background-color:#efefef;font-weight:bold;\">\"ccm.html_template.js\"</span><span style=\"background-color:#efefef;\">&gt;&lt;/</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">script</span><span style=\"background-color:#efefef;\">&gt;</span><br><span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">ccm-html_template </span><span style=\"color:#0000ff;background-color:#efefef;font-weight:bold;\">x=</span><span style=\"color:#008000;background-color:#efefef;font-weight:bold;\">\"Hello World\"</span><span style=\"background-color:#efefef;\">&gt;</span><br> <span style=\"background-color:#efefef;\">&lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">h1</span><span style=\"background-color:#efefef;\">&gt;</span>${x} and ${y} and ${z} and ${this.fn(1+2)}<span style=\"background-color:#efefef;\"> &lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">/h1</span><span style=\"background-color:#efefef;\">&gt;</span><br><span style=\"background-color:#efefef;\"> &lt;</span><span style=\"color:#000080;background-color:#efefef;font-weight:bold;\">/ccm-html_template</span><span style=\"background-color:#efefef;\">&gt;</span></pre>",
-    "url": "https://ccmjs.github.io/mkaul-components/html_template/versions/ccm.html_template-1.0.0.js",
-    "version": "1.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/html_template/versions/ccm.html_template-2.0.0.js",
+    "version": "2.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",
@@ -54,6 +54,6 @@
             }
         ]
     },
-    "updated_at": "2018-11-03T14:41:22+02:00",
+    "updated_at": "2018-11-15T11:48:22+02:00",
     "created_at": "2018-11-03T14:41:22+02:00"
 }

@@ -94,14 +94,12 @@
           });
         }
 
-        let lightDOM = this.inner;
+        let lightDOM = this.template;
+
+        if ( ! lightDOM ) lightDOM = this.inner;
 
         if ( typeof lightDOM !== 'string' ){
           lightDOM = lightDOM.innerHTML;
-        }
-
-        if ( ! lightDOM.trim() ){
-          lightDOM = this.template;
         }
 
         // generate template with dynamic value update via lit-html caching mechanics
