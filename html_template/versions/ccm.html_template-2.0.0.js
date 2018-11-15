@@ -44,11 +44,11 @@
       // fn: (x) => {console.log( x ); return x;},
 
       // Or you can transfer data via a data sub-object
-      data: {
-        x: "Hello World",
-        y: "You",
-        z: 7
-      },
+      // data: {
+      //   x: "Hello World",
+      //   y: "You",
+      //   z: 7
+      // },
 
       // lit-html see https://github.com/Polymer/lit-html
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
