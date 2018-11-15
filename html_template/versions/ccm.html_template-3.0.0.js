@@ -83,6 +83,9 @@
         // set shortcut to help functions
         $ = self.ccm.helper;
 
+        // initialize data object
+        if ( ! this.data ) this.data = {};
+
         if ( this.root.dataset ){ // Using data attributes  // TODO funktioniert nicht in ccm
           // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
           Object.keys( this.root.dataset ).forEach( key => {
