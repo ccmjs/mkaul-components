@@ -1,0 +1,33 @@
+<!doctype html>
+<script>
+  const x = 4;
+  const test = x => x * x;
+  let html = '<h1>${test(${x})}</h1>';
+
+  const regex = new RegExp(/(\${)|(})/g);
+
+  parse(html,regex,process);
+
+  function parse(input, regex, callback){
+    const stack = [];
+    const first_match = regex.exec( input );
+    if ( first_match ) stack.push( first_match );
+    while ( stack.length > 0 ){
+      const match = regex.exec( input );
+      if ( ! match ) break;
+      const top = stack.pop();
+      if ( ! top ) break;
+      if ( match[2] && top[1] ){ // match is end and stack.pop() is start
+        callback( input.slice( top.index, match.index + 1 ) );
+      } else {
+        stack.push( top );
+        stack.push( match );
+      }
+    }
+  }
+
+  function process( x ) {
+    console.log( x );
+  }
+</script>
+
