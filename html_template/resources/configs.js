@@ -8,10 +8,26 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
+
     data: {
       x: "Hello World"
     },
-    template: '<h1>${x}</h1>'
+
+    pairs: [
+      {
+        "param_key": "x",
+        "param_value": "Hello World"
+      }
+    ],
+
+    template: '<h1>${x}</h1>',
+
+    lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
+
+
+    templatizer: [ "ccm.load", { url: "https://ccmjs.github.io/mkaul-components/html_template/resources/template.js", type: "module" } ],
+
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html_template/resources/default.css' ],
   },
   "localhost": {
     key: "localhost",
