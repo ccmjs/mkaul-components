@@ -1,0 +1,34 @@
+/**
+ * @overview default layout of ccm component markdown_editor
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @license The MIT License (MIT)
+ */
+:host {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#markdown, #preview {
+  padding: 0.3em;
+  max-width: 96%
+}
+
+#markdown {
+  overflow: auto;
+  border: thin solid grey;
+  background-color: lightgrey;
+  font-size: x-large;
+}
+
+#preview {
+  border: thin solid orange;
+  background-color: lightyellow;
+}
+
+#markdown:hover{
+  background-color: white;
+  border: thin solid red;
+}
