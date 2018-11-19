@@ -2,9 +2,7 @@
  * @overview ccm connector for plotly, https://plot.ly/javascript
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
- * @changes
- * version 1.0.0 10/12/2018
+ * @version latest (1.1.0)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,13 +20,14 @@
      * @type {string}
      */
     name: 'plotly',
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -58,8 +57,8 @@
 
       plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
 
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 

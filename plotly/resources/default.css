@@ -24,14 +24,25 @@
 
 */
 
-:host {
-  width: 100%;
-  height: auto;
-  display: flex;
+#element {
+  overflow: hidden;
+  max-width: 1000px;
 }
 
-.js-plotly-plot {
-  margin: auto; // center flexbox
+#main {
+  position: relative;
+  padding-bottom: 55%;
+  padding-top: 15px;
+  height: 0;
+  overflow: hidden;
+}
+
+#plot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /*  https://github.com/jdfergason/plotly-polymer-fix/  */

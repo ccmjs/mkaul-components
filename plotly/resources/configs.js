@@ -12,12 +12,6 @@ ccm.files[ 'configs.js' ] = {
 
     key: "line_graph",
 
-    html: {
-      main: {
-        style: "width:700px;height:450px;"
-      }
-    },
-
     data:
       [
         {
