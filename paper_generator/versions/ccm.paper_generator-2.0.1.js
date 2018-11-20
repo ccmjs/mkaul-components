@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -202,7 +202,7 @@
 
       survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
-      plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
+      plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 

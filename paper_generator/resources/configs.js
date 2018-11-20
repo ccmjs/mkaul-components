@@ -95,6 +95,130 @@ ccm.files[ 'configs.js' ] = {
 
   },
 
+  "submit": {
+    "key": "submit",
+    "title": "Input Mask",
+    "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+    "config": {
+      "builder": [
+        "ccm.component",
+        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.1.0.js",
+        {
+          "json_builder": [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js", {
+            "html.inner.1": "",
+            "directly": true
+          } ],
+          "defaults": {
+          },
+          "entries": [
+            {
+              "label": "Title",
+              "name": "title",
+              "type": "text",
+              "info": "Title of the paper"
+            },
+            {
+              "label": "Subtitle",
+              "name": "subtitle",
+              "type": "text",
+              "info": "Subtitle of the paper"
+            },
+            {
+              "label": "Author",
+              "name": "author",
+              "type": "text",
+              "info": "Name of the author"
+            },
+            {
+              "label": "Address",
+              "name": "address",
+              "type": "text",
+              "info": "Address of the author"
+            },
+            {
+              "label": "E-Mail",
+              "name": "email",
+              "type": "text",
+              "info": "E-Mail of the author"
+            },
+            {
+              "label": "Headers",
+              "name": "headers",
+              "type": "several",
+              "info": "Headers: Questions per choice page",
+              "items": [
+                {
+                  "label": "Header %nr%",
+                  "name": "header",
+                  "type": "text",
+                  "info": "Single Header: Question per choice page"
+                }
+              ]
+            },
+            {
+              "label": "Questions",
+              "name": "questions",
+              "type": "several",
+              "info": "Choices on one pages",
+              "items": [
+                {
+                  "label": "Choice Key %nr%",
+                  "name": "choice_key",
+                  "type": "text",
+                  "info": "Key for a Single Choice for one Question per page"
+                },
+                {
+                  "label": "Choice Value %nr%",
+                  "name": "choice_value",
+                  "type": "text",
+                  "info": "Value for a Single Choice for one Question per page"
+                }
+              ]
+            },
+            {   "label": "Randomize",
+              "info": "Randomize sequence of choices",
+              "inner": [
+                {
+                  "label": "Row",
+                  "name": "row",
+                  "type": "checkbox",
+                  "info": "Randomize sequence of choices in a row"
+                },
+                {
+                  "label": "Column",
+                  "name": "column",
+                  "type": "checkbox",
+                  "info": "Randomize sequence of choices in a column"
+                }
+              ]
+            },
+            {
+              "label": "HTML Structure of Header",
+              "name": "html.header",
+              "type": "json_builder",
+              "value": "\n        inner: [\n          { tag: \"h1\", inner: \"%title%\" },\n          { tag: \"h2\", inner: \"%subtitle%\" },\n          { tag: \"p\", inner: \"<em>%author%</em><br>%address%<br>%email%\" }\n        ]\n      }",
+              "info": "Structure of header in JSON"
+            },
+            {
+              "label": "HTML Main Structure",
+              "name": "html.main",
+              "type": "json_builder",
+              "value": "{\n        inner: [\n          {\n            id: \"welcome\",\n            inner: [\n              { tag: \"h1\", inner: \"Kleine Umfrage\"},\n              { tag: \"p\", inner: \"Kleiner Text, der zur Teilnahme an der Umfrage animieren soll.\" },\n              { tag: \"button\", id: \"start_survey\", inner: \"An der Umfrage teilnehmen!<sup>(*)</sup>\", onclick: \"%start_survey%\" },\n              { tag: \"p\", inner: \"<sup>(*)</sup><em>Nach der Teilnahme erhalten Sie Zugriff auf die Auswertung der Umfrage.</em>\" }\n            ]\n          },\n          {\n            id: \"survey\",\n            inner: [\n              { tag: \"h1\", inner: \"Umfrage\" },\n              { id: \"ccm_poll\" },\n              { tag: \"button\", id: \"start_result\", inner: \"Weiter zum Ergebnis der Umfrage\", onclick: \"%start_result%\" }\n            ]\n          },\n          {\n            id: \"result\",\n            inner: [\n              { tag: \"h1\", inner: \"Vielen Dank für Ihre Teilnahme.\" },\n              { tag: \"button\", id: \"start_paper\", inner: \"Weiter zum Artikel über die bisherigen Ergebnisse der Umfrage\", onclick: \"%start_paper%\" },\n            ]\n          },\n          {\n            id: \"paper_frame\"\n          }\n        ]\n      }",
+              "info": "Structure of main paper in JSON"
+            },
+            {
+              "label": "Paper",
+              "name": "inner",
+              "value": "<div id=\"paper\"> <header class=\"paper\"></header> <article id=\"main\"> <section class=\"abstract\"> <b>Abstract.</b> Hier steht der Abstract. </section> <section class=\"keywords\"><b>Keywords:</b> Hier stehen die Keywords</section> <section> <h2 id=\"einfuehrung\">1. Einführung</h2> <p>Hier steht die Einführung</p> </section> <section> <h2 id=\"hauptteil\">2. Hauptteil</h2> <p>Hier steht der Hauptteil</p> <h3>2.1. Ergebnisse</h3> <p>Wie häufig wurden die verschiedenen Antwortkategorien ausgewählt?</p> <figure> <div id=\"histogram_categories_absolute\" class=\"plot\"></div> <figcaption>Häufigkeiten der Antwortkategorien in absoluten Zahlen</figcaption> </figure> </section> <section> <h2 id=\"schluss\">3. Schluss</h2> <p>Hier steht der Schluss, Zusammenfassung und Fazit.</p> </section> </article> </div>",
+              "type": "json_builder",
+              "info": "Paper written in HTML"
+            }
+          ]
+        }
+      ]
+    }
+  },
+
   "agile_values": {
 
     key: "agile_values",
@@ -315,7 +439,7 @@ ccm.files[ 'configs.js' ] = {
 
     survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
-    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
+    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 
     lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
@@ -494,7 +618,7 @@ ccm.files[ 'configs.js' ] = {
 
     survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
-    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
+    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 
     lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
@@ -673,7 +797,7 @@ ccm.files[ 'configs.js' ] = {
 
     survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
 
-    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js" ],
+    plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 
     lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
