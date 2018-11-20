@@ -119,6 +119,9 @@
         // render main HTML structure
         $.setContent( this.element, main_div );
 
+        // restyle plotly chart
+        $.wait( 1, () => Plotly.restyle( plot ) );
+
       };
 
     }
