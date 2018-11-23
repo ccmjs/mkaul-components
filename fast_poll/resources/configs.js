@@ -70,6 +70,13 @@ ccm.files[ 'configs.js' ] = {
         label: "Fertig!"
     },
 
+    questions: [
+      "Frage zur ersten Auswahl",
+      "Frage zur zweiten Auswahl",
+      "Frage zur dritten Auswahl",
+      "Frage zur vierten Auswahl"
+    ],
+
     choices: [// http://agilemanifesto.org/iso/de/manifesto.html
         {agil: 'Individuen und Interaktionen', plan: 'Prozesse und Werkzeuge'},
         {agil: 'Funktionierende Software', plan: 'umfassende Dokumentation'},
