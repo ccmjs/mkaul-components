@@ -3,6 +3,8 @@
   "icon": "https://ccmjs.github.io/mkaul-components/fast_poll/resources/icon.svg",
   "title": "Fast Poll",
   "url": "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js",
+  "abstract": "simple surveys with time measurement",
+  "description": "Configure questions and choices. That is all for setting up your own survey.",
   "website": "https://github.com/ccmjs/mkaul-components/",
   "developer": "Manfred Kaul",
   "license": "MIT License",

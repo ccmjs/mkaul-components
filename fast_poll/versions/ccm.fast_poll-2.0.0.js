@@ -26,7 +26,7 @@
      */
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
 
     /**
      * default instance configuration
