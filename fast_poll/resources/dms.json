@@ -2,13 +2,13 @@
   "_id": "fast_poll",
   "icon": "https://ccmjs.github.io/mkaul-components/fast_poll/resources/icon.svg",
   "title": "Fast Poll",
-  "url": "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js",
+  "url": "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-5.0.0.js",
   "abstract": "simple surveys with time measurement",
   "description": "Configure questions and choices. That is all for setting up your own survey.",
   "website": "https://github.com/ccmjs/mkaul-components/",
   "developer": "Manfred Kaul",
   "license": "MIT License",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "ignore": {
     "demos": [
       {
@@ -37,17 +37,19 @@
             "ccm.component",
             "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.4.0.js",
             {
-              "defaults": {
-                "x": "Hello World",
-                "template": "<h1>${x}</h1>"
-              },
               "entries": [
-                "<legend>Labels:</legend>",
+                "<legend>Intro and Outro:</legend>",
                 {
-                  "label": "Labels",
-                  "name": "labels",
-                  "type": "object",
-                  "info": "intro and outro label"
+                  "label": "Intro",
+                  "name": "intro",
+                  "type": "text",
+                  "info": "Introduction into the survey: a short text"
+                },
+                {
+                  "label": "Outro",
+                  "name": "outro",
+                  "type": "text",
+                  "info": "After the survey: Say thank you! or some other short text"
                 },
                 "<legend>Questions:</legend>",
                 {

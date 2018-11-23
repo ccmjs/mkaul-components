@@ -2,7 +2,7 @@
  * @overview ccm component for a fast poll (quick survey)
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version latest (5.0.0)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -17,14 +17,15 @@
      * @type {string}
      */
     name: 'fast_poll',
+    version: [5,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
 
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
 
     /**
      * default instance configuration
