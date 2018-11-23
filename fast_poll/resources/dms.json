@@ -1,0 +1,103 @@
+{
+  "_id": "fast_poll",
+  "icon": "https://ccmjs.github.io/mkaul-components/fast_poll/resources/icon.svg",
+  "title": "Fast Poll",
+  "url": "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js",
+  "website": "https://github.com/ccmjs/mkaul-components/",
+  "developer": "Manfred Kaul",
+  "license": "MIT License",
+  "version": "4.0.0",
+  "ignore": {
+    "demos": [
+      {
+        "title": "Agile Manifesto",
+        "config": [
+          "ccm.get",
+          "https://ccmjs.github.io/mkaul-components/fast_poll/resources/configs.js",
+          "agile_manifesto"
+        ]
+      },
+      {
+        "title": "Showcase",
+        "config": [
+          "ccm.get",
+          "https://ccmjs.github.io/mkaul-components/fast_poll/resources/configs.js",
+          "questions_answers"
+        ]
+      }
+    ],
+    "builder": [
+      {
+        "title": "Input Mask",
+        "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+        "config": {
+          "builder": [
+            "ccm.component",
+            "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.4.0.js",
+            {
+              "defaults": {
+                "x": "Hello World",
+                "template": "<h1>${x}</h1>"
+              },
+              "entries": [
+                "<legend>Labels:</legend>",
+                {
+                  "label": "Labels",
+                  "name": "labels",
+                  "type": "object",
+                  "info": "intro and outro label"
+                },
+                "<legend>Questions:</legend>",
+                {
+                  "label": "Questions",
+                  "type": "several",
+                  "info": "List of questions",
+                  "item": {
+                    "label": "Question %nr%",
+                    "name": "questions",
+                    "type": "text"
+                  }
+                },
+                "<legend>Choices:</legend>",
+                {
+                  "label": "Choices",
+                  "type": "several",
+                  "info": "List of choices",
+                  "item": {
+                    "label": "Choice",
+                    "name": "choices",
+                    "type": "object",
+                    "info": "Key-Value-Pair of Category and Choice"
+                  }
+                },
+                "<legend>Randomization:</legend>",
+                {
+                  "label": "Randomization",
+                  "name": "randomize",
+                  "type": "object",
+                  "info": "row: true or false and column: true or false"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "title": "JSON Builder",
+        "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.0.js",
+        "config": {
+          "builder": [
+            "ccm.component",
+            "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+            {
+              "html.inner.1": "",
+              "directly": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "updated_at": "2018-11-23T20:52:55+02:00",
+  "created_at": "2018-09-19T20:52:55+02:00"
+}

@@ -24,7 +24,7 @@
      */
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
 
     /**
      * default instance configuration
@@ -52,7 +52,7 @@
 
       labels: {
         intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
-        label: "Fertig!"
+        label: "Fertig!" // outro
       },
       // questions: [
       //   "Frage zur ersten Auswahl",
@@ -207,6 +207,7 @@
 
             if ( self.choices[number_of_choice].question ){
               title.innerHTML = self.choices[number_of_choice].question;
+              delete self.choices[number_of_choice].question;
             }
             choices.appendChild(child);
 
