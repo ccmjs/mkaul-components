@@ -39,5 +39,9 @@ export const map_to_min = arg => {
   arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.min( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
 };
 
+export const map_to_debugger = arg => {
+  debugger;
+};
+
  
  
