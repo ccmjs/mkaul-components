@@ -3,6 +3,10 @@
   // single server script for handling both:
   // POSTing data to the server AND GETting all data from the server
 
+  // directory where all data are stored
+  // security: locate directory of files outside of WWW folders:
+  $dir = "../logs/";
+
   /**
    * finish php script and send message to client
    * in AJAX calls e.g. fetch requests
@@ -62,10 +66,6 @@
       // add server date
       $json_data["server_time"] = date("Y-m-d H:i:s");
 
-      // security: locate directory of log files outside of WWW folders
-      // $dir = "../../logs/";
-      $dir = "logs/";
-
       // unique filename with time stamp and unique ID
       $filename = $dir . time() . '_' . uniqid() . ".json";
 
@@ -74,14 +74,8 @@
 
     } else if ($_SERVER['REQUEST_METHOD'] == 'GET') { // HTTP GET request
 
-      // collect all log files from log directory
+      // collect all files from directory
       // decode JSON into PHP arrays
-
-
-      // use the same folder as in the log script
-      // security: locate directory of log files outside of WWW folders
-      // $dir = "../../logs/";
-      $dir = "logs/";
 
       // collect all files in the directory "$dir" except '.', '..'
       $files = array_diff( scandir($dir), array('.', '..') );
@@ -97,15 +91,5 @@
       response( $all );
 
     }
-
-
-  // for debugging use the following:
-
-  // include_once( '/var/www/data/inc/response.php' );
-  // response( $results );
-
-  // error_log( "results = " . var_export( $results, true) );
-  // error_log( $filename );
-  // file_put_contents( $filename, var_export( $results, true) ); // PHP code
 
 ?>
