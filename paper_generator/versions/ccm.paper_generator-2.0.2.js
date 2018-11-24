@@ -2,7 +2,7 @@
  * @overview ccm component for paper_generator
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version 2.0.1
+ * @version 2.0.2
  * @changes
  * TODO: docu comments -> API
  * TODO: unit tests
@@ -21,13 +21,13 @@
      * @type {string}
      */
     name: 'paper_generator',
-    version: [2,0,1],
+    version: [2,0,2],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -200,7 +200,7 @@
         }
       },
 
-      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
+      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-5.0.1.js" ],
 
       plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 

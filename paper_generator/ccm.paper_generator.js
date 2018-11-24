@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -37,11 +37,11 @@
     config: {
 
       // optional configuration if there is no header in the inner html:
+      title: 'Agile Werte',
+      subtitle: 'Eine empirische Studie',
       author: 'Manfred Kaul',
       address: 'Hochschule Bonn-Rhein-Sieg',
       email: 'Manfred.Kaul[at]h-brs.de',
-      title: 'Agile Werte',
-      subtitle: 'Eine empirische Studie',
 
       headers: [
         "Individuelle Frage zur ersten Auswahl",
@@ -200,15 +200,15 @@
         }
       },
 
-      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
+      survey: [ "ccm.component", "../fast_poll/ccm.fast_poll.js" ],
 
-      plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
+      plotter: [ "ccm.component", "../plotly/ccm.plotly.js" ],
 
       lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ],
 
       microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
-      css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  '../paper_generator/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
@@ -801,7 +801,7 @@
           ];
 
           // render distribution graph
-          ccm.start("https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js", {
+          self.plotter.start( {
             root: plot_div,
             data: data,
             layout: {
