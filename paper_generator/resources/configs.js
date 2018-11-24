@@ -26,7 +26,7 @@ ccm.files[ 'configs.js' ] = {
     ],
 
     randomize: {
-      row: false,
+      row: true,
       column: false
     },
 
@@ -59,8 +59,8 @@ ccm.files[ 'configs.js' ] = {
           {
             id: 'welcome',
             inner: [
-              { tag: 'h1', inner: 'Kleine Umfrage'},
-              { tag: 'p', inner: 'Kleiner Text, der zur Teilnahme an der Umfrage animieren soll.' },
+              { tag: 'h1', inner: '%title%'},
+              { tag: 'p', inner: '%subtitle%' },
               { tag: 'button', id: 'start_survey', inner: 'An der Umfrage teilnehmen!<sup>(*)</sup>', onclick: '%start_survey%' },
               { tag: 'p', inner: '<sup>(*)</sup><em>Nach der Teilnahme erhalten Sie Zugriff auf die Auswertung der Umfrage.</em>' }
             ]

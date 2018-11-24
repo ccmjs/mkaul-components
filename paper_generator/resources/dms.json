@@ -35,7 +35,7 @@
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.4.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.4.1.js",
                         {
                             "json_builder": [
                                 "ccm.component",
@@ -102,10 +102,16 @@
                                 },
                                 "<legend>Randomization:</legend>",
                                 {
-                                    "label": "Randomization",
-                                    "name": "randomize",
-                                    "type": "object",
-                                    "info": "row: true or false and column: true or false"
+                                    "label": "Order of questions",
+                                    "name": "randomize.row",
+                                    "type": "checkbox",
+                                    "info": "randomize order of questions"
+                                },
+                                {
+                                    "label": "Order of answers",
+                                    "name": "randomize.column",
+                                    "type": "checkbox",
+                                    "info": "randomize order of answers"
                                 },
                                 {
                                     "label": "HTML Structure of Header",
