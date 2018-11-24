@@ -24,6 +24,34 @@ ccm.files[ 'configs.js' ] = {
 
   },
 
+  "minimal": {
+
+    "key": "minimal",
+
+    intro: "Minimal Example",
+    outro: "Fertig!",
+
+    questions: [
+      'Frage 1',
+      'Frage 2',
+      'Vielen Dank!'
+    ],
+
+    choices: [
+      { A: 'Antwort 1a', B: 'Antwort 1b' },
+      { A: 'Antwort 2a', B: 'Antwort 2b', C: 'Antwort 2c' }
+    ],
+
+    randomize: {
+      row: false,
+      column: false
+    },
+
+    onfinish: function (instance, results) {
+      console.log(results);
+    }
+  },
+
   "questions_answers": {
 
     "key": "questions_answers",
