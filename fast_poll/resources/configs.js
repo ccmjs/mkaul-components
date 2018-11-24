@@ -52,6 +52,28 @@ ccm.files[ 'configs.js' ] = {
     }
   },
 
+  "no_questions": {
+
+    "key": "no_questions",
+
+    intro: "Minimal Example without questions",
+    outro: "Fertig!",
+
+    choices: [
+      { question: 'Erste Frage', answer1: 'Antwort 1a', answer2: 'Antwort 1b' },
+      { question: 'Zweite Frage', answer1: 'Antwort 2a', answer2: 'Antwort 2b', answer3: 'Antwort 2c' }
+    ],
+
+    randomize: {
+      row: true,
+      column: true
+    },
+
+    onfinish: function (instance, results) {
+      console.log(results);
+    }
+  },
+
   "questions_answers": {
 
     "key": "questions_answers",
