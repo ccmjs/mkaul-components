@@ -28,10 +28,8 @@ ccm.files[ 'configs.js' ] = {
 
     "key": "questions_answers",
 
-    labels: {
-       intro: "Statt eines Quiz mit Radio-Buttons geht auch ein Fast Poll:",
-        label: "Fertig!"
-    },
+    intro: "Statt eines Quiz mit Radio-Buttons geht auch ein Fast Poll:",
+    outro: "Fertig!",
 
     questions: [
       'Frage 1',
@@ -65,10 +63,9 @@ ccm.files[ 'configs.js' ] = {
 
     "key": "agile_manifesto",
 
-    labels: {
-        intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
-        label: "Fertig!"
-    },
+
+    intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
+    outro: "Fertig!",
 
     questions: [
       "Frage zur ersten Auswahl",
