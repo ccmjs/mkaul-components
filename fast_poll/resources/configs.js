@@ -31,9 +31,11 @@ ccm.files[ 'configs.js' ] = {
     intro: "Minimal Example",
     outro: "Fertig!",
 
+    questions: undefined,
+
     choices: [
-      { question: "Frage 1", A: 'Antwort 1a', B: 'Antwort 1b' },
-      { question: "Frage 2", A: 'Antwort 2a', B: 'Antwort 2b', C: 'Antwort 2c' },
+      { question: "Frage 1", answer1: 'Antwort 1a', answer2: 'Antwort 1b' },
+      { question: "Frage 2", answer1: 'Antwort 2a', answer2: 'Antwort 2b', answer3: 'Antwort 2c' },
       { question: "Vielen Dank!" }
     ],
 
