@@ -31,12 +31,15 @@ ccm.files[ 'configs.js' ] = {
     intro: "Minimal Example",
     outro: "Fertig!",
 
-    questions: undefined,
+    questions: [
+      'Frage 1',
+      'Frage 2',
+      'Vielen Dank!'
+      ],
 
     choices: [
-      { question: "Frage 1", answer1: 'Antwort 1a', answer2: 'Antwort 1b' },
-      { question: "Frage 2", answer1: 'Antwort 2a', answer2: 'Antwort 2b', answer3: 'Antwort 2c' },
-      { question: "Vielen Dank!" }
+      { answer1: 'Antwort 1a', answer2: 'Antwort 1b' },
+      { answer1: 'Antwort 2a', answer2: 'Antwort 2b', answer3: 'Antwort 2c' }
     ],
 
     randomize: {
