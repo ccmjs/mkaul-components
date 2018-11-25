@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -210,6 +210,11 @@
 
       css: [ 'ccm.load',  '../paper_generator/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
+
+      // process_this_result: console.log, // callback for processing single poll result
+
+      // process_all_results: console.log, // callback for processing all poll results together
+
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -378,6 +383,8 @@
 
               individual_results = Object.assign( {}, results ); // $.clone( results );
 
+              if ( self.process_this_result ) self.process_this_result( individual_results, self );
+
               change_state( 'result' );
             }
           });
@@ -473,6 +480,9 @@
           // count answers
           const counters = count( dataset ); // caching calculation of counters
           const flat_counters = Object.assign({}, ...counters);
+
+          // external processing of result data for external statistics and plotting
+          if ( self.process_all_results ) self.process_all_results( dataset, self, category_counters, sum_categories, counters, flat_counters );
 
           /*
            * count number of answers
@@ -722,6 +732,11 @@
         function button( id ){
           return main_div.querySelector('button#' + id);
         }
+
+        // make it public methods
+        self.div = div;
+        self.span = span;
+        self.button = button;
 
         function change_state( newState ){
           global_state = newState;

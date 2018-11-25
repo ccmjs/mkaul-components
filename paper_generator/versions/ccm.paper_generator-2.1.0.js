@@ -2,7 +2,7 @@
  * @overview ccm component for paper_generator
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version 2.0.1
+ * @version latest (2.1.0)
  * @changes
  * TODO: docu comments -> API
  * TODO: unit tests
@@ -21,7 +21,7 @@
      * @type {string}
      */
     name: 'paper_generator',
-    version: [2,0,1],
+    version: [2,1,0],
     
     /**
      * recommended used framework version
@@ -37,16 +37,16 @@
     config: {
 
       // optional configuration if there is no header in the inner html:
+      title: 'Agile Werte',
+      subtitle: 'Eine empirische Studie',
       author: 'Manfred Kaul',
       address: 'Hochschule Bonn-Rhein-Sieg',
       email: 'Manfred.Kaul[at]h-brs.de',
-      title: 'Agile Werte',
-      subtitle: 'Eine empirische Studie',
 
-      // headers: [
-      //   "Individuelle Frage zur ersten Auswahl",
-      //   "Individuelle Frage zur zweiten Auswahl"
-      // ],
+      headers: [
+        "Individuelle Frage zur ersten Auswahl",
+        "Individuelle Frage zur zweiten Auswahl"
+      ],
 
       questions: [
         // { man: "männlich", woman: "weiblich", other: "divers" },
@@ -200,7 +200,7 @@
         }
       },
 
-      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-4.0.0.js" ],
+      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-5.0.1.js" ],
 
       plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.0.js" ],
 
@@ -210,6 +210,12 @@
 
       // css: [ 'ccm.load',  'resources/default.css' ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ]
+      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
+
+      // process_this_result: console.log, // callback for processing single poll result
+
+      // process_all_results: console.log, // callback for processing all poll results together
+
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -378,6 +384,8 @@
 
               individual_results = Object.assign( {}, results ); // $.clone( results );
 
+              if ( self.process_this_result ) self.process_this_result( individual_results, self );
+
               change_state( 'result' );
             }
           });
@@ -473,6 +481,9 @@
           // count answers
           const counters = count( dataset ); // caching calculation of counters
           const flat_counters = Object.assign({}, ...counters);
+
+          // external processing of result data for external statistics and plotting
+          if ( self.process_all_results ) self.process_all_results( dataset, self, category_counters, sum_categories, counters, flat_counters );
 
           /*
            * count number of answers
@@ -723,6 +734,11 @@
           return main_div.querySelector('button#' + id);
         }
 
+        // make it public methods
+        self.div = div;
+        self.span = span;
+        self.button = button;
+
         function change_state( newState ){
           global_state = newState;
           // window.location = '#' + newState;
@@ -757,8 +773,8 @@
               div("result").style.display = 'none';
               div("paper_frame").style.animation = 'fadeIn 3s';
               div("paper_frame").style.display = 'block';
-              div("paper").style.display = 'block';
               generate_paper();
+              div("paper").style.display = 'block';
               break;
             default: debugger;
           }
@@ -801,7 +817,7 @@
           ];
 
           // render distribution graph
-          ccm.start("https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.0.0.js", {
+          self.plotter.start( {
             root: plot_div,
             data: data,
             layout: {

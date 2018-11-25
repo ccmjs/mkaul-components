@@ -103,13 +103,13 @@
                                 "<legend>Randomization:</legend>",
                                 {
                                     "label": "Order of questions",
-                                    "name": "randomize.row",
+                                    "name": "randomize.column",
                                     "type": "checkbox",
                                     "info": "randomize order of questions"
                                 },
                                 {
                                     "label": "Order of answers",
-                                    "name": "randomize.column",
+                                    "name": "randomize.row",
                                     "type": "checkbox",
                                     "info": "randomize order of answers"
                                 },
@@ -131,8 +131,20 @@
                                     "label": "Paper",
                                     "name": "inner",
                                     "value": "<div id=\"paper\"> <header class=\"paper\"></header> <article id=\"main\"> <section class=\"abstract\"> <b>Abstract.</b> Hier steht der Abstract. </section> <section class=\"keywords\"><b>Keywords:</b> Hier stehen die Keywords</section> <section> <h2 id=\"einfuehrung\">1. Einführung</h2> <p>Hier steht die Einführung</p> </section> <section> <h2 id=\"hauptteil\">2. Hauptteil</h2> <p>Hier steht der Hauptteil</p> <h3>2.1. Ergebnisse</h3> <p>Wie häufig wurden die verschiedenen Antwortkategorien ausgewählt?</p> <figure> <div id=\"histogram_categories_absolute\" class=\"plot\"></div> <figcaption>Häufigkeiten der Antwortkategorien in absoluten Zahlen</figcaption> </figure> </section> <section> <h2 id=\"schluss\">3. Schluss</h2> <p>Hier steht der Schluss, Zusammenfassung und Fazit.</p> </section> </article> </div>",
-                                    "type": "json_builder",
-                                    "info": "Paper written in HTML"
+                                    "type": "textarea",
+                                    "info": "Copy HTML code of your Paper"
+                                },
+                                {
+                                    "label": "Server URL",
+                                    "name": "microservice",
+                                    "type": "url",
+                                    "info": "URL of your server, which stores and retrieves all data."
+                                },
+                                {
+                                    "label": "CSS Layout",
+                                    "name": "css",
+                                    "type": "text",
+                                    "info": "JSON code with URL of your CSS file"
                                 }
                             ]
                         }
