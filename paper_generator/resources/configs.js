@@ -37,7 +37,6 @@ ccm.files[ 'configs.js' ] = {
         title: "Histogramm Kategorien absolut",
         mapping: [ "ccm.load", {
           "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/mappings.js",
-          // "url": "./resources/mappings.js",
           "type": "module",
           "import": "map_to_count"
         } ]
@@ -93,27 +92,17 @@ ccm.files[ 'configs.js' ] = {
 
     inner: '<div id="paper"> <header class="paper"></header> <article id="main"> <section class="abstract"> <b>Abstract.</b> Hier steht der Abstract. </section> <section class="keywords"><b>Keywords:</b> Hier stehen die Keywords</section> <section> <h2 id="einfuehrung">1. Einführung</h2> <p>Hier steht die Einführung</p> </section> <section> <h2 id="hauptteil">2. Hauptteil</h2> <p>Hier steht der Hauptteil</p> <h3>2.1. Ergebnisse</h3> <p>Wie häufig wurden die verschiedenen Antwortkategorien ausgewählt?</p> <figure> <div id="histogram_categories_absolute" class="plot"></div> <figcaption>Häufigkeiten der Antwortkategorien in absoluten Zahlen</figcaption> </figure> </section> <section> <h2 id="schluss">3. Schluss</h2> <p>Hier steht der Schluss, Zusammenfassung und Fazit.</p> </section> </article> </div>',
 
-    process_this_result: function( result ){
-      console.log( result );
-    },
+    process_this_result: [ "ccm.load", {
+      "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/processors.js",
+      "type": "module",
+      "import": "process_this_result"
+    } ],
 
-    process_all_results: function( results, self ){
-      console.log( results );
-      const sum={}; // sum of categories
-      results.forEach(r=>{r.categories.forEach(c=>{if(!sum[c])sum[c]=0;sum[c]+=1})});
-      delete sum[0];
-      self.plotter.start( {
-        root: self.div('my_own_plot'),
-        // data: [ { "x": [1, 2, 3, 4, 5], "y": [1, 2, 4, 8, 16] } ],
-        data: [{
-          x: Object.keys(sum),
-          y: Object.values(sum)
-        }],
-        layout: {
-          title: "My own plot!!!"
-        }
-      } );
-    }
+    process_all_results: [ "ccm.load", {
+      "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/processors.js",
+      "type": "module",
+      "import": "process_all_results"
+    } ]
 
   },
 
