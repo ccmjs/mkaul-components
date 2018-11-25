@@ -6,8 +6,8 @@
  */
 
 export const process_this_result = function( args ){
-  [ result ] = args;
-  console.log( result );
+  const { individual_results, self } = args;
+  console.log( individual_results );
 };
 
 export const  process_all_results = function( args ){
