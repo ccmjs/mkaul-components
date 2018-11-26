@@ -120,7 +120,7 @@
         const main_div = $.html( this.html.main );
         const plot = main_div.querySelector('#plot');
 
-        const plotter = () => {
+        const plotter = ( event ) => {
           // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
           Plotly.react(
             plot,
@@ -128,6 +128,8 @@
             this.layout,
             this.plot_config
           );
+
+          event && event.preventDefault();
         };
 
         plotter();
