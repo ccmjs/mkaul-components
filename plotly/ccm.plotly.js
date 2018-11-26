@@ -2,9 +2,9 @@
  * @overview ccm connector for plotly, https://plot.ly/javascript
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (1.1.1)
  * @changes
- * version 1.0.0 10/12/2018
+ * version 1.1.1 26.11.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -58,7 +58,7 @@
 
       plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
 
-      css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  '../plotly/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -102,22 +102,40 @@
        */
       this.start = async () => {
 
+        // Test via a getter in the options object to see if the passive property is accessed
+        let supportsPassive = false;
+        try {
+          const opts = Object.defineProperty({}, 'passive', {
+            get: function() {
+              supportsPassive = true;
+            }
+          });
+          window.addEventListener("testPassive", null, opts);
+          window.removeEventListener("testPassive", null, opts);
+        } catch (e) {}
+
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
         const main_div = $.html( this.html.main );
         const plot = main_div.querySelector('#plot');
 
-        // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
-        Plotly.react(
+        const plotter = () => {
+          // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
+          Plotly.react(
             plot,
             this.data,
             this.layout,
             this.plot_config
           );
+        };
+
+        plotter();
 
         // render main HTML structure
         $.setContent( this.element, main_div );
+
+        window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
 
         // restyle plotly chart
         // $.wait( 1, () => Plotly.restyle( plot ) );

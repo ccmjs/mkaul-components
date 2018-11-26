@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -101,25 +101,40 @@
        */
       this.start = async () => {
 
+        // Test via a getter in the options object to see if the passive property is accessed
+        let supportsPassive = false;
+        try {
+          const opts = Object.defineProperty({}, 'passive', {
+            get: function() {
+              supportsPassive = true;
+            }
+          });
+          window.addEventListener("testPassive", null, opts);
+          window.removeEventListener("testPassive", null, opts);
+        } catch (e) {}
+
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
         const main_div = $.html( this.html.main );
         const plot = main_div.querySelector('#plot');
 
-        // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
-        Plotly.react(
+        const plotter = () => {
+          // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
+          Plotly.react(
             plot,
             this.data,
             this.layout,
             this.plot_config
           );
+        };
+
+        plotter();
 
         // render main HTML structure
         $.setContent( this.element, main_div );
 
-        // restyle plotly chart
-        // $.wait( 1, () => Plotly.restyle( plot ) );
+        window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
 
       };
 
