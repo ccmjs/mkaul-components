@@ -6,21 +6,31 @@
 <script src="ccm.paper_generator.js"></script>
 <script>
     function my_plots( args ){
-      console.log( "my_plot" );
+      console.log( "my_plots" );
       const { dataset, self, category_counters, sum_categories, counters, flat_counters } = args;
-      console.log( dataset );
       const sum={}; // sum of categories
       dataset.forEach(r=>{r.categories.forEach(c=>{if(!sum[c])sum[c]=0;sum[c]+=1})});
       delete sum[0];
       self.plotter.start( {
         root: self.div('my_own_plot'),
-        // data: [ { "x": [1, 2, 3, 4, 5], "y": [1, 2, 4, 8, 16] } ],
         data: [{
           x: Object.keys(sum),
           y: Object.values(sum)
         }],
         layout: {
           title: "My own plot!!!"
+        }
+      } );
+    }
+
+    function special_next_plot( args ){
+      const self = args.self;
+      console.log( "special_next_plot" );
+      self.plotter.start( {
+        root: self.div('next_plot'),
+        data: [ { "x": [1, 2, 3, 4, 5], "y": [1, 2, 4, 8, 16] } ],
+        layout: {
+          title: "Declarative plot insertions!!!"
         }
       } );
     }
@@ -54,10 +64,14 @@
                     <figcaption>Eigenes Diagramm</figcaption>
                 </figure>
 
+                <figure fig-id="next_plot" fig-type="histogram" fig-title="Title of Histogram" fig-mapping="special_next_plot">
+                    <figcaption>Deklarative Einbindung von Abbildungen</figcaption>
+                </figure>
+
             </section>
             <section>
                 <h2 id="schluss">3. Schluss</h2>
-                <p>Hier steht die Einführung</p>
+                <p>Hier steht der Schluss</p>
             </section>
         </article>
     </div>
