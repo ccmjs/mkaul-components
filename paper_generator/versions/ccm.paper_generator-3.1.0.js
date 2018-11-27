@@ -300,10 +300,10 @@
 
         // render LightDOM into main_div
         const paper_frame = main_div.querySelector('#paper_frame');
-        if ( typeof self.lightDOM === 'string' ){
+        if ( paper_frame && typeof self.lightDOM === 'string' ){
           paper_frame.innerHTML = self.lightDOM;
         } else { // self.lightDOM is a document-fragment
-          self.lightDOM && paper_frame.appendChild( self.lightDOM );
+          paper_frame && self.lightDOM && paper_frame.appendChild( self.lightDOM );
         }
 
 
