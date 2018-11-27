@@ -9,6 +9,8 @@ ccm.files[ 'configs.js' ] = {
   "small": {
     key: "small",
 
+    paper_id: "small",
+
     author: 'Manfred Kaul',
     address: 'Hochschule Bonn-Rhein-Sieg',
     email: 'Manfred.Kaul[at]h-brs.de',
@@ -106,6 +108,8 @@ ccm.files[ 'configs.js' ] = {
   "agile_values": {
 
     key: "agile_values",
+
+    paper_id: "agile_values",
 
     // optional configuration if there is no header in the inner html:
     author: 'Manfred Kaul',
