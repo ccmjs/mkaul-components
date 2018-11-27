@@ -36,7 +36,7 @@
      */
     config: {
 
-      key: "0123456789", // choose a unique key for your survey / opinion poll
+      paper_id: "0123456789", // choose a unique key for your survey / opinion poll
 
       // optional configuration if there is no header in the inner html:
       title: 'Agile Werte',
@@ -364,7 +364,7 @@
 
               results.final_percentage = (100 * results.category_counters.agil / max) || 0;
 
-              results.key = self.key;
+              results.paper_id = self.paper_id;
 
               // log results
               fetch( new Request( self.microservice ), {
@@ -438,7 +438,7 @@
             cache: 'no-store'
           })).json();
 
-          dataset = dataset.filter( record => record.key === self.key ); // take only data from this survey
+          dataset = dataset.filter( record => record.paper_id === self.paper_id ); // take only data from this survey
 
           // count_participants
           const count_participants = dataset.length;
