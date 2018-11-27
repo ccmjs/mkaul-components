@@ -330,10 +330,12 @@
         // https://developer.mozilla.org/en-US/docs/Web/API/Location
         window.onhashchange = function( e ) {
           // in-page anchor
-          const anchor = main_div.querySelector( 'li' + location.hash );
-          if ( anchor ){
-            anchor.style.backgroundColor = "rgb(255, 237, 186)";
-            anchor.style.transition = "all 3s linear";
+          if ( ! location.hash.startsWith('#dms') ){
+            const anchor = main_div.querySelector( 'li' + location.hash );
+            if ( anchor ){
+              anchor.style.backgroundColor = "rgb(255, 237, 186)";
+              anchor.style.transition = "all 3s linear";
+            }
           }
         };
 
