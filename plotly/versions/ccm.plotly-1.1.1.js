@@ -51,10 +51,6 @@
 
       layout: {},
 
-      plot_config: {
-        responsive: true
-      },
-
       plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
 
       // css: [ 'ccm.load',  'resources/default.css' ],
@@ -101,18 +97,6 @@
        */
       this.start = async () => {
 
-        // Test via a getter in the options object to see if the passive property is accessed
-        let supportsPassive = false;
-        try {
-          const opts = Object.defineProperty({}, 'passive', {
-            get: function() {
-              supportsPassive = true;
-            }
-          });
-          window.addEventListener("testPassive", null, opts);
-          window.removeEventListener("testPassive", null, opts);
-        } catch (e) {}
-
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
@@ -133,8 +117,6 @@
 
         // render main HTML structure
         $.setContent( this.element, main_div );
-
-        window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
 
       };
 

@@ -52,11 +52,7 @@
 
       layout: {},
 
-      plot_config: {
-        responsive: true
-      },
-
-      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
+      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.js'  ],
 
       css: [ 'ccm.load',  '../plotly/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
@@ -102,18 +98,6 @@
        */
       this.start = async () => {
 
-        // Test via a getter in the options object to see if the passive property is accessed
-        let supportsPassive = false;
-        try {
-          const opts = Object.defineProperty({}, 'passive', {
-            get: function() {
-              supportsPassive = true;
-            }
-          });
-          window.addEventListener("testPassive", null, opts);
-          window.removeEventListener("testPassive", null, opts);
-        } catch (e) {}
-
         // logging of 'start' event
         this.logger && this.logger.log( 'start' );
 
@@ -134,13 +118,28 @@
 
         plotter();
 
-        // render main HTML structure
         $.setContent( this.element, main_div );
 
-        window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
+        // Test via a getter in the options object to see if the passive property is accessed
+        // let supportsPassive = false;
+        // try {
+        //   const opts = Object.defineProperty({}, 'passive', {
+        //     get: function() {
+        //       supportsPassive = true;
+        //     }
+        //   });
+        //   window.addEventListener("testPassive", null, opts);
+        //   window.removeEventListener("testPassive", null, opts);
+        // } catch (e) {}
 
-        // restyle plotly chart
-        // $.wait( 1, () => Plotly.restyle( plot ) );
+        // window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
+        // window.addEventListener('resize', plotter );
+
+        // render main HTML structure
+
+        // resize plotly chart
+        // window.dispatchEvent(new Event('resize'))
+        // $.wait( 1,  () => { window.dispatchEvent(new Event('resize')) } );
 
       };
 
