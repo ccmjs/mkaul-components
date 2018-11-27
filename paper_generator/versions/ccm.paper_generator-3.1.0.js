@@ -303,7 +303,7 @@
         if ( typeof self.lightDOM === 'string' ){
           paper_frame.innerHTML = self.lightDOM;
         } else { // self.lightDOM is a document-fragment
-          paper_frame.appendChild( self.lightDOM );
+          self.lightDOM && paper_frame.appendChild( self.lightDOM );
         }
 
 
