@@ -1,13 +1,13 @@
 {
     "_id": "paper_generator",
     "title": "Paper Generator",
-    "url": "https://ccmjs.github.io/mkaul-components/paper_generator/versions/ccm.paper_generator-3.1.0.js",
+    "url": "https://ccmjs.github.io/mkaul-components/paper_generator/versions/ccm.paper_generator-3.2.0.js",
     "icon": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/icon.svg",
     "abstract": "Paper Generator for simple surveys (opinion polls) with time measurement",
     "description": "<p>Surveys (opinion polls) usually collect answers only. This single page application (SPA) additionally collects timer data. Thereby you can analyze, how long a user hesitates or how much time is needed to decide which option to take. These additional data can be very helpful to analyze, which decisions are easy and which are complex.</p><p>Configure the paper generator with your name, title of the paper, survey questions and the single page application (SPA) is generated for you. You can embed the SPA anywhere in any web page. In the paper, statistics and diagrams are computed automatically from the user data.</p><p>If you want to include additional statistics and plots, use your own scripts via the callbacks <code>process_this_result</code> and  <code>process_all_results</code>, see e.g. <a target=_blank href='https://github.com/ccmjs/mkaul-components/blob/master/paper_generator/index_own_plot.html' rel='noopener'>index_own_plot.html</a> and <a target=_blank href='https://github.com/ccmjs/mkaul-components/blob/master/paper_generator/resources/configs.js' rel='noopener'>configs.js</a>.</p><p>In HTML file as well as in the configs.js you can add your own scripts for calculating and plotting. For more information see <a target=_blank href='https://github.com/ccmjs/mkaul-components/tree/master/paper_generator' rel='noopener'>README.md</a>",
     "developer": "Manfred Kaul",
     "license": "MIT License",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "ignore": {
         "demos": [
             {

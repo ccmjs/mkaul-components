@@ -19,12 +19,14 @@ ccm.files[ 'configs.js' ] = {
 
     headers: [
       "Ihr Geschlecht?",
-      "Ihr Alter?"
+      "Ihr Alter?",
+      "Ihre Größe?"
     ],
 
     questions: [
       { man: "männlich", woman: "weiblich", other: "divers" },
-      { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" }
+      { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" },
+      { small: "< 160", middle: "161-175", large: "176-185", tall: "> 186" }
     ],
 
     randomize: {
