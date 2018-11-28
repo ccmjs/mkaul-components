@@ -6,7 +6,7 @@
  */
 
 export const process_this_result = function( args ){
-  const { individual_results, self } = args;
+  const { individual_results, results, self } = args;
   console.log( individual_results );
 };
 

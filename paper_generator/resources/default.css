@@ -11,6 +11,11 @@
   background-position: bottom right;
   background-attachment: fixed;
 }
+
+#poll_result {
+  display: flex;
+}
+
 .logo {
   margin-left: 15vw;
   height: 3rem;

@@ -46,6 +46,12 @@
                             ],
                             "entries": [
                                 {
+                                    "label": "Unique Paper-ID",
+                                    "name": "paper_id",
+                                    "type": "text",
+                                    "info": "Choose a unique key for your survey / opinion poll"
+                                },
+                                {
                                     "label": "Title",
                                     "name": "title",
                                     "type": "text",

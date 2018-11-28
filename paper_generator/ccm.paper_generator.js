@@ -146,6 +146,13 @@
           type: "delays",
           title: "Minimum aller Verzögerungen in Millisekunden (msec)",
           mapping: 'delay_min'
+        },
+        {
+          id: "distribution",
+          type: "distribution",
+          title: "Verteilung des agilen Anteils",
+          x_axis: [20,40,60,80,100],
+          x_mapping: "bis_zu_mapping"
         }
       ],
 
@@ -181,13 +188,14 @@
             {
               id: 'result',
               inner: [
-                { tag: 'h1', inner: 'Vielen Dank für Ihre Teilnahme.<br>Ihr persönliches Ergebnis:<br> Sie sind zu <span class="agile_percentage">x</span>% agil.' },
+                { tag: 'h1', inner: 'Vielen Dank für Ihre Teilnahme.<br>Ihr persönliches Ergebnis:<br> Sie sind zu <span class="percentage">x</span>% agil.' },
                 { id: 'poll_result' },
                 { tag: 'button', id: 'start_paper', inner: 'Weiter zum Artikel über die bisherigen Ergebnisse der Umfrage', onclick: '%start_paper%' },
               ]
             },
             {
-              id: 'paper_frame'
+              id: 'paper_frame',
+              style: { display: 'none' }
             }
           ]
         }
@@ -209,6 +217,10 @@
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
+
+      figcaption_prepend: "Abb. ",
+      choice_label: 'Auswahl ',
+      indivual_result: 'Persönliches Ergebnis'
     },
 
     /**
@@ -381,7 +393,7 @@
 
               individual_results = Object.assign( {}, results ); // $.clone( results );
 
-              if ( self.process_this_result ) self.process_this_result({ individual_results, self });
+              if ( self.process_this_result ) self.process_this_result({ individual_results, results, self });
 
               change_state( 'result' );
             }
@@ -392,18 +404,18 @@
         * use local data, calculate individual results and draw them into result_div
         * @param individual_results
         */
-        function draw_results( individual_results ){
+        async function draw_results( individual_results ){
 
           if ( div('poll_result') ){
             // calculate percentage: How agile is the current user?
-            [...span('agile_percentage')].forEach(
+            [...span('percentage')].forEach(
               span => span.innerText = individual_results.final_percentage.toFixed(2)
             );
 
-            div('poll_result').style.display = 'block';
+            div('poll_result').style.display = 'flex';
 
             // plot cake chart
-            self.plotter.start( {
+            await self.plotter.start( {
               root: div('poll_result'),
               data: [
                 {
@@ -413,12 +425,12 @@
                 }
               ],
               layout: {
-                title: 'Persönliches Ergebnis'
-              },
-              plot_config: {
-                responsive: true
+                title: self.indivual_result
               }
-            } )
+            } );
+
+            div('poll_result').firstChild.style.margin = 'auto';
+
           }
         }
 
@@ -430,17 +442,15 @@
           // automatic numbering of figures
           let fig_number = 1;
           [...main_div.querySelectorAll('figcaption')].forEach(figcaption=>{
-            figcaption.prepend('Abb. ' + (fig_number++) + ': ');
+            figcaption.prepend( self.figcaption_prepend + (fig_number++) + ': ');
           });
 
           // const dataset = await ccm.load( { url: 'https://kaul.inf.h-brs.de/data/2018/prosem/all_objects.php', method: 'GET' } );
-          let dataset = await (await fetch(new Request( self.microservice ), {
+          const dataset = (await (await fetch(new Request( self.microservice ), {
             method: 'GET',
             mode: 'cors',
             cache: 'no-store'
-          })).json();
-
-          dataset = dataset.filter( record => record.paper_id === self.paper_id ); // take only data from this survey
+          })).json()).filter( record => record.paper_id === self.paper_id ); // take only data from this survey
 
           // count_participants
           const count_participants = dataset.length;
@@ -452,7 +462,6 @@
             return title + '( <em>n = ' +  count_participants + '</em>)';
           }
 
-          distribution( 'Verteilung des agilen Anteils', div('distribution'), [20,40,60,80,100], dataset, ccm );
 
           // Browsers encode Umlauts differently
           // Therefore normalize them
@@ -570,6 +579,13 @@
                   mapping: figure.mapping || ( c => c ) // identity as default mapping
                 });
                 break;
+              case "distribution":
+                distribution( { title: make_title( figure.title ),
+                  plot_div: div( figure.id ),
+                  x_axis: figure.x_axis,
+                  dataset: dataset,
+                  ccm: ccm } );
+                break;
               default: debugger;
             }
           }
@@ -583,7 +599,7 @@
             const data = [];
             counters.forEach((counter, i)=>{
               const group = {
-                name: 'Auswahl ' + (i+1),
+                name: self.choice_label + (i+1),
                 type: 'bar'
               };
               group.x = [];
@@ -668,7 +684,7 @@
             const data = [];
             questions.forEach((question,i) => {
               const group = {
-                name: 'Auswahl ' + (i+1),
+                name: self.choice_label + (i+1),
                 type: 'bar'
               };
               group.x = [];
@@ -763,9 +779,9 @@
           // window.location = '#' + newState;
           switch( newState ){
             case 'welcome':
+              div("paper_frame").style.display = 'none';
               div("survey").style.display = 'none';
               div("result").style.display = 'none';
-              div("paper_frame").style.display = 'none';
               div("welcome").style.animation = 'fadeIn 2s';
               div("welcome").style.display = 'block';
               break;
@@ -817,11 +833,11 @@
           return html;
         }
 
-        function distribution ( title, plot_div, x_axis, raw_data, ccm ){
-
+        function distribution ( args ){
+          const { title, plot_div, x_axis, dataset, x_mapping, y_mapping } = args;
           const y_axis = [];
           x_axis.forEach( (max, i) => {
-            raw_data.forEach( rec => {
+            dataset.forEach(rec => {
               if ( ! y_axis[i] ) y_axis[i] = 0;
               if ( rec.final_percentage <= max && !(i > 0 && rec.final_percentage <= x_axis[i-1]) ) y_axis[i] += 1;
             });
@@ -829,8 +845,8 @@
 
           const data = [
             {
-              "x": x_axis.map(x => "bis zu " + x),
-              "y": y_axis,
+              "x": x_axis.map( x_mapping || ( x => x ) ),
+              "y": y_axis.map( y_mapping || ( y => y ) ),
               "type": "bar"
             }
           ];
@@ -894,6 +910,10 @@
                 if ( arg.delay_sums[arg.i][arg.result.categories[arg.i]] === 0 ) arg.delay_sums[arg.i][arg.result.categories[arg.i]] = arg.result.timer[arg.i] - arg.result.timer[arg.i-1];
                 arg.delay_sums[arg.i][arg.result.categories[arg.i]] = Math.min( arg.delay_sums[arg.i][ arg.result.categories[arg.i] ], ( arg.result.timer[arg.i] - arg.result.timer[arg.i-1] ) );
               };
+            case "bis_zu_mapping":
+              return x => "bis zu " + x;
+            case "up_to_mapping":
+              return x => "up to " + x;
             case 'debugger':
               return arg => { console.log( arg );  debugger };
 
