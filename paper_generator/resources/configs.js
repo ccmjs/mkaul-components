@@ -98,7 +98,7 @@ ccm.files[ 'configs.js' ] = {
     author: 'Manfred Kaul',
     address: 'Hochschule Bonn-Rhein-Sieg',
     email: 'Manfred.Kaul[at]h-brs.de',
-    title: 'Kleines Beispiel',
+    title: 'Mittleres Beispiel',
     subtitle: 'Eine empirische Studie',
 
     headers: [

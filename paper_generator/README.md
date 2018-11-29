@@ -102,7 +102,7 @@ In your HTML you write:
     ... Your text here ... 
 </ccm-paper_generator>
 ```
-Inside a `<script>` tag on the same HTML page you define your own function `my_plot`. For example:
+Inside a `<script>` tag on the same HTML page you define your own function `my_plots`. For example:
 ```html
 <script>
     function my_plots( args ){
@@ -133,7 +133,7 @@ Inside a `<script>` tag on the same HTML page you define your own function `my_p
     }
 </script>
 ```
-Instead of writing your own function `my_plots` into the HTML file directly, you can load it from external in three ways:
+Instead of writing your own function `my_plots` into the HTML file directly, you can load it from external files in three ways:
 * via script tag
 * via ES6 import
 * via _ccm_-load
