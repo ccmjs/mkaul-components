@@ -1,7 +1,7 @@
-# Summary
+# 1. Summary
 Paper Generator for simple surveys (opinion polls) with time measurement
 
-# Description
+# 2. Description
 Surveys (opinion polls) usually collect answers only. This single page application (SPA) additionally collects timer data. Thereby you can analyze, how long a user hesitates or how much time is needed to decide which option to take. These additional data can be very helpful to analyze, which decisions are easy and which are complex.
 
 Configure the paper generator with your name, title of the paper, survey questions and the single page application (SPA) is generated for you. You can embed the SPA anywhere in any web page. If you use a cross domain solution, then you have to use absolute URLs. In the paper, statistics and diagrams are computed automatically from the participants input, e.g. [index.html](https://github.com/ccmjs/mkaul-components/blob/master/paper_generator/index.html). The following diagrams are rendered automatically:
@@ -21,7 +21,7 @@ Configure the paper generator with your name, title of the paper, survey questio
 
 These diagrams are computed from user input and rendered in your text automatically, if you provide a `div` with the corresponding `id`. Otherwise nothing is rendered. These are the preconfigured figures.  
 
-# Add your own statistics and diagrams
+# 3. Add your own statistics and diagrams
 If you want to include additional statistics and diagrams, use your own scripts. There are three ways to include your own scripts:
 1. In the `configs.js` of `paper_generator` include your own figure in the `figures` array. 
 2. Load your statistics and diagrams script from any server you want and calculate the statistics and plot the diagrams yourself.
@@ -29,7 +29,7 @@ If you want to include additional statistics and diagrams, use your own scripts.
 
 The details are described below.
 
-##  In the `configs.js` of `paper_generator` include your own figure in the `figures` array 
+##  3.1 In the `configs.js` of `paper_generator` include your own figure in the `figures` array 
 
 For example:
 ```json
@@ -64,7 +64,10 @@ There are the following pre-defined mappings, to which you can refer by name:
 * `delay_min`
 * `debugger`
 
-If you do not know, which mapping to choose, try debugger first. Then script execution will stop at the mapping and you can inspect the input values. If you want your own script to be used as mapping, you can load it as follows:
+If you do not know, which mapping to choose, try debugger first. Then script execution will stop at the mapping and you can inspect the input values. 
+
+## 3.2 Load your statistics and diagrams script from any server you want and calculate the statistics and plot the diagrams yourself
+If you want your own script to be used as mapping, you can load it as follows:
 ```javascript
 const figure = {
     "id": "histogram_categories_absolute",
@@ -86,12 +89,16 @@ or as follows (ES5):
 export function my_own_mapping( arg ){ return arg.count }
 ```
 
-## Load your statistics and diagrams script from any server you want and calculate the statistics and plot the diagrams yourself
+## 3.3 Define your own JavaScript function in a `<script>` tag inside the HTML code, in which you use the paper_generator tag
 Add your own statistics and diagrams via the callbacks `process_this_result` and  `process_all_results`, see e.g. [index_own_plot.html](https://github.com/ccmjs/mkaul-components/blob/master/paper_generator/index_own_plot.html)  and [configs.js](https://github.com/ccmjs/mkaul-components/blob/master/paper_generator/resources/configs.js).
 
 In your HTML you write:
 ```html
-<ccm-paper_generator key='[ "ccm.get", "resources/configs.js", "my-config" ]' process_all_results="my_plots"></ccm-paper_generator>
+<ccm-paper_generator 
+    key='[ "ccm.get", "resources/configs.js", "my-config" ]' 
+    process_all_results="my_plots">
+    ... Your text here ...
+</ccm-paper_generator>
 ```
 Inside a `<script>` tag on the same HTML page you define your own function `my_plot`. For example:
 ```html
