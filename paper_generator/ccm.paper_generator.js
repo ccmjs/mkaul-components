@@ -2,9 +2,9 @@
  * @overview ccm component for paper_generator based on a survey / opinion poll
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version latest (3.2.0)
  * @changes
- * version 3.0.0 26.11.2018
+ * version 3.2.0 28.11.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
