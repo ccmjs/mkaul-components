@@ -12,11 +12,19 @@
     "ignore": {
         "demos": [
             {
-                "title": "Small Example",
+                "title": "Small",
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js",
                     "small"
+                ]
+            },
+            {
+                "title": "Medium",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/paper_generator/resources/configs.js",
+                    "medium"
                 ]
             },
             {

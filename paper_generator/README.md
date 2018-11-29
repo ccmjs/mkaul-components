@@ -133,13 +133,39 @@ Inside a `<script>` tag on the same HTML page you define your own function `my_p
     }
 </script>
 ```
+Instead of writing your own function `my_plots` into the HTML file directly, you can load it from external in three ways:
+* via script tag
+* via ES6 import
+* via _ccm_-load
+
+### 3.3.1 via script tag
+```html
+<script src="https://your-server.de/your-javascript-file.js"></script>
+```
+In this case your function is visible in the global namespace `window`.
+
+### 3.3.2 via ES6 import
+```javascript
+import { my_plots } from "https://your-server.de/your-javascript-file.js";
+```
+In this case your function is visible the namespace of your import statement.
+
+
+### 3.3.3 via _ccm_-load
+```html
+<ccm-paper_generator 
+    key='[ "ccm.get", "resources/configs.js", "my-config" ]' 
+    process_all_results='[ "ccm.load", {
+                               "url": "https://your-server.de/your-javascript-file.js",
+                               "type": "module",
+                               "import": "my_plots"
+                             } ]'>
+    ... Your text here ... 
+    <div id="my_own_plot">the place for your own diagram</div>
+    ... Your text here ... 
+</ccm-paper_generator>
+```
+In this case your function is only visible inside the custom element of paper_generator. 
 
 
 
-
-
-   
- 
- 
-
-In HTML file as well as in the configs.js you can add your own scripts for calculating and plotting.

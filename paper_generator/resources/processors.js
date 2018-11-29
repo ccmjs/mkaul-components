@@ -28,5 +28,32 @@ export const  process_all_results = function( args ){
     }
   } );
 };
+
+export const my_plots = function( args ){
+  console.log( "my_plots" );
+  const { dataset, self, category_counters, sum_categories, counters, flat_counters } = args;
+  const sum={}; // sum of categories
+  dataset.forEach(r=>{r.categories.forEach(c=>{if(!sum[c])sum[c]=0;sum[c]+=1})});
+  delete sum[0];
+  self.plotter.start( {
+    root: self.div('my_own_plot'),
+    data: [{
+      x: Object.keys(sum),
+      y: Object.values(sum),
+      name: "sum",
+      type: "bar"
+    },
+      {
+        x: Object.keys(sum),
+        y: Object.values(sum).map(s=>2*s),
+        name: "double_sum",
+        type: "bar"
+      }],
+    layout: {
+      title: "My own plot!!!",
+      barmode: "stack"
+    }
+  } );
+};
  
  

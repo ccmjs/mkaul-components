@@ -18,15 +18,11 @@ ccm.files[ 'configs.js' ] = {
     subtitle: 'Eine empirische Studie',
 
     headers: [
-      "Ihr Geschlecht?",
-      "Ihr Alter?",
-      "Ihre Größe?"
+      "Wie alt sind Sie?"
     ],
 
     questions: [
-      { man: "männlich", woman: "weiblich", other: "divers" },
-      { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" },
-      { small: "< 160", middle: "161-175", large: "176-185", tall: "> 186" }
+      { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" }
     ],
 
     randomize: {
@@ -92,6 +88,160 @@ ccm.files[ 'configs.js' ] = {
 
     inner: '<div id="paper"> <header class="paper"></header> <article id="main"> <section class="abstract"> <b>Abstract.</b> Hier steht der Abstract. </section> <section class="keywords"><b>Keywords:</b> Hier stehen die Keywords</section> <section> <h2 id="einfuehrung">1. Einführung</h2> <p>Hier steht die Einführung</p> </section> <section> <h2 id="hauptteil">2. Hauptteil</h2> <p>Hier steht der Hauptteil</p> <h3>2.1. Ergebnisse</h3> <p>Wie häufig wurden die verschiedenen Antwortkategorien ausgewählt?</p> <figure> <div id="histogram_categories_absolute" class="plot"></div> <figcaption>Häufigkeiten der Antwortkategorien in absoluten Zahlen</figcaption> </figure><figure> <div id=my_own_plot></div> <figcaption>Eigenes Diagramm</figcaption> </figure> </section> <section> <h2 id="schluss">3. Schluss</h2> <p>Hier steht der Schluss, Zusammenfassung und Fazit.</p> </section> </article> </div>',
 
+  },
+
+  "medium": {
+    key: "medium",
+
+    paper_id: "medium",
+
+    author: 'Manfred Kaul',
+    address: 'Hochschule Bonn-Rhein-Sieg',
+    email: 'Manfred.Kaul[at]h-brs.de',
+    title: 'Kleines Beispiel',
+    subtitle: 'Eine empirische Studie',
+
+    headers: [
+      "Ihr Geschlecht?",
+      "Ihr Alter?",
+      "Ihre Größe?"
+    ],
+
+    questions: [
+      { man: "männlich", woman: "weiblich", other: "divers" },
+      { young: "Alter: 18-25", middle: "Alter: 26-30", older: "Alter: 31-40", old: "älter" },
+      { small: "< 160", middle: "161-175", large: "176-185", tall: "> 186" }
+    ],
+
+    randomize: {
+      row: true,
+      column: true
+    },
+
+    figures: [
+      {
+        id: "histogram_categories_absolute",
+        type: "histogram_categories",
+        title: "Histogramm Kategorien absolut",
+        mapping: 'absolute_count'
+      },
+      {
+        id: "histogram_categories_relative",
+        type: "histogram_categories",
+        title: "Histogramm Kategorien in Prozent",
+        mapping: 'relative_count_categories'
+      },
+      {
+        id: "histogram_absolute",
+        type: "histogram",
+        title: "Histogramm absolut",
+        mapping: 'absolute_count'
+      },
+      {
+        id: "histogram_relative",
+        type: "histogram",
+        title: "Histogramm in Prozent",
+        mapping: 'relative_count_participants'
+      },
+      {
+        id: "delay_cat_sum",
+        type: "delay_categories",
+        title: "Summe aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_cat_sum'
+      },
+      {
+        id: "delay_cat_avg",
+        type: "delay_categories",
+        title: "Durchschnitt aller Verzögerungen in Millisekunden (msec) ",
+        mapping: 'delay_cat_avg'
+      },
+      {
+        id: "delay_cat_max",
+        type: "delay_categories",
+        title: "Maximum aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_cat_max'
+      },
+      {
+        id: "delay_cat_min",
+        type: "delay_categories",
+        title: "Minimum aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_cat_min'
+      },
+      {
+        id: "delay_sum",
+        type: "delays",
+        title: "Summe aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_sum'
+      },
+      {
+        id: "delay_avg",
+        type: "delays",
+        title: "Durchschnitt aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_avg'
+      },
+      {
+        id: "delay_max",
+        type: "delays",
+        title: "Maximum aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_max'
+      },
+      {
+        id: "delay_min",
+        type: "delays",
+        title: "Minimum aller Verzögerungen in Millisekunden (msec)",
+        mapping: 'delay_min'
+      }
+    ],
+
+    html: {
+
+      header: {
+        inner: [
+          { tag: 'h1', inner: '%title%' },
+          { tag: 'h2', inner: '%subtitle%' },
+          { tag: 'p', inner: '<em>%author%</em><br>%address%<br>%email%' }
+        ]
+      },
+
+      main: {
+        inner: [
+          {
+            id: 'welcome',
+            inner: [
+              { tag: 'h1', inner: '%title%'},
+              { tag: 'p', inner: '%subtitle%' },
+              { tag: 'button', id: 'start_survey', inner: 'An der Umfrage teilnehmen!<sup>(*)</sup>', onclick: '%start_survey%' },
+              { tag: 'p', inner: '<sup>(*)</sup><em>Nach der Teilnahme erhalten Sie Zugriff auf die Auswertung der Umfrage.</em>' }
+            ]
+          },
+          {
+            id: 'survey',
+            inner: [
+              { tag: 'h1', inner: 'Umfrage' },
+              { id: 'ccm_poll' },
+              { tag: 'button', id: 'start_result', inner: 'Weiter zum Ergebnis der Umfrage', onclick: '%start_result%' }
+            ]
+          },
+          {
+            id: 'result',
+            inner: [
+              { tag: 'h1', inner: 'Vielen Dank für Ihre Teilnahme.' },
+              { tag: 'button', id: 'start_paper', inner: 'Weiter zum Artikel über die bisherigen Ergebnisse der Umfrage', onclick: '%start_paper%' },
+            ]
+          },
+          {
+            id: 'paper_frame'
+          }
+        ]
+      }
+    },
+
+    css: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/small.css' ],
+
+    microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
+
+    inner: '<div id="paper"><header class="paper"></header><article id="main"><section class="abstract"><b>Abstract.</b> Hier steht der Abstract.</section><section class="keywords"><b>Keywords:</b> Hier stehen die Keywords</section><section><h2 id="einfuehrung">1. Einführung</h2><p>Hier steht die Einführung</p></section><section><h2 id="hauptteil">2. Hauptteil</h2><p>Hier steht der Hauptteil</p><h3>2.1. Ergebnisse</h3><p>Wie häufig wurden die verschiedenen Antwortkategorien ausgewählt?</p><figure><div id="histogram_categories_absolute" class="plot"></div><figcaption>Häufigkeiten der Antwortkategorien in absoluten Zahlen</figcaption></figure><figure><div id="histogram_categories_relative" class="plot"></div><figcaption>Häufigkeiten der Antwortkategorien in Prozent</figcaption></figure><figure><div id="histogram_absolute" class="plot"></div><figcaption>Häufigkeiten der Antworten je Auswahl in absoluten Zahlen</figcaption></figure><figure><div id="histogram_relative" class="plot"></div><figcaption>Häufigkeiten der Antworten je Auswahl in Prozent</figcaption></figure><h3>2.2 Meine eigenen Diagramme</h3><figure><div id=my_own_plot></div><figcaption>Eigenes Diagramm</figcaption></figure></section><section><h2 id="schluss">3. Schluss</h2><p>Hier steht der Schluss, Zusammenfassung und Fazit.</p></section></article></div>',
+
     process_this_result: [ "ccm.load", {
       "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/processors.js",
       "type": "module",
@@ -101,7 +251,7 @@ ccm.files[ 'configs.js' ] = {
     process_all_results: [ "ccm.load", {
       "url": "https://ccmjs.github.io/mkaul-components/paper_generator/resources/processors.js",
       "type": "module",
-      "import": "process_all_results"
+      "import": "my_plots"
     } ]
 
   },
