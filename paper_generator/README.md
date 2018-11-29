@@ -97,7 +97,9 @@ In your HTML you write:
 <ccm-paper_generator 
     key='[ "ccm.get", "resources/configs.js", "my-config" ]' 
     process_all_results="my_plots">
-    ... Your text here ...
+    ... Your text here ... 
+    <div id="my_own_plot">the place for your own diagram</div>
+    ... Your text here ... 
 </ccm-paper_generator>
 ```
 Inside a `<script>` tag on the same HTML page you define your own function `my_plot`. For example:
