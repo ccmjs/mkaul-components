@@ -236,7 +236,7 @@ ccm.files[ 'configs.js' ] = {
       }
     },
 
-    css: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/small.css' ],
+    css: [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/medium.css' ],
 
     microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
