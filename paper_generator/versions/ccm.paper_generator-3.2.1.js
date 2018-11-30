@@ -2,9 +2,9 @@
  * @overview ccm component for paper_generator based on a survey / opinion poll
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.2.0)
+ * @version latest (3.2.1)
  * @changes
- * version 3.2.0 28.11.2018
+ * version 3.2.1 28.11.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,13 +22,14 @@
      * @type {string}
      */
     name: 'paper_generator',
+    version: [3,2,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -201,13 +202,14 @@
         }
       },
 
-      survey: [ "ccm.component", "../fast_poll/ccm.fast_poll.js" ],
+      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-5.0.1.js" ],
 
-      plotter: [ "ccm.component", "../plotly/ccm.plotly.js" ],
+      plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
 
       microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
-      css: [ 'ccm.load',  '../paper_generator/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
 
       // process_this_result: console.log, // callback for processing single poll result
