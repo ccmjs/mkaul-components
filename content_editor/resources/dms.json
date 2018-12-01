@@ -1,0 +1,72 @@
+
+{
+    "_id": "content_editor",
+    "title": "Content Editor",
+    "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
+    "abstract": "Content Editor for rich texts using contentEditable",
+    "description": "With this tiny editor rich text editing can be embedded in any web page ",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "demo"
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+                        {
+                            "defaults": {
+                                "data": {
+                                    "text": "Hello World!"
+                                }
+                            },
+                            "entries": [
+                                {
+                                    "name": "data",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Initial Text for embedded editor",
+                                    "name": "data.text",
+                                    "type": "textarea",
+                                    "info": "Initial Text, which is shown immediately after the embedded editor is loaded"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "updated_at": "2018-12-01T14:41:22+02:00",
+    "created_at": "2018-12-01T14:41:22+02:00"
+}
