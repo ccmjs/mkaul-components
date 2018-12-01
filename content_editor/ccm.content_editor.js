@@ -315,8 +315,8 @@
       },
       colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
       // ToDo
-      // css_awesome: [ 'ccm.load',  'resources/font-awesome.css' ],
-      // font_awesome: [ 'ccm.load', { url: 'resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff" } ],
+      css_awesome: [ 'ccm.load',  'resources/font-awesome.css' ],
+      font_awesome: [ 'ccm.load', { url: 'resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff" } ],
 
       css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
