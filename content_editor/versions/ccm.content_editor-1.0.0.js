@@ -370,7 +370,7 @@
          * @type {Object}
          */
         let dataset = await $.dataset( this.data );
-        if ( ! dataset ) dataset = { text: '' };
+        if ( typeof dataset === 'string' ) dataset = { text: '' };
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
