@@ -98,7 +98,7 @@
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        if ( self.inner.innerHTML.trim() ) self.data.html = self.inner.innerHTML;
+        if ( self.inner && self.inner.innerHTML.trim() ) self.data.html = self.inner.innerHTML;
 
       };
         
