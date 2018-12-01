@@ -317,7 +317,7 @@
       // ToDo
 
       css_awesome: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/font-awesome.css' ],
-      font_awesome: [ 'ccm.load', { url: 'https://ccmjs.github.io/mkaul-components/content_editor/resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff" } ],
+      font_awesome: [ 'ccm.load', { url: 'https://ccmjs.github.io/mkaul-components/content_editor/resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff", method: 'GET' } ],
 
       // css: [ 'ccm.load',  'resources/default.css' ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
@@ -376,6 +376,8 @@
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
+        $.setContent( editor_div, dataset.text );
+
         const toolbar_div = $.html( this.html.toolbar );
 
         // render color palette
@@ -398,14 +400,20 @@
           const command = this.dataset["command"];
           if (command === 'h1' || command === 'h2' || command === 'p') {
             document.execCommand('formatBlock', false, command);
+            dataset.text = editor_div.innerHTML;
           }
           if (command === 'forecolor' || command === 'backcolor') {
             document.execCommand(this.dataset["command"], false, this.dataset["value"]);
+            dataset.text = editor_div.innerHTML;
           }
           if (command === 'createlink' || command === 'insertimage') {
             const url = prompt('Enter the link here: ', 'http:\/\/');
             document.execCommand(this.dataset["command"], false, url);
-          } else document.execCommand(this.dataset["command"], false, null);
+            dataset.text = editor_div.innerHTML;
+          } else {
+            document.execCommand(this.dataset["command"], false, null);
+            dataset.text = editor_div.innerHTML;
+          }
         };
 
         [...toolbar_div.querySelectorAll('.toolbar a')].forEach( tool => {
