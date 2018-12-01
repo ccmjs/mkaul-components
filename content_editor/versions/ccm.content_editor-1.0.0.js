@@ -369,7 +369,8 @@
          * dataset for rendering
          * @type {Object}
          */
-        const dataset = await $.dataset( this.data ) || { text: '' };
+        let dataset = await $.dataset( this.data );
+        if ( ! dataset ) dataset = { text: '' };
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
