@@ -1,0 +1,69 @@
+
+{
+    "_id": "html2json",
+    "title": "html2json Editor",
+    "icon": "https://ccmjs.github.io/mkaul-components/html2json/resources/icon.svg",
+    "abstract": "Edit HTML, transform to Json and vice versa",
+    "description": "The input HTML code is parsed and transformed into JSON, which again may be edited and transformed into HTML again.",
+    "url": "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js",
+                    "demo"
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+                        {
+                            "defaults": {
+                            },
+                            "entries": [
+                                {
+                                    "name": "data",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Title",
+                                    "name": "data.html",
+                                    "type": "textarea",
+                                    "info": "Initial content of the editor in HTML code"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "updated_at": "2018-11-04T14:41:22+02:00",
+    "created_at": "2018-11-04T14:41:22+02:00"
+}
