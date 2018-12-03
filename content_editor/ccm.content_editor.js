@@ -389,10 +389,21 @@
                 const pastedImage = document.createElement('img');
                 const blob = item.getAsFile();
                 pastedImage.src = URLObj.createObjectURL(blob);
-                // const selection = shadowRoot.getSelection(); // ToDo Use shadow root to get position
-                // const selection = document.getSelection();
-                const selection = editor_div;
-                selection.appendChild( pastedImage );
+
+                const shadowRoot = self.element.parentNode;
+                // Use shadow root to get position of cursor in text
+                const selection = shadowRoot.getSelection();
+
+                // split text at the cursor position
+                const firstNode = document.createTextNode(selection.anchorNode.substringData(0,selection.anchorOffset));
+                const secondNode = document.createTextNode(selection.anchorNode.substringData(selection.anchorOffset, selection.anchorNode.data.length));
+                const selectionParent = selection.anchorNode.parentNode;
+
+                // TODO correct replacement
+                // selectionParent.innerHTML = '';
+                // selectionParent.appendChild( firstNode );
+                selectionParent.appendChild( pastedImage );
+                // selectionParent.appendChild( secondNode );
                 break;
               default:
                 debugger;
@@ -446,6 +457,10 @@
 
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
+
+        function splitValue(value, index) {
+          return [ value.substring(0, index), value.substring(index) ];
+        }
 
       };
 
