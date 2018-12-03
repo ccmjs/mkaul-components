@@ -377,6 +377,29 @@
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
+        editor_div.onpaste = function(e) {
+          [...e.clipboardData.items].forEach((item)=>{
+            switch( item.type ){
+              case 'text/plain':
+                const pastedText = e.clipboardData.getData('text/plain');
+                // ToDo process pastedText
+                break;
+              case 'image/png':
+                const URLObj = window.URL || window.webkitURL;
+                const pastedImage = document.createElement('img');
+                const blob = item.getAsFile();
+                pastedImage.src = URLObj.createObjectURL(blob);
+                // const selection = shadowRoot.getSelection(); // ToDo Use shadow root to get position
+                // const selection = document.getSelection();
+                const selection = editor_div;
+                selection.appendChild( pastedImage );
+                break;
+              default:
+                debugger;
+            }
+          });
+        };
+
         $.setContent( editor_div, dataset.text );
 
         const toolbar_div = $.html( this.html.toolbar );
