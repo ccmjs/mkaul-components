@@ -384,6 +384,10 @@
                 const pastedText = e.clipboardData.getData('text/plain');
                 // ToDo process pastedText
                 break;
+              case 'text/html':
+                const pastedHTML = e.clipboardData.getData('text/html');
+                // ToDo process pastedHTML
+                break;
               case 'image/png':
                 const URLObj = window.URL || window.webkitURL;
                 const pastedImage = document.createElement('img');
@@ -391,25 +395,80 @@
                 pastedImage.src = URLObj.createObjectURL(blob);
 
                 const shadowRoot = self.element.parentNode;
-                // Use shadow root to get position of cursor in text
-                const selection = shadowRoot.getSelection();
 
-                // split text at the cursor position
-                const firstNode = document.createTextNode(selection.anchorNode.substringData(0,selection.anchorOffset));
-                const secondNode = document.createTextNode(selection.anchorNode.substringData(selection.anchorOffset, selection.anchorNode.data.length));
-                const selectionParent = selection.anchorNode.parentNode;
+                // Use shadow root instead of document to get position of cursor in text
+                const selectedObj = shadowRoot.getSelection();
+                const parentNode = selectedObj.anchorNode.parentNode;
+                const childNodes = parentNode.childNodes;
 
-                // TODO correct replacement
-                // selectionParent.innerHTML = '';
-                // selectionParent.appendChild( firstNode );
-                selectionParent.appendChild( pastedImage );
-                // selectionParent.appendChild( secondNode );
+                for (const childNode of childNodes){
+                  if (childNode === selectedObj.anchorNode) {
+
+                    if (selectedObj.anchorNode.nodeType === 3){
+                      // cursor is in the middle of a text node.
+                      // break text node into 2 separate nodes and paste image in between:
+                      const textNode = selectedObj.getRangeAt(0).startContainer;
+                      const firstNode = document.createTextNode(textNode.nodeValue.slice(0,selectedObj.getRangeAt(0).startOffset));
+                      const secondNode = document.createTextNode(textNode.nodeValue.slice(selectedObj.getRangeAt(0).startOffset));
+
+                      // insert both text nodes with image in between
+                      parentNode.replaceChild(secondNode, textNode);
+                      parentNode.insertBefore(pastedImage, secondNode);
+                      parentNode.insertBefore(firstNode, pastedImage);
+
+                      // restore the position of the caret
+                      const newRange = document.createRange();
+                      newRange.setStart(secondNode, 0  );
+                      newRange.collapse(true); // true collapses the Range to its start, false to its end.
+                      selectedObj.removeAllRanges();
+                      selectedObj.addRange(newRange);
+
+                    } else { // cursor is between child nodes
+
+                      if ( editor_div.contains( childNode ) ){
+                        if ( editor_div !== childNode ){
+                          parentNode.insertBefore(pastedImage, childNode);
+                        } else {
+                          editor_div.appendChild(pastedImage);
+                        }
+                      } else {
+                          editor_div.appendChild(pastedImage);
+                      }
+
+                    }
+
+                    break;
+                  }
+                }
+
                 break;
               default:
                 debugger;
             }
           });
         };
+
+        function getCaretPosition( shadowRoot ) {
+          if (shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt) {
+            const range = shadowRoot.getSelection().getRangeAt(0);
+            const selectedObj = shadowRoot.getSelection();
+            let rangeCount = 0;
+            const childNodes = selectedObj.anchorNode.parentNode.childNodes;
+            [...childNodes].forEach(childNode => {
+              if (childNode === selectedObj.anchorNode) {
+                return;
+              }
+              if (childNode.outerHTML)
+                rangeCount += childNode.outerHTML.length;
+              else if (childNode.nodeType === 3) {
+                rangeCount += childNode.textContent.length;
+              }
+            });
+            return range.startOffset + rangeCount;
+          }
+          return -1;
+        }
+
 
         $.setContent( editor_div, dataset.text );
 
@@ -457,10 +516,6 @@
 
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
-
-        function splitValue(value, index) {
-          return [ value.substring(0, index), value.substring(index) ];
-        }
 
       };
 
