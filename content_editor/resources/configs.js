@@ -23,23 +23,55 @@ ccm.files[ 'configs.js' ] = {
             "tag": "a",
             "href": "#",
             "data-command": "undo",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-undo"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-undo"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "redo",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-repeat"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-repeat"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "bold",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-bold"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "italic",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-italic"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "underline",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-underline"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "strikeThrough",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-strikethrough"
+            }
           },
           {
             "class": "fore-wrapper",
@@ -70,134 +102,114 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "data-command": "bold",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-bold"
-              }
-            ]
+            "data-command": "copy",
+            "title": "Select some text and press copy button!",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-copy"
+            }
           },
           {
             "tag": "a",
             "href": "#",
-            "data-command": "italic",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-italic"
-              }
-            ]
+            "data-command": "cut",
+            "title": "Cut",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-cut"
+            }
           },
           {
             "tag": "a",
             "href": "#",
-            "data-command": "underline",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-underline"
-              }
-            ]
+            "data-command": "delete",
+            "title": "Delete",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-trash"
+            }
           },
           {
             "tag": "a",
             "href": "#",
-            "data-command": "strikeThrough",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-strikethrough"
-              }
-            ]
+            "data-command": "insertHorizontalRule",
+            "title": "insert Horizontal Rule",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-download"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "justifyLeft",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-align-left"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-align-left"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "justifyCenter",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-align-center"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-align-center"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "justifyRight",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-align-right"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-align-right"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "justifyFull",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-align-justify"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-align-justify"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "indent",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-indent"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-indent"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "outdent",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-outdent"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-outdent"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "insertUnorderedList",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-list-ul"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-list-ul"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "insertOrderedList",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-list-ol"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-list-ol"
+            }
           },
           {
             "tag": "a",
@@ -214,35 +226,53 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "data-command": "h3",
+            "inner": "H3"
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "h4",
+            "inner": "H4"
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "h5",
+            "inner": "H5"
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "data-command": "h6",
+            "inner": "H6"
+          },
+          {
+            "tag": "a",
+            "href": "#",
             "data-command": "createlink",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-link"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-link"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "unlink",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-unlink"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-unlink"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "insertimage",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-image"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-image"
+            }
           },
           {
             "tag": "a",
@@ -254,30 +284,48 @@ ccm.files[ 'configs.js' ] = {
             "tag": "a",
             "href": "#",
             "data-command": "subscript",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-subscript"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-subscript"
+            }
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "superscript",
-            "inner": [
-              {
-                "tag": "i",
-                "class": "fa fa-superscript"
-              }
-            ]
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-superscript"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "special",
+            "style": "width: 2.2em;",
+            "data-command": "fontSize",
+            "title": "Font size",
+            "inner": {
+              // "tag": "i",
+              "class": "fa fa-text-height",
+              tag: "select",
+              inner: [
+                { tag: "option", value: 1, inner: 1 },
+                { tag: "option", value: 2, inner: 2 },
+                { tag: "option", value: 3, inner: 3, selected: true },
+                { tag: "option", value: 4, inner: 4 },
+                { tag: "option", value: 5, inner: 5 },
+                { tag: "option", value: 6, inner: 6 },
+                { tag: "option", value: 7, inner: 7 }
+              ]
+            }
           }
         ]
       }
     },
+    enabled: ['undo', 'redo', 'bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
     colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
     // ToDo
-
     css_awesome: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/font-awesome.css' ],
     font_awesome: [ 'ccm.load', { url: 'https://ccmjs.github.io/mkaul-components/content_editor/resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff", method: 'GET' } ],
 

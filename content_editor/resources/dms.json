@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Content Editor for rich texts using contentEditable",
     "description": "With this tiny editor rich text editing can be embedded in any web page ",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-1.1.0.js",
-    "version": "1.1.0",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-1.2.0.js",
+    "version": "1.2.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -36,6 +36,126 @@
                                 }
                             },
                             "entries": [
+                                {
+                                    "label": "Toolbar",
+                                    "name": "enabled",
+                                    "type": "multi-checkbox",
+                                    "info": "Choose which tools to include into your toolbar",
+                                    "items": [
+                                        {
+                                            "label": "Undo",
+                                            "value": "undo"
+                                        },
+                                        {
+                                            "label": "Undo",
+                                            "value": "redo"
+                                        },
+                                        {
+                                            "label": "bold",
+                                            "value": "bold"
+                                        },
+                                        {
+                                            "label": "italic",
+                                            "value": "italic"
+                                        },
+                                        {
+                                            "label": "underline",
+                                            "value": "underline"
+                                        },
+                                        {
+                                            "label": "strike through",
+                                            "value": "strikeThrough"
+                                        },
+                                        {
+                                            "label": "insert Horizontal Rule",
+                                            "value": "insertHorizontalRule"
+                                        },
+                                        {
+                                            "label": "justify Left",
+                                            "value": "justifyLeft"
+                                        },
+                                        {
+                                            "label": "justify Center",
+                                            "value": "justifyCenter"
+                                        },
+                                        {
+                                            "label": "justify Right",
+                                            "value": "justifyRight"
+                                        },
+                                        {
+                                            "label": "justify Full",
+                                            "value": "justifyFull"
+                                        },
+                                        {
+                                            "label": "indent",
+                                            "value": "indent"
+                                        },
+                                        {
+                                            "label": "outdent",
+                                            "value": "outdent"
+                                        },
+                                        {
+                                            "label": "insert Unordered List",
+                                            "value": "insertUnorderedList"
+                                        },
+                                        {
+                                            "label": "insert Ordered List",
+                                            "value": "insertOrderedList"
+                                        },
+                                        {
+                                            "label": "Header H1",
+                                            "value": "h1"
+                                        },
+                                        {
+                                            "label": "Header H2",
+                                            "value": "h2"
+                                        },
+                                        {
+                                            "label": "Header H3",
+                                            "value": "h3"
+                                        },
+                                        {
+                                            "label": "Header H4",
+                                            "value": "h4"
+                                        },
+                                        {
+                                            "label": "Header H5",
+                                            "value": "h5"
+                                        },
+                                        {
+                                            "label": "Header H6",
+                                            "value": "h6"
+                                        },
+                                        {
+                                            "label": "create link",
+                                            "value": "createlink"
+                                        },
+                                        {
+                                            "label": "unlink",
+                                            "value": "unlink"
+                                        },
+                                        {
+                                            "label": "insert remote image via URL",
+                                            "value": "insertimage"
+                                        },
+                                        {
+                                            "label": "Paragraph",
+                                            "value": "p"
+                                        },
+                                        {
+                                            "label": "subscript",
+                                            "value": "subscript"
+                                        },
+                                        {
+                                            "label": "superscript",
+                                            "value": "superscript"
+                                        },
+                                        {
+                                            "label": "Font Size 1 - 7",
+                                            "value": "fontSize"
+                                        }
+                                    ]
+                                },
                                 {
                                     "name": "data",
                                     "type": "hidden"
