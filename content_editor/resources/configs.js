@@ -136,7 +136,7 @@ ccm.files[ 'configs.js' ] = {
             "title": "insert Horizontal Rule",
             "inner": {
               "tag": "i",
-              "class": "fa fa-download"
+              "class": "fa fa-minus"
             }
           },
           {
@@ -325,9 +325,11 @@ ccm.files[ 'configs.js' ] = {
     },
     enabled: ['undo', 'redo', 'bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
     colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
-    // ToDo
-    css_awesome: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/font-awesome.css' ],
-    font_awesome: [ 'ccm.load', { url: 'https://ccmjs.github.io/mkaul-components/content_editor/resources/fonts/fontawesome-webfont.woff', mimeType: "font/woff", method: 'GET' } ],
+
+    "css_awesome": [ "ccm.load",
+      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    ],
 
     // css: [ 'ccm.load',  'resources/default.css' ],
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]

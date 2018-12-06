@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Content Editor for rich texts using contentEditable",
     "description": "With this tiny editor rich text editing can be embedded in any web page ",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-1.2.0.js",
-    "version": "1.2.0",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-1.2.1.js",
+    "version": "1.2.1",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -47,7 +47,7 @@
                                             "value": "undo"
                                         },
                                         {
-                                            "label": "Undo",
+                                            "label": "Redo",
                                             "value": "redo"
                                         },
                                         {

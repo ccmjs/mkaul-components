@@ -3,9 +3,9 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (1.2.1)
  * @changes
- * version 1.0.0 11/29/2018
+ * version 1.2.1 06.11.208
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -23,14 +23,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [1,0,0],
+    version: [1,2,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -172,11 +172,10 @@
               "href": "#",
               "data-command": "insertHorizontalRule",
               "title": "insert Horizontal Rule",
-              "inner": [{
+              "inner": {
                   "tag": "i",
-                  "class": "fa fa-minus"
+                "class": "fa fa-minus"
                 }
-              ]
             },
             {
               "tag": "a",
@@ -364,15 +363,14 @@
       },
       // enabled: ['h5','h6'], // which toolbar buttons should be on the toolbar
       colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
-      // font_awesome: [ 'ccm.load', { url: 'resources/fonts/fontawesome-webfont.svg', method: 'GET' } ],
 
       "css_awesome": [ "ccm.load",
         { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ],
 
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
