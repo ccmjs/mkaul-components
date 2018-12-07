@@ -134,9 +134,12 @@ ccm.files[ 'configs.js' ] = {
             "href": "#",
             "data-command": "insertHorizontalRule",
             "title": "insert Horizontal Rule",
-            "inner": {
-              "tag": "i",
-              "class": "fa fa-minus"
+            "inner": { // embedded SVG icon
+              "tag": "svg",
+              "viewBox": "0 0 90 100",
+              "width": "0.7em",
+              "height": "0.8em",
+              "inner": {"tag": "line", "x1": 0, "y1": 95, "x2": 90, "y2": 95, "stroke": "black", "stroke-width": 10}
             }
           },
           {
@@ -301,28 +304,108 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "class": "special",
-            "style": "width: 2.2em;",
+            "style": "width: 2em; margin-right: 0.2em;",
+            "class": "change",
             "data-command": "fontSize",
             "title": "Font size",
             "inner": {
-              // "tag": "i",
-              "class": "fa fa-text-height",
-              tag: "select",
-              inner: [
-                { tag: "option", value: 1, inner: 1 },
-                { tag: "option", value: 2, inner: 2 },
-                { tag: "option", value: 3, inner: 3, selected: true },
-                { tag: "option", value: 4, inner: 4 },
-                { tag: "option", value: 5, inner: 5 },
-                { tag: "option", value: 6, inner: 6 },
-                { tag: "option", value: 7, inner: 7 }
+              "class": "fa",
+              "tag": "select",
+              "inner": [
+                {
+                  "tag": "option",
+                  "value": 0,
+                  "inner": "_"
+                },
+                {
+                  "tag": "option",
+                  "value": 1,
+                  "inner": 1
+                },
+                {
+                  "tag": "option",
+                  "value": 2,
+                  "inner": 2
+                },
+                {
+                  "tag": "option",
+                  "value": 3,
+                  "inner": 3,
+                  "selected": true
+                },
+                {
+                  "tag": "option",
+                  "value": 4,
+                  "inner": 4
+                },
+                {
+                  "tag": "option",
+                  "value": 5,
+                  "inner": 5
+                },
+                {
+                  "tag": "option",
+                  "value": 6,
+                  "inner": 6
+                },
+                {
+                  "tag": "option",
+                  "value": 7,
+                  "inner": 7
+                }
+              ]
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "title": "paste plain text",
+            "class": "click",
+            "data-command": "my_special_listener", // editor extension
+            "inner": {
+              "tag": "svg",
+              "width": "0.8em",
+              "height": "0.8em",
+              "viewBox": "0 0 500 500",
+              "xmlns": "http://www.w3.org/2000/svg",
+              "inner": [
+                {
+                  "tag": "defs"
+                },
+                {
+                  "tag": "rect",
+                  "x": "45",
+                  "y": "35",
+                  "width": "310",
+                  "height": "343",
+                  "style": "fill: none; stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-width: 23px;"
+                },
+                {
+                  "tag": "rect",
+                  "x": "188",
+                  "y": "190",
+                  "width": "271",
+                  "height": "273",
+                  "style": "stroke-linejoin: round; stroke-width: 23px; fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255);"
+                },
+                {
+                  "tag": "rect",
+                  "x": "210",
+                  "y": "211",
+                  "width": "248",
+                  "height": "252",
+                  "style": "stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-width: 23px; fill: rgb(136, 136, 136);"
+                }
               ]
             }
           }
         ]
       }
     },
+    extension: [ "ccm.load", { // // editor extensions
+      "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
+      "type": "module"
+    } ],
     enabled: ['undo', 'redo', 'bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
     colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
 

@@ -29,8 +29,8 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.4.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -60,6 +60,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "undo",
               "inner": {
                   "tag": "i",
@@ -69,6 +70,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "redo",
               "inner": {
                   "tag": "i",
@@ -78,6 +80,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "bold",
               "inner": {
                   "tag": "i",
@@ -87,6 +90,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "italic",
               "inner": {
                   "tag": "i",
@@ -96,6 +100,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "underline",
               "inner": {
                   "tag": "i",
@@ -105,6 +110,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "strikeThrough",
               "inner": {
                   "tag": "i",
@@ -140,6 +146,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "copy",
               "title": "Select some text and press copy button!",
               "inner": {
@@ -150,6 +157,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "cut",
               "title": "Cut",
               "inner": {
@@ -160,6 +168,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "delete",
               "title": "Delete",
               "inner": {
@@ -170,17 +179,21 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "insertHorizontalRule",
               "title": "insert Horizontal Rule",
-              "inner": [{
-                  "tag": "i",
-                  "class": "fa fa-minus"
-                }
-              ]
+              "inner": { // embedded SVG icon
+                "tag": "svg",
+                "viewBox": "0 0 90 100",
+                "width": "0.7em",
+                "height": "0.8em",
+                "inner": {"tag": "line", "x1": 0, "y1": 95, "x2": 90, "y2": 95, "stroke": "black", "stroke-width": 10}
+              }
             },
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "justifyLeft",
               "inner": {
                   "tag": "i",
@@ -190,6 +203,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "justifyCenter",
               "inner": {
                   "tag": "i",
@@ -199,6 +213,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "justifyRight",
               "inner": {
                   "tag": "i",
@@ -208,6 +223,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "justifyFull",
               "inner": {
                   "tag": "i",
@@ -217,6 +233,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "indent",
               "inner": {
                   "tag": "i",
@@ -226,6 +243,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "outdent",
               "inner": {
                   "tag": "i",
@@ -235,6 +253,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "insertUnorderedList",
               "inner": {
                   "tag": "i",
@@ -244,6 +263,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "insertOrderedList",
               "inner": {
                   "tag": "i",
@@ -254,41 +274,48 @@
               "tag": "a",
               "href": "#",
               "data-command": "h1",
+              "class": "click",
               "inner": "H1"
             },
             {
               "tag": "a",
               "href": "#",
               "data-command": "h2",
+              "class": "click",
               "inner": "H2"
             },
             {
               "tag": "a",
               "href": "#",
               "data-command": "h3",
+              "class": "click",
               "inner": "H3"
             },
             {
               "tag": "a",
               "href": "#",
               "data-command": "h4",
+              "class": "click",
               "inner": "H4"
             },
             {
               "tag": "a",
               "href": "#",
               "data-command": "h5",
+              "class": "click",
               "inner": "H5"
             },
             {
               "tag": "a",
               "href": "#",
               "data-command": "h6",
+              "class": "click",
               "inner": "H6"
             },
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "createlink",
               "inner": {
                   "tag": "i",
@@ -298,6 +325,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "unlink",
               "inner": {
                   "tag": "i",
@@ -307,6 +335,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "insertimage",
               "inner": {
                   "tag": "i",
@@ -316,12 +345,14 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "p",
               "inner": "P"
             },
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "subscript",
               "inner": {
                   "tag": "i",
@@ -331,6 +362,7 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
               "data-command": "superscript",
               "inner": {
                   "tag": "i",
@@ -340,28 +372,109 @@
             {
               "tag": "a",
               "href": "#",
-              "class": "special",
-              "style": "width: 2.2em;",
+              "style": "width: 2em; margin-right: 0.2em;",
+              "class": "change",
               "data-command": "fontSize",
               "title": "Font size",
               "inner": {
-                // "tag": "i",
-                "class": "fa fa-text-height",
-                tag: "select",
-                inner: [
-                  { tag: "option", value: 1, inner: 1 },
-                  { tag: "option", value: 2, inner: 2 },
-                  { tag: "option", value: 3, inner: 3, selected: true },
-                  { tag: "option", value: 4, inner: 4 },
-                  { tag: "option", value: 5, inner: 5 },
-                  { tag: "option", value: 6, inner: 6 },
-                  { tag: "option", value: 7, inner: 7 }
+                "class": "fa",
+                "tag": "select",
+                "inner": [
+                  {
+                    "tag": "option",
+                    "value": 0,
+                    "inner": "_"
+                  },
+                  {
+                    "tag": "option",
+                    "value": 1,
+                    "inner": 1
+                  },
+                  {
+                    "tag": "option",
+                    "value": 2,
+                    "inner": 2
+                  },
+                  {
+                    "tag": "option",
+                    "value": 3,
+                    "inner": 3,
+                    "selected": true
+                  },
+                  {
+                    "tag": "option",
+                    "value": 4,
+                    "inner": 4
+                  },
+                  {
+                    "tag": "option",
+                    "value": 5,
+                    "inner": 5
+                  },
+                  {
+                    "tag": "option",
+                    "value": 6,
+                    "inner": 6
+                  },
+                  {
+                    "tag": "option",
+                    "value": 7,
+                    "inner": 7
+                  }
+                ]
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "paste plain text",
+              "class": "click",
+              "data-command": "my_special_listener", // editor extension
+              "inner": {
+                "tag": "svg",
+                "width": "0.8em",
+                "height": "0.8em",
+                "viewBox": "0 0 500 500",
+                "xmlns": "http://www.w3.org/2000/svg",
+                "inner": [
+                  {
+                    "tag": "defs"
+                  },
+                  {
+                    "tag": "rect",
+                    "x": "45",
+                    "y": "35",
+                    "width": "310",
+                    "height": "343",
+                    "style": "fill: none; stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-width: 23px;"
+                  },
+                  {
+                    "tag": "rect",
+                    "x": "188",
+                    "y": "190",
+                    "width": "271",
+                    "height": "273",
+                    "style": "stroke-linejoin: round; stroke-width: 23px; fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255);"
+                  },
+                  {
+                    "tag": "rect",
+                    "x": "210",
+                    "y": "211",
+                    "width": "248",
+                    "height": "252",
+                    "style": "stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-width: 23px; fill: rgb(136, 136, 136);"
+                  }
                 ]
               }
             }
           ]
         }
       },
+      extension: [ "ccm.load", { // // editor extensions
+        "url": "./resources/extension.js",
+        "type": "module"
+      } ],
+
       // enabled: ['h5','h6'], // which toolbar buttons should be on the toolbar
       colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
       // font_awesome: [ 'ccm.load', { url: 'resources/fonts/fontawesome-webfont.svg', method: 'GET' } ],
@@ -498,7 +611,7 @@
           });
         };
 
-        function getCaretPosition( shadowRoot ) {
+        this.getCaretPosition = function( shadowRoot ) {
           if (shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt) {
             const range = shadowRoot.getSelection().getRangeAt(0);
             const selectedObj = shadowRoot.getSelection();
@@ -517,7 +630,7 @@
             return range.startOffset + rangeCount;
           }
           return -1;
-        }
+        };
 
         $.setContent( editor_div, dataset.text );
 
@@ -532,19 +645,19 @@
         ['fore', 'back'].forEach( pal => {
           const palette = toolbar_div.querySelector('.'+pal+'-palette');
           self.colorPalette.forEach( color => {
-            palette.append($.html({
+            palette && palette.append($.html({
               tag: 'a',
               href: '#',
               'data-command': pal+'color',
               'data-value': '#' + color,
               style: 'background-color:' + '#' + color + ';',
-              class: 'palette-item'
+              class: 'click palette-item'
             }));
           });
         });
 
-        // the same toolbar listener for all tools
-        const toolbar_listener = function(e){
+        // the same toolbar click listener for all tools
+        const toolbarClickListener = function(e){
           const command = this.dataset["command"];
           switch (command){
             case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
@@ -560,30 +673,68 @@
               document.execCommand(command, false, url);
               dataset.text = editor_div.innerHTML;
               break;
-            default:
+            case "undo": case "redo": case "bold": case "italic": case "underline": case "strikeThrough": case "copy": case "cut": case "delete": case "insertHorizontalRule": case "justifyLeft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertUnorderedList": case "insertOrderedList": case "unlink": case "subscript": case "superscript": case "insertHTML":
               document.execCommand(command, false, null);
+              dataset.text = editor_div.innerHTML;
+              break;
+            default: // editor extensions:
+              // get listener from remote JavaScript or config or global namespace
+              if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
+                self.extension[ command ](e)
+              } else if ( self[ command ] && typeof self[ command ] === 'function' ){
+                self[ command ](e)
+              } else if ( window[ name ] && typeof window[ name ] === 'function' ){
+                window[ name ](e)
+              } else {
+                debugger;
+              }
               dataset.text = editor_div.innerHTML;
           }
         };
 
-        [...toolbar_div.querySelectorAll('.toolbar a:not(.special)')].forEach( tool => {
-          tool.addEventListener('click', toolbar_listener.bind( tool ) );
+        // standard listener for change events
+        const toolbarChangeListener = function(e){
+          const command = this.dataset["command"];
+          switch (command){
+            case "fontSize":
+              const select = this.querySelector('select');
+              const size = select.value;
+              document.execCommand(command, false, parseInt( size ));
+              dataset.text = editor_div.innerHTML;
+              select.value = 0; // set back to default
+              break;
+            default: // editor extensions:
+              // get listener from remote JavaScript or config or global namespace
+              if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
+                self.extension[ command ](e)
+              } else if ( self[ command ] && typeof self[ command ] === 'function' ){
+                self[ command ](e)
+              } else if ( window[ name ] && typeof window[ name ] === 'function' ){
+                window[ name ](e)
+              } else {
+                debugger;
+              }
+              dataset.text = editor_div.innerHTML;
+          }
+        };
+
+        // add click event listener
+        [...toolbar_div.querySelectorAll('.toolbar .click')].forEach( tool => {
+          tool.addEventListener('click', toolbarClickListener.bind( tool ) );
         });
 
-        // special handling for change event
-        [...toolbar_div.querySelectorAll('.toolbar .special')].forEach( tool => {
-          tool.addEventListener('change', (e) => {
-            const command = tool.dataset["command"];
-            const select = toolbar_div.querySelector('select');
-            const size = select.value;
-            document.execCommand(command, false, parseInt( size ));
-            dataset.text = editor_div.innerHTML;
-            select.value = 3; // set back to default
-          } );
+        // add change event listener
+        [...toolbar_div.querySelectorAll('.toolbar .change')].forEach( tool => {
+          tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
+
+        // SVG hack: paint all svg icons which are inside the DOM but not painted
+        [...toolbar_div.querySelectorAll('.toolbar svg')].forEach(svg=>{
+          svg.parentNode.innerHTML += '';
+        });
 
       };
 
