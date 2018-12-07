@@ -3,9 +3,9 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.1.0)
  * @changes
- * version 1.0.0 11/29/2018
+ * version 2.1.0 7.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -23,7 +23,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [1,0,0],
+    version: [2,1,0],
     
     /**
      * recommended used framework version
@@ -472,7 +472,7 @@
         }
       },
       extension: [ "ccm.load", { // // editor extensions
-        "url": "./resources/extension.js",
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
         "type": "module"
       } ],
 
@@ -485,8 +485,8 @@
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ],
 
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
