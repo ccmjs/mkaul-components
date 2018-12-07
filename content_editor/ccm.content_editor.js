@@ -548,11 +548,11 @@
             switch( item.type ){
               case 'text/plain':
                 const pastedText = e.clipboardData.getData('text/plain');
-                // process pastedText
+                // process pastedText here
                 break;
               case 'text/html':
                 const pastedHTML = e.clipboardData.getData('text/html');
-                // process pastedHTML
+                // process pastedHTML here
                 break;
               case 'image/png':
                 const URLObj = window.URL || window.webkitURL;
@@ -611,27 +611,6 @@
           });
         };
 
-        this.getCaretPosition = function( shadowRoot ) {
-          if (shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt) {
-            const range = shadowRoot.getSelection().getRangeAt(0);
-            const selectedObj = shadowRoot.getSelection();
-            let rangeCount = 0;
-            const childNodes = selectedObj.anchorNode.parentNode.childNodes;
-            [...childNodes].forEach(childNode => {
-              if (childNode === selectedObj.anchorNode) {
-                return;
-              }
-              if (childNode.outerHTML)
-                rangeCount += childNode.outerHTML.length;
-              else if (childNode.nodeType === 3) {
-                rangeCount += childNode.textContent.length;
-              }
-            });
-            return range.startOffset + rangeCount;
-          }
-          return -1;
-        };
-
         $.setContent( editor_div, dataset.text );
 
         // filter enabled tools
@@ -656,8 +635,26 @@
           });
         });
 
+        // add click event listener
+        [...toolbar_div.querySelectorAll('.toolbar .click')].forEach( tool => {
+          tool.addEventListener('click', toolbarClickListener.bind( tool ) );
+        });
+
+        // add change event listener
+        [...toolbar_div.querySelectorAll('.toolbar .change')].forEach( tool => {
+          tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
+        });
+
+        // render main HTML structure
+        $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
+
+        // SVG hack: paint all svg icons which are inside the DOM but not painted
+        [...toolbar_div.querySelectorAll('.toolbar svg')].forEach(svg=>{
+          svg.parentNode.innerHTML += '';
+        });
+
         // the same toolbar click listener for all tools
-        const toolbarClickListener = function(e){
+        function toolbarClickListener(e){
           const command = this.dataset["command"];
           switch (command){
             case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
@@ -677,23 +674,14 @@
               document.execCommand(command, false, null);
               dataset.text = editor_div.innerHTML;
               break;
-            default: // editor extensions:
-              // get listener from remote JavaScript or config or global namespace
-              if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
-                self.extension[ command ](e)
-              } else if ( self[ command ] && typeof self[ command ] === 'function' ){
-                self[ command ](e)
-              } else if ( window[ name ] && typeof window[ name ] === 'function' ){
-                window[ name ](e)
-              } else {
-                debugger;
-              }
+            default: // editor extensions
+              extension_listener(command, e);
               dataset.text = editor_div.innerHTML;
           }
-        };
+        }
 
         // standard listener for change events
-        const toolbarChangeListener = function(e){
+        function toolbarChangeListener(e){
           const command = this.dataset["command"];
           switch (command){
             case "fontSize":
@@ -703,38 +691,47 @@
               dataset.text = editor_div.innerHTML;
               select.value = 0; // set back to default
               break;
-            default: // editor extensions:
-              // get listener from remote JavaScript or config or global namespace
-              if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
-                self.extension[ command ](e)
-              } else if ( self[ command ] && typeof self[ command ] === 'function' ){
-                self[ command ](e)
-              } else if ( window[ name ] && typeof window[ name ] === 'function' ){
-                window[ name ](e)
-              } else {
-                debugger;
-              }
+            default: // editor extensions
+              extension_listener(command, e);
               dataset.text = editor_div.innerHTML;
           }
+        }
+
+        // listeners for editor extensions
+        function extension_listener(command, e){
+          // get listener from remote JavaScript or config or global namespace
+          if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
+            self.extension[ command ](e)
+          } else if ( self[ command ] && typeof self[ command ] === 'function' ){
+            self[ command ](e)
+          } else if ( window[ name ] && typeof window[ name ] === 'function' ){
+            window[ name ](e)
+          } else {
+            debugger;
+          }
+        }
+
+        this.getCaretPosition = function() {
+          const shadowRoot = self.element.parentNode;
+          if (shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt) {
+            const range = shadowRoot.getSelection().getRangeAt(0);
+            const selectedObj = shadowRoot.getSelection();
+            let rangeCount = 0;
+            const childNodes = selectedObj.anchorNode.parentNode.childNodes;
+            [...childNodes].forEach(childNode => {
+              if (childNode === selectedObj.anchorNode) {
+                return;
+              }
+              if (childNode.outerHTML)
+                rangeCount += childNode.outerHTML.length;
+              else if (childNode.nodeType === 3) {
+                rangeCount += childNode.textContent.length;
+              }
+            });
+            return range.startOffset + rangeCount;
+          }
+          return -1;
         };
-
-        // add click event listener
-        [...toolbar_div.querySelectorAll('.toolbar .click')].forEach( tool => {
-          tool.addEventListener('click', toolbarClickListener.bind( tool ) );
-        });
-
-        // add change event listener
-        [...toolbar_div.querySelectorAll('.toolbar .change')].forEach( tool => {
-          tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
-        });
-
-        // render main HTML structure
-        $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
-
-        // SVG hack: paint all svg icons which are inside the DOM but not painted
-        [...toolbar_div.querySelectorAll('.toolbar svg')].forEach(svg=>{
-          svg.parentNode.innerHTML += '';
-        });
 
       };
 
