@@ -29,6 +29,14 @@
                 ]
             },
             {
+                "title": "medium",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "medium"
+                ]
+            },
+            {
                 "title": "full",
                 "config": [
                     "ccm.get",
