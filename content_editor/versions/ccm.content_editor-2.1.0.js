@@ -471,6 +471,9 @@
           ]
         }
       },
+
+      change_listener_on_key_up: true,
+
       extension: [ "ccm.load", { // // editor extensions
         "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
         "type": "module"
@@ -548,10 +551,11 @@
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
 
-        // add keyup listener
-        editor_div.addEventListener('keyup', function(e){
-          update_data();
-        });
+        // add keyup listener if configured
+        if ( self.change_listener_on_key_up )
+          editor_div.addEventListener('keyup', function(e){
+            update_data();
+          });
 
         editor_div.onpaste = function(e) {
           [...e.clipboardData.items].forEach((item)=>{
@@ -646,12 +650,12 @@
         });
 
         // add click event listener
-        [...toolbar_div.querySelectorAll('.toolbar .click')].forEach( tool => {
+        [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
           tool.addEventListener('click', toolbarClickListener.bind( tool ) );
         });
 
         // add change event listener
-        [...toolbar_div.querySelectorAll('.toolbar .change')].forEach( tool => {
+        [...toolbar_div.querySelectorAll('.change')].forEach( tool => {
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
@@ -659,7 +663,7 @@
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
-        [...toolbar_div.querySelectorAll('.toolbar svg')].forEach(svg=>{
+        [...toolbar_div.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
 

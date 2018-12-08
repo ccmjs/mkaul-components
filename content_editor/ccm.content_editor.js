@@ -3,9 +3,9 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.1.0)
  * @changes
- * version 1.0.0 11/29/2018
+ * version 2.1.0 7.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -23,7 +23,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [1,0,0],
+    // version: [2,1,0],
     
     /**
      * recommended used framework version
@@ -471,6 +471,9 @@
           ]
         }
       },
+
+      change_listener_on_key_up: true,
+
       extension: [ "ccm.load", { // // editor extensions
         "url": "./resources/extension.js",
         "type": "module"
@@ -548,7 +551,8 @@
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
 
-        // add keyup listener
+        // add keyup listener if configured
+        if ( self.change_listener_on_key_up )
         editor_div.addEventListener('keyup', function(e){
           update_data();
         });
@@ -646,12 +650,12 @@
         });
 
         // add click event listener
-        [...toolbar_div.querySelectorAll('.toolbar .click')].forEach( tool => {
+        [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
           tool.addEventListener('click', toolbarClickListener.bind( tool ) );
         });
 
         // add change event listener
-        [...toolbar_div.querySelectorAll('.toolbar .change')].forEach( tool => {
+        [...toolbar_div.querySelectorAll('.change')].forEach( tool => {
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
@@ -659,7 +663,7 @@
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
-        [...toolbar_div.querySelectorAll('.toolbar svg')].forEach(svg=>{
+        [...toolbar_div.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
 
