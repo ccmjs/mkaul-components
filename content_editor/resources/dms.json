@@ -212,7 +212,7 @@
                                         },
                                         {
                                             "label": "Font Name",
-                                            "value": "fontName"
+                                            "value": "fontname"
                                         },
                                         {
                                             "label": "Font Size 1 - 7",
@@ -236,18 +236,11 @@
                                 },
                                 {
                                     "name": "onchange",
-                                    "type": "hidden",
-                                    "value": [
-                                        "ccm.load",
-                                        {
-                                            "type": "module",
-                                            "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js"
-                                        }
-                                    ]
+                                    "type": "hidden"
                                 },
                                 {
                                     "label": "onchange function",
-                                    "name": "onchange.value.1.url",
+                                    "name": "onchange.1.url",
                                     "type": "text",
                                     "info": "URL to ES6 file, which exports the onchange callback"
                                 },
@@ -259,18 +252,11 @@
                                 },
                                 {
                                     "name": "extensions",
-                                    "type": "hidden",
-                                    "value": [
-                                        "ccm.load",
-                                        {
-                                            "type": "module",
-                                            "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js"
-                                        }
-                                    ]
+                                    "type": "hidden"
                                 },
                                 {
                                     "label": "extensions",
-                                    "name": "extensions.value.1.url",
+                                    "name": "extensions.1.url",
                                     "type": "text",
                                     "info": "URL to ES6 file, which exports the extensions as callbacks"
                                 },
@@ -296,38 +282,27 @@
                                 },
                                 {
                                     "name": "css_awesome",
-                                    "type": "hidden",
-                                    "value": [
-                                        "ccm.load",
-                                        {
-                                            "context": "head",
-                                            "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-                                        },
-                                        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-                                    ]
+                                    "type": "hidden"
                                 },
                                 {
                                     "label": "css_awesome",
-                                    "name": "css_awesome.value.1.url",
+                                    "name": "css_awesome.1.url",
                                     "type": "text",
                                     "info": "URL to CSS file for awesome font"
                                 },
                                 {
                                     "label": "css_awesome",
-                                    "name": "css_awesome.value.2",
+                                    "name": "css_awesome.2",
                                     "type": "text",
                                     "info": "same URL to CSS file for awesome font"
                                 },
                                 {
                                     "name": "css",
-                                    "type": "hidden",
-                                    "value": [
-                                        "ccm.load"
-                                    ]
+                                    "type": "hidden"
                                 },
                                 {
                                     "label": "CSS",
-                                    "name": "css.value.1",
+                                    "name": "css.1",
                                     "type": "text",
                                     "info": "URL to CSS file for layouting the editor and the toolbar"
                                 }
