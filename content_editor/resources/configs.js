@@ -7,10 +7,21 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
+
     key: "demo",
+
     data: {
-      text: "Demo Text: Edit here ..."
+      text: 'Demo Text',
+      position: 6 // cursor position
     },
+
+    // data: {
+    //   "store": [ "ccm.store", { local: 'resources/dataset.json' } ],
+    //   "key": "demo"
+    // },
+
+    onchange: function(){ console.log( this.getValue() ); },
+
     html: {
       editor: {
         id: 'editor',
@@ -22,6 +33,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "undo",
             "inner": {
               "tag": "i",
@@ -31,6 +43,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "redo",
             "inner": {
               "tag": "i",
@@ -40,6 +53,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "bold",
             "inner": {
               "tag": "i",
@@ -49,6 +63,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "italic",
             "inner": {
               "tag": "i",
@@ -58,6 +73,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "underline",
             "inner": {
               "tag": "i",
@@ -67,6 +83,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "strikeThrough",
             "inner": {
               "tag": "i",
@@ -102,6 +119,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "copy",
             "title": "Select some text and press copy button!",
             "inner": {
@@ -112,6 +130,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "cut",
             "title": "Cut",
             "inner": {
@@ -122,6 +141,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "delete",
             "title": "Delete",
             "inner": {
@@ -132,6 +152,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "insertHorizontalRule",
             "title": "insert Horizontal Rule",
             "inner": { // embedded SVG icon
@@ -145,6 +166,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "justifyLeft",
             "inner": {
               "tag": "i",
@@ -154,6 +176,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "justifyCenter",
             "inner": {
               "tag": "i",
@@ -163,6 +186,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "justifyRight",
             "inner": {
               "tag": "i",
@@ -172,6 +196,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "justifyFull",
             "inner": {
               "tag": "i",
@@ -181,6 +206,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "indent",
             "inner": {
               "tag": "i",
@@ -190,6 +216,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "outdent",
             "inner": {
               "tag": "i",
@@ -199,6 +226,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "insertUnorderedList",
             "inner": {
               "tag": "i",
@@ -208,6 +236,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "insertOrderedList",
             "inner": {
               "tag": "i",
@@ -218,41 +247,48 @@ ccm.files[ 'configs.js' ] = {
             "tag": "a",
             "href": "#",
             "data-command": "h1",
+            "class": "click",
             "inner": "H1"
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "h2",
+            "class": "click",
             "inner": "H2"
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "h3",
+            "class": "click",
             "inner": "H3"
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "h4",
+            "class": "click",
             "inner": "H4"
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "h5",
+            "class": "click",
             "inner": "H5"
           },
           {
             "tag": "a",
             "href": "#",
             "data-command": "h6",
+            "class": "click",
             "inner": "H6"
           },
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "createlink",
             "inner": {
               "tag": "i",
@@ -262,6 +298,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "unlink",
             "inner": {
               "tag": "i",
@@ -271,6 +308,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "insertimage",
             "inner": {
               "tag": "i",
@@ -280,12 +318,14 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "p",
             "inner": "P"
           },
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "subscript",
             "inner": {
               "tag": "i",
@@ -295,6 +335,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
             "data-command": "superscript",
             "inner": {
               "tag": "i",
@@ -402,11 +443,16 @@ ccm.files[ 'configs.js' ] = {
         ]
       }
     },
+
+    change_listener_on_key_up: true,
+
     extension: [ "ccm.load", { // // editor extensions
       "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
       "type": "module"
     } ],
-    enabled: ['undo', 'redo', 'bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
+
+    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
+
     colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
 
     "css_awesome": [ "ccm.load",
@@ -414,8 +460,8 @@ ccm.files[ 'configs.js' ] = {
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     ],
 
-    // css: [ 'ccm.load',  'resources/default.css' ],
-    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+    // onfinish: function( instance, results ){ console.log( results ); }
   },
   "localhost": {
     key: "localhost",
