@@ -200,8 +200,8 @@
               tag: 'a',
               href: '#',
               'data-command': pal+'color',
-              'data-value': '#' + color,
-              style: 'background-color:' + '#' + color + ';',
+              'data-value': color,
+              style: 'background-color:' + color + ';',
               class: 'click palette-item'
             }));
           });
@@ -220,8 +220,6 @@
           }
           if ( toolbar_div.querySelector('.select.fontName') ){
             $.setContent( toolbar_div.querySelector('.select.fontName'), $.html(palette) );
-          } else {
-            debugger
           }
         }
 
