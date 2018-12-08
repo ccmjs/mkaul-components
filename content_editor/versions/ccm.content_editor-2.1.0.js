@@ -474,8 +474,8 @@
 
       change_listener_on_key_up: true,
 
-      extension: [ "ccm.load", { // // editor extensions
-        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
+      extensions: [ "ccm.load", { // // editor extensions
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js",
         "type": "module"
       } ],
 
@@ -715,8 +715,8 @@
         // listeners for editor extensions
         function extension_listener(command, e){
           // get listener from remote JavaScript or config or global namespace
-          if ( self.extension && self.extension[ command ] && typeof self.extension[ command ] === 'function' ){
-            self.extension[ command ](e)
+          if ( self.extensions && self.extensions[ command ] && typeof self.extensions[ command ] === 'function' ){
+            self.extensions[ command ](e)
           } else if ( self[ command ] && typeof self[ command ] === 'function' ){
             self[ command ](e)
           } else if ( window[ name ] && typeof window[ name ] === 'function' ){

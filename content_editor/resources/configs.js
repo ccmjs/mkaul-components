@@ -6,9 +6,118 @@
  */
 
 ccm.files[ 'configs.js' ] = {
-  "demo": {
+  "tiny": {
+    key: "tiny",
 
-    key: "demo",
+    data: {
+      text: 'Demo Text for a tiny editor',
+      position: 6 // cursor position
+    },
+
+    html: {
+      editor: {
+        id: 'editor',
+        contenteditable: true
+      },
+      toolbar: {
+        "class": "toolbar",
+      }
+    }
+  },
+
+  "small": {
+    key: "small",
+
+    data: {
+      text: 'Demo Text for a <b>small</b> editor',
+      position: 6 // cursor position
+    },
+
+    html: {
+      editor: {
+        id: 'editor',
+        contenteditable: true
+      },
+      toolbar: {
+        "class": "toolbar",
+        "inner": [
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "undo",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-undo"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "redo",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-repeat"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "toggle",
+            "title": "toggle content editable",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-toggle-on"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "bold",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-bold"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "italic",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-italic"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "underline",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-underline"
+            }
+          }
+        ]
+      }
+    },
+
+    "css_awesome": [ "ccm.load",
+      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    ],
+
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+
+  },
+
+  "full": {
+
+    key: "full",
 
     data: {
       text: 'Demo Text',
@@ -54,6 +163,17 @@ ccm.files[ 'configs.js' ] = {
             "tag": "a",
             "href": "#",
             "class": "click",
+            "data-command": "toggle",
+            "title": "toggle content editable",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-toggle-on"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
             "data-command": "bold",
             "inner": {
               "tag": "i",
@@ -88,6 +208,56 @@ ccm.files[ 'configs.js' ] = {
             "inner": {
               "tag": "i",
               "class": "fa fa-strikethrough"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "change",
+            "style": "width: auto; margin-right: 5px;",
+            "title": "Font color: Changes a font color for the selection or at the insertion point",
+            "data-command": "forecolor",
+            "inner": [
+              {
+                "tag": 'i',
+                "class": 'fa fa-font',
+                "style": "color:#C96;"
+              },
+              {
+                "tag": "input",
+                "type": "color"
+              }
+            ]
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "change",
+            "style": "width: auto; margin-right: 5px;",
+            "title": "background color",
+            "data-command": "backcolor",
+            "inner": [
+              {
+                "tag": 'i',
+                "class": 'fa fa-font',
+                "style": "background:#C96;"
+              },
+              {
+                "tag": "input",
+                "type": "color"
+              }
+            ]
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "change",
+            "style": "width: auto; margin-right: 5px;",
+            "title": "hiliteColor: Changes the background color for the selection or at the insertion point",
+            "data-command": "hilitecolor",
+            "inner": {
+              "tag": "input",
+              "type": "color"
             }
           },
           {
@@ -289,6 +459,29 @@ ccm.files[ 'configs.js' ] = {
             "tag": "a",
             "href": "#",
             "class": "click",
+            "data-command": "removeformat",
+            "title": "Removes all formatting from the current selection",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-eraser"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "style": "background-color: grey;",
+            "class": "click",
+            "data-command": "makeExternalLink",
+            "title": "make external link",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-link"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
             "data-command": "createlink",
             "inner": {
               "tag": "i",
@@ -345,7 +538,20 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "style": "width: 2em; margin-right: 0.2em;",
+            "style": "width: auto; margin-right: 0.2em;",
+            "class": "change",
+            "data-command": "fontName",
+            "title": "Font Name",
+            "inner": {
+              "class": "fa select fontName",
+              "tag": "select",
+              "inner": []
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "style": "width: auto; margin-right: 0.2em;",
             "class": "change",
             "data-command": "fontSize",
             "title": "Font size",
@@ -446,14 +652,16 @@ ccm.files[ 'configs.js' ] = {
 
     change_listener_on_key_up: true,
 
-    extension: [ "ccm.load", { // // editor extensions
-      "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extension.js",
+    extensions: [ "ccm.load", { // // editor extensions
+      "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js",
       "type": "module"
     } ],
 
     enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize' ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF'],
+
+    fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
 
     "css_awesome": [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },

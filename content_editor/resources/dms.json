@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Content Editor for rich texts using contentEditable",
     "description": "With this tiny editor rich text editing can be embedded in any web page ",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-2.1.0.js",
-    "version": "2.1.0",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-2.2.0.js",
+    "version": "2.2.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -51,6 +51,10 @@
                                             "value": "redo"
                                         },
                                         {
+                                            "label": "toggle content editable",
+                                            "value": "toggle"
+                                        },
+                                        {
                                             "label": "bold",
                                             "value": "bold"
                                         },
@@ -65,6 +69,30 @@
                                         {
                                             "label": "strike through",
                                             "value": "strikeThrough"
+                                        },
+                                        {
+                                            "label": "Font Color Chooser",
+                                            "value": "forecolor"
+                                        },
+                                        {
+                                            "label": "Background Color Chooser",
+                                            "value": "backcolor"
+                                        },
+                                        {
+                                            "label": "Hilite Color Chooser",
+                                            "value": "hilitecolor"
+                                        },
+                                        {
+                                            "label": "copy",
+                                            "value": "copy"
+                                        },
+                                        {
+                                            "label": "cut",
+                                            "value": "cut"
+                                        },
+                                        {
+                                            "label": "delete",
+                                            "value": "delete"
                                         },
                                         {
                                             "label": "insert Horizontal Rule",
@@ -127,6 +155,14 @@
                                             "value": "h6"
                                         },
                                         {
+                                            "label": "remove format",
+                                            "value": "removeformat"
+                                        },
+                                        {
+                                            "label": "make external link",
+                                            "value": "makeExternalLink"
+                                        },
+                                        {
                                             "label": "create link",
                                             "value": "createlink"
                                         },
@@ -151,8 +187,16 @@
                                             "value": "superscript"
                                         },
                                         {
+                                            "label": "Font Name",
+                                            "value": "fontName"
+                                        },
+                                        {
                                             "label": "Font Size 1 - 7",
                                             "value": "fontSize"
+                                        },
+                                        {
+                                            "label": "Extension",
+                                            "value": "my_special_listener"
                                         }
                                     ]
                                 },
@@ -165,6 +209,101 @@
                                     "name": "data.text",
                                     "type": "textarea",
                                     "info": "Initial Text, which is shown immediately after the embedded editor is loaded"
+                                },
+                                {
+                                    "name": "onchange",
+                                    "type": "hidden",
+                                    "value": [
+                                        "ccm.load",
+                                        {
+                                            "type": "module"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "onchange function",
+                                    "name": "onchange.value.1.url",
+                                    "type": "text",
+                                    "info": "URL to ES6 file, which exports the onchange callback"
+                                },
+                                {
+                                    "label": "change listener fired on key up",
+                                    "name": "change_listener_on_key_up",
+                                    "type": "checkbox",
+                                    "info": "Should the onchange callback be fired on every keyup event?"
+                                },
+                                {
+                                    "name": "extensions",
+                                    "type": "hidden",
+                                    "value": [
+                                        "ccm.load",
+                                        {
+                                            "type": "module"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "extensions",
+                                    "name": "extensions.value.1.url",
+                                    "type": "text",
+                                    "info": "URL to ES6 file, which exports the extensions as callbacks"
+                                },
+                                {
+                                    "label": "color palette",
+                                    "type": "several",
+                                    "info": "color palette for font and background color",
+                                    "item": {
+                                        "label": "color %nr%",
+                                        "name": "colorPalette",
+                                        "type": "color"
+                                    }
+                                },
+                                {
+                                    "label": "List of Fonts",
+                                    "type": "several",
+                                    "info": "Names of fonts",
+                                    "item": {
+                                        "label": "font %nr%",
+                                        "name": "fontList",
+                                        "type": "text"
+                                    }
+                                },
+                                {
+                                    "name": "css_awesome",
+                                    "type": "hidden",
+                                    "value": [
+                                        "ccm.load",
+                                        {
+                                            "context": "head",
+                                            "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                                        },
+                                        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                                    ]
+                                },
+                                {
+                                    "label": "css_awesome",
+                                    "name": "css_awesome.value.1.url",
+                                    "type": "text",
+                                    "info": "URL to CSS file for awesome font"
+                                },
+                                {
+                                    "label": "css_awesome",
+                                    "name": "css_awesome.value.2",
+                                    "type": "text",
+                                    "info": "same URL to CSS file for awesome font"
+                                },
+                                {
+                                    "name": "css",
+                                    "type": "hidden",
+                                    "value": [
+                                        "ccm.load"
+                                    ]
+                                },
+                                {
+                                    "label": "CSS",
+                                    "name": "css.value.1",
+                                    "type": "text",
+                                    "info": "URL to CSS file for layouting the editor and the toolbar"
                                 }
                             ]
                         }
@@ -187,6 +326,6 @@
             }
         ]
     },
-    "updated_at": "2018-12-07T14:41:22+02:00",
+    "updated_at": "2018-12-08T14:41:22+02:00",
     "created_at": "2018-12-01T14:41:22+02:00"
 }
