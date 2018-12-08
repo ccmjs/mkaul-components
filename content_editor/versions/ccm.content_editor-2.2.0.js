@@ -186,7 +186,7 @@
         $.setContent( editor_div, dataset.text );
 
         // filter enabled tools
-        if ( self.enabled ){
+        if ( self.enabled && self.html.toolbar.inner ){
           self.html.toolbar.inner = self.html.toolbar.inner.filter(tool=>self.enabled.includes(tool['data-command']) || ! tool['data-command'] );
         }
 
