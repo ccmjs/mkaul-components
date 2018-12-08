@@ -540,10 +540,10 @@ ccm.files[ 'configs.js' ] = {
             "href": "#",
             "style": "width: auto; margin-right: 0.2em;",
             "class": "change",
-            "data-command": "fontName",
+            "data-command": "fontname",
             "title": "Font Name",
             "inner": {
-              "class": "fa select fontName",
+              "class": "fa select fontname",
               "tag": "select",
               "inner": []
             }

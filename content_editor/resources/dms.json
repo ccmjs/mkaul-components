@@ -13,11 +13,27 @@
     "ignore": {
         "demos": [
             {
-                "title": "demo",
+                "title": "tiny",
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
-                    "demo"
+                    "tiny"
+                ]
+            },
+            {
+                "title": "small",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "small"
+                ]
+            },
+            {
+                "title": "full",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "full"
                 ]
             }
         ],
@@ -216,7 +232,8 @@
                                     "value": [
                                         "ccm.load",
                                         {
-                                            "type": "module"
+                                            "type": "module",
+                                            "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js"
                                         }
                                     ]
                                 },
@@ -238,7 +255,8 @@
                                     "value": [
                                         "ccm.load",
                                         {
-                                            "type": "module"
+                                            "type": "module",
+                                            "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js"
                                         }
                                     ]
                                 },

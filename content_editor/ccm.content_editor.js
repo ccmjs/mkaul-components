@@ -218,7 +218,11 @@
               inner: font
             });
           }
-          $.setContent( toolbar_div.querySelector('.select.fontName'), $.html(palette) );
+          if ( toolbar_div.querySelector('.select.fontName') ){
+            $.setContent( toolbar_div.querySelector('.select.fontName'), $.html(palette) );
+          } else {
+            debugger
+          }
         }
 
         // add click event listener
