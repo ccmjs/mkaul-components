@@ -672,6 +672,19 @@ ccm.files[ 'configs.js' ] = {
     // onfinish: function( instance, results ){ console.log( results ); }
   },
 
+  "audio_video": {
+    key: "audio_video",
+
+    data: {
+      text: 'Demo Text',
+      position: 6 // cursor position
+    },
+
+    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock" ]'
+
+  },
+
+
   "ccm": {
     key: "ccm",
 
