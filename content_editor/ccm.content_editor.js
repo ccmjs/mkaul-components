@@ -984,9 +984,9 @@
                 await component.ccm.start( component, config );
                 newSpan.firstChild.style = "display: inline-block;";
 
-                const range = editor_div.parentNode.parentNode.getSelection().getRangeAt(0);
-                if ( range ){
-                  range.insertNode( newSpan );
+                const selection = editor_div.parentNode.parentNode.getSelection();
+                if ( selection.rangeCount > 0 ){
+                  selection.getRangeAt(0).insertNode( newSpan );
                 } else {
                   editor_div.appendChild( newSpan );
                 }
