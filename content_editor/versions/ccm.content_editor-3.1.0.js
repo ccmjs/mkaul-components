@@ -811,7 +811,7 @@
 
         async function fill_select_input_field_for_all_components(){
 
-          if ( self.enabled.includes('select') ){
+          if ( self.enabled && self.enabled.includes('select') ){
             const all_buttons = self.html.toolbar.inner;
             let select_array;
             for ( const button of all_buttons ){
