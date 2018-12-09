@@ -606,7 +606,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "title": "paste plain text",
+            "title": "alert Hello World",
             "class": "click",
             "data-command": "my_special_listener", // editor extension
             "inner": {
@@ -1211,7 +1211,7 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "title": "paste plain text",
+            "title": "alert Hello World",
             "class": "click",
             "data-command": "my_special_listener", // editor extension
             "inner": {

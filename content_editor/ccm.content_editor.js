@@ -613,8 +613,6 @@
         "type": "module"
       } ],
 
-      enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener' ], // which toolbar buttons should be on the toolbar
-
       colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
       fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
@@ -777,49 +775,13 @@
                 const blob = item.getAsFile();
                 pastedImage.src = URLObj.createObjectURL(blob);
 
-                const shadowRoot = self.element.parentNode;
-
                 // Use shadow root instead of document to get position of cursor in text
-                const selectedObj = shadowRoot.getSelection();
-                const parentNode = selectedObj.anchorNode.parentNode;
-                const childNodes = parentNode.childNodes;
-
-                for (const childNode of childNodes){
-                  if (childNode === selectedObj.anchorNode) {
-
-                    if (selectedObj.anchorNode.nodeType === 3){
-                      // cursor is in the middle of a text node.
-                      // break text node into 2 separate nodes and paste image in between:
-                      const textNode = selectedObj.getRangeAt(0).startContainer;
-                      const firstNode = document.createTextNode(textNode.nodeValue.slice(0,selectedObj.getRangeAt(0).startOffset));
-                      const secondNode = document.createTextNode(textNode.nodeValue.slice(selectedObj.getRangeAt(0).startOffset));
-
-                      // insert both text nodes with image in between
-                      parentNode.replaceChild(secondNode, textNode);
-                      parentNode.insertBefore(pastedImage, secondNode);
-                      parentNode.insertBefore(firstNode, pastedImage);
-
-                      // restore the position of the caret
-                      const newRange = document.createRange(); // TODO should be more similar to the old range object
-                      newRange.setStart(secondNode, 0  );
-                      newRange.collapse(true); // true collapses the Range to its start, false to its end.
-                      selectedObj.removeAllRanges();
-                      selectedObj.addRange(newRange);
-
-                    } else { // cursor is between child nodes
-
-                      if ( editor_div.contains( childNode ) ){
-                        if ( editor_div !== childNode ){
-                          parentNode.insertBefore(pastedImage, childNode);
-                        } else {
-                          editor_div.appendChild(pastedImage);
-                        }
-                      } else {
-                          editor_div.appendChild(pastedImage);
-                      }
-                    }
-                    break;
-                  }
+                const shadowRoot = self.element.parentNode;
+                const selection = shadowRoot.getSelection();
+                if ( selection.rangeCount > 0 ){
+                  selection.getRangeAt(0).insertNode( pastedImage );
+                } else {
+                  editor_div.appendChild( pastedImage );
                 }
                 break;
               default:
