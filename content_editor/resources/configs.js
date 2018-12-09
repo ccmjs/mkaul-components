@@ -680,7 +680,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "ccm-clock", "ccm-editor", "ccm-quiz" ]'
+    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]'
 
   },
 
@@ -1107,12 +1107,58 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "style": "width: auto; margin-right: 0.2em;",
-            "class": "change",
-            "data-command": "fontname",
-            "title": "Font Name",
+            "class": "click",
+            "data-command": "audio",
             "inner": {
-              "class": "fa select fontname",
+              "tag": "i",
+              "class": "fa fa-file-audio-o"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "video",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-file-video-o"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "embed",
+            "title": "embed code, e.g. Youtube",
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+            "inner": {
+              "tag": "i",
+              "inner": "&lt;embed&gt;",
+              "class": "fa"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "dms",
+            "title": "DMS-ID",
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+            "inner": {
+              "tag": "i",
+              "inner": "[DMS-ID]",
+              "class": "fa"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "change",
+            "data-command": "select",
+            "title": "select ccm component from DMS",
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+            "inner": {
+              "class": "fa",
               "tag": "select",
               "inner": []
             }
@@ -1156,7 +1202,20 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "style": "width: auto; margin-right: 0.2em;",
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+            "class": "change",
+            "data-command": "fontname",
+            "title": "Font Name",
+            "inner": {
+              "class": "fa select fontname",
+              "tag": "select",
+              "inner": []
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
             "class": "change",
             "data-command": "fontSize",
             "title": "Font size",
@@ -1211,9 +1270,10 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
-            "title": "alert Hello World",
+            "title": "paste plain text",
             "class": "click",
             "data-command": "my_special_listener", // editor extension
+            "style": "width: auto; margin-right: 5px; border-radius: 3px;",
             "inner": {
               "tag": "svg",
               "width": "0.8em",
@@ -1262,7 +1322,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener', 'ccm-clock', 'ccm-editor', 'ccm-quiz' ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz' ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
@@ -1282,7 +1342,9 @@ ccm.files[ 'configs.js' ] = {
       }
     } ],
 
-    quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ]
+    quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
+
+    store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
     // onfinish: function( instance, results ){ console.log( results ); }
   },
 
