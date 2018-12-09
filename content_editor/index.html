@@ -4,11 +4,21 @@
 <meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
 <meta name="licence" content="The MIT License (MIT)">
 <script src="ccm.content_editor.js"></script>
+<style>
+    ccm-clock, div {
+        display: inline-block;
+    }
+
+</style>
 <ccm-content_editor enabled='["toggle", "bold", "h1", "h2", "indent", "outdent", "clock" ]'>
     <h1>Editable Text with <i>ccm</i> components</h1>
     <b>Inner</b> Text here ...
-    <ccm-clock></ccm-clock>
+
     ... and here
-    <ccm-content_editor enabled='["toggle", "bold", "h1"]'></ccm-content_editor>
+    <ccm-content_editor enabled='["toggle", "bold", "h1", "clock"]'>
+        Nested Editor
+
+        with clock and Text
+    </ccm-content_editor>
     Abschlusstext
 </ccm-content_editor>

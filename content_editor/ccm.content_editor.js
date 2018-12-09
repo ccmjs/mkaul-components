@@ -895,19 +895,43 @@
               const uri = prompt('Enter the link here: ', 'https:\/\/');
               document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
               break;
-            case 'clock':
-              // insert ccm instance of clock into HTML code
-              document.execCommand('insertHTML', false, `<ccm-clock id="clock-unique-id"></ccm-clock>`);
+            case 'clock_with_insertHTML': // second best solution for clock insertion
+              (function(){
+                const clockId = 'clockId' + ccm.helper.generateKey();
+                // insert ccm instance of clock into HTML code
+                document.execCommand('insertHTML', false, `<ccm-clock id="${clockId}"></ccm-clock>`);
 
-              // generate ccm dependency out of collected ccm custom elements
-              const child = editor_div.querySelector('#clock-unique-id');
+                // generate ccm dependency out of collected ccm custom elements
+                const child = editor_div.querySelector('#'+clockId);
+                child.style = "display: inline-block;";
+                const component = self.clock;
+                const config = self.clock.config || $.generateConfig( child );
+                config.parent = self;
+                config.root = child;
+                component.ccm.start( component, config );
+                const newDependency = [ 'ccm.start', component, config ];
+                self.dependencies.push( newDependency );
+              })();
+              break;
+            case "clock": // with DOM insertion
               const component = self.clock;
-              const config = self.clock.config || $.generateConfig( child );
+              const config = self.clock.config;
               config.parent = self;
-              config.root = child;
-              component.ccm.start( component, config );
+              const newSpan = document.createElement('span');
+              config.root = newSpan;
+              await component.ccm.start( component, config );
+              newSpan.firstChild.style = "display: inline-block;";
+
+              const range = self.element.parentNode.getSelection().getRangeAt(0);
+              if ( range ){
+                range.insertNode( newSpan );
+              } else {
+                editor_div.appendChild( newSpan );
+              }
+
               const newDependency = [ 'ccm.start', component, config ];
               self.dependencies.push( newDependency );
+
               break;
             case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               document.execCommand(command, false, null);
