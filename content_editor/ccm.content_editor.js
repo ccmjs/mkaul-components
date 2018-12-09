@@ -459,6 +459,26 @@
               "tag": "a",
               "href": "#",
               "class": "click",
+              "data-command": "audio",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-file-audio-o"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "video",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-file-video-o"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
               "data-command": "ccm-clock",
               "title": "insert live Clock",
               "inner": {
@@ -609,16 +629,18 @@
       change_listener_on_key_up: true,
 
       extensions: [ "ccm.load", { // // editor extensions
-        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js",
-        "type": "module"
+        url: "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js",
+        type: "module"
       } ],
 
       colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
       fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
 
-      "css_awesome": [ "ccm.load",
-        { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+      css_awesome: [ "ccm.load",
+        { context: "head",
+          url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        },
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ],
 
@@ -781,6 +803,7 @@
                 if ( selection.rangeCount > 0 ){
                   selection.getRangeAt(0).insertNode( pastedImage );
                 } else {
+                  editor_div.appendChild( document.createTextNode(' '));
                   editor_div.appendChild( pastedImage );
                 }
                 break;
@@ -880,9 +903,29 @@
               const url = prompt('Enter the link here: ', 'https:\/\/');
               document.execCommand(command, false, url);
               break;
+            case 'audio': case 'video':
+              const media_file = prompt('Enter URL here: ', 'https:\/\/');
+              if ( media_file ){
+                const html_node = $.html({
+                  tag: command,
+                  src: media_file,
+                  autoplay: this.dataset["autoplay"] || "false",
+                  controls: this.dataset["controls"] || true,
+                  loop:     this.dataset["loop"] || "false",
+                  inner:    'Your browser does not support the <code>audio</code> element.'
+                });
+                document.execCommand('insertHTML', false, html_node.outerHTML );
+              }
+              // document.execCommand('insertHTML', false, `<${command} src="${media_file}" controls="${this.dataset['controls'] || 'true'}" autoplay="${this.dataset['autoplay'] || 'false'}" loop="${this.dataset['loop'] || 'false'}">Your browser does not support the <code>audio</code> element.</${command}>` );
+              break;
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
-              document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
+              const selection = editor_div.parentNode.parentNode.getSelection();
+              if ( selection.rangeCount > 0 ){
+                document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
+              } else {
+                editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
+              }
               break;
             case 'clock_with_insertHTML': // second best solution for clock insertion
               (function(){
@@ -903,25 +946,26 @@
               })();
               break;
             case "clock": // with DOM insertion
-              const component = self.clock;
-              const config = self.clock.config;
-              config.parent = self;
-              const newSpan = document.createElement('span');
-              config.root = newSpan;
-              await component.ccm.start( component, config );
-              newSpan.firstChild.style = "display: inline-block;";
+              (async function(){
+                const component = self.clock;
+                const config = self.clock.config;
+                config.parent = self;
+                const newSpan = document.createElement('span');
+                config.root = newSpan;
+                await component.ccm.start( component, config );
+                newSpan.firstChild.style = "display: inline-block;";
 
-              const range = self.element.parentNode.getSelection().getRangeAt(0);
-              if ( range ){
-                range.insertNode( newSpan );
-              } else {
-                editor_div.appendChild( newSpan );
-              }
+                const selection = editor_div.parentNode.parentNode.getSelection();
+                if ( selection.rangeCount > 0 ){
+                  range.insertNode( newSpan );
+                } else {
+                  editor_div.appendChild( newSpan );
+                }
 
-              const newDependency = [ 'ccm.start', component, config ];
-              self.dependencies.push( newDependency );
-
-              break;
+                const newDependency = [ 'ccm.start', component, config ];
+                self.dependencies.push( newDependency );
+              })();
+               break;
             case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               document.execCommand(command, false, null);
               break;
@@ -950,6 +994,7 @@
                 if ( selection.rangeCount > 0 ){
                   selection.getRangeAt(0).insertNode( newSpan );
                 } else {
+                  editor_div.appendChild( document.createTextNode(' '));
                   editor_div.appendChild( newSpan );
                 }
 
