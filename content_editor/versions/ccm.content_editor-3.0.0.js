@@ -982,7 +982,7 @@
                 await component.ccm.start( component, config );
                 newSpan.firstChild.style = "display: inline-block;";
 
-                const range = self.element.parentNode.getSelection().getRangeAt(0);
+                const range = editor_div.parentNode.parentNode.getSelection().getRangeAt(0);
                 if ( range ){
                   range.insertNode( newSpan );
                 } else {
