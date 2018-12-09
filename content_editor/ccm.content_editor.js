@@ -458,6 +458,16 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
+              "data-command": "clock",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-clock-o"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
               "style": "width: auto; margin-right: 0.2em;",
               "class": "change",
               "data-command": "fontname",
@@ -589,6 +599,15 @@
       ],
 
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+
+      // other ccm components to be embeddable inside the editor text
+      clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.0.js", {
+          width: "40px",
+          html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
+        }
+      } ],
+
+
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -610,21 +629,81 @@
        */
       let $;
 
-      /**
-       * is called once after the initialization and is then deleted
-       */
-      this.ready = async () => {
-
-        // logging of 'ready' event
-        this.logger && this.logger.log( 'ready' );
+      this.init = async () => {
 
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        if ( self.inner ) self.data.text = self.inner.innerHTML;
+        // no Light DOM? => use empty fragment
+        if ( !this.inner ) this.inner = document.createDocumentFragment();
 
+        // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
+        if ( typeof this.inner === 'string' ) this.inner = document.createRange().createContextualFragment( this.inner );
+
+        // Light DOM is given as ccm HTML data? => convert to HTML DOM Elements
+        if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
+          this.inner = $.html( this.inner );
+
+        // dynamic replacement of placeholders
+        if ( this.placeholder ) [ ...this.inner.children ].map( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
+
+        // collect all ccm dependencies in Light DOM
+        const self = this;
+        if ( !this.dependencies ){
+          this.dependencies = [];
+        }
+        collectDependencies( this.inner );
+
+        /**
+         * see ccm.content.js
+         * collects all dependencies in given DOM Element Node (recursive)
+         * @param {Element} node - DOM Element Node
+         */
+        function collectDependencies( node ) {
+
+          // iterate over all child DOM Element Nodes
+          [ ...node.children ].map( child => {
+
+            // no ccm Custom Element? => abort and collect dependencies inside of it
+            if ( child.tagName.indexOf( 'CCM-' ) !== 0 ) return collectDependencies( child );  // recursive call
+
+            // generate ccm dependency out of collected ccm custom elements
+            const component = getComponent(); if ( !component ) return;
+            const config = $.generateConfig( child );
+            config.parent = self;
+            config.root = child;
+            self.dependencies.push( $.isComponent( component ) ? [ component, config ] : [ 'ccm.start', component, config ] );
+
+            /**
+             * gets object, index or URL of ccm component that corresponds to founded ccm Custom Element
+             * @returns {Object|string}
+             */
+            function getComponent() {
+
+              /**
+               * index of ccm component
+               * @type {string}
+               */
+              const index = child.tagName.substr( 4 ).toLowerCase();
+
+              // editor embedded inside this editor
+              if (index === self.component.index) return self.component;
+
+              // has dependency to ccm component? => result is component object
+              if ( $.isComponent( self[ index ] ) ) return self[ index ];
+
+              // search inner HTML of own Custom Element for a source tag that contains the ccm component URL
+              const sources = self.inner.querySelectorAll( 'source' );
+              for ( let i = 0; i < sources.length; i++ )
+                if ( $.getIndex( sources[ i ].getAttribute( 'src' ) ) === index )
+                  return sources[ i ].getAttribute( 'src' );
+
+            }
+
+          } );
+
+        }
       };
-
 
       /**
        * starts the instance
@@ -775,13 +854,26 @@
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
 
+        // render content that is given via Light DOM
+        $.setContent( editor_div, this.inner );
+
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...toolbar_div.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
 
+        await start_all_embedded_ccm_components();
+
+        async function start_all_embedded_ccm_components(){
+          for ( let i = 0; i < self.dependencies.length; i++ )
+            if ( $.isComponent( self.dependencies[ i ][ 0 ] ) )
+              await self.dependencies[ i ][ 0 ].start( self.dependencies[ i ][ 1 ] );
+            else
+              self.dependencies[ i ] = await $.solveDependency( self.dependencies[ i ] );
+        }
+
         // the same toolbar click listener for all tools
-        function toolbarClickListener(e){
+        async function toolbarClickListener(e){
           const command = this.dataset["command"].toLowerCase();
           switch (command){
             case 'toggle':
@@ -802,6 +894,20 @@
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
               document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
+              break;
+            case 'clock':
+              // insert ccm instance of clock into HTML code
+              document.execCommand('insertHTML', false, `<ccm-clock id="clock-unique-id"></ccm-clock>`);
+
+              // generate ccm dependency out of collected ccm custom elements
+              const child = editor_div.querySelector('#clock-unique-id');
+              const component = self.clock;
+              const config = self.clock.config || $.generateConfig( child );
+              config.parent = self;
+              config.root = child;
+              component.ccm.start( component, config );
+              const newDependency = [ 'ccm.start', component, config ];
+              self.dependencies.push( newDependency );
               break;
             case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               document.execCommand(command, false, null);
@@ -838,6 +944,7 @@
         function update_data(){
           dataset.text = editor_div.innerHTML;
           dataset.position = getCaretPosition();
+          dataset.dependencies = $.clone( self.dependencies );
           self.onchange && self.onchange();
         }
 

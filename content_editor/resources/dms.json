@@ -235,17 +235,7 @@
                                     "info": "Initial Text, which is shown immediately after the embedded editor is loaded"
                                 },
                                 {
-                                    "name": "onchange",
-                                    "type": "hidden"
-                                },
-                                {
-                                    "label": "onchange function",
-                                    "name": "onchange.1.url",
-                                    "type": "text",
-                                    "info": "URL to ES6 file, which exports the onchange callback"
-                                },
-                                {
-                                    "label": "change listener fired on key up",
+                                    "label": "fire change listener on every key up",
                                     "name": "change_listener_on_key_up",
                                     "type": "checkbox",
                                     "info": "Should the onchange callback be fired on every keyup event?"
