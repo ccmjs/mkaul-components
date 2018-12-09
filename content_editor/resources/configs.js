@@ -672,6 +672,18 @@ ccm.files[ 'configs.js' ] = {
     // onfinish: function( instance, results ){ console.log( results ); }
   },
 
+  "ccm": {
+    key: "ccm",
+
+    data: {
+      text: 'Demo Text',
+      position: 6 // cursor position
+    },
+
+    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "ccm-clock", "ccm-editor", "ccm-quiz" ]'
+
+  },
+
   "full": {
 
     key: "full",
@@ -1108,6 +1120,42 @@ ccm.files[ 'configs.js' ] = {
           {
             "tag": "a",
             "href": "#",
+            "class": "click",
+            "data-command": "ccm-clock",
+            "title": "insert live Clock",
+            "inner": {
+              "tag": "i",
+              "class": "fa fa-clock-o"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "ccm-editor",
+            "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-editor", "ccm-quiz" ]',
+            "title": "insert nested editor",
+            "inner": {
+              "tag": "i",
+              "inner": "E",
+              "class": "fa"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "ccm-quiz",
+            "title": "insert nested quiz",
+            "inner": {
+              "tag": "i",
+              "inner": "Q",
+              "class": "fa"
+            }
+          },
+          {
+            "tag": "a",
+            "href": "#",
             "style": "width: auto; margin-right: 0.2em;",
             "class": "change",
             "data-command": "fontSize",
@@ -1214,7 +1262,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener' ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener', 'ccm-clock', 'ccm-editor', 'ccm-quiz' ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
@@ -1226,6 +1274,15 @@ ccm.files[ 'configs.js' ] = {
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+
+    // other ccm components to be embeddable inside the editor text
+    clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.0.js", {
+      width: "40px",
+      html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
+      }
+    } ],
+
+    quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ]
     // onfinish: function( instance, results ){ console.log( results ); }
   },
 

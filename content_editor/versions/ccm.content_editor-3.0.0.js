@@ -4,9 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (2.1.0)
+ * @version latest (3.0.0)
  * @changes
- * version 2.1.0 7.12.2018
+ * version 3.0.0 9.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -24,14 +24,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [2,1,0],
+    version: [3,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -612,8 +612,6 @@
         "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js",
         "type": "module"
       } ],
-
-      enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener' ], // which toolbar buttons should be on the toolbar
 
       colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
