@@ -905,18 +905,18 @@
               break;
             case 'audio': case 'video':
               const media_file = prompt('Enter URL here: ', 'https:\/\/');
-              if ( media_file ){
-                const html_node = $.html({
-                  tag: command,
-                  src: media_file,
-                  autoplay: this.dataset["autoplay"] || "false",
-                  controls: this.dataset["controls"] || true,
-                  loop:     this.dataset["loop"] || "false",
-                  inner:    'Your browser does not support the <code>audio</code> element.'
-                });
-                document.execCommand('insertHTML', false, html_node.outerHTML );
+              if ( media_file.length > 8 ){
+                // const html_node = $.html({
+                //   tag: command,
+                //   src: media_file,
+                //   // autoplay: this.dataset["autoplay"] || "false",
+                //   controls: this.dataset["controls"] || true,
+                //   // loop:     this.dataset["loop"] || "false",
+                //   inner:    'Your browser does not support the <code>audio</code> element.'
+                // });
+                // document.execCommand('insertHTML', false, html_node.outerHTML );
+                document.execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>` );
               }
-              // document.execCommand('insertHTML', false, `<${command} src="${media_file}" controls="${this.dataset['controls'] || 'true'}" autoplay="${this.dataset['autoplay'] || 'false'}" loop="${this.dataset['loop'] || 'false'}">Your browser does not support the <code>audio</code> element.</${command}>` );
               break;
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
@@ -927,44 +927,40 @@
                 editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
               }
               break;
-            case 'clock_with_insertHTML': // second best solution for clock insertion
-              (function(){
-                const clockId = 'clockId' + ccm.helper.generateKey();
-                // insert ccm instance of clock into HTML code
-                document.execCommand('insertHTML', false, `<ccm-clock id="${clockId}"></ccm-clock>`);
+            case 'clock_with_insertHTML': // third best solution for clock insertion
+              const clockId = 'clockId' + ccm.helper.generateKey();
+              // insert ccm instance of clock into HTML code
+              document.execCommand('insertHTML', false, `<ccm-clock id="${clockId}"></ccm-clock>`);
 
-                // generate ccm dependency out of collected ccm custom elements
-                const child = editor_div.querySelector('#'+clockId);
-                child.style = "display: inline-block;";
-                const component = self.clock;
-                const config = self.clock.config || $.generateConfig( child );
-                config.parent = self;
-                config.root = child;
-                component.ccm.start( component, config );
-                const newDependency = [ 'ccm.start', component, config ];
-                self.dependencies.push( newDependency );
-              })();
+              // generate ccm dependency out of collected ccm custom elements
+              const child = editor_div.querySelector('#'+clockId);
+              child.style = "display: inline-block;";
+              const component = self.clock;
+              const config = self.clock.config || $.generateConfig( child );
+              config.parent = self;
+              config.root = child;
+              component.ccm.start( component, config );
+              const newDependency = [ 'ccm.start', component, config ];
+              self.dependencies.push( newDependency );
               break;
-            case "clock": // with DOM insertion
-              (async function(){
-                const component = self.clock;
-                const config = self.clock.config;
-                config.parent = self;
-                const newSpan = document.createElement('span');
-                config.root = newSpan;
-                await component.ccm.start( component, config );
-                newSpan.firstChild.style = "display: inline-block;";
+            case "clock": // second best solution for clock insertion with DOM nodes
+              const clock_component = self.clock;
+              const clock_config = self.clock.config;
+              clock_config.parent = self;
+              const newSpan = document.createElement('span');
+              clock_config.root = newSpan;
+              await clock_component.ccm.start( clock_component, clock_config );
+              newSpan.firstChild.style = "display: inline-block;";
 
-                const selection = editor_div.parentNode.parentNode.getSelection();
-                if ( selection.rangeCount > 0 ){
-                  range.insertNode( newSpan );
-                } else {
-                  editor_div.appendChild( newSpan );
-                }
+              const clock_selection = editor_div.parentNode.parentNode.getSelection();
+              if ( clock_selection.rangeCount > 0 ){
+                clock_selection.getRangeAt(0).insertNode( newSpan );
+              } else {
+                editor_div.appendChild( document.createTextNode(' '));
+                editor_div.appendChild( newSpan );
+              }
 
-                const newDependency = [ 'ccm.start', component, config ];
-                self.dependencies.push( newDependency );
-              })();
+              self.dependencies.push( [ 'ccm.start', clock_component, clock_config ] );
                break;
             case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               document.execCommand(command, false, null);
