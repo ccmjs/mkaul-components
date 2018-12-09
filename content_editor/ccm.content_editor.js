@@ -479,6 +479,45 @@
               "tag": "a",
               "href": "#",
               "class": "click",
+              "data-command": "embed",
+              "title": "embed code, e.g. Youtube",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "inner": {
+                "tag": "i",
+                "inner": "&lt;embed&gt;",
+                "class": "fa"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "dms",
+              "title": "DMS-ID",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "inner": {
+                "tag": "i",
+                "inner": "[DMS-ID]",
+                "class": "fa"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "change",
+              "data-command": "select",
+              "title": "select ccm component from DMS",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "inner": {
+                "class": "fa",
+                "tag": "select",
+                "inner": []
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
               "data-command": "ccm-clock",
               "title": "insert live Clock",
               "inner": {
@@ -514,7 +553,7 @@
             {
               "tag": "a",
               "href": "#",
-              "style": "width: auto; margin-right: 0.2em;",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "class": "change",
               "data-command": "fontname",
               "title": "Font Name",
@@ -527,7 +566,7 @@
             {
               "tag": "a",
               "href": "#",
-              "style": "width: auto; margin-right: 0.2em;",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "class": "change",
               "data-command": "fontSize",
               "title": "Font size",
@@ -585,6 +624,7 @@
               "title": "paste plain text",
               "class": "click",
               "data-command": "my_special_listener", // editor extension
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "tag": "svg",
                 "width": "0.8em",
@@ -655,6 +695,8 @@
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
+      store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
+
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -675,6 +717,12 @@
        * @type {Object.<string,function>}
        */
       let $;
+
+      /**
+       * all ccm components from DMS with name and URL
+       * @type {Object}
+       */
+      const all_components = {};
 
       this.init = async () => {
 
@@ -750,6 +798,38 @@
           } );
 
         }
+
+      };
+
+      /**
+       * is called once after the initialization and is then deleted
+       */
+      this.ready = async () => {
+
+        await fill_select_input_field_for_all_components();
+
+        async function fill_select_input_field_for_all_components(){
+          const all_buttons = self.html.toolbar.inner;
+          let select_array;
+          for ( const button of all_buttons ){
+            if ( button["data-command"] === "select" ){ // "data-command": "select"
+              if ( button.inner ){
+                select_array = button.inner.inner;
+              }
+              break;
+            }
+          }
+
+          const data = await self.store.get({ _id: { $regex: '.*' } });
+
+          for ( const record of data ){
+            select_array.push( { tag: 'option', value: record.key, inner: record.key } );
+            all_components[ record.key ] = record.url;
+          }
+
+          select_array.sort();
+        }
+
       };
 
       /**
@@ -905,17 +985,52 @@
               break;
             case 'audio': case 'video':
               const media_file = prompt('Enter URL here: ', 'https:\/\/');
-              if ( media_file.length > 8 ){
+              if ( media_file && media_file.length > 8 ){
                 // const html_node = $.html({
                 //   tag: command,
                 //   src: media_file,
-                //   // autoplay: this.dataset["autoplay"] || "false",
+                //   autoplay: this.dataset["autoplay"] || false,
                 //   controls: this.dataset["controls"] || true,
-                //   // loop:     this.dataset["loop"] || "false",
+                //   loop:     this.dataset["loop"] || "false",
                 //   inner:    'Your browser does not support the <code>audio</code> element.'
                 // });
                 // document.execCommand('insertHTML', false, html_node.outerHTML );
                 document.execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>` );
+              }
+              break;
+            case 'embed':
+              const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
+              if ( embed_code && embed_code.length > 8 ){
+                document.execCommand('insertHTML', false, embed_code );
+                const embed_div = document.createElement('div');
+                embed_div.innerHTML = embed_div;
+                editor_div.appendChild( embed_div );
+              }
+              break;
+            case 'dms':
+              const component_name = prompt('Enter component name here: ', 'cloze');
+              const dms_id = prompt('Enter DMS-ID here: ', '0123456789');
+              if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+                const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de", key: dms_id });
+                config.parent = self;
+                config.url = all_components[component_name];
+                config.src = all_components[component_name]; // TODO ???
+                const newSpan = document.createElement('span');
+                config.root = newSpan;
+                await self.ccm.start( all_components[component_name], config );
+                newSpan.firstChild.style = "display: inline-block;";
+                // get shadow root
+                // selection = self.element.parentNode.getSelection();
+                const selection = editor_div.parentNode.parentNode.getSelection();
+                if ( selection.rangeCount > 0 ){
+                  selection.getRangeAt(0).insertNode( newSpan );
+                } else {
+                  editor_div.appendChild( document.createTextNode(' '));
+                  editor_div.appendChild( newSpan );
+                }
+
+                const newDependency = [ 'ccm.start', all_components[component_name], config ];
+                self.dependencies.push( newDependency );
               }
               break;
             case 'makeexternallink':
@@ -986,6 +1101,8 @@
                 await component.ccm.start( component, config );
                 newSpan.firstChild.style = "display: inline-block;";
 
+                // get shadow root
+                // selection = self.element.parentNode.getSelection();
                 const selection = editor_div.parentNode.parentNode.getSelection();
                 if ( selection.rangeCount > 0 ){
                   selection.getRangeAt(0).insertNode( newSpan );
@@ -1005,7 +1122,7 @@
         }
 
         // standard listener for change events
-        function toolbarChangeListener(e){
+        async function toolbarChangeListener(e){
           const command = this.dataset["command"].toLowerCase();
           const select = this.querySelector('select');
           const input = this.querySelector('input');
@@ -1020,6 +1137,30 @@
             case "fontname":
               document.execCommand(command, false, select.value);
               select.value = 'default'; // set back to default
+              break;
+            case 'select': // select ccm component from DMS
+              const component_name = select.options[select.selectedIndex].value;
+              const config = {};
+              config.parent = self;
+              config.url = all_components[component_name];
+              config.src = all_components[component_name];
+              const newSpan = document.createElement('span');
+              config.root = newSpan;
+              await self.ccm.start( all_components[component_name], config );
+              newSpan.firstChild.style = "display: inline-block;";
+              // get shadow root
+              // selection = self.element.parentNode.getSelection();
+              const selection = editor_div.parentNode.parentNode.getSelection();
+              if ( selection.rangeCount > 0 ){
+                selection.getRangeAt(0).insertNode( newSpan );
+              } else {
+                editor_div.appendChild( document.createTextNode(' '));
+                editor_div.appendChild( newSpan );
+              }
+
+              const newDependency = [ 'ccm.start', all_components[component_name], config ];
+              self.dependencies.push( newDependency );
+
               break;
             default: // editor extensions
               extension_listener(command, select, value, e);

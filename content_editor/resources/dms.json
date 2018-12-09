@@ -37,6 +37,14 @@
                 ]
             },
             {
+                "title": "Audio/Video",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "audio_video"
+                ]
+            },
+            {
                 "title": "medium",
                 "config": [
                     "ccm.get",
@@ -64,8 +72,62 @@
                         {
                             "defaults": {
                                 "data": {
-                                    "text": "Hello World!"
-                                }
+                                    "text": "Default Demo Text",
+                                    "position": 6
+                                },
+                                "html": {
+                                    "editor": {
+                                        "id": "editor",
+                                        "contenteditable": true
+                                    },
+                                    "toolbar": {
+                                        "class": "toolbar"
+                                    }
+                                },
+                                "enabled": [
+                                    "undo",
+                                    "redo",
+                                    "toggle",
+                                    "bold",
+                                    "italic",
+                                    "underline",
+                                    "strikeThrough",
+                                    "forecolor",
+                                    "backcolor",
+                                    "hilitecolor",
+                                    "copy",
+                                    "cut",
+                                    "delete",
+                                    "insertHorizontalRule",
+                                    "justifyLeft",
+                                    "justifyCenter",
+                                    "justifyRight",
+                                    "justifyFull",
+                                    "indent",
+                                    "outdent",
+                                    "insertUnorderedList",
+                                    "insertOrderedList",
+                                    "h1",
+                                    "h2",
+                                    "h3",
+                                    "h4",
+                                    "h5",
+                                    "h6",
+                                    "removeformat",
+                                    "makeExternalLink",
+                                    "createlink",
+                                    "unlink",
+                                    "insertimage",
+                                    "p",
+                                    "subscript",
+                                    "superscript",
+                                    "fontname",
+                                    "fontSize",
+                                    "my_special_listener",
+                                    "ccm-clock",
+                                    "ccm-editor",
+                                    "ccm-quiz"
+                                ]
                             },
                             "entries": [
                                 {
