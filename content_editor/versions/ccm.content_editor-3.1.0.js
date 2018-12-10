@@ -687,7 +687,7 @@
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
 
       // other ccm components to be embeddable inside the editor text
-      clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.0.js", {
+      clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
           width: "40px",
           html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
         }
