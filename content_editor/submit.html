@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="license" content="The MIT License (MIT)">
+
+<style>body { margin: 0; }</style>
+<script src="https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js"></script>
+
+<ccm-submit-6-7-0 key='{
+    "key": "demo",
+    "entries": [
+{
+"label": "json_builder",
+"name": "json_builder",
+"type": "json_builder",
+"info": "Text Text Text",
+"key": "[\"ccm.get\",\"https://ccmjs.github.io/akless-components/json_builder/resources/configs.js\",\"demo\"]"
+},
+{
+"label": "editor",
+"name": "editor",
+"type": "editor",
+"info": "Text Text Text",
+"key": "[\"ccm.get\",\"https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js\",\"ccm\"]"
+},
+{ "type": "submit" }
+],
+    "content": [ "ccm.component", "https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.0.1.js" ],
+    "json_builder": [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
+      "html.inner.1": "",
+      "directly": true
+    } ],
+    "editor": [ "ccm.component", "ccm.content_editor.js", {
+      "data": {
+        "key": "data",
+        "text": "Demo Text",
+        "position": 6
+      },
+      "inner": "Demo Text 2",
+      "enabled": ["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]
+    } ],
+    "onfinish": {
+      "store": true,
+      "alert": "Saved!"
+    }
+  }'></ccm-submit-6-7-0>

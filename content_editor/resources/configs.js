@@ -680,7 +680,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock" ]'
+    enabled:["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock" ]
 
   },
 
@@ -693,7 +693,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:'["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]'
+    enabled:["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]
 
   },
 
