@@ -83,51 +83,7 @@
                                     "toolbar": {
                                         "class": "toolbar"
                                     }
-                                },
-                                "enabled": [
-                                    "undo",
-                                    "redo",
-                                    "toggle",
-                                    "bold",
-                                    "italic",
-                                    "underline",
-                                    "strikeThrough",
-                                    "forecolor",
-                                    "backcolor",
-                                    "hilitecolor",
-                                    "copy",
-                                    "cut",
-                                    "delete",
-                                    "insertHorizontalRule",
-                                    "justifyLeft",
-                                    "justifyCenter",
-                                    "justifyRight",
-                                    "justifyFull",
-                                    "indent",
-                                    "outdent",
-                                    "insertUnorderedList",
-                                    "insertOrderedList",
-                                    "h1",
-                                    "h2",
-                                    "h3",
-                                    "h4",
-                                    "h5",
-                                    "h6",
-                                    "removeformat",
-                                    "makeExternalLink",
-                                    "createlink",
-                                    "unlink",
-                                    "insertimage",
-                                    "p",
-                                    "subscript",
-                                    "superscript",
-                                    "fontname",
-                                    "fontSize",
-                                    "my_special_listener",
-                                    "ccm-clock",
-                                    "ccm-editor",
-                                    "ccm-quiz"
-                                ]
+                                }
                             },
                             "entries": [
                                 {
@@ -281,6 +237,38 @@
                                             "value": "superscript"
                                         },
                                         {
+                                            "label": "audio",
+                                            "value": "audio"
+                                        },
+                                        {
+                                            "label": "video",
+                                            "value": "video"
+                                        },
+                                        {
+                                            "label": "embed",
+                                            "value": "embed"
+                                        },
+                                        {
+                                            "label": "embed via DMS-ID",
+                                            "value": "dms"
+                                        },
+                                        {
+                                            "label": "select ccm component from DMS",
+                                            "value": "select"
+                                        },
+                                        {
+                                            "label": "ccm-clock",
+                                            "value": "ccm-clock"
+                                        },
+                                        {
+                                            "label": "ccm-editor",
+                                            "value": "ccm-editor"
+                                        },
+                                        {
+                                            "label": "ccm-quiz",
+                                            "value": "ccm-quiz"
+                                        },
+                                        {
                                             "label": "Font Name",
                                             "value": "fontname"
                                         },
@@ -387,6 +375,6 @@
             }
         ]
     },
-    "updated_at": "2018-12-09T14:41:22+02:00",
+    "updated_at": "2018-12-10T15:20:00+00:00",
     "created_at": "2018-12-01T14:41:22+02:00"
 }

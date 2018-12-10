@@ -1146,7 +1146,7 @@ ccm.files[ 'configs.js' ] = {
             "style": "width: auto; margin-right: 5px; border-radius: 3px;",
             "inner": {
               "tag": "i",
-              "inner": "&lt;embed&gt;",
+              "inner": "[embed]",
               "class": "fa"
             }
           },
@@ -1335,7 +1335,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'fontname', 'fontSize', 'my_special_listener', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz' ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz', 'fontname', 'fontSize', 'my_special_listener',  ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
