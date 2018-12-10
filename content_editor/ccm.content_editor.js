@@ -859,6 +859,7 @@
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
+        $.setContent( editor_div, dataset.text );
 
         // add keyup listener if configured
         if ( self.change_listener_on_key_up )
@@ -898,8 +899,6 @@
             }
           });
         };
-
-        $.setContent( editor_div, dataset.text );
 
         // filter enabled tools
         if ( self.enabled && self.html.toolbar.inner ){
@@ -953,7 +952,7 @@
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
 
         // render content that is given via Light DOM
-        $.setContent( editor_div, this.inner );
+        if ( this.inner.childElementCount ) $.setContent( editor_div, this.inner );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...toolbar_div.querySelectorAll('svg')].forEach(svg=>{

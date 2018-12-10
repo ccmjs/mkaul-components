@@ -953,7 +953,7 @@
         $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
 
         // render content that is given via Light DOM
-        $.setContent( editor_div, this.inner );
+        if ( this.inner.childElementCount ) $.setContent( editor_div, this.inner );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...toolbar_div.querySelectorAll('svg')].forEach(svg=>{
