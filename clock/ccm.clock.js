@@ -12,7 +12,7 @@
 
     name: 'clock',
 
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {
@@ -31,7 +31,7 @@
       color: '#000000', // black
       background: '#ffffff', // white
       css: [ "ccm.load", "./resources/default.css" ],
-      lit_html: [ "ccm.load", { url: "https://unpkg.com/lit-html?module", type: "module" } ]
+      lit_html: [ "ccm.load", { url: "//ccmjs.github.io/mkaul-components/clock/resources/lit-html.js", type: "module" } ]
       // lit_html: [ "ccm.load", { "url": "../lib/lit-html.js", "type": "module" } ]
       // lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ]
