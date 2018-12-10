@@ -831,7 +831,7 @@
                 all_components[ record.key ] = record.url;
               }
 
-              select_array.sort();
+              select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
             }
           }
         }
