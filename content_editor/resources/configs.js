@@ -10,7 +10,7 @@ ccm.files[ 'configs.js' ] = {
     key: "tiny",
 
     data: {
-      text: 'Demo Text for a tiny editor',
+      text: '<h1>Tiny Editor</h1>Demo Text for a tiny editor',
       position: 6 // cursor position
     },
 
@@ -120,7 +120,7 @@ ccm.files[ 'configs.js' ] = {
     key: "medium",
 
     data: {
-      text: 'Demo Text',
+      text: 'Demo Text for medium sized editor',
       position: 6 // cursor position
     },
 
@@ -676,7 +676,7 @@ ccm.files[ 'configs.js' ] = {
     key: "audio_video",
 
     data: {
-      text: 'Demo Text',
+      text: '<h1>Audio and Video</h1>Demo Text for audio / video',
       position: 6 // cursor position
     },
 
@@ -689,7 +689,7 @@ ccm.files[ 'configs.js' ] = {
     key: "ccm",
 
     data: {
-      text: 'Demo Text',
+      text: '<h1><i>ccm</i> components</h1>Demo Text',
       position: 6 // cursor position
     },
 
@@ -702,7 +702,7 @@ ccm.files[ 'configs.js' ] = {
     key: "full",
 
     data: {
-      text: 'Demo Text',
+      text: '<h1>Full Editor with all buttons</h1>Demo Text',
       position: 6 // cursor position
     },
 
