@@ -29,7 +29,7 @@ ccm.files[ 'configs.js' ] = {
     key: "small",
 
     data: {
-      text: 'Demo Text for a <b>small</b> editor',
+      text: '<h1>Small Editor</h1>Demo Text for a <b>small</b> editor',
       position: 6 // cursor position
     },
 
@@ -120,7 +120,7 @@ ccm.files[ 'configs.js' ] = {
     key: "medium",
 
     data: {
-      text: 'Demo Text for medium sized editor',
+      text: '<h1>Medium Editor</h1>Demo Text for medium sized editor',
       position: 6 // cursor position
     },
 
