@@ -25,19 +25,29 @@
 },
 { "type": "submit" }
 ],
+    "defaults": {
+      "editor": {
+            "key": "data",
+            "text": "Demo Text",
+            "position": 6
+      }
+    },
     "content": [ "ccm.component", "https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.0.1.js" ],
     "json_builder": [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
       "html.inner.1": "",
       "directly": true
     } ],
     "editor": [ "ccm.component", "ccm.content_editor.js", {
-      "data": {
-        "key": "data",
-        "text": "Demo Text",
-        "position": 6
-      },
-      "inner": "Demo Text 2",
-      "enabled": ["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]
+        "data": {
+                  "store": [ "ccm.store", { "local": { "config": {
+                "data": {
+                "text": "Demo Text",
+                "position": 6
+              }
+            } } } ],
+          "key": "data"
+        },
+        "enabled": ["toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz" ]
     } ],
     "onfinish": {
       "store": true,

@@ -892,6 +892,7 @@
                 } else {
                   editor_div.appendChild( document.createTextNode(' '));
                   editor_div.appendChild( pastedImage );
+                  editor_div.appendChild( document.createTextNode(' '));
                 }
                 break;
               default:
@@ -1166,6 +1167,7 @@
           } else {
             editor_div.appendChild( document.createTextNode(' '));
             editor_div.appendChild( newSpan );
+            editor_div.appendChild( document.createTextNode(' '));
           }
 
           self.dependencies.push( [ 'ccm.start', component, config ] );
@@ -1193,6 +1195,7 @@
             } else {
               editor_div.appendChild(document.createTextNode(' '));
               editor_div.appendChild(embed_div);
+              editor_div.appendChild( document.createTextNode(' '));
             }
           }
         }
