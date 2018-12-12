@@ -4,9 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (3.2.0)
+ * @version latest (4.0.1)
  * @changes
- * version 3.2.0 10.12.2018
+ * version 4.0.1 12.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -24,7 +24,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [3,2,0],
+    // version: [4,0,1],
     
     /**
      * recommended used framework version
@@ -61,7 +61,8 @@
           contenteditable: true
         },
         json: {
-          id: 'json'
+          id: 'json',
+          contenteditable: true
         },
         toolbar: {
           "class": "toolbar",
@@ -745,12 +746,11 @@
       } ],
 
       htmlparser: [ "ccm.load", {
-        "url": "./resources/htmlparser.js",
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/htmlparser.js",
         "type": "module"
       } ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
-      // [ "ccm.get", { "name": "components", "url": "https://ccm2.inf.h-brs.de" }, {} ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -902,10 +902,26 @@
          * @type {Object}
          */
         let dataset = await $.dataset( this.data );
-        if ( typeof dataset === 'string' ) dataset = { text: '' };
+        if ( typeof dataset === 'string' ) dataset = { text: dataset };
 
-        this.getValue = () => {
-          return $.clone( dataset );
+        this.getValue = () => { // access to dataset
+          // component data:
+          //             id: instance.index,
+          //             name: instance.component.name,
+          //             url: all_components[ instance.component.name ],
+          //             config: config
+
+          const result = {};
+          const fragment = document.createElement('template');
+          fragment.innerHTML = dataset.text;
+          self.dependencies.forEach( dep => {
+            const newNode = document.createElement('ccm-'+dep.name );
+            const oldNode = fragment.content.querySelector('#' + dep.id );
+            if ( oldNode ) $.replace( newNode , oldNode );
+            result[ dep.name ] = [ "ccm.component", dep.url, dep.config ];
+          } );
+          result.inner = fragment.innerHTML;
+          return result;
         };
 
         // logging of 'start' event
@@ -1219,17 +1235,18 @@
           config.parent = self;
           const newSpan = document.createElement('span');
           config.root = newSpan;
+          let instance;
 
           // start component
           if ( typeof component === 'string' ){
             if ( component.startsWith('http') ){
-              await self.ccm.start( component, config );
+              instance = await self.ccm.start( component, config );
             } else {
               component = self[ component ] || all_components[ component ];
-              await self.ccm.start( component, config );
+              instance = await self.ccm.start( component, config );
             }
           } else {
-            await component.start( config );
+            instance = await component.start( config );
           }
 
           newSpan.firstChild.style = "display: inline-block;";
@@ -1245,7 +1262,12 @@
             editor_div.appendChild( document.createTextNode(' '));
           }
 
-          self.dependencies.push( [ 'ccm.start', component, config ] );
+          self.dependencies.push( {
+            id: instance.index,
+            name: instance.component.name,
+            url: all_components[ instance.component.name ],
+            config: config
+          } );
         }
 
         async function insert_embed_code_via_node( embed_code ){

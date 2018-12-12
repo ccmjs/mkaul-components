@@ -905,7 +905,7 @@
          * @type {Object}
          */
         let dataset = await $.dataset( this.data );
-        if ( typeof dataset === 'string' ) dataset = { text: '' };
+        if ( typeof dataset === 'string' ) dataset = { text: dataset };
 
         this.getValue = () => {
           // component data:
@@ -919,8 +919,9 @@
           fragment.innerHTML = dataset.text;
           self.dependencies.forEach( dep => {
             const newNode = document.createElement('ccm-'+dep.name );
-            $.replace( newNode , fragment.content.querySelector('#' + dep.id ) );
-            result[dep.name] = [ "ccm.component", dep.url, dep.config ];
+            const oldNode = fragment.content.querySelector('#' + dep.id );
+            if ( oldNode ) $.replace( newNode , oldNode );
+            result[ dep.name ] = [ "ccm.component", dep.url, dep.config ];
           } );
           result.inner = fragment.innerHTML;
           return result;
