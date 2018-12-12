@@ -905,7 +905,8 @@
         if ( typeof dataset === 'string' ) dataset = { text: '' };
 
         this.getValue = () => {
-          return $.clone( dataset );
+          // TODO self.dependencies hinzu fügen
+          return { inner: dataset.text } // $.clone( dataset );
         };
 
         // logging of 'start' event
