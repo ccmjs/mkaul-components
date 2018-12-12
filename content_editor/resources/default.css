@@ -18,6 +18,12 @@ a {
   outline: none;
 }
 
+#html {
+  display: none;
+  border: solid thin black;
+  margin: 0.5em;
+}
+
 .toolbar {
   text-align: center;
 }

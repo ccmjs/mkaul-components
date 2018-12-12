@@ -4,9 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.0.0)
+ * @version latest (4.0.1)
  * @changes
- * version 4.0.0 12.12.2018
+ * version 4.0.1 10.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -24,7 +24,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    version: [4,0,0],
+    version: [4,0,1],
     
     /**
      * recommended used framework version
@@ -732,8 +732,8 @@
 
       // other ccm components to be embeddable inside the editor text
       clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
-          width: "40px",
-          html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
+        width: "40px",
+        html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
         }
       } ],
 
@@ -745,7 +745,7 @@
       } ],
 
       htmlparser: [ "ccm.load", {
-        "url": "./resources/htmlparser.js",
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/htmlparser.js",
         "type": "module"
       } ],
 
@@ -760,13 +760,13 @@
      * @constructor
      */
     Instance: function () {
-    
+
       /**
        * own reference for inner functions
        * @type {Instance}
        */
       const self = this;
-      
+
       /**
        * shortcut to help functions
        * @type {Object.<string,function>}
@@ -865,10 +865,10 @@
 
         async function fill_select_input_field_for_all_components(){
 
-          if ( self.enabled && self.enabled.includes('select') ){
+          if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
             const all_buttons = self.html.toolbar.inner;
             let select_array;
-            for ( const button of all_buttons ){
+            if ( all_buttons ) for ( const button of all_buttons ){
               if ( button["data-command"] === "select" ){ // "data-command": "select"
                 if ( button.inner ){
                   select_array = button.inner.inner;
@@ -917,9 +917,9 @@
 
         // add keyup listener if configured
         if ( self.change_listener_on_key_up )
-        editor_div.addEventListener('keyup', function(e){
-          update_data();
-        });
+          editor_div.addEventListener('keyup', function(e){
+            update_data();
+          });
 
         editor_div.onpaste = function(e) {
           [...e.clipboardData.items].forEach((item)=>{
@@ -1003,8 +1003,11 @@
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
+        const html_div = $.html( self.html.html || {} );
+        const json_div = $.html( self.html.json || {} );
+
         // render main HTML structure
-        $.setContent( this.element, $.html( [ toolbar_div, editor_div ] ) );
+        $.setContent( this.element, $.html( [ toolbar_div, editor_div, html_div, json_div ] ) );
 
         // render content that is given via Light DOM
         if ( this.inner.childElementCount ) $.setContent( editor_div, this.inner );
@@ -1100,21 +1103,21 @@
               break;
             case "view_editor":
               if (html_div) html_div.style.display = 'none';
-              if (json_div) html_div.style.display = 'none';
+              json_div.style.display = 'none';
               editor_div.style.display = 'block';
               break;
             case "view_html":
-              const html_div = $.html( self.html.html );
               html_div.innerText = editor_div.innerHTML;
               html_div.style['background-color'] = 'lightblue';
               editor_div.style.display = 'none';
-              if (json_div) html_div.style.display = 'none';
+              json_div.style.display = 'none';
+              html_div.style.display = 'block';
               break;
             case "view_json":
-              const json_div = $.html( self.html.json );
-              self.json_builder.start({ root: json_div, "html.inner.1": html2json( editor_div.innerHTML ) });
+              self.json_builder.start({ root: json_div, "data.json": html2json( editor_div.innerHTML ) });
               editor_div.style.display = 'none';
-              if (html_div) html_div.style.display = 'none';
+              html_div.style.display = 'none';
+              json_div.style.display = 'block';
               break;
             default:
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
@@ -1301,18 +1304,24 @@
                     json_stack[ json_stack.length-1 ].inner = [ top ];
                   }
                 }
+              } else {
+
               }
             },
             chars: function(text) {
               if ( text.trim() ){
-                if ( json_stack[ json_stack.length-1 ].inner ){
-                  if ( Array.isArray( json_stack[ json_stack.length-1 ].inner ) ){
-                    json_stack[ json_stack.length-1 ].inner.push( text );
+                if ( json_stack[ json_stack.length-1 ] ){
+                  if ( json_stack[ json_stack.length-1 ].inner ){
+                    if ( Array.isArray( json_stack[ json_stack.length-1 ].inner ) ){
+                      json_stack[ json_stack.length-1 ].inner.push( text );
+                    } else {
+                      json_stack[ json_stack.length-1 ].inner += text;
+                    }
                   } else {
-                    json_stack[ json_stack.length-1 ].inner += text;
+                    json_stack[json_stack.length - 1].inner = text;
                   }
                 } else {
-                  json_stack[json_stack.length - 1].inner = text;
+                  json_stack.push( { inner: text } );
                 }
               }
             },
@@ -1327,8 +1336,8 @@
           });
 
           return json_stack.length === 1 ?
-            $.stringify( json_stack[ json_stack.length-1 ], null, 2 ) :
-            $.stringify( json_stack.reduce((a,b)=>{ a.inner.push(b); return a },{inner:[]}), null, 2 );
+            json_stack[ json_stack.length-1 ] :
+            json_stack.reduce((a,b)=>{ a.inner.push(b); return a },{inner:[]});
 
         }
 

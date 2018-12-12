@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
+<meta name="licence" content="The MIT License (MIT)">
+<script src="ccm.content_editor.js"></script>
+<ccm-content_editor key='{
+    "key": "medium",
+    "data": {
+        "text": "<h1>Medium Editor</h1><p>Demo Text for medium sized editor</p>",
+        "position": 6
+    },
+    "change_listener_on_key_up": true,
+
+"extensions": [ "ccm.load", {
+"url": "./resources/extensions.js",
+"type": "module"
+} ],
+
+"enabled": ["undo", "redo", "bold", "italic", "justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent", "insertUnorderedList", "insertOrderedList", "h1", "h2", "createlink", "unlink", "p", "fontSize", "view_editor", "view_html", "view_json" ],
+
+"colorPalette": ["#000000", "#FF9966", "#6699FF", "#99FF66", "#CC0000", "#00CC00", "#0000CC", "#333333", "#0066FF", "#FFFFFF"],
+
+"fontList": ["Arial", "Arial Black", "Helvetica", "Times New Roman", "Times", "Courier New", "Courier", "Verdana", "Georgia", "Palatino", "Garamond", "Bookman", "Comic Sans MS", "Trebuchet MS", "Impact" ],
+
+"css_awesome": [ "ccm.load",
+{ "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+],
+
+"css": [ "ccm.load",  "resources/default.css" ]
+}'></ccm-content_editor>
