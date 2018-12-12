@@ -868,7 +868,7 @@
           if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
             const all_buttons = self.html.toolbar.inner;
             let select_array;
-            for ( const button of all_buttons ){
+            if ( all_buttons ) for ( const button of all_buttons ){
               if ( button["data-command"] === "select" ){ // "data-command": "select"
                 if ( button.inner ){
                   select_array = button.inner.inner;
