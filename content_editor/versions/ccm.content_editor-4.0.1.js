@@ -915,10 +915,11 @@
           //             config: config
 
           const result = {};
-          const fragment = document.createRange().createContextualFragment( dataset.text );
+          const fragment = document.createElement('template');
+          fragment.innerHTML = dataset.text;
           self.dependencies.forEach( dep => {
-            const newNode = document.createElement('ccm-'+dep.name);
-            $.replace( newNode , fragment.querySelector('#' + dep.id) );
+            const newNode = document.createElement('ccm-'+dep.name );
+            $.replace( newNode , fragment.querySelector('#' + dep.id ) );
             result[dep.name] = [ "ccm.component", dep.url, dep.config ];
           } );
           result.inner = fragment.innerHTML;
