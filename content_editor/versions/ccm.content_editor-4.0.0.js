@@ -1003,8 +1003,8 @@
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
-        const html_div = $.html( self.html.html );
-        const json_div = $.html( self.html.json );
+        const html_div = $.html( self.html.html || {} );
+        const json_div = $.html( self.html.json || {} );
 
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, editor_div, html_div, json_div ] ) );
