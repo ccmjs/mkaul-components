@@ -919,7 +919,7 @@
           fragment.innerHTML = dataset.text;
           self.dependencies.forEach( dep => {
             const newNode = document.createElement('ccm-'+dep.name );
-            $.replace( newNode , fragment.querySelector('#' + dep.id ) );
+            $.replace( newNode , fragment.content.querySelector('#' + dep.id ) );
             result[dep.name] = [ "ccm.component", dep.url, dep.config ];
           } );
           result.inner = fragment.innerHTML;
