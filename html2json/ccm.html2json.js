@@ -133,17 +133,23 @@
         const html_div = main_div.querySelector( '#html' );
         html_div.innerText = dataset.inner;
         html_div.contentEditable = "true";
-        html_div.addEventListener( 'keyup', (e) => {
+        html_div.addEventListener( 'keyup', async (e) => {
           dataset.inner = html_div.innerText;
+          preview_div.innerHTML = dataset.inner;
+          start_all_Components( preview_div );
           reparse();
         } );
 
        const json_div = main_div.querySelector( '#json' );
         json_div.contentEditable = "true";
-        json_div.addEventListener( 'keyup', (e) => {
-          $.setContent( html_div, $.html( JSON.parse( json_div.innerText ) ).inner );
-          dataset.inner = html_div.innerHTML;
-          html_div.innerText = dataset.inner;
+        json_div.addEventListener( 'keyup', async (e) => {
+          const json_inner = ( JSON.parse( json_div.innerText ) ).inner;
+          const div = $.html( json_inner );
+          const html_code = div.innerHTML;
+          dataset.inner = html_code;
+          html_div.innerText = html_code;
+          $.setContent( preview_div, div );
+          start_all_Components( preview_div );
         } );
 
         reparse();
@@ -152,19 +158,20 @@
         preview_div.innerHTML = dataset.inner;
         start_all_Components( preview_div );
 
-        function start_all_Components( node ){
-          node.innerHTML = dataset.inner;
-          [...node.children].forEach( child => {
-            if ( child.tagName.startsWith('CCM-')){
-              start_component( child );
-            }
+        async function start_all_Components( node ){
+          $.asyncForEach([...node.children], child => {
+            start_component( child );
           });
         }
 
-        function start_component( child ){
-          const name = child.tagName.slice(4).toLowerCase();
-          const component = self.data.dependencies[ name ];
-          component.start({root: child, parent: self});
+        async function start_component( child ){
+          if ( child.tagName.startsWith('CCM-')){
+            const name = child.tagName.slice(4).toLowerCase();
+            const component = self.data.dependencies[ name ];
+            component.start({root: child, parent: self});
+          } else {
+            start_all_Components( child );
+          }
         }
 
         function reparse(){
