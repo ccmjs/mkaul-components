@@ -138,7 +138,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "view_editor", "view_html", "view_json" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "view_editor", "view_html", "view_json", "view_html2json" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
@@ -161,7 +161,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:['undo', 'redo', "toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock", "view_editor", "view_html", "view_json" ],
+    enabled:['undo', 'redo', "toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     "css_awesome": [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
@@ -181,7 +181,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json" ],
+    enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
@@ -200,7 +200,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json" ],
+    enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
@@ -234,7 +234,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz', 'fontname', 'fontSize', 'my_special_listener', "view_editor", "view_html", "view_json" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz', 'fontname', 'fontSize', 'my_special_listener', "view_editor", "view_html", "view_json", "view_html2json" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
