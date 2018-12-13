@@ -4,7 +4,8 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
- * version 1.0.0 11/30/2018
+ * version 1.0.0 11/30/2018 initial
+ * version 2.0.0 13.12.2018 add Mocha Unit tests and switch from data.html to data.inner
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,14 +23,14 @@
      * @type {string}
      */
     name: 'html2json',
-    // version: [1,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -58,12 +59,12 @@
       },
 
       htmlparser: [ "ccm.load", {
-        "url": "./resources/htmlparser.js",
+        "url": "https://ccmjs.github.io/mkaul-components/html2json/resources/htmlparser.js",
         "type": "module"
       } ],
 
-      css: [ 'ccm.load',  './resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
+      // css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
