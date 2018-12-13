@@ -10,7 +10,7 @@ ccm.files[ 'configs.js' ] = {
     key: "tiny",
 
     data: {
-      text: '<h1>Tiny Editor</h1>Demo Text for a tiny editor',
+      inner: '<h1>Tiny Editor</h1>Demo Text for a tiny editor',
       position: 6 // cursor position
     },
 
@@ -29,7 +29,7 @@ ccm.files[ 'configs.js' ] = {
     key: "small",
 
     data: {
-      text: '<h1>Small Editor</h1>Demo Text for a <b>small</b> editor',
+      inner: '<h1>Small Editor</h1>Demo Text for a <b>small</b> editor',
       position: 6 // cursor position
     },
 
@@ -120,7 +120,7 @@ ccm.files[ 'configs.js' ] = {
     key: "medium",
 
     data: {
-      text: '<h1>Medium Editor</h1>Demo Text for medium sized editor',
+      inner: '<h1>Medium Editor</h1>Demo Text for medium sized editor',
       position: 6 // cursor position
     },
 
@@ -157,7 +157,7 @@ ccm.files[ 'configs.js' ] = {
     key: "audio_video",
 
     data: {
-      text: '<h1>Audio and Video</h1>Demo Text for audio / video',
+      inner: '<h1>Audio and Video</h1>Demo Text for audio / video',
       position: 6 // cursor position
     },
 
@@ -177,13 +177,32 @@ ccm.files[ 'configs.js' ] = {
     key: "ccm",
 
     data: {
-      text: '<h1><i>ccm</i> components</h1>Demo Text',
+      inner: '<h1><i>ccm</i> components</h1>Demo Text',
       position: 6 // cursor position
     },
 
     enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json" ],
 
-    "css_awesome": [ "ccm.load",
+    css_awesome: [ "ccm.load",
+      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    ],
+
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+
+  },
+
+  "recursive": {
+    key: "recursive",
+
+    data: {
+      inner: '<h1>Recursive Editor Nesting</h1>Demo Text<ccm-editor></ccm-editor>',
+      position: 6 // cursor position
+    },
+
+    enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json" ],
+
+    css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     ],
@@ -197,7 +216,7 @@ ccm.files[ 'configs.js' ] = {
     key: "full",
 
     data: {
-      text: '<h1>Full Editor with all buttons</h1>Demo Text',
+      inner: '<h1>Full Editor with all buttons</h1>Demo Text',
       position: 6 // cursor position
     },
 
@@ -221,7 +240,7 @@ ccm.files[ 'configs.js' ] = {
 
     fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
 
-    "css_awesome": [ "ccm.load",
+    css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     ],
