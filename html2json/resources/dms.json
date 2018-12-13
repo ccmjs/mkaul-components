@@ -30,6 +30,7 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
                             "defaults": {
+                                "data.inner": "data.inner from defaults"
                             },
                             "entries": [
                                 {
@@ -38,7 +39,7 @@
                                 },
                                 {
                                     "label": "Title",
-                                    "name": "data.html",
+                                    "name": "data.inner",
                                     "type": "textarea",
                                     "info": "Initial content of the editor in HTML code"
                                 }
@@ -63,6 +64,6 @@
             }
         ]
     },
-    "updated_at": "2018-12-01T14:41:22+02:00",
+    "updated_at": "2018-12-13T14:41:22+02:00",
     "created_at": "2018-12-01T14:41:22+02:00"
 }
