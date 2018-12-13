@@ -2,17 +2,17 @@
  * @overview description of the component
  * @version 0.0.1
  * @author mkaul2m Manfred.Kaul@h-brs.de
- * @copyright The MIT License (MIT) mkaul2m on 2018-12-13.
+ * @copyright The MIT License (MIT) mkaul2m on 2018-11-29.
  */
 
-import { HTMLParser } from '../resources/htmlparser.js';
+import { HTMLParser } from 'https://ccmjs.github.io/mkaul-components/content_editor/resources/htmlparser.mjs';
 
-export function html2json( html ){
+export function html2json( input ){
   const json_stack = [];
   const unary_list = [];
   const result = [];
 
-  HTMLParser( html, {
+  HTMLParser( input , {
     start: function(tag, attrs, unary) {
       const tag_structure = tag.toLowerCase() === 'div' ? {} : { tag: tag };
       attrs.forEach( attr => {
@@ -70,14 +70,12 @@ export function html2json( html ){
 
   json_stack.forEach( x => result.push( json_stack.pop() ) );
 
-  const final =  result.length === 1 ?
+  return result.length === 1 ?
     result[ result.length-1 ] :
     result.reduce((a,b)=>{ a.inner.push(b); return a },{inner:[]});
 
-  // console.log( JSON.stringify( final, null, 2 ) );
-
-  return final;
-
 }
+
+
  
  
