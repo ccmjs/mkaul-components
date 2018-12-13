@@ -57,11 +57,6 @@
         ]
       },
 
-      htmlparser: [ "ccm.load", {
-        "url": "https://ccmjs.github.io/mkaul-components/html2json/resources/resources/htmlparser.js",
-        "type": "module"
-      } ],
-
       html2json: [ "ccm.load", {
         "url": "https://ccmjs.github.io/mkaul-components/html2json/resources/html2json.mjs",
         "type": "module"
