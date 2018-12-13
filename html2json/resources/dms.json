@@ -4,8 +4,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/html2json/resources/icon.svg",
     "abstract": "Edit HTML, transform to Json and vice versa",
     "description": "The input HTML code is parsed and transformed into JSON, which again may be edited and transformed into HTML again.",
-    "url": "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-2.0.0.js",
-    "version": "2.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.0.0.js",
+    "version": "3.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -38,10 +38,29 @@
                                     "type": "hidden"
                                 },
                                 {
-                                    "label": "Title",
+                                    "label": "HTML code with ccm components",
                                     "name": "data.inner",
                                     "type": "textarea",
                                     "info": "Initial content of the editor in HTML code"
+                                },
+                                {
+                                    "label": "ccm dependencies",
+                                    "name": "data.dependencies",
+                                    "type": "object",
+                                    "info": "ccm dependencies given as action data"
+                                },
+                                {
+                                    "label": "HTML structure",
+                                    "name": "html",
+                                    "type": "json_builder",
+                                    "info": "HTML structure ",
+                                    "key": "[\"ccm.get\",\"https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js\",\"html\"]"
+                                },
+                                {
+                                    "label": "CSS URL",
+                                    "name": "css.1",
+                                    "type": "url",
+                                    "info": "Link to CSS URL"
                                 }
                             ]
                         }

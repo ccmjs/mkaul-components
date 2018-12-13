@@ -7,21 +7,24 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
-    key: "demo",
-    data: {
-      inner: "<div> \n <h1> config test </h1> \n </div>"
+    "data": {
+      inner: '<h1>HTML2JSON with <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>from config</p> ',
+      position: 6, // cursor position
+      dependencies: {
+        clock: [
+          "ccm.component",
+          "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js",
+          { width: '10em' }
+        ]
+      }
     }
   },
-  "localhost": {
-    key: "localhost",
-    css: [ 'ccm.load',  '../html2json/resources/default.css' ],
-    language: 'de',
-    labels: {
-      de: {
-        intro: "Entscheiden Sie sich schnell, ohne lange nachzudenken:<br><b>Was ist Ihnen am wichtigsten:</b>",
-        label: "Fertig!"
-      }
-    },
-    onfinish: function( instance, results ){ console.log( results ); }
+  "html": {
+    id: 'main',
+    inner: [
+      { id: 'preview'},
+      { id: 'html', inner: '%html%' },
+      { id: 'json_root', tag: 'pre', inner: { id: 'json' } }
+    ]
   }
 };

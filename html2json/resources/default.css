@@ -12,9 +12,11 @@
   flex-wrap: wrap;
 }
 
-#html, #json {
+#preview, #html, #json_root {
   flex: 1;
-  border: thin solid black;
+  border: thin solid grey;
+  border-radius: 1em;
   margin: 2px;
   padding: 0.4em;
+  overflow: auto;
 }
