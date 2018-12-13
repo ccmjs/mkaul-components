@@ -8,7 +8,9 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
-    default: "value"
+    data: {
+      inner: "<div> \n <h1> config test </h1> \n </div>"
+    }
   },
   "localhost": {
     key: "localhost",

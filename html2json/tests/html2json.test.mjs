@@ -64,3 +64,27 @@ describe('Deep Nested DIV', () => {
       .to.deep.equal( html2json('<div><div><h1>Title</h1>Text1</div><p>Paragraph</p>"Text2"</div>') );
   });
 });
+
+describe('Deep Nested DIV with ccm-tag', () => {
+  it('should return deep nested JSON with ccm', () => {
+    chai.expect({
+      "inner": [
+        {
+          "inner": [
+            {
+              "tag": "h1",
+              "inner": "Title"
+            },
+            "Text1"
+          ]
+        },
+        {
+          "tag": "p",
+          "inner": "Paragraph"
+        },
+        "\"Text2\""
+      ]
+    } )
+      .to.deep.equal( html2json('<h1>Recursive Editor Nesting</h1>Demo Text<ccm-editor></ccm-editor>') );
+  });
+});

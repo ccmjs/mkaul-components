@@ -38,7 +38,7 @@
     config: {
 
       data: {
-        inner: '<div> \n <h1> Demo </h1> \n </div>'
+        inner: '<div> \n <h1> component test </h1> \n </div>'
       },
 
       // data: {
@@ -58,7 +58,12 @@
       },
 
       htmlparser: [ "ccm.load", {
-        "url": "./resources/htmlparser.js",
+        "url": "https://ccmjs.github.io/mkaul-components/html2json/resources/resources/htmlparser.js",
+        "type": "module"
+      } ],
+
+      html2json: [ "ccm.load", {
+        "url": "https://ccmjs.github.io/mkaul-components/html2json/resources/html2json.mjs",
         "type": "module"
       } ],
 
@@ -90,7 +95,7 @@
       /**
        * is called once after the initialization and is then deleted
        */
-      this.ready = async () => {
+      this.init = async () => {
 
         // logging of 'ready' event
         this.logger && this.logger.log( 'ready' );
@@ -98,7 +103,7 @@
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        if ( self.inner && self.inner.innerHTML.trim() ) self.data.inner = self.inner.innerHTML;
+        if ( self.inner && self.inner.innerHTML && self.inner.innerHTML.trim() ) self.data.inner = self.inner.innerHTML;
 
       };
         
@@ -138,72 +143,7 @@
         reparse();
 
         function reparse(){
-          const json_stack = [];
-          const unary_list = [];
-          const result = [];
-
-          self.htmlparser.HTMLParser( dataset.inner, {
-            start: function(tag, attrs, unary) {
-              const tag_structure = tag.toLowerCase() === 'div' ? {} : { tag: tag };
-              attrs.forEach( attr => {
-                tag_structure[ attr.name ] = attr.value;
-              });
-              if ( unary ) unary_list.push( tag_structure );
-              json_stack.push( tag_structure );
-            },
-            end: function(tag) {
-              if ( json_stack.length > 1 ){
-                const top = json_stack[ json_stack.length-1 ];
-                if ( json_stack[ json_stack.length-2 ].inner ){
-                  json_stack.pop();
-                  if ( Array.isArray( json_stack[ json_stack.length-1 ].inner ) ){
-                    json_stack[ json_stack.length-1 ].inner.push( top );
-                  } else {
-                    json_stack[ json_stack.length-1 ].inner = [ json_stack[ json_stack.length-1 ].inner, top ];
-                  }
-                } else {
-                  if (! unary_list.includes( json_stack[ json_stack.length-2 ] ) ){
-                    json_stack.pop();
-                    json_stack[ json_stack.length-1 ].inner = [ top ];
-                  }
-                }
-              } else {
-                result.push( json_stack.pop() );
-              }
-            },
-            chars: function(text) {
-              if ( text.trim() ){
-                if ( json_stack[ json_stack.length-1 ] ){
-                  if ( json_stack[ json_stack.length-1 ].inner ){
-                    if ( Array.isArray( json_stack[ json_stack.length-1 ].inner ) ){
-                      json_stack[ json_stack.length-1 ].inner.push( text );
-                    } else {
-                      json_stack[ json_stack.length-1 ].inner += text;
-                    }
-                  } else {
-                    json_stack[json_stack.length - 1].inner = text;
-                  }
-                } else {
-                  json_stack.push(  text  );
-                }
-              }
-            },
-            comment: function(text) {
-              if ( json_stack[ json_stack.length-1 ].comment ){
-                json_stack[ json_stack.length-1 ].comment = [ json_stack[ json_stack.length-1 ].comment ];
-                json_stack[ json_stack.length-1 ].comment.push( text );
-              } else {
-                json_stack[ json_stack.length-1 ].comment = text;
-              }
-            }
-          });
-
-          json_stack.forEach( x => result.push( json_stack.pop() ) );
-
-          json_div.innerText = JSON.stringify( result.length === 1 ?
-            result[ result.length-1 ] :
-            result.reduce((a,b)=>{ a.inner.push(b); return a },{inner:[]}), null, 2);
-
+          json_div.innerText = JSON.stringify( self.html2json.html2json( dataset.inner ), null, 2 );
         }
 
         // render main HTML structure
