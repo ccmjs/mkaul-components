@@ -32,7 +32,19 @@
      */
     config: {
 
-      raster: [1,2,3,4,5,6,7],
+      pairs: [
+        ['Erwartungen-entsprochen', 'nicht-entsprochen'],
+        ['unerfreulich', 'erfreulich'],
+        ['unverständlich', 'verständlich'],
+        ['leicht zu lernen', 'schwer zu lernen']
+      ],
+      values: [
+        [ 1, 3, 4, 5 ],
+        [ 5, 4, 3, 1 ],
+        [ 2, 4, 5, 5 ],
+        [ 3, 5, 2, 4 ]
+      ],
+      raster: [1,2,3,4,5],
       colors: ['red','blue','orange','green'],
       lineHeight: 15,
       font_size: 6,
@@ -40,17 +52,18 @@
         main:  {
           tag: 'svg', // no width and height meaning responsive 100%
           style: 'border: green solid; margin: 2px;',
-          viewBox: "0 0 600 600", // user coordinates
+          viewBox: "0 0 600 100", // user coordinates
           // transform: "translate(10, 10)",
           inner: [
-            { tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 576, fill: "transparent" }
+            { tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 70, fill: "transparent" }
           ]
         }
       },
+
+      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/difference_chart/resources/default.css' ],
       // question_numbering: true, if all questions have to get a sequence number
-      // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccm/difference_chart/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://mkaul.github.io/ccm-components/difference_chart/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://akless.github.io/ccm-components/user/versions/ccm.user-2.0.0.min.js' ],
+      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/difference_chart/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/difference_chart/resources/default.css' ],
       // logger: [ 'ccm.instance', 'https://akless.github.io/ccm-components/log/versions/ccm.log-1.0.0.min.js', [ 'ccm.get', 'https://akless.github.io/ccm-components/log/resources/log_configs.min.js', 'greedy' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
 

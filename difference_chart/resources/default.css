@@ -3,3 +3,10 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
  */
+
+:host {
+
+    min-width: 20em;
+    min-height: 14em;
+
+}
