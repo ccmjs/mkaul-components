@@ -40,26 +40,27 @@
         ['leicht zu lernen', 'schwer zu lernen']
       ],
       values: [
-        [ 1, 3, 4, 5 ],
-        [ 5, 4, 3, 1 ],
-        [ 2, 4, 5, 5 ],
-        [ 3, 5, 2, 4 ]
+        [1, 3, 4, 5],
+        [5, 4, 3, 1],
+        [2, 4, 5, 5],
+        [3, 5, 2, 4]
       ],
-      raster: [1,2,3,4,5],
-      colors: ['red','blue','orange','green'],
+      raster: [1, 2, 3, 4, 5],
+      colors: ['red', 'blue', 'orange', 'green'],
       lineHeight: 15,
       font_size: 6,
       html: {
-        main:  {
+        main: {
           tag: 'svg', // no width and height meaning responsive 100%
           style: 'border: green solid; margin: 2px;',
           viewBox: "0 0 600 100", // user coordinates
           // transform: "translate(10, 10)",
           inner: [
-            { tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 70, fill: "transparent" }
+            {tag: 'rect', stroke: 'grey', x: 180, y: 20, width: 250, height: 70, fill: "transparent"}
           ]
         }
-      },
+      }
+    },
 
     /**
      * for creating instances of this component
