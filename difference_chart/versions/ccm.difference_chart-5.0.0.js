@@ -52,7 +52,7 @@
       html: {
         main: {
           tag: 'svg', // no width and height meaning responsive 100%
-          style: 'border: green solid; margin: 2px;',
+          style: 'border: thin solid black; margin: 1px; width: min-content;',
           viewBox: "0 0 600 100", // user coordinates
           // transform: "translate(10, 10)",
           inner: [
