@@ -746,7 +746,7 @@
       } ],
 
       htmlparser: [ "ccm.load", {
-        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/htmlparser.js",
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/htmlparser.mjs",
         "type": "module"
       } ],
 

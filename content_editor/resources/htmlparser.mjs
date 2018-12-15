@@ -6,7 +6,7 @@
  * Original code by John Resig (ejohn.org)
  * http://ejohn.org/blog/pure-javascript-html-parser/
  * Original code by Erik Arvidsson, Mozilla Public License
- * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
+ * http://erik.eae.net/simplehtmlparser/simplehtmlparser.mjs
  *
  * ----------------------------------------------------------------------------
  * License

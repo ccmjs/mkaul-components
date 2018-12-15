@@ -177,8 +177,9 @@ ccm.files[ 'configs.js' ] = {
     key: "ccm",
 
     data: {
-      inner: '<h1><i>ccm</i> components</h1>Demo Text',
-      position: 6 // cursor position
+      inner: '<h1>Editor for <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>Demo Text</p> ',
+      position: 6, // cursor position
+      dependencies: [["ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js"]]
     },
 
     enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
