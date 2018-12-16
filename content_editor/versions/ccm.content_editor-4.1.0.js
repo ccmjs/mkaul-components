@@ -1064,19 +1064,28 @@
           svg.parentNode.innerHTML += '';
         });
 
-        await start_all_embedded_ccm_components();
+        start_all_Components( editor_div );
 
-        async function start_all_embedded_ccm_components(){
-          if ( dataset.dependencies ){
-            for ( const [ key, dependency ] of Object.entries( dataset.dependencies ) ){
-              if ( $.isComponent( dependency[0] ) ){
-                await dependency[0].start( dependency[1] );
-              } else {
-                dataset.dependencies[ key ] = await $.solveDependency( dependency );
-              }
+        async function start_all_Components( node ){
+          $.asyncForEach([...node.children], child => {
+            start_component( child );
+          });
+        }
+
+        async function start_component( child ){
+          if ( child.tagName.startsWith('CCM-')){
+            const name = child.tagName.slice(4).toLowerCase();
+            let component = dataset.dependencies[ name ];
+            if ( ! $.isComponent( component ) ){
+              component = await $.solveDependency( component );
+              dataset.dependencies[ name ] = component;
             }
+            component.start({root: child, parent: self});
+          } else {
+            start_all_Components( child );
           }
         }
+
 
         // the same toolbar click listener for all tools
         async function toolbarClickListener(e){
