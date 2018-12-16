@@ -932,7 +932,8 @@
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
-        $.setContent( editor_div, dataset.text || 'Edit here' );
+        if ( ! dataset.text ) dataset.text = 'Edit here';
+        $.setContent( editor_div, dataset.text );
 
         // add keyup listener if configured
         if ( self.change_listener_on_key_up )
