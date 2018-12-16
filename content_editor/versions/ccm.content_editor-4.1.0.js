@@ -957,6 +957,7 @@
         for ( const source of sources ){
           const src = source.getAttribute( 'src' );
           const index = $.getIndex( src );
+          if ( ! dataset.dependencies ) dataset.dependencies = [];
           dataset.dependencies[ index ] = [ "ccm.component", src, {} ];
         }
 
