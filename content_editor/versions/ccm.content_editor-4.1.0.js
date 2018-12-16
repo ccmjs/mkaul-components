@@ -1080,7 +1080,7 @@
               component = await $.solveDependency( component );
               dataset.dependencies[ name ] = component;
             }
-            component.start({root: child, parent: self});
+            if ( $.isComponent( component ) ) component.start({root: child, parent: self});
           } else {
             start_all_Components( child );
           }
