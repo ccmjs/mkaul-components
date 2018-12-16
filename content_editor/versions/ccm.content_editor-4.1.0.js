@@ -1126,6 +1126,7 @@
               if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
                 await insertComponent({ component: component_name, config });
+                editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               }
               break;
             case 'makeexternallink':
@@ -1136,28 +1137,6 @@
               } else {
                 editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
               }
-              break;
-            case 'clock_with_insertHTML': // third best solution for clock insertion
-              const clockId = 'clockId' + ccm.helper.generateKey();
-              // insert ccm instance of clock into HTML code
-              document.execCommand('insertHTML', false, `<ccm-clock id="${clockId}"></ccm-clock>`);
-
-              // generate ccm dependency out of collected ccm custom elements
-              const child = editor_div.querySelector('#'+clockId);
-              child.style = "display: inline-block;";
-              const component = self.clock;
-              const config = self.clock.config || $.generateConfig( child );
-              config.parent = self;
-              config.root = child;
-              component.ccm.start( component, config );
-              if ( ! dataset.dependencies ) dataset.dependencies = [];
-              dataset.dependencies.push( [ 'ccm.start', component, config ] );
-              break;
-            case "clock": // second best solution for clock insertion with DOM nodes
-              insertComponent({
-                component: self.clock,
-                config: self.clock.config
-              });
               break;
             case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               document.execCommand(command, false, null);
@@ -1203,7 +1182,7 @@
                 // if this button has enabled data, overwrite config
                 if (this.dataset["enabled"]) config.enabled = this.dataset["enabled"];
 
-                insertComponent({ component, config });
+                await insertComponent({ component, config });
 
                 editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
 
@@ -1233,10 +1212,11 @@
               break;
             case 'select': // select ccm component from DMS
               const component = all_components[select.options[select.selectedIndex].value];
-              insertComponent({
+              await insertComponent({
                 component,
                 config: {}
               });
+              editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               break;
             default: // editor extensions
               extension_listener(command, select, value, e);
@@ -1338,6 +1318,7 @@
             if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
               const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
               await insertComponent({ component: component_uri, config });
+              editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElement('div');
