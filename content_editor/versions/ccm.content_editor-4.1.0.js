@@ -1068,11 +1068,13 @@
 
         async function start_all_embedded_ccm_components(){
           if ( dataset.dependencies ){
-            for ( let i = 0; i < dataset.dependencies.length; i++ )
-              if ( $.isComponent( dataset.dependencies[ i ][ 0 ] ) )
-                await dataset.dependencies[ i ][ 0 ].start( dataset.dependencies[ i ][ 1 ] );
-              else
-                dataset.dependencies[ i ] = await $.solveDependency( dataset.dependencies[ i ] );
+            for ( const [ key, dependency ] of Object.entries( dataset.dependencies ) ){
+              if ( $.isComponent( dependency[0] ) ){
+                await dependency[0].start( dependency[1] );
+              } else {
+                dataset.dependencies[ key ] = await $.solveDependency( dependency );
+              }
+            }
           }
         }
 
