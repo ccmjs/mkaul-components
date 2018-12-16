@@ -933,7 +933,7 @@
           const result = {};
           const fragment = document.createElement('template');
           fragment.innerHTML = dataset.inner;
-          self.data.dependencies.forEach( dep => {
+          dataset.dependencies.forEach( dep => {
             const newNode = document.createElement('ccm-'+dep.name );
             const oldNode = fragment.content.querySelector('#' + dep.id );
             if ( oldNode ) $.replace( newNode , oldNode );
@@ -1057,11 +1057,11 @@
         await start_all_embedded_ccm_components();
 
         async function start_all_embedded_ccm_components(){
-          for ( let i = 0; i < self.data.dependencies.length; i++ )
-            if ( $.isComponent( self.data.dependencies[ i ][ 0 ] ) )
-              await self.data.dependencies[ i ][ 0 ].start( self.data.dependencies[ i ][ 1 ] );
+          for ( let i = 0; i < dataset.dependencies.length; i++ )
+            if ( $.isComponent( dataset.dependencies[ i ][ 0 ] ) )
+              await dataset.dependencies[ i ][ 0 ].start( dataset.dependencies[ i ][ 1 ] );
             else
-              self.data.dependencies[ i ] = await $.solveDependency( self.data.dependencies[ i ] );
+              dataset.dependencies[ i ] = await $.solveDependency( dataset.dependencies[ i ] );
         }
 
         // the same toolbar click listener for all tools
@@ -1127,7 +1127,7 @@
               config.parent = self;
               config.root = child;
               component.ccm.start( component, config );
-              self.data.dependencies.push( [ 'ccm.start', component, config ] );
+              dataset.dependencies.push( [ 'ccm.start', component, config ] );
               break;
             case "clock": // second best solution for clock insertion with DOM nodes
               insertComponent({
@@ -1219,8 +1219,8 @@
         }
 
         function update_data(){
-          self.data.inner = editor_div.innerHTML;
-          self.data.position = getCaretPosition();
+          dataset.inner = editor_div.innerHTML;
+          dataset.position = getCaretPosition();
           self.onchange && self.onchange();
         }
 
@@ -1279,7 +1279,7 @@
             instance = await component.start( config );
           }
 
-          self.data.dependencies.push( {
+          dataset.dependencies.push( {
             id: instance.index,
             name: instance.component.name,
             url: all_components[ instance.component.name ],
