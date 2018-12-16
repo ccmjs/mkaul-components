@@ -40,7 +40,7 @@
     config: {
 
       data: {
-        inner: 'Demo Text',
+        inner: 'Demo Text with <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js">Welcome.<ccm-blank>',
         position: 6,
         dependencies: []
       },
@@ -1184,6 +1184,8 @@
                 if (this.dataset["enabled"]) config.enabled = this.dataset["enabled"];
 
                 insertComponent({ component, config });
+
+                editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
 
               } else { // editor extensions via function calls remotely defined
                 extension_listener(command, e);
