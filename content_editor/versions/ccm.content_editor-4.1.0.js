@@ -933,6 +933,7 @@
           const result = {};
           const fragment = document.createElement('template');
           fragment.innerHTML = dataset.inner;
+          if ( ! dataset.dependencies ) dataset.dependencies = [];
           dataset.dependencies.forEach( dep => {
             const newNode = document.createElement('ccm-'+dep.name );
             const oldNode = fragment.content.querySelector('#' + dep.id );
@@ -1057,11 +1058,13 @@
         await start_all_embedded_ccm_components();
 
         async function start_all_embedded_ccm_components(){
-          for ( let i = 0; i < dataset.dependencies.length; i++ )
-            if ( $.isComponent( dataset.dependencies[ i ][ 0 ] ) )
-              await dataset.dependencies[ i ][ 0 ].start( dataset.dependencies[ i ][ 1 ] );
-            else
-              dataset.dependencies[ i ] = await $.solveDependency( dataset.dependencies[ i ] );
+          if ( dataset.dependencies ){
+            for ( let i = 0; i < dataset.dependencies.length; i++ )
+              if ( $.isComponent( dataset.dependencies[ i ][ 0 ] ) )
+                await dataset.dependencies[ i ][ 0 ].start( dataset.dependencies[ i ][ 1 ] );
+              else
+                dataset.dependencies[ i ] = await $.solveDependency( dataset.dependencies[ i ] );
+          }
         }
 
         // the same toolbar click listener for all tools
@@ -1127,6 +1130,7 @@
               config.parent = self;
               config.root = child;
               component.ccm.start( component, config );
+              if ( ! dataset.dependencies ) dataset.dependencies = [];
               dataset.dependencies.push( [ 'ccm.start', component, config ] );
               break;
             case "clock": // second best solution for clock insertion with DOM nodes
@@ -1279,6 +1283,7 @@
             instance = await component.start( config );
           }
 
+          if ( ! dataset.dependencies ) dataset.dependencies = [];
           dataset.dependencies.push( {
             id: instance.index,
             name: instance.component.name,
