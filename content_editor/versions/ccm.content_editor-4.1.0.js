@@ -952,6 +952,14 @@
         if ( ! dataset.inner ) dataset.inner = 'Edit here';
         $.setContent( editor_div, dataset.inner );
 
+        // collect <source> tags from dataset inner
+        const sources = [...editor_div.querySelectorAll( 'source' )];
+        for ( const source of sources ){
+          const src = source.getAttribute( 'src' );
+          const index = $.getIndex( src );
+          dataset.dependencies[ index ] = [ "ccm.component", src, {} ];
+        }
+
         // add keyup listener if configured
         if ( self.change_listener_on_key_up )
           editor_div.addEventListener('keyup', function(e){
