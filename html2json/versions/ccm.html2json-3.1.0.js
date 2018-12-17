@@ -2,9 +2,9 @@
  * @overview ccm component for html2json
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (3.1.0)
  * @changes
- * version 1.0.0 11/30/2018
+ * version 3.1.0 17.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,14 +22,14 @@
      * @type {string}
      */
     name: 'html2json',
-    // version: [1,0,0],
+    version: [3,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -73,8 +73,8 @@
         "type": "module"
       } ],
 
-      css: [ 'ccm.load',  '../html2json/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
+      // css: [ 'ccm.load',  '../html2json/resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
