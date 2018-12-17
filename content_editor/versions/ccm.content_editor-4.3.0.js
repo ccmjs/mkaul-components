@@ -842,7 +842,7 @@
        */
       this.ready = async () => {
 
-        fill_select_input_field_for_all_components();  // ToDo Use await if not possible in parallel
+        await fill_select_input_field_for_all_components();  // await necessary in ready()
 
         /**
          * The select button is filled with all component names from the DMS
