@@ -1016,15 +1016,16 @@
             const index = child.tagName.slice(4).toLowerCase();
             let component = await getComponent( index );
             if ( $.isComponent( component ) ){
-              component.start(  // without await this is parallel starting of all components
-                $.integrate(
-                  // set root and parent:
-                  {root: child, parent: self},
-                  // collect all attributes:
-                  [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
-                    all_attributes[attr] = child.getAttribute(attr);
-                    return all_attributes;
-                }, {}), component.config || {} ));
+              const config = $.integrate(
+                // set root and parent:
+                {root: child, parent: self},
+                // collect all attributes:
+                [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
+                  all_attributes[attr] = child.getAttribute(attr);
+                  return all_attributes;
+                }, {}), component.config || {} );
+              const instance = await component.start( config );
+              child.addEventListener('click', open_builder( instance, config ) );
             } else {
               debugger;
             }
@@ -1257,7 +1258,22 @@
           }
 
           root.firstChild.style = "display: inline-block;";
-          root.addEventListener('click', async event => {
+          root.addEventListener('click', open_builder( instance, config ) );
+
+          // insert at Cursor position or at the end of the text, if none
+          const selection = editor_div.parentNode.parentNode.getSelection();
+          if ( selection.rangeCount > 0 ){
+            selection.getRangeAt(0).insertNode( root );
+          } else {
+            editor_div.appendChild( document.createTextNode(' '));
+            editor_div.appendChild( root );
+            editor_div.appendChild( document.createTextNode(' '));
+          }
+
+        }
+
+        function open_builder( instance, config ){
+          return async event => {
             const json_builder = await self.json_builder.start({
               root: builder_div,
               html: {
@@ -1280,24 +1296,13 @@
               },
               onfinish: (e) => {
                 builder_div.style.display = 'none';
-                config = $.integrate( json_builder.getValue(), config );
+                config = Object.assign( {}, config, json_builder.getValue() );
                 instance.start( config );
               },
               data: clone( typeof instance.config === 'string' ? JSON.parse( instance.config ) : instance.config, ( val ) => ['root','parent','lit_html'].includes( val ) )
             });
             builder_div.style.display = 'block';
-          });
-
-          // insert at Cursor position or at the end of the text, if none
-          const selection = editor_div.parentNode.parentNode.getSelection();
-          if ( selection.rangeCount > 0 ){
-            selection.getRangeAt(0).insertNode( root );
-          } else {
-            editor_div.appendChild( document.createTextNode(' '));
-            editor_div.appendChild( root );
-            editor_div.appendChild( document.createTextNode(' '));
           }
-
         }
 
         async function insert_embed_code_via_node( embed_code ){
