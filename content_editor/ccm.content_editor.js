@@ -52,6 +52,9 @@
       onchange: function(){ console.log( this.getValue() ); },
 
       html: {
+        builder: {
+          id: 'builder'
+        },
         editor: {
           id: 'editor',
           contenteditable: true
@@ -987,12 +990,13 @@
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
+        const builder_div = $.html( self.html.builder || {} );
         const html_div = $.html( self.html.html || {} );
         const json_div = $.html( self.html.json || {} );
         const html2json_div = $.html( self.html.html2json || {} );
 
         // render main HTML structure
-        $.setContent( this.element, $.html( [ toolbar_div, editor_div, html_div, json_div, html2json_div ] ) );
+        $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div ] ) );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...this.element.querySelectorAll('svg')].forEach(svg=>{
@@ -1248,11 +1252,41 @@
           if ( ! dataset.dependencies[ instance.component.index ] ){
             dataset.dependencies[ instance.component.index ] = [ 'ccm.component',
               instance.component.url,
-              instance.component.config
+              instance.config
             ];
           }
 
           root.firstChild.style = "display: inline-block;";
+          root.addEventListener('click', async event => {
+            const json_builder = await self.json_builder.start({
+              root: builder_div,
+              html: {
+                "tag": "form",
+                "onsubmit": "%onclick%",
+                "inner": [
+                  {
+                    "tag": "textarea",
+                    "id": "input",
+                    "oninput": "%oninput%",
+                    "onchange": "%onchange%"
+                  },
+                  {
+                    "tag": "input",
+                    "id": "button",
+                    "type": "submit",
+                    "onclick": "%onclick%"
+                  }
+                ]
+              },
+              onfinish: (e) => {
+                builder_div.style.display = 'none';
+                config = $.integrate( json_builder.getValue(), config );
+                instance.start( config );
+              },
+              data: clone( typeof instance.config === 'string' ? JSON.parse( instance.config ) : instance.config, ( val ) => ['root','parent','lit_html'].includes( val ) )
+            });
+            builder_div.style.display = 'block';
+          });
 
           // insert at Cursor position or at the end of the text, if none
           const selection = editor_div.parentNode.parentNode.getSelection();

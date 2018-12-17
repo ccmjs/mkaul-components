@@ -1248,7 +1248,7 @@
           if ( ! dataset.dependencies[ instance.component.index ] ){
             dataset.dependencies[ instance.component.index ] = [ 'ccm.component',
               instance.component.url,
-              instance.component.config
+              instance.config
             ];
           }
 
