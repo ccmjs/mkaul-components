@@ -3,5 +3,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2018">
 <meta name="licence" content="The MIT License (MIT)">
+<style>
+    ccm-content_editor_why_not {
+        background-color: #8c97af;
+        border: thin solid black;
+        margin: 1em;
+        padding: 1em;
+        border-radius: 1em;
+    }
+</style>
 <script src="ccm.content_editor.js"></script>
-<ccm-content_editor></ccm-content_editor>
+<h3>LightDOM Demo</h3>
+<ccm-content_editor enabled='["toggle", "bold", "h1", "h2", "indent", "outdent", "view_editor", "view_html", "view_json", "view_html2json", "ccm-clock" ]'>
+    <h3>LightDom Demo: Editable Text with <i>ccm</i> components</h3>
+    <b>Inner</b> Text here ...
+    <source src="https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-2.0.0.js">
+    <ccm-clock-2-0-0></ccm-clock-2-0-0>
+    <source src="https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js">
+    <ccm-clock-3-0-1></ccm-clock-3-0-1>
+    ... and here
+    Blank:
+    <source src=https://ccmjs.github.io/akless-components/blank/ccm.blank.js>Welcome from blank.
+    <ccm-blank></ccm-blank>
+    Abschlusstext
+</ccm-content_editor>
+<h3>Standard Editor with enabled='["toggle", "bold", "h1", "h2", "indent", "outdent", "ccm-clock" ] </h3>
+<ccm-content_editor enabled='["toggle", "bold", "h1", "h2", "indent", "outdent", "ccm-clock" ]'></ccm-content_editor>
+<h3>data via attribute</h3>
+<ccm-content_editor enabled='["toggle", "bold", "h1", "h2", "indent", "outdent", "ccm-clock" ]' data='{"inner": "Demo from embedded attribute: <source src=https://ccmjs.github.io/akless-components/blank/ccm.blank.js>Welcome from blank.<ccm-blank></ccm-blank> Additional text after." }'></ccm-content_editor>
+<h3>Tiny</h3>
+<ccm-content_editor key='["ccm.get","resources/configs.js","tiny"]'></ccm-content_editor>
+<h3>Small</h3>
+<ccm-content_editor key='["ccm.get","resources/configs.js","small"]'></ccm-content_editor>
+<h3>Medium</h3>
+<ccm-content_editor key='["ccm.get","resources/configs.js","medium"]'></ccm-content_editor>
+<h3>Full</h3>
+<ccm-content_editor key='["ccm.get","resources/configs.js","full"]'></ccm-content_editor>
+
+<h3>submit</h3>
+<ccm-content_editor key='["ccm.get","resources/configs.js","submit"]'></ccm-content_editor>
