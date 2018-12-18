@@ -1025,7 +1025,7 @@
                   return all_attributes;
                 }, {}), component.config || {} );
               const instance = await component.start( config );
-              child.addEventListener('click', open_builder( instance, config ) );
+              child.addEventListener('dblclick', open_builder( instance, config ) );
             } else {
               debugger;
             }
@@ -1229,8 +1229,10 @@
           const index = component.index || $.index( component ) || component;
           const root = document.createElement('ccm-' + index );
 
+          // TODO set config via key attribute
+
           // set parent and root
-          config.parent = self;
+          config.parent = self; // TODO no parent
           config.root = root;
 
           // ToDo collect attribute values
@@ -1258,7 +1260,7 @@
           }
 
           root.firstChild.style = "display: inline-block;";
-          root.addEventListener('click', open_builder( instance, config ) );
+          root.addEventListener('dblclick', open_builder( instance, config ) );
 
           // insert at Cursor position or at the end of the text, if none
           const selection = editor_div.parentNode.parentNode.getSelection();
@@ -1276,6 +1278,10 @@
           return async event => {
             const json_builder = await self.json_builder.start({
               root: builder_div,
+              data: { // avoid solveDependency by storing in ccm.store
+                store: [ 'ccm.store', { local: { app: JSON.parse( instance.config ) }}  ],
+                key: 'app'
+              },
               html: {
                 "tag": "form",
                 "onsubmit": "%onclick%",
@@ -1295,11 +1301,27 @@
                 ]
               },
               onfinish: async (e) => {
-                instance = Object.assign( instance, json_builder.getValue(), { lit_html: await $.solveDependency([ "ccm.load", { url: "//ccmjs.github.io/mkaul-components/clock/resources/lit-html.js", type: "module" } ]) } );
-                await instance.start();
+                const json_builder_value = json_builder.getValue();
+
+                // persist changes with attribute values
+                instance.root.parentNode.setAttribute( 'key', $.encodeObject( json_builder_value ) );
+
+                /********  Try: set single attributes ********/
+                // const instance_config = JSON.parse( instance.config );
+                // const all_diffs = compareJSON( instance_config, json_builder_value );
+                // instance.root.parentNode.setAttribute( 'key', stringify( all_diffs ) );  /*  1  */
+                // for ( const [ name, diff ] of Object.entries( all_diffs ) ){             /*  2  */
+                //   instance.root.parentNode.setAttribute( name, $.encodeObject( diff ) );
+                // }
+
+                // const newInstance = instance.component.start($.integrate( {root: instance.root}, json_builder_value));
+
+                /********** Restart **********/
+                // await instance.start();
+                instance = Object.assign( instance, await $.solveDependencies( json_builder_value ) );
+
                 builder_div.style.display = 'none';
-              },
-              data: clone( typeof instance.config === 'string' ? JSON.parse( instance.config ) : instance.config, ( val ) => ['root','parent','lit_html'].includes( val ) )
+              }
             });
             builder_div.style.display = 'block';
           }
@@ -1376,6 +1398,33 @@
 
         }
 
+      }
+
+      function compareJSON( obj1, obj2 ) {
+        const ret = {};
+        for(const i in obj2) {
+          if(!obj1.hasOwnProperty(i) || obj2[i] !== obj1[i]) {
+            ret[i] = obj2[i];
+          }
+        }
+        return ret;
+      }
+
+      function stringify(obj_from_json){
+        // https://stackoverflow.com/questions/11233498/json-stringify-without-quotes-on-properties
+        if(typeof obj_from_json !== "object" || Array.isArray(obj_from_json)){
+          // not an object, stringify using native function
+          let str = JSON.stringify(obj_from_json);
+          console.log( str );
+          return str;
+        }
+        // Implements recursive object serialization according to JSON spec
+        // but without quotes around the keys.
+        let props = Object
+          .keys(obj_from_json)
+          .map(key => `${key}:${stringify(obj_from_json[key])}`)
+          .join(",");
+        return `{${props}}`;
       }
 
     }
