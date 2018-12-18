@@ -1035,7 +1035,7 @@
         }
 
         async function getComponent( componentName ){
-          if ( self.component.index === componentName ) return self.component;
+          if ( self.component.name === componentName ) return self.component;
           const component =  dataset.dependencies[ componentName ] || self[ componentName ] || DMS_component_index[ componentName ];
 
           if ( $.isComponent( component ) ) return component;
