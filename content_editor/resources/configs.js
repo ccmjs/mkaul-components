@@ -197,7 +197,7 @@ ccm.files[ 'configs.js' ] = {
     key: "recursive",
 
     data: {
-      inner: '<h1>Recursive Editor Nesting</h1>Demo Text<ccm-content_editor enabled=\'["bold","h1","ccm-content_editor","ccm-quiz","view_editor","view_html","view_json","view_html2json"]\'></ccm-content_editor>',
+      inner: '<h1>Recursive Editor Nesting</h1>Demo Text<ccm-content_editor enabled=`["bold","h1","ccm-content_editor","ccm-quiz","view_editor","view_html","view_json","view_html2json"]`></ccm-content_editor>',
       position: 6 // cursor position
     },
 
