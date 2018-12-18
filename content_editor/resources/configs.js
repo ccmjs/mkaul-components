@@ -182,7 +182,7 @@ ccm.files[ 'configs.js' ] = {
       dependencies: [["ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js"]]
     },
 
-    enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
+    enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
@@ -197,11 +197,11 @@ ccm.files[ 'configs.js' ] = {
     key: "recursive",
 
     data: {
-      inner: '<h1>Recursive Editor Nesting</h1>Demo Text<ccm-editor></ccm-editor>',
+      inner: '<h1>Recursive Editor Nesting</h1>Demo Text<ccm-content_editor enabled=["bold","h1","ccm-content_editor","ccm-quiz","view_editor","view_html","view_json","view_html2json"]></ccm-content_editor>',
       position: 6 // cursor position
     },
 
-    enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
+    enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
@@ -235,7 +235,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-editor', 'ccm-quiz', 'fontname', 'fontSize', 'my_special_listener', "view_editor", "view_html", "view_json", "view_html2json" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-content_editor', 'ccm-quiz', 'fontname', 'fontSize', 'my_special_listener', "view_editor", "view_html", "view_json", "view_html2json" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
