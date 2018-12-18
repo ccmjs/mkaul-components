@@ -4,9 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.1.0)
+ * @version latest (4.0.1)
  * @changes
- * version 4.1.0 13.12.2018
+ * version 4.0.1 12.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -24,7 +24,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [4,1,0],
+    // version: [4,0,1],
     
     /**
      * recommended used framework version
@@ -40,8 +40,17 @@
     config: {
 
       data: {
-        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js">Welcome from blank.<ccm-blank>',
-        position: 6
+        inner: '<h1>HTML2JSON with <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>from component</p> ',
+        position: 6, // cursor position
+        dependencies: {
+          clock: [
+            "ccm.component",
+            "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js",
+            {
+              width: '10em'
+            }
+          ]
+        }
       },
 
       // data: {
@@ -52,9 +61,6 @@
       onchange: function(){ console.log( this.getValue() ); },
 
       html: {
-        builder: {
-          id: 'builder'
-        },
         editor: {
           id: 'editor',
           contenteditable: true
@@ -69,6 +75,9 @@
         },
         html2json: {
           id: 'html2json'
+        },
+        builder: {
+          id: 'builder'
         },
         toolbar: {
           "class": "toolbar",
@@ -769,7 +778,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.0.0.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
@@ -795,45 +804,86 @@
       let $;
 
       /**
-       * Fetch all ccm components from DMS. Store them as key-value pairs with name and URL
+       * all ccm components from DMS with name and URL
        * @type {Object}
        */
-      const DMS_component_index = {};
-
-      /**
-       * dataset for rendering
-       * The value of dataset starts with a clone of this.data,
-       *     but additional values might be added during component lifetime.
-       * this.data is never changed, only dataset is changed.
-       * @type {Object}
-       */
-      let dataset;
+      const all_components = {};
 
       this.init = async () => {
 
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        // get data from config or remote database
-        dataset = await $.dataset( this.data );
+        // no Light DOM? => use empty fragment
+        if ( !this.inner ) this.inner = document.createDocumentFragment();
 
-        if ( typeof dataset === 'string' ) dataset = { inner: dataset };
+        // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
+        if ( typeof this.inner === 'string' ) this.inner = document.createRange().createContextualFragment( this.inner );
 
-        // Use LightDOM with higher priority than data from config
-        if ( this.inner ){
+        // Light DOM is given as ccm HTML data? => convert to HTML DOM Elements
+        if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
+          this.inner = $.html( this.inner );
 
-          // Light DOM is given as ccm JSON data? => convert to HTML DOM Elements
-          if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
-            this.inner = $.html( this.inner );
+        // dynamic replacement of placeholders
+        if ( this.placeholder ) [ ...this.inner.children ].map( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
 
-          // dynamic replacement of placeholders
-          if ( this.placeholder ) [ ...this.inner.children ].forEach( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
-
-          dataset.inner = this.inner;
+        // collect all ccm dependencies in Light DOM
+        const self = this;
+        if ( !self.data.dependencies ){
+          self.data.dependencies = {};
         }
+        collectDependencies( this.inner );
 
-        // initialize dataset.dependencies if necessary
-        if ( ! dataset.dependencies ) dataset.dependencies = {};
+        /**
+         * see ccm.content.js
+         * collects all dependencies in given DOM Element Node (recursive)
+         * @param {Element} node - DOM Element Node
+         */
+        function collectDependencies( node ) {
+
+          // iterate over all child DOM Element Nodes
+          [ ...node.children ].map( child => {
+
+            // no ccm Custom Element? => abort and collect dependencies inside of it
+            if ( child.tagName.indexOf( 'CCM-' ) !== 0 ) return collectDependencies( child );  // recursive call
+
+            // generate ccm dependency out of collected ccm custom elements
+            const component = getComponent(); if ( !component ) return;
+            const config = $.generateConfig( child );
+            config.parent = self;
+            config.root = child;
+            const index = child.tagName.substr( 4 ).toLowerCase();
+            self.data.dependencies[index] = $.isComponent( component ) ? [ component, config ] : [ 'ccm.start', component, config ];
+
+            /**
+             * gets object, index or URL of ccm component that corresponds to founded ccm Custom Element
+             * @returns {Object|string}
+             */
+            function getComponent() {
+
+              /**
+               * index of ccm component
+               * @type {string}
+               */
+              const index = child.tagName.substr( 4 ).toLowerCase();
+
+              // editor embedded inside this editor
+              if (index === self.component.index) return self.component;
+
+              // has dependency to ccm component? => result is component object
+              if ( $.isComponent( self[ index ] ) ) return self[ index ];
+
+              // search inner HTML of own Custom Element for a source tag that contains the ccm component URL
+              const sources = self.inner.querySelectorAll( 'source' );
+              for ( let i = 0; i < sources.length; i++ )
+                if ( $.getIndex( sources[ i ].getAttribute( 'src' ) ) === index )
+                  return sources[ i ].getAttribute( 'src' );
+
+            }
+
+          } );
+
+        }
 
       };
 
@@ -842,11 +892,8 @@
        */
       this.ready = async () => {
 
-        await fill_select_input_field_for_all_components();  // await necessary in ready()
+        await fill_select_input_field_for_all_components();
 
-        /**
-         * The select button is filled with all component names from the DMS
-         */
         async function fill_select_input_field_for_all_components(){
 
           if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
@@ -866,7 +913,7 @@
 
               for ( const record of data ){
                 select_array.push( { tag: 'option', value: record.key, inner: record.key } );
-                DMS_component_index[ $.getIndex( record.url ) ] = record.url;
+                all_components[ record.key ] = record.url;
               }
 
               select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
@@ -881,26 +928,40 @@
        */
       this.start = async () => {
 
+        /**
+         * dataset for rendering
+         * @type {Object}
+         */
+        let dataset = await $.dataset( this.data );
+        if ( typeof dataset === 'string' ) self.data = { inner: self.data };
+
+        this.getValue = () => { // access to self.data
+          // component data:
+          //             id: instance.index,
+          //             name: instance.component.name,
+          //             url: all_components[ instance.component.name ],
+          //             config: config
+
+          const result = {};
+          const fragment = document.createElement('template');
+          fragment.innerHTML = self.data.inner;
+          Object.values(self.data.dependencies).forEach( dep => {
+            const newNode = document.createElement('ccm-'+dep.name );
+            const oldNode = fragment.content.querySelector('#' + dep.id );
+            if ( oldNode ) $.replace( newNode , oldNode );
+            result[ dep.name ] = [ "ccm.component", dep.url, dep.config ];
+          } );
+          result.inner = fragment.innerHTML;
+          return result;
+        };
+
         // logging of 'start' event
-        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+        this.logger && this.logger.log( 'start', $.clone( self.data ) );
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
         if ( ! dataset.inner ) dataset.inner = 'Edit here';
-        $.setContent( editor_div, dataset.inner );
-
-        // collect <source> tags from dataset inner
-        const sources = [...editor_div.querySelectorAll( 'source' )];
-        for ( const source of sources ){
-          const src = source.getAttribute( 'src' );
-          const index = $.getIndex( src );
-          if ( ! dataset.dependencies ) dataset.dependencies = {};
-          if ( ! dataset.dependencies[ index ] ){
-            dataset.dependencies[ index ] = [ "ccm.component", src, {} ];
-          } else {
-            debugger; // duplicate source ?
-          }
-        }
+        $.setContent( editor_div, self.data.inner || 'Edit here' );
 
         // add keyup listener if configured
         if ( self.change_listener_on_key_up )
@@ -990,7 +1051,7 @@
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
-        const builder_div = $.html( self.html.builder || {} );
+        const builder_div = $.html( this.html.builder || {} );
         const html_div = $.html( self.html.html || {} );
         const json_div = $.html( self.html.json || {} );
         const html2json_div = $.html( self.html.html2json || {} );
@@ -998,55 +1059,23 @@
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div ] ) );
 
+        // render content that is given via Light DOM
+        if ( this.inner.childElementCount ) $.setContent( editor_div, this.inner );
+
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...this.element.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
 
-        start_all_Components( editor_div );
+        await start_all_embedded_ccm_components();
 
-        async function start_all_Components( node ){
-          $.asyncForEach([...node.children], child => {
-            start_component( child );
-          });
-        }
-
-        async function start_component( child ){
-          if ( child.tagName.startsWith('CCM-')){
-            const index = child.tagName.slice(4).toLowerCase();
-            let component = await getComponent( index );
-            if ( $.isComponent( component ) ){
-              const config = $.integrate(
-                // set root and parent:
-                {root: child, parent: self},
-                // collect all attributes:
-                [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
-                  all_attributes[attr] = child.getAttribute(attr);
-                  return all_attributes;
-                }, {}), component.config || {} );
-              const instance = await component.start( config );
-              child.addEventListener('click', open_builder( instance, config ) );
-            } else {
-              debugger;
-            }
-          } else {
-            start_all_Components( child );
-          }
-        }
-
-        async function getComponent( componentName ){
-          if ( self.component.index === componentName ) return self.component;
-          const component =  dataset.dependencies[ componentName ] || self[ componentName ] || DMS_component_index[ componentName ];
-
-          if ( $.isComponent( component ) ) return component;
-
-          const solvedComponent = await $.solveDependency( component );
-          if ( $.isComponent( solvedComponent ) ){
-            dataset.dependencies[ componentName ] = solvedComponent;
-            return solvedComponent;
-          } else {
-            debugger;
-          }
+        async function start_all_embedded_ccm_components(){
+          const dependencies = Object.values( self.data.dependencies );
+          for ( let i = 0; i < dependencies.length; i++ )
+            if ( $.isComponent( dependencies[ i ][ 0 ] ) )
+              await dependencies[ i ][ 0 ].start( dependencies[ i ][ 1 ] );
+            else
+              dependencies[ i ] = await $.solveDependency( dependencies[ i ] );
         }
 
         // the same toolbar click listener for all tools
@@ -1078,6 +1107,7 @@
               const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
               if ( embed_code && embed_code.length > 8 ) {
                 // document.execCommand('insertHTML', false, embed_code );    // replaces quotes
+
                 insert_embed_code_via_node( embed_code );
               }
               break;
@@ -1087,7 +1117,6 @@
               if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
                 await insertComponent({ component: component_name, config });
-                editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               }
               break;
             case 'makeexternallink':
@@ -1117,8 +1146,7 @@
               html_div.style.display = 'block';
               break;
             case "view_json":
-              const value_as_json = Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } );
-              self.json_builder.start({ root: json_div, data: value_as_json });
+              self.json_builder.start({ root: json_div, "data.json": $.integrate( { inner: self.html2json_module.html2json( editor_div.innerHTML ) }, self.getValue() ) });
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1136,15 +1164,15 @@
                 const componentName = command.substr( 4 ).toLowerCase();
 
                 // get component
-                const component = await getComponent( componentName );
+                const component = self[ componentName ] || self.component;
 
                 // get config
                 const config = component.config;
 
-                // if command-data of this button has enabled data, overwrite config
+                // if this button has enabled data, overwrite config
                 if (this.dataset["enabled"]) config.enabled = this.dataset["enabled"];
 
-                await insertComponent({ component, config });
+                insertComponent({ component, config });
 
               } else { // editor extensions via function calls remotely defined
                 extension_listener(command, e);
@@ -1171,8 +1199,8 @@
               select.value = 'default'; // set back to default
               break;
             case 'select': // select ccm component from DMS
-              const component = DMS_component_index[select.options[select.selectedIndex].value];
-              await insertComponent({
+              const component = all_components[select.options[select.selectedIndex].value];
+              insertComponent({
                 component,
                 config: {}
               });
@@ -1184,8 +1212,8 @@
         }
 
         function update_data(){
-          dataset.inner = editor_div.innerHTML;
-          dataset.position = getCaretPosition();
+          self.data.inner = editor_div.innerHTML;
+          self.data.position = getCaretPosition();
           self.onchange && self.onchange();
         }
 
@@ -1226,14 +1254,10 @@
         }
 
         async function insertComponent({ component, config }){
-          const index = component.index || $.index( component ) || component;
-          const root = document.createElement('ccm-' + index );
-
           // set parent and root
           config.parent = self;
-          config.root = root;
-
-          // ToDo collect attribute values
+          const newSpan = document.createElement('span');
+          config.root = newSpan;
           let instance;
 
           // start component
@@ -1241,68 +1265,32 @@
             if ( component.startsWith('http') ){
               instance = await self.ccm.start( component, config );
             } else {
-              component = await getComponent( component );
+              component = self[ component ] || all_components[ component ];
               instance = await self.ccm.start( component, config );
             }
           } else {
             instance = await component.start( config );
           }
 
-          editor_div.dispatchEvent(new Event('keyup'));
+          self.data.dependencies[instance.index] = {
+            id: instance.index,
+            name: instance.component.name,
+            url: all_components[ instance.component.name ],
+            config: config
+          };
 
-          if ( ! dataset.dependencies[ instance.component.index ] ){
-            dataset.dependencies[ instance.component.index ] = [ 'ccm.component',
-              instance.component.url,
-              instance.config
-            ];
-          }
-
-          root.firstChild.style = "display: inline-block;";
-          root.addEventListener('click', open_builder( instance, config ) );
+          newSpan.firstChild.style = "display: inline-block;";
 
           // insert at Cursor position or at the end of the text, if none
           const selection = editor_div.parentNode.parentNode.getSelection();
           if ( selection.rangeCount > 0 ){
-            selection.getRangeAt(0).insertNode( root );
+            selection.getRangeAt(0).insertNode( newSpan );
           } else {
             editor_div.appendChild( document.createTextNode(' '));
-            editor_div.appendChild( root );
+            editor_div.appendChild( newSpan );
             editor_div.appendChild( document.createTextNode(' '));
           }
 
-        }
-
-        function open_builder( instance, config ){
-          return async event => {
-            const json_builder = await self.json_builder.start({
-              root: builder_div,
-              html: {
-                "tag": "form",
-                "onsubmit": "%onclick%",
-                "inner": [
-                  {
-                    "tag": "textarea",
-                    "id": "input",
-                    "oninput": "%oninput%",
-                    "onchange": "%onchange%"
-                  },
-                  {
-                    "tag": "input",
-                    "id": "button",
-                    "type": "submit",
-                    "onclick": "%onclick%"
-                  }
-                ]
-              },
-              onfinish: async (e) => {
-                instance = Object.assign( instance, json_builder.getValue(), { lit_html: await $.solveDependency([ "ccm.load", { url: "//ccmjs.github.io/mkaul-components/clock/resources/lit-html.js", type: "module" } ]) } );
-                await instance.start();
-                builder_div.style.display = 'none';
-              },
-              data: clone( typeof instance.config === 'string' ? JSON.parse( instance.config ) : instance.config, ( val ) => ['root','parent','lit_html'].includes( val ) )
-            });
-            builder_div.style.display = 'block';
-          }
         }
 
         async function insert_embed_code_via_node( embed_code ){
@@ -1316,7 +1304,6 @@
             if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
               const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
               await insertComponent({ component: component_uri, config });
-
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElement('div');
@@ -1334,49 +1321,6 @@
         }
 
       };
-
-      this.getValue = () => {
-        // clone dataset
-        const result = clone( dataset, val => ['parent', 'root'].includes( val ) );
-
-        // transform dataset into action data
-        for ( const [ index, dep ] of Object.entries( dataset.dependencies ) ){
-          // no parent, no root in config
-          result.dependencies[ index ] = [ 'ccm.component',
-            dep.url,
-            dep.config ? clone( dep.config, val => ['parent', 'root'].includes( val )  ) : {}   // ToDo JSON.parse( $.stringify( dep.config ) )
-          ];
-        }
-        return result;
-      };
-
-      /**
-       * @summary create a deep copy of a given value
-       * @param {*} value - given value
-       * @param censor - predicate, which values not to copy
-       * @returns {*} deep copy of given value
-       */
-      function clone( value, censor ) {
-
-        return recursive( value, true );
-
-        function recursive( value, first ) {
-          if ( censor( value ) ) return undefined;
-
-          if ( $.isSpecialObject( value ) && !first ) return value;
-
-          if ( Array.isArray( value ) || $.isObject( value ) ) {
-            var copy = Array.isArray( value ) ? [] : {};
-            for ( var i in value )
-              copy[ i ] = recursive( value[ i ] );
-            return copy;
-          }
-
-          return value;
-
-        }
-
-      }
 
     }
 

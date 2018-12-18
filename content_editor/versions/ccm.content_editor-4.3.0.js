@@ -1294,9 +1294,9 @@
                   }
                 ]
               },
-              onfinish: (e) => {
-                config = Object.assign( {}, config, json_builder.getValue() );
-                instance.start( config );
+              onfinish: async (e) => {
+                instance = Object.assign( instance, json_builder.getValue(), { lit_html: await $.solveDependency([ "ccm.load", { url: "//ccmjs.github.io/mkaul-components/clock/resources/lit-html.js", type: "module" } ]) } );
+                await instance.start();
                 builder_div.style.display = 'none';
               },
               data: clone( typeof instance.config === 'string' ? JSON.parse( instance.config ) : instance.config, ( val ) => ['root','parent','lit_html'].includes( val ) )
