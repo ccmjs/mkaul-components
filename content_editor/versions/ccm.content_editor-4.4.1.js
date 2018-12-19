@@ -40,7 +40,7 @@
     config: {
 
       data: {
-        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js">Welcome from blank.<ccm-blank>',
+        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js">Welcome from blank.<ccm-blank></ccm-blank>',
         position: 6
       },
 
