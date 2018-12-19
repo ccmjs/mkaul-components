@@ -770,7 +770,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.1.0.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.0.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
