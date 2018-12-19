@@ -10,11 +10,11 @@ ccm.files[ 'configs.js' ] = {
     "data": {
       inner: '<h1>HTML2JSON with <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>from config</p> ',
       position: 6, // cursor position
-      dependencies: {
+      components: {
         clock: [
           "ccm.component",
           "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js",
-          { width: '10em' }
+          { width: '20em' }
         ]
       }
     }

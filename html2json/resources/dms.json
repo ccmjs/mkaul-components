@@ -4,8 +4,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/html2json/resources/icon.svg",
     "abstract": "Edit HTML, transform to Json and vice versa",
     "description": "The input HTML code is parsed and transformed into JSON, which again may be edited and transformed into HTML again.",
-    "url": "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.1.0.js",
-    "version": "3.1.0",
+    "url": "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.0.js",
+    "version": "3.2.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -45,7 +45,7 @@
                                 },
                                 {
                                     "label": "ccm dependencies",
-                                    "name": "data.dependencies",
+                                    "name": "data.components",
                                     "type": "object",
                                     "info": "ccm dependencies given as action data"
                                 },

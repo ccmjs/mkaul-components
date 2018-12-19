@@ -4,7 +4,6 @@
  * @license The MIT License (MIT)
  * @version latest (3.1.0)
  * @changes
- * version 3.1.0 17.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
