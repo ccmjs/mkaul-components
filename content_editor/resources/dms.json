@@ -29,14 +29,6 @@
                 ]
             },
             {
-                "title": "recursive",
-                "config": [
-                    "ccm.get",
-                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
-                    "recursive"
-                ]
-            },
-            {
                 "title": "medium",
                 "config": [
                     "ccm.get",
@@ -50,6 +42,14 @@
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
                     "ccm"
+                ]
+            },
+            {
+                "title": "recursive",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js",
+                    "recursive"
                 ]
             },
             {
