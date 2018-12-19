@@ -1229,7 +1229,7 @@
         }
 
         async function insertComponent({ component, config }){
-          const index = component.index || $.index( component ) || component;
+          const index = component.index || $.getIndex( component ) || component;
           const root = document.createElement('ccm-' + index );
 
           // TODO set config via key attribute
