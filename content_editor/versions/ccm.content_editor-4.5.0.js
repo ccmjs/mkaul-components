@@ -1244,7 +1244,7 @@
             const configClone = $.clone( config );
             delete configClone.parent;
             delete configClone.root;
-            root.setAttribute( 'key', $.encodeObject( configClone ) );
+            root.setAttribute( 'key', $.stringify( configClone ) );
           } else {
             config = {};
           }
@@ -1328,15 +1328,15 @@
                   const json_builder_value = instance.json_builder.getValue();
 
                   // persist changes with attribute values
-                  instance.root.parentNode.setAttribute( 'key', $.encodeObject( json_builder_value ) );
-                  // instance.json_builder.root.parentNode.setAttribute( 'data', $.encodeObject( json_builder_value ) );
+                  instance.root.parentNode.setAttribute( 'key', $.stringify( json_builder_value ) );
+                  // instance.json_builder.root.parentNode.setAttribute( 'data', $.stringify( json_builder_value ) );
 
                   /********  Try: set single attributes ********/
                   // const instance_config = JSON.parse( instance.config );
                   // const all_diffs = compareJSON( instance_config, json_builder_value );
                   // instance.root.parentNode.setAttribute( 'key', stringify( all_diffs ) );  /*  1  */
                   // for ( const [ name, diff ] of Object.entries( all_diffs ) ){             /*  2  */
-                  //   instance.root.parentNode.setAttribute( name, $.encodeObject( diff ) );
+                  //   instance.root.parentNode.setAttribute( name, $.stringify( diff ) );
                   // }
 
                   // const newInstance = instance.component.start($.integrate( {root: instance.root}, json_builder_value));
