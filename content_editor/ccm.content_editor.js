@@ -1229,8 +1229,13 @@
         }
 
         async function insertComponent({ component, config }){
+
+          // component
           const index = component.index || $.getIndex( component ) || component;
           const root = document.createElement('ccm-' + index );
+
+          // config
+          if ( ! config ) config = {};
 
           // TODO set config via key attribute
 
@@ -1247,7 +1252,11 @@
               instance = await self.ccm.start( component, config );
             } else {
               component = await getComponent( component );
-              instance = await self.ccm.start( component, config );
+              if ( $.isComponent( component ) ){
+                instance = await component.start( config );
+              } else {
+                instance = await self.ccm.start( component, config );
+              }
             }
           } else {
             instance = await component.start( config );
