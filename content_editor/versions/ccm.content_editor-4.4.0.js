@@ -1121,7 +1121,10 @@
               break;
             case "view_json":
               const value_as_json = Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } );
-              self.json_builder.start({ root: json_div, data: value_as_json });
+              self.json_builder.start({ root: json_div, data: { // avoid solveDependency by storing in ccm.store
+                  store: [ 'ccm.store', { local: { app: value_as_json }}  ],
+                  key: 'app'
+                } });
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1379,15 +1382,21 @@
 
       this.getValue = () => {
         // clone dataset
-        const result = clone( dataset, val => ['parent', 'root'].includes( val ) );
+        const result = clone( dataset, val => $.isElementNode( val ) );
 
-        // transform dataset into action data
         for ( const [ index, dep ] of Object.entries( dataset.dependencies ) ){
-          // no parent, no root in config
-          result.dependencies[ index ] = [ 'ccm.component',
-            dep.url,
-            dep.config ? clone( dep.config, val => ['parent', 'root'].includes( val )  ) : {}   // ToDo JSON.parse( $.stringify( dep.config ) )
-          ];
+          if ( ! Array.isArray( dep ) ){
+            // transform dep into action data
+            result.dependencies[ index ] = [ 'ccm.component',
+              dep.url,
+              dep.config ? clone( dep.config, val => $.isElementNode( val )  ) : {}
+            ];
+          }
+          // add second index without version number
+          if ( index.includes('-') ){
+            const name = index.slice(0, index.indexOf('-'));
+            result.dependencies[ name ] = result.dependencies[ index ];
+          }
         }
         return result;
       };
