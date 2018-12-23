@@ -1344,9 +1344,17 @@
           // insert component at Cursor position or at the end of the text, if none
           const selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
           if ( selection.rangeCount > 0 ){
-            editor_div.appendChild( document.createTextNode(' '));
-            selection.getRangeAt(0).insertNode( root );
-            editor_div.appendChild( document.createTextNode(' '));
+            const range = selection.getRangeAt(0);
+            editor_div.focus();
+            if ( $.isSafari() ){
+              editor_div.appendChild(document.createTextNode(' '));
+              editor_div.appendChild(root);
+              editor_div.appendChild(document.createTextNode(' '));
+            } else {
+              range.insertNode( document.createTextNode(' '));
+              range.insertNode( root );
+              range.insertNode( document.createTextNode(' '));
+            }
           } else {
             editor_div.appendChild( document.createTextNode(' '));
             editor_div.appendChild( root );
