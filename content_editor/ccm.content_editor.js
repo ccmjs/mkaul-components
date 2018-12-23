@@ -4,8 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.5.0)
+ * @version latest (4.6.0)
  * @changes
+ * version 4.6.0
  * version 4.5.0 18.12.2018 replace property dependencies by components
  * version 4.1.0 13.12.2018
  * TODO: docu comments -> API
@@ -906,12 +907,19 @@
           }
         }
 
-        // add keyup listener if configured
+        /**
+         * add keyup listener if
+         * config property change_listener_on_key_up is set truthy
+         */
         if ( self.change_listener_on_key_up )
           editor_div.addEventListener('keyup', function(e){
-            update_data();
+            updateData();
           });
 
+        /**
+         * paste event listener
+         * @param e Event
+         */
         editor_div.onpaste = function(e) {
           [...e.clipboardData.items].forEach((item)=>{
             switch( item.type ){
@@ -931,7 +939,7 @@
 
                 // Use shadow root instead of document to get position of cursor in text
                 const shadowRoot = self.element.parentNode;
-                const selection = shadowRoot.getSelection();
+                const selection = shadowRoot.getSelection() || document.getSelection();
                 if ( selection.rangeCount > 0 ){
                   selection.getRangeAt(0).insertNode( pastedImage );
                 } else {
@@ -1007,15 +1015,25 @@
           svg.parentNode.innerHTML += '';
         });
 
-        start_all_Components( editor_div );
+        startAllComponents( editor_div );
 
-        async function start_all_Components( node ){
+        /**
+         *
+         * @param node
+         * @returns {Promise<void>}
+         */
+        async function startAllComponents( node ){
           $.asyncForEach([...node.children], child => {
-            start_component( child );
+            startComponent( child );
           });
         }
 
-        async function start_component( child ){
+        /**
+         *
+         * @param child
+         * @returns {Promise<void>}
+         */
+        async function startComponent( child ){
           if ( child.tagName.startsWith('CCM-')){
             const index = child.tagName.slice(4).toLowerCase();
             let component = await getComponent( index );
@@ -1029,15 +1047,20 @@
                   return all_attributes;
                 }, {}), component.config || {} );
               const instance = await component.start( config );
-              child.addEventListener('dblclick', open_builder( instance, config ) );
+              child.addEventListener('dblclick', openBuilder( instance, config ) );
             } else {
               debugger;
             }
           } else {
-            start_all_Components( child );
+            startAllComponents( child );
           }
         }
 
+        /**
+         *
+         * @param componentName
+         * @returns {Promise<*>}
+         */
         async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
           const component =  dataset.components[ componentName ] || self[ componentName ] || DMS_component_index[ componentName ];
@@ -1053,7 +1076,11 @@
           }
         }
 
-        // the same toolbar click listener for all tools
+        /**
+         * the same toolbar click listener for all tools
+         * @param e
+         * @returns {Promise<void>}
+         */
         async function toolbarClickListener(e){
           const command = this.dataset["command"].toLowerCase();
           switch (command){
@@ -1082,7 +1109,7 @@
               const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
               if ( embed_code && embed_code.length > 8 ) {
                 // document.execCommand('insertHTML', false, embed_code );    // replaces quotes
-                insert_embed_code_via_node( embed_code );
+                insertEmbedCode( embed_code );
               }
               break;
             case 'dms':
@@ -1096,9 +1123,9 @@
               break;
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
-              const selection = editor_div.parentNode.parentNode.getSelection();
+              const selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
               if ( selection.rangeCount > 0 ){
-                document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
+                document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${(self.element.parentNode.getSelection() || document.getSelection()).getRangeAt(0).toString()}</a>`);
               } else {
                 editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
               }
@@ -1156,13 +1183,17 @@
                 await insertComponent({ component, config });
 
               } else { // editor extensions via function calls remotely defined
-                extension_listener(command, e);
+                extensionListener(command, e);
               }
           }
-          update_data();
+          updateData();
         }
 
-        // standard listener for change events
+        /**
+         * standard listener for change events
+         * @param e
+         * @returns {Promise<void>}
+         */
         async function toolbarChangeListener(e){
           const command = this.dataset["command"].toLowerCase();
           const select = this.querySelector('select');
@@ -1187,19 +1218,26 @@
               });
               break;
             default: // editor extensions
-              extension_listener(command, select, value, e);
+              extensionListener(command, select, value, e);
           }
-          update_data();
+          updateData();
         }
 
-        function update_data(){
+        /**
+         *
+         */
+        function updateData(){
           dataset.inner = editor_div.innerHTML;
           dataset.position = getCaretPosition();
           self.onchange && self.onchange();
         }
 
-        // listeners for editor extensions
-        function extension_listener(command, e){
+        /**
+         * listeners for editor extensions
+         * @param command
+         * @param e
+         */
+        function extensionListener(command, e){
           // get listener from remote JavaScript or config or global namespace
           if ( self.extensions && self.extensions[ command ] && typeof self.extensions[ command ] === 'function' ){
             self.extensions[ command ](e)
@@ -1212,48 +1250,58 @@
           }
         }
 
+        /**
+         *
+         * @returns {*}
+         */
         function getCaretPosition() {
           const shadowRoot = self.element.parentNode;
-          if ( shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt && shadowRoot.getSelection().rangeCount ) {
-            const range = shadowRoot.getSelection().getRangeAt(0);
-            const selectedObj = shadowRoot.getSelection();
-            let rangeCount = 0;
-            const childNodes = selectedObj.anchorNode.parentNode.childNodes;
-            [...childNodes].forEach(childNode => {
-              if (childNode === selectedObj.anchorNode) {
-                return;
-              }
-              if (childNode.outerHTML)
-                rangeCount += childNode.outerHTML.length;
-              else if (childNode.nodeType === 3) {
-                rangeCount += childNode.textContent.length;
-              }
-            });
-            return range.startOffset + rangeCount;
+          if ( shadowRoot.getSelection ){ // Chrome
+            return position( shadowRoot.getSelection() )
+          } else { // Firefox 63
+            return position( document.getSelection() )
           }
-          return -1;
+
+          function position( selection ){
+            if ( selection.rangeCount ){
+              const range = selection.getRangeAt(0);
+              let rangeCount = 0;
+              const childNodes = selection.anchorNode.parentNode.childNodes;
+              [...childNodes].forEach(childNode => {
+                if (childNode === selection.anchorNode) {
+                  return rangeCount;
+                }
+                if (childNode.outerHTML)
+                  rangeCount += childNode.outerHTML.length;
+                else if (childNode.nodeType === 3) {
+                  rangeCount += childNode.textContent.length;
+                }
+              });
+              return range.startOffset + rangeCount;
+            } else {
+              return 0;
+            }
+          }
         }
 
+        /**
+         *
+         * @param component
+         * @param config
+         * @returns {Promise<void>}
+         */
         async function insertComponent({ component, config }){
 
           // component
           const index = component.index || $.getIndex( component ) || component;
           const root = document.createElement('ccm-' + index );
 
-          if ( config ){
-            const configClone = $.clone( config );
-            delete configClone.parent;
-            delete configClone.root;
-            root.setAttribute( 'key', $.stringify( configClone ) );
-          } else {
-            config = {};
-          }
+          if ( ! config ) config = {};
 
           // set parent and root
           config.parent = self; // TODO no parent
           config.root = root;
 
-          // ToDo collect attribute values
           let instance;
 
           // start component
@@ -1272,20 +1320,29 @@
             instance = await component.start( config );
           }
 
-          editor_div.dispatchEvent(new Event('keyup'));
-
-          if ( ! dataset.components[ instance.component.index ] ){
+          if ( dataset.components[ instance.component.index ] ){
+            // already registered as dependency.
+            // compare configs and write differences into attributes
+            const oldConfig = dataset.components[ instance.component.index ][2];
+            const newConfig = JSON.parse(instance.config);
+            const allDiffs = compareJSON( oldConfig, newConfig );
+            for ( const [ name, diff ] of allDiffs ){
+              root.setAttribute( name, diff );
+            }
+          } else { // not yet registered as dependency
             dataset.components[ instance.component.index ] = [ 'ccm.component',
               instance.component.url,
-              instance.config
+              JSON.parse(instance.config)
             ];
           }
 
-          root.firstChild.style = "display: inline-block;";
-          root.addEventListener('dblclick', open_builder( instance, config ) );
+          editor_div.dispatchEvent(new Event('keyup'));
 
-          // insert at Cursor position or at the end of the text, if none
-          const selection = editor_div.parentNode.parentNode.getSelection();
+          root.firstChild.style = "display: inline-block;";
+          root.addEventListener('dblclick', openBuilder( instance, config ) );
+
+          // insert component at Cursor position or at the end of the text, if none
+          const selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
           if ( selection.rangeCount > 0 ){
             selection.getRangeAt(0).insertNode( root );
           } else {
@@ -1296,7 +1353,13 @@
 
         }
 
-        function open_builder( instance, config ){
+        /**
+         * open builder for double clicked component, which is inside the edited text
+         * @param instance
+         * @param config
+         * @returns {Function} event handler for double click
+         */
+        function openBuilder( instance, config ){
           // persist the builder as property of instance
           return async event => {
             if ( ! instance.json_builder )
@@ -1326,26 +1389,18 @@
                 },
                 onfinish: async (e) => {
                   const json_builder_value = instance.json_builder.getValue();
+                  const instance_config = JSON.parse( instance.config );
+                  const all_diffs = compareJSON( instance_config, json_builder_value );
 
-                  // persist changes with attribute values
-                  instance.root.parentNode.setAttribute( 'key', $.stringify( json_builder_value ) );
-                  // instance.json_builder.root.parentNode.setAttribute( 'data', $.stringify( json_builder_value ) );
+                  for ( const [ name, diff ] of all_diffs ){
+                    instance.root.parentNode.setAttribute( name, diff );
+                  }
 
-                  /********  Try: set single attributes ********/
-                  // const instance_config = JSON.parse( instance.config );
-                  // const all_diffs = compareJSON( instance_config, json_builder_value );
-                  // instance.root.parentNode.setAttribute( 'key', stringify( all_diffs ) );  /*  1  */
-                  // for ( const [ name, diff ] of Object.entries( all_diffs ) ){             /*  2  */
-                  //   instance.root.parentNode.setAttribute( name, $.stringify( diff ) );
-                  // }
-
-                  // const newInstance = instance.component.start($.integrate( {root: instance.root}, json_builder_value));
-
-                  /********** Restart **********/
-                  // await instance.start();
+                  /********** Restart component instance **********/
+                  // await instance.start() is not necessary because of MutationObserver
                   Object.assign( instance, await $.solveDependencies( json_builder_value ) );
                   Object.assign( instance.json_builder, { data: {
-                    // avoid solveDependency by storing in ccm.store
+                      // avoid solveDependency by storing in ccm.store
                       store: [ 'ccm.store', { local: { app: json_builder_value }}  ],
                       key: 'app'
                     } } );
@@ -1357,11 +1412,16 @@
           }
         }
 
-        async function insert_embed_code_via_node( embed_code ){
-          if ( embed_code.toLowerCase().includes('ccm-') ){
+        /**
+         * insert embed code
+         * @param embedCode
+         * @returns {Promise<void>}
+         */
+        async function insertEmbedCode( embedCode ){
+          if ( embedCode.toLowerCase().includes('ccm-') ){
             // extract ccm component and config and start component
             const regex = /(http[^("|')]+).*ccm-(\w+).*?(\w+\d+)["]/gi;
-            const match = regex.exec( embed_code );
+            const match = regex.exec( embedCode );
             const component_uri = match[1];
             const component_name = match[2];
             const dms_id = match[3];
@@ -1372,11 +1432,13 @@
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElement('div');
-            embed_div.innerHTML = embed_code;
+            embed_div.innerHTML = embedCode;
             // selection = self.element.parentNode.getSelection();
-            const embed_selection = editor_div.parentNode.parentNode.getSelection();
+            const embed_selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
             if (embed_selection.rangeCount > 0) {
+              editor_div.appendChild(document.createTextNode(' '));
               embed_selection.getRangeAt(0).insertNode(embed_div);
+              editor_div.appendChild(document.createTextNode(' '));
             } else {
               editor_div.appendChild(document.createTextNode(' '));
               editor_div.appendChild(embed_div);
@@ -1385,8 +1447,76 @@
           }
         }
 
+        /**
+         * compare two objects and return the differences
+         * @param {Object} oldJson
+         * @param {Object} newJson
+         * @return {Array} differences as array of key-value pairs
+         */
+        function compareJSON( oldJson, newJson ) {
+          const result = [];
+          collect( [], oldJson, newJson );
+          return result;
+          function collect( prefix, oldJson, newJson ){
+            if ( oldJson && ! newJson ) return result.push([ dots(), null ]);
+            if ( ! oldJson && newJson ) return result.push([ dots(), newJson ]);
+            if ( oldJson == newJson ) return;
+            // oldJson && newJson && oldJson != newJson
+            if ( typeof newJson === 'object' ){
+              if ( Array.isArray( newJson ) ){
+                for ( let i = 0; i<newJson.length; i++ ){
+                  collect( [ ...prefix, i ], oldJson[i], newJson[i] );
+                }
+              } else { // object is not an array
+                for ( const key of [...new Set([...Object.keys( oldJson ), ...Object.keys( newJson )])] ){
+                  collect( [ ...prefix, key ], oldJson[key], newJson[key] );
+                }
+              }
+            } else  {
+              result.push([ dots(), newJson ]);
+            }
+            function dots(){
+              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
+            }
+          }
+        }
+
+        /**
+         * ToDo No longer used => remove dead code
+         * serialize JSON structure into attributes
+         * @param json
+         * @returns {Array} attribute names and values
+         */
+        function attributeNamesAndValues( json ){
+          const result = [];
+          collect( [], json );
+          return result;
+          function collect( prefix, json ){
+            if ( typeof json === 'object' ){
+              if ( Array.isArray( json ) ){
+                for ( let i = 0; i<json.length; i++ ){
+                  collect( [ ...prefix, i ], json[i] );
+                }
+              } else { // object is not an array
+                for ( const [ key, value ] of Object.entries( json ) ){
+                  collect( [ ...prefix, key ], value );
+                }
+              }
+            } else  {
+              result.push([ dots(), json ]);
+            }
+            function dots(){
+              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
+            }
+          }
+        }
+
       };
 
+      /**
+       * current state of this editor
+       * @returns {Object} state of editor
+       */
       this.getValue = () => {
         // clone dataset
         const result = $.clone( dataset );
