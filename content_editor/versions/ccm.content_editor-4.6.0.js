@@ -6,7 +6,7 @@
  * @license The MIT License (MIT)
  * @version latest (4.6.0)
  * @changes
- * version 4.6.0
+ * version 4.6.0 23.12.2018 works on Firefox and Chrome
  * version 4.5.0 18.12.2018 replace property dependencies by components
  * version 4.1.0 13.12.2018
  * TODO: docu comments -> API
@@ -26,14 +26,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [4,1,0],
+    version: [4,6,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -771,7 +771,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.0.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
