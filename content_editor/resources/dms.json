@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Content Editor for rich texts and ccm components. Double-click on component to open builder.",
     "description": "Content Editor for rich texts using contentEditable. With this tiny editor rich text editing can be embedded in any web page or any ccm component. Double-click on component to open builder. ",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.6.0.js",
-    "version": "4.6.0",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.7.0.js",
+    "version": "4.7.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -383,6 +383,6 @@
             }
         ]
     },
-    "updated_at": "2018-12-19T20:20:00+00:00",
+    "updated_at": "2018-12-25T13:20:00+00:00",
     "created_at": "2018-12-01T14:41:22+02:00"
 }

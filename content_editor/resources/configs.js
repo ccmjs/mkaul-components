@@ -129,7 +129,7 @@ ccm.files[ 'configs.js' ] = {
     //   "key": "demo"
     // },
 
-    onchange: function(){ console.log( this.getValue() ); },
+    // onchange: function(){ console.log( this.getValue() ); },
 
     change_listener_on_key_up: true,
 
@@ -226,7 +226,7 @@ ccm.files[ 'configs.js' ] = {
     //   "key": "demo"
     // },
 
-    onchange: function(){ console.log( this.getValue() ); },
+    // onchange: function(){ console.log( this.getValue() ); },
 
     change_listener_on_key_up: true,
 

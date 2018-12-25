@@ -4,14 +4,15 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.6.0)
+ * @version latest (4.7.0)
  * @changes
+ * version 4.7.0  allow dynamic extension of additional buttons
+ *                support multiple builders
  * version 4.6.0
  * version 4.5.0 18.12.2018 replace property dependencies by components
  * version 4.1.0 13.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
- * TODO: builder component
  * TODO: i18n
  */
 
@@ -26,14 +27,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [4,1,0],
+    version: [4,7,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -797,7 +798,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.0.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
