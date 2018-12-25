@@ -4,8 +4,10 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.6.0)
+ * @version latest (4.7.0)
  * @changes
+ * version 4.7.0  allow dynamic extension of additional buttons
+ *                support multiple builders
  * version 4.6.0
  * version 4.5.0 18.12.2018 replace property dependencies by components
  * version 4.1.0 13.12.2018
@@ -42,7 +44,7 @@
     config: {
 
       data: {
-        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js">Welcome from blank.<ccm-blank></ccm-blank>',
+        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js"><ccm-blank>Welcome from blank.</ccm-blank>',
         position: 6
       },
 
@@ -78,6 +80,7 @@
           "data-command": "plus_action",
           "data-address": "%actionAddress%",
           "data-action": "%buttonName%",
+          "style": "width: auto; margin-right: 5px; border-radius: 3px;",
           "class": "click",
           "inner": {
           "class": "fa",
@@ -1116,12 +1119,13 @@
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
             case "plus":
-              const buttonName = prompt('Enter button name: ', 'myButton');
-              const actionAddress = prompt('Enter HTTPS address of Button Action: ', 'https://myserver.com/path/action.mjs');
-              toolbar_div.appendChild( $.html( self.html.plus, { buttonName, actionAddress } ) ) ;
-              break;
-            case "plus_action":
-              extensionListener( { command: this.dataset['action'], event: e, address: this.dataset['address'] } );  // ToDo 3rd parameter for dynamic loading
+              const buttonName = prompt('Enter button name: ', 'my_special_listener');
+              const actionAddress = prompt('Enter HTTPS address of Button Action: ', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js');
+              const new_button = $.html( self.html.plus, { buttonName, actionAddress } );
+              new_button.addEventListener('click', ev => {
+                extensionListener( { command: buttonName, address: actionAddress, event: ev } );
+              });
+              toolbar_div.appendChild( new_button ) ;
               break;
             case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
               document.execCommand('formatBlock', false, command);
@@ -1217,7 +1221,7 @@
                 await insertComponent({ component, config });
 
               } else { // editor extensions via function calls remotely defined
-                extensionListener({command, event: e});
+                extensionListener({command: command || this.dataset['command'], action: this.dataset['action'], event: e});
               }
           }
           updateData();
