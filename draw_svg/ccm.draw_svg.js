@@ -115,13 +115,37 @@
               "tag": "a",
               "href": "#",
               "class": "click",
-              "title": "insert line",
-              "data-command": "line",
-              "style": "width: auto; margin-right: 2px; border-radius: 3px;",
+              "title": "free hand drawing",
+              "data-command": "free",
+              "style": "width: auto; ",
               "inner": {
                 "tag": "svg",
                 "width": "1em",
-                "height": "1em",
+                "height": "0.9em",
+                "viewBox": "0 0 100 100",
+                "xmlns": "http://www.w3.org/2000/svg",
+                "inner": [
+                  {
+                    "tag": "polyline",
+                    "points": "0,100 50,25 50,75 100,0",
+                    "fill": "#000",
+                    "stroke-width": 3,
+                    "stroke": "#000"
+                  }
+                ]
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "title": "insert line",
+              "data-command": "line",
+              "style": "width: auto; ",
+              "inner": {
+                "tag": "svg",
+                "width": "1em",
+                "height": "0.9em",
                 "viewBox": "0 0 100 100",
                 "xmlns": "http://www.w3.org/2000/svg",
                 "inner": [
@@ -142,38 +166,13 @@
               "tag": "a",
               "href": "#",
               "class": "click",
-              "title": "insert text",
-              "data-command": "text",
-              "inner": {
-                "tag": "i",
-                "class": "fa",
-                "inner": "T"
-              }
-            },
-            {
-              "tag": "a",
-              "href": "#",
-              "class": "click",
-              "title": "insert HTML even via copy paste",
-              "style": "width: auto; margin-right: 2px; border-radius: 3px;",
-              "data-command": "html",
-              "inner": {
-                "tag": "i",
-                "class": "fa",
-                "inner": "HTML"
-              }
-            },
-            {
-              "tag": "a",
-              "href": "#",
-              "class": "click",
               "title": "insert rectangle",
               "data-command": "rect",
-              "style": "width: auto; margin-right: 3px; border-radius: 3px;",
+              "style": "width: auto; ",
               "inner": {
                 "tag": "svg",
                 "width": "1em",
-                "height": "1em",
+                "height": "0.9em",
                 "viewBox": "0 0 100 100",
                 "xmlns": "http://www.w3.org/2000/svg",
                 "inner": [
@@ -196,11 +195,11 @@
               "class": "click",
               "title": "insert circle",
               "data-command": "circle",
-              "style": "width: auto; margin-right: 2px; border-radius: 3px;",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "tag": "svg",
                 "width": "1em",
-                "height": "1em",
+                "height": "0.9em",
                 "viewBox": "0 0 100 100",
                 "xmlns": "http://www.w3.org/2000/svg",
                 "inner": [
@@ -214,6 +213,31 @@
                     "stroke": "#000"
                   }
                 ]
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "title": "insert text",
+              "data-command": "text",
+              "inner": {
+                "tag": "i",
+                "class": "fa",
+                "inner": "T"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "title": "insert HTML even via copy paste",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "data-command": "html",
+              "inner": {
+                "tag": "i",
+                "class": "fa",
+                "inner": "HTML"
               }
             },
             {
@@ -281,6 +305,7 @@
               "href": "#",
               "class": "click",
               "data-command": "clear_image",
+              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-eraser"
@@ -292,7 +317,7 @@
               "class": "click",
               "data-command": "embed",
               "title": "embed code, e.g. Youtube",
-              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "style": "width: auto;",
               "inner": {
                 "tag": "i",
                 "inner": "&lt;embed&gt;",
@@ -305,7 +330,7 @@
               "class": "click",
               "data-command": "dms",
               "title": "DMS-ID",
-              "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+              "style": "width: auto;",
               "inner": {
                 "tag": "i",
                 "inner": "[DMS-ID]",
@@ -337,7 +362,7 @@
               }
             },
             {
-              "style": "white-space:nowrap; display: inline;",
+              "style": "white-space:nowrap; display: inline; margin-top: 5px;",
               "inner": [
                 {
                   "tag": "label",
@@ -353,7 +378,7 @@
               ]
             },
             {
-              "style": "white-space:nowrap; display: inline;",
+              "style": "white-space:nowrap; display: inline; margin-top: 5px;",
               "inner": [
                 {
                   "tag": "label",
@@ -371,7 +396,8 @@
          ]
         },
         editor: {
-          "id": "draw_div"
+          "id": "draw_div",
+          // "contentEditable": "true"
         },
         plus: {
           "tag": "a",
@@ -389,21 +415,24 @@
         }
       },
 
+      state: 'free',
+
       // enabled: ['undo', 'redo', 'color', 'text', 'html', 'line', 'rect', 'circle', 'ccm-clock', 'ccm-content_editor', 'ccm-draw_svg', 'ccm-quiz', 'save_image', 'clear_image', 'plus' ],
 
       stroke_width: 2.2,
       updata_data_event: 'pointerleave',  // or mouseup etc
-
+      stopPaintingIntoCCM: false, // if drawing into ccm components is prohibited
+      textStyle: 'font: bold 30px sans-serif;',
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ],
 
       clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
-        width: "40px",
+        width: "100%",
         html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
         }
       } ],
 
-      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.7.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
+      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.7.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"], width: "100%" } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
@@ -486,22 +515,45 @@
         if ( ! dataset.components ) dataset.components = {};
 
       };
-      
+
       /**
        * is called once after the initialization and is then deleted
        */
       this.ready = async () => {
 
-        // logging of 'ready' event
-        this.logger && this.logger.log( 'ready' );
+        await fill_select_input_field_for_all_components();  // await necessary in ready()
 
-        const data = await self.store.get({});
+        /**
+         * The select button is filled with all component names from the DMS
+         */
+        async function fill_select_input_field_for_all_components(){
 
-        for ( const record of data ){
-          // with version number
-          DMS_component_index[ $.getIndex( record.url ) ] = record.url;
-          // without version number
-          DMS_component_index[ record.key ] = record.url;
+          if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
+            const all_buttons = self.html.toolbar.inner;
+            let select_array;
+            if ( all_buttons ) for ( const button of all_buttons ){
+              if ( button["data-command"] === "select" ){ // "data-command": "select"
+                if ( button.inner ){
+                  select_array = button.inner.inner;
+                }
+                break;
+              }
+            }
+
+            if ( select_array ){
+              const data = await self.store.get({});
+
+              for ( const record of data ){
+                select_array.push( { tag: 'option', value: record.key, inner: record.key } );
+                // with version number
+                DMS_component_index[ $.getIndex( record.url ) ] = record.url;
+                // without version number
+                DMS_component_index[ record.key ] = record.url;
+              }
+
+              select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
+            }
+          }
         }
 
       };
@@ -522,6 +574,7 @@
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
 
         const editor_div = $.html( self.html.editor );
+        // ToDo // editor_div.contentEditable = "true";
         editor_div.appendChild( $.html( dataset.inner ) );
         editor_div.addEventListener(self.updata_data_event, function(e){
           updateData();
@@ -561,12 +614,12 @@
         });
 
         const draw_div = self.element.querySelector('#draw_div');
-        const svg_node = self.element.querySelector('#svg');
+        const svg_div = self.element.querySelector('#svg');
         const mouse_x  = self.element.querySelector('#mouse-x');
         const mouse_y  = self.element.querySelector('#mouse-y');
-        svg_node.onmousemove = (evt)=> {
-          mouse_x.value =  evt.pageX - getPositionX(svg_node)-getPositionX(draw_div)-1;
-          mouse_y.value =  evt.pageY - getPositionY(svg_node)-getPositionY(draw_div)-1;
+        svg_div.onmousemove = (evt)=> {
+          mouse_x.value =  evt.pageX - getPositionX(svg_div)-getPositionX(draw_div)-1;
+          mouse_y.value =  evt.pageY - getPositionY(svg_div)-getPositionY(draw_div)-1;
         };
 
         const undoStack = [];
@@ -580,17 +633,17 @@
           total_polygon  : 0,
           draw : () => {
             //start time of draw
-            svg_node.addEventListener('mousedown',(e)=>{
+            svg_div.addEventListener('mousedown',(e)=>{
               e.stopPropagation();
               e.preventDefault();
-              svg_node.addEventListener('mousemove', drawNow );
+              svg_div.addEventListener('mousemove', drawNow );
 
             });
             //draw end time
-            svg_node.addEventListener('mouseup',(e)=>{
+            svg_div.addEventListener('mouseup',(e)=>{
               e.stopPropagation();
               e.preventDefault();
-              svg_node.removeEventListener('mousemove', drawNow );
+              svg_div.removeEventListener('mousemove', drawNow );
               draw_obj.prevX=0;
               draw_obj.prevY=0;
             });
@@ -603,8 +656,8 @@
         function drawNow( evt ) {
           evt.stopPropagation();
           evt.preventDefault();
-          let positionX=evt.pageX - getPositionX(svg_node)-getPositionX(draw_div)-1;
-          let positionY=evt.pageY - getPositionY(svg_node)-getPositionY(draw_div)-1;
+          let positionX=evt.pageX - getPositionX(svg_div)-getPositionX(draw_div)-1;
+          let positionY=evt.pageY - getPositionY(svg_div)-getPositionY(draw_div)-1;
           if(draw_obj.prevX===0) {
             draw_obj.prevX=positionX;
             draw_obj.prevY=positionY;
@@ -613,21 +666,21 @@
             if(draw_obj.flag===1) {
               let prevX=draw_obj.prevX;
               let prevY=draw_obj.prevY;
-              let path=new SvgPath({
+              const path = new SvgPath({
                 'd' : "M"+prevX+","+prevY+" L"+positionX+","+positionY,
                 'fill' : 'none',
                 'stroke' : self.color,
                 'stroke-width' : self.stroke_width,
-                'id' : 'path'+(svg_node.children.length+1),
+                'id' : 'path'+(svg_div.children.length+1),
               });
+              svg_div.appendChild(path);
               undoStack.push(path);
-              svg_node.appendChild(path);
 
               draw_obj.flag=0;
               draw_obj.prevX=positionX;
               draw_obj.prevY=positionY;
             } else {
-              let lastchildPath=self.element.querySelector('#path'+(svg_node.children.length));
+              let lastchildPath=self.element.querySelector('#path'+(svg_div.children.length));
               let get_d_attr=lastchildPath.getAttribute('d');
               let curvX=(draw_obj.prevX+positionX)/2;
               let curvY=(draw_obj.prevY+positionY)/2;
@@ -661,39 +714,6 @@
           return y;
         }
 
-        class SvgObject {
-          constructor( obj, type='path' ){
-            this.path=document.createElementNS('http://www.w3.org/2000/svg', type );
-            for( const prop in obj ) {
-              this.path.setAttributeNS(null, prop, obj[prop] );
-            }
-          }
-          get svg(){
-            return this.path;
-          }
-          get undo(){
-
-          }
-          get redo(){
-
-          }
-          resize(){
-
-          }
-        }
-
-        class SvgText extends SvgObject {
-          constructor(){
-            super();
-          }
-        }
-
-        class SvgForeignObject extends SvgObject {
-          constructor(){
-            super();
-          }
-        }
-
         // create Path
         function SvgPath( obj, type='path' ) {
           let path=document.createElementNS('http://www.w3.org/2000/svg',type);
@@ -702,73 +722,118 @@
           }
           return path;
         }
-        // create Text
-        function SvgText( obj, content ) {
-          let text=document.createElementNS( 'http://www.w3.org/2000/svg', 'text' );
-          for(let prop in obj) {
-            text.setAttributeNS(null,prop,obj[prop]);
+
+        let currentClickListener;
+
+        class SvgObject {
+          constructor( obj, type='path' ){
+            this.type = type;
+            this.node = new SvgPath( obj, type );
+            undoStack.push( _ => {
+              svg_div.removeChild( this.node );
+              redoStack.push( this.node );
+            });
+            this.setUpListener(...Object.keys(obj));
           }
-          const textNode = document.createTextNode(content);
-          text.appendChild(textNode);
-          return text;
-        }
-        // create foreign object
-        function ForeignObject( obj, div ){
-          let svgObj = document.createElementNS( 'http://www.w3.org/2000/svg', 'foreignObject' );
-          for(let prop in obj) {
-            svgObj.setAttributeNS(null,prop,obj[prop]);
+          get svg(){
+            return this.node;
           }
-          svgObj.appendChild( div );
-          return svgObj;
-        }
-
-        function moveListener( node, x, y ){
-          return (evt) => {
-            let positionX=evt.pageX - getPositionX(svg_node)-getPositionX(draw_div);
-            let positionY=evt.pageY - getPositionY(svg_node)-getPositionY(draw_div);
-            node.setAttributeNS(null,x,positionX);
-            node.setAttributeNS(null,y,positionY);
-          };
-        }
-
-        function setUpListener( node, x1, y1, x2, y2 ){
-          const cloneNode = node.cloneNode(true);
-          const moveX1Y1 = moveListener( node, x1, y1 );
-          const moveX2Y2 = moveListener( node, x2, y2 );
-
-          svg_node.addEventListener( 'mousemove', moveX1Y1 );
-          svg_node.appendChild( node );
-
-          let clickListener1, clickListener2;
-          clickListener1 = (evt) => {
-            svg_node.removeEventListener( 'mousemove', moveX1Y1 );
-
-            svg_node.addEventListener( 'mousemove', moveX2Y2 );
-            svg_node.removeEventListener( 'click', clickListener1 );
-            svg_node.addEventListener( 'click', clickListener2 );
-          };
-          clickListener2 = (evt) => {
-            svg_node.removeEventListener( 'mousemove', moveX2Y2 );
-            svg_node.removeEventListener( 'click', clickListener2 );
-            setUpListener( cloneNode, x1, y1, x2, y2 );
-          };
-          svg_node.addEventListener( 'click', clickListener1 );
-
-          node.addEventListener('dblclick', e => {
-            svg_node.addEventListener( 'mousemove', moveX1Y1 );
-            svg_node.addEventListener( 'click', clickListener1 );
-          });
-
-          editor_div.addEventListener('keydown', (e)=>{
-            if (e.key === "Escape"){
-              svg_node.removeEventListener( 'mousemove', moveX1Y1 );
-              svg_node.removeEventListener( 'mousemove', moveX2Y2 );
-              svg_node.removeEventListener( 'click', clickListener1 );
-              svg_node.removeEventListener( 'click', clickListener2 );
-              svg_node.removeChild( node );
+          moveListener( x, y ){
+            return (evt) => {
+              const positionX = evt.pageX - getPositionX(svg_div)-getPositionX(draw_div);
+              const positionY = evt.pageY - getPositionY(svg_div)-getPositionY(draw_div);
+              this.node.setAttributeNS(null,x,positionX);
+              this.node.setAttributeNS(null,y,positionY);
+            };
+          }
+          setUpListener( x1, y1, x2, y2 ){
+            if ( this.constructor.setUpParams ){
+              [ x1, y1, x2, y2 ] = this.constructor.setUpParams;
             }
-          });
+            const newNode = this.node.cloneNode(true);
+            undoStack.push( this.node );
+            this.node = newNode;
+            const moveX1Y1 = this.moveListener( x1, y1 );
+            const moveX2Y2 = this.moveListener( x2, y2 );
+
+            svg_div.addEventListener( 'mousemove', moveX1Y1 );
+            svg_div.appendChild( newNode );
+
+            let clickListener1, clickListener2, clickListener3;
+            clickListener1 = (evt) => {
+              svg_div.removeEventListener( 'mousemove', moveX1Y1 );
+              svg_div.addEventListener( 'mousemove', moveX2Y2 );
+              svg_div.removeEventListener( 'click', clickListener1 );
+              svg_div.addEventListener( 'click', clickListener2 );
+              currentClickListener = clickListener2;
+            };
+            clickListener2 = (evt) => {
+              svg_div.removeEventListener( 'mousemove', moveX2Y2 );
+              svg_div.removeEventListener( 'click', clickListener2 );
+              svg_div.addEventListener('click', clickListener3);
+              currentClickListener = clickListener3;
+            };
+            clickListener3 = (evt) => {
+              this.setUpListener( x1, y1, x2, y2 );
+              svg_div.removeEventListener( 'click', clickListener3 );
+            };
+
+            svg_div.addEventListener( 'click', clickListener1 );
+            currentClickListener = clickListener1;
+
+            svg_div.addEventListener( 'mouseleave', e => {
+              if ( e.target === svg_div ){
+                svg_div.removeEventListener( 'mousemove', moveX1Y1 );
+                svg_div.removeEventListener( 'mousemove', moveX2Y2 );
+                svg_div.removeEventListener( 'click', clickListener1 );
+                svg_div.removeEventListener( 'click', clickListener2 );
+                svg_div.removeEventListener( 'click', clickListener3 );
+                // remove unfinished object
+                if ( this.node.parentNode === svg_div && currentClickListener === clickListener1 ) svg_div.removeChild( this.node );
+              }
+            });
+
+            this.node.addEventListener('dblclick', e => {
+              svg_div.addEventListener( 'mousemove', moveX1Y1 );
+              svg_div.addEventListener( 'click', clickListener1 );
+            });
+
+          }
         }
+
+        class SvgLine extends SvgObject {
+          constructor( obj ){
+            super( obj, 'line' );
+          }
+          static setUpParams = [ 'x2', 'y2', 'x1', 'y1' ];
+        }
+
+        class SvgCircle extends SvgObject {
+          constructor( obj ){
+            super( obj, 'circle' );
+          }
+          static setUpParams = [ 'cx', 'cy', 'r' ];
+        }
+
+        class SvgText extends SvgObject {
+          constructor( obj, content ){
+            super( obj, 'text' );
+            this.node.class = 'svgtext';
+            this.node.fill = self.color;
+            const textNode = document.createTextNode(content);
+            this.node.appendChild(textNode);
+            // draw_div.contentEditable = "true"; // see https://codepen.io/soffes/pen/RRmLgO
+          }
+          static setUpParams = [ 'x', 'y', 'textLength' ];
+        }
+
+        class SvgForeignObject extends SvgObject {
+          constructor( obj, div ){
+            super( obj, 'foreignObject' );
+            this.node.appendChild( div );
+          }
+        }
+
 
         /**
          * the same toolbar click listener for all tools
@@ -777,28 +842,33 @@
          */
         async function toolbarClickListener(e) {
           const command = this.dataset["command"].toLowerCase();
+          self.state = command;
+
           switch (command) {
 
+            case 'free':
+              svg_div.removeEventListener('click', currentClickListener );
+              break;
+
             case 'line':
-              const newLine = new SvgPath({
+              new SvgLine( {
                 x1: 10,
                 y1: 10,
                 x2: 110,
                 y2: 110,
                 stroke: self.color,
                 'stroke-width': 3
-              }, 'line');
-              setUpListener( newLine, 'x1', 'y1', 'x2', 'y2' );
+              });
               break;
 
             case 'text':
-              const newSVGText = new SvgText({
+              new SvgText({
                 x: 250,
                 y: 100,
                 fill: self.color
               }, prompt('Enter text', 'your text here') );
-              setUpListener( newSVGText, 'x', 'y', 'textLength' );
               break;
+
             case 'html':
               const newDiv = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'div' );
               newDiv.contentEditable = "true";
@@ -807,7 +877,7 @@
               newDiv.addEventListener('mousedown',(e)=> {
                 e.stopPropagation();
               });
-              const newHTML = new ForeignObject({
+              const newHTML = new SvgForeignObject({
                 x: 200,
                 y: 100,
                 width: 320,
@@ -815,120 +885,110 @@
                 fill: self.color
               }, newDiv );
               newHTML.style = "width: 320px; height: 120px; resize: both;";
-              setUpListener( newHTML, 'x', 'y', 'width', 'height' );
               break;
+
             case 'rect':
-              const newRectangle = new SvgPath({
+              new SvgObject({
                 x: 250,
                 y: 100,
                 width: 30,
                 height: 20,
                 fill: self.color
               }, 'rect');
-              setUpListener( newRectangle, 'x', 'y', 'width', 'height' );
               break;
+
             case 'circle':
-              const newCircle = new SvgPath({
+              new SvgCircle({
                 cx: 250,
                 cy: 100,
                 r: 30,
                 fill: self.color
               }, 'circle');
-              setUpListener( newCircle, 'cx', 'cy', 'r' );
               break;
+
             case 'undo':
               if ( ! undoStack.length ) break;
               const oldSVGPath_or_fun = undoStack.pop();
               if ( typeof oldSVGPath_or_fun === 'function' ){
                 oldSVGPath_or_fun();
+              } else if ( oldSVGPath_or_fun.undo ) {
+                oldSVGPath_or_fun.undo();
               } else {
+                svg_div.removeChild( oldSVGPath_or_fun );
                 redoStack.push( oldSVGPath_or_fun );
-                svg_node.removeChild( oldSVGPath_or_fun );
               }
               break;
+
             case 'redo':
               if ( ! redoStack.length ) break;
               const newSVGPath_or_fun = redoStack.pop();
               if ( typeof newSVGPath_or_fun === 'function' ){
                 newSVGPath_or_fun();
+              } else if ( newSVGPath_or_fun.redo ) {
+                newSVGPath_or_fun.redo();
               } else {
+                svg_div.appendChild( newSVGPath_or_fun );
                 undoStack.push( newSVGPath_or_fun );
-                svg_node.appendChild( newSVGPath_or_fun );
               }
               break;
+
             case "save_image":
-              svg_node.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-              const svgData = svg_node.outerHTML;
+              svg_div.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+              const svgData = svg_div.outerHTML;
               const svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
               const svgUrl = URL.createObjectURL(svgBlob);
               const save_btn = this;
               save_btn.href = svgUrl;
               save_btn.download = "san.svg";
               break;
+
             case "clear_image":
-              while(svg_node.children.length>0) {
-                svg_node.removeChild(svg_node.firstChild);
+              while(svg_div.children.length>0) {
+                svg_div.removeChild(svg_div.firstChild);
               }
               undoStack.length = 0;
               redoStack.length = 0;
               break;
+
             case "embed":
               const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
               if ( embed_code && embed_code.length > 8 ) {
                 insertEmbedCode( embed_code );
               }
               break;
+
             case "dms":
               const component_name = prompt('Enter component name here: ', 'clock');
               const dms_id = prompt('Enter DMS-ID here: ', '1544379440973X6301133529121039');
               if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
+
                 await insertComponent({ component: component_name, config });
                 editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               }
               break;
+
             case "plus":
               const buttonName = prompt('Enter button name: ', 'my_special_listener');
               const actionAddress = prompt('Enter HTTPS address of Button Action: ',
                 'https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js');
               const new_button = $.html( self.html.plus, { buttonName, actionAddress } );
               new_button.addEventListener('click', ev => {
-                extensionListener( { command: buttonName, address: actionAddress, event: ev, svg: svg_node, data: dataset } );
+                extensionListener( { command: buttonName, address: actionAddress, event: ev, svg: svg_div, data: dataset } );
               });
               toolbar_div.appendChild( new_button ) ;
               break;
+
             default:
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
 
                 const componentName = command.substr( 4 ).toLowerCase();
                 const component = await getComponent( componentName );
-                const index = component.index || $.getIndex( component ) || component;
 
-                const foreignObject = new ForeignObject({
-                  x: 250,
-                  y: 100,
-                  width: 240,
-                  height: 120,
-                  fill: self.color
-                }, document.createElementNS( 'http://www.w3.org/1999/xhtml', 'ccm-' + index ) );
+                await insertComponent({ component, config: {} });
 
-                setUpListener( foreignObject, 'x', 'y', 'width', 'height' );
-
-                // avoid painting into foreign object:
-                // foreignObject.addEventListener('mousedown' ,(e)=>{
-                //   e.stopPropagation()
-                // });
-
-                undoStack.push(_=>{svg_node.removeChild( foreignObject )});
-
-                // get config
-                const config = component.config;
-                config.root = foreignObject.firstChild;
-
-                await insertComponent({ component, config });
-
-              } else { // editor extensions via function calls remotely defined
-                extensionListener({ command, event: e, svg: svg_node, data: dataset } );
+              } else { // editor extensions via functions remotely defined
+                extensionListener({ command, event: e, svg: svg_div, data: dataset } );
               }
           }
         }
@@ -945,15 +1005,14 @@
               self.color = this.querySelector('input').value || '#000';
               break;
             case "select": // select ccm component from DMS
+              const select = toolbar_div.querySelector("a[data-command='select'] > select");
               const component = DMS_component_index[select.options[select.selectedIndex].value];
-              await insertComponent({
-                component,
-                config: {}
-              });
+
+              await insertComponent({ component, config: {} });
               break;
             default:
               debugger;
-              extensionListener({ command, event: e, svg: svg_node, data: dataset } );
+              extensionListener({ command, event: e, svg: svg_div, data: dataset } );
           }
         }
 
@@ -1009,6 +1068,28 @@
          * @returns {Promise<void>}
          */
         async function insertComponent({ component, config }){
+
+          const index = component.index || $.getIndex( component ) || component;
+
+          const component_div = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'ccm-' + index );
+          component_div.style = 'width: 100%; height: 100%; margin: 0; padding: 0;';
+
+          const foreignObject = new SvgForeignObject({
+            x: 50,
+            y: 50,
+            width: 240,
+            height: 120,
+            fill: self.color,
+            style: 'resize: both; border: thin solid black; margin: 0; padding: 0;'
+          }, component_div );
+
+          // avoid painting into foreign object:
+          if ( self.stopPaintingIntoCCM ) foreignObject.addEventListener('mousedown' ,(e)=>{
+            e.stopPropagation()
+          });
+
+          // get config
+          config.root = component_div;
 
           let instance;
 
@@ -1105,16 +1186,17 @@
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'div' );
-            const foreignObject = new ForeignObject({
+            embed_div.style = 'width: 100%; height: 100%; margin: 0; padding: 0;';
+            new ForeignObject({
               x: 250,
               y: 100,
               width: 240,
               height: 120,
-              fill: self.color
+              fill: self.color,
+              style: 'resize: both; border: thin solid black; margin: 0; padding: 0;'
             }, embed_div );
             embed_div.innerHTML = embedCode;
           }
-          embed_div.focus();
         }
 
       };
