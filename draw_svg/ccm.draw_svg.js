@@ -722,7 +722,7 @@
 
         const editor_div = $.html( self.html.editor );
         // ToDo check editor_div.contentEditable = "true";
-        editor_div.appendChild( $.html( dataset.inner ) );
+        editor_div.appendChild( $.html( dataset.inner || {} ) );
         editor_div.addEventListener(self.updata_data_event, function(e){
           updateData();
         });
