@@ -8,6 +8,12 @@
   font-family: sans-serif;
 }
 
+#html, #json, #html2json {
+  display: none;
+  border: solid thin black;
+  margin: 0.5em;
+}
+
 a {
   cursor: pointer;
 }

@@ -722,7 +722,7 @@
 
         const editor_div = $.html( self.html.editor );
         // ToDo check editor_div.contentEditable = "true";
-        editor_div.appendChild( $.html( dataset.inner || { inner: {
+        if ( ! dataset.inner ) dataset = { inner: {
             "tag": "svg",
             "id": "svg",
             "width": "100%",
@@ -730,7 +730,23 @@
             "margin": 0,
             "padding": 0,
             "inner": []}
-        } ) );
+        };
+        if ( ! editor_div.querySelector('#svg') ){
+          dataset = { inner: [
+            dataset.inner,
+            {
+              "tag": "svg",
+              "id": "svg",
+              "width": "100%",
+              "height": "100%",
+              "margin": 0,
+              "padding": 0,
+              "inner": []
+            }]
+          };
+        }
+        editor_div.appendChild( $.html( dataset.inner ) );
+
         editor_div.addEventListener(self.updata_data_event, function(e){
           updateData();
         });
