@@ -283,7 +283,7 @@
               "href": "#",
               "class": "click",
               "data-command": "ccm-content_editor",
-              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-quiz" ]',
+              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ]',
               "title": "insert nested editor",
               "data-help": "",
               "inner": {
@@ -311,7 +311,7 @@
               "class": "click",
               "style": "width: auto;",
               "data-command": "ccm-draw_svg",
-              "data-enabled": '[ "undo", "redo", "color" ]',
+              "data-enabled": '[ "undo", "redo", "color", "ccm-content_editor", "ccm-draw_svg" ]',
               "title": "insert nested SVG Editor",
               "data-help": "",
               "inner": {
@@ -609,7 +609,7 @@
         }
       } ],
 
-      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.7.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"], width: "100%" } ],
+      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.8.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"], width: "100%" } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
