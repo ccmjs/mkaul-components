@@ -476,7 +476,7 @@
               "tag": "a",
               "href": "#",
               "title": "hide toolbar",
-              "data-help": "Hide toolbar to see graphics only",
+              "data-help": "Hide toolbar. Double click to regain it.",
               "data-command": "hide_toolbar",
               "class": "click",
               "inner": {
