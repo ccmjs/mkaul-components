@@ -562,11 +562,24 @@
               "href": "#",
               "class": "click",
               "data-command": "ccm-content_editor",
-              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-quiz" ]',
+              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ]',
               "title": "insert nested editor",
               "inner": {
                 "tag": "i",
                 "inner": "E",
+                "class": "fa"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "ccm-draw_svg",
+              "data-enabled": '[ "color", "undo", "redo", "rect", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ]',
+              "title": "insert nested SVG editor",
+              "inner": {
+                "tag": "i",
+                "inner": "SVG",
                 "class": "fa"
               }
             },
@@ -703,7 +716,7 @@
             {
               "tag": "a",
               "href": "#",
-              "title": "paste plain text",
+              "title": "Hello World extension",
               "class": "click",
               "data-command": "my_special_listener", // editor extension
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
@@ -754,6 +767,30 @@
                 "class": "fa fa-plus",
                 "tag": "i"
               }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "hide toolbar",
+              "data-help": "Hide toolbar to see text only",
+              "data-command": "hide_toolbar",
+              "class": "click",
+              "inner": {
+                "class": "fa fa-times",
+                "tag": "i"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "remove editor",
+              "data-help": "Remove Editor completely and replace it by the produced text only",
+              "data-command": "remove_editor",
+              "class": "click",
+              "inner": {
+                "class": "fa fa-window-close",
+                "tag": "i"
+              }
             }
           ]
         }
@@ -789,6 +826,8 @@
       } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
+
+      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-1.1.0.js" ],
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
         "html.inner.1": "",
@@ -1205,6 +1244,22 @@
               json_div.style.display = 'none';
               html2json_div.style.display = 'block';
               break;
+            case "hide_toolbar":
+              toolbar_div.style.display = 'none';
+              editor_div.style.display = 'block';
+              html_div.style.display = 'none';
+              html2json_div.style.display = 'none';
+              editor_div.addEventListener('dblclick', (e)=>{
+                toolbar_div.style.display = 'block';
+              });
+              break;
+            case "remove_editor":
+              const root = self.element.parentNode;
+              [...root.children].forEach(child=>{
+                root.removeChild(child);
+              });
+              root.appendChild( editor_div.cloneNode( true ) );
+              break;
             default:
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
                 const componentName = command.substr( 4 ).toLowerCase();
@@ -1221,7 +1276,7 @@
                 await insertComponent({ component, config });
 
               } else { // editor extensions via function calls remotely defined
-                extensionListener({command: command || this.dataset['command'], action: this.dataset['action'], event: e});
+                extensionListener({command: command, action: this.dataset['action'], event: e});
               }
           }
           updateData();
@@ -1255,14 +1310,14 @@
                 config: {}
               });
               break;
-            default: // TODO editor extensions
+            default:
               extensionListener({ command, event: e });
           }
           updateData();
         }
 
         /**
-         *
+         * refresh dataset after editing
          */
         function updateData(){
           dataset.inner = editor_div.innerHTML;
@@ -1276,7 +1331,7 @@
          * @param event
          * @param address HTTPS address of ES6 module to be imported
          */
-        async function extensionListener({ command, event, address }){  // TODO refactor parameter list
+        async function extensionListener({ command, event, address }){
           // get listener from remote JavaScript or config or global namespace
           if ( address ){
             const action = await self.ccm.load({ url: address, type: 'module', import: command });
