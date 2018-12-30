@@ -1,0 +1,117 @@
+
+{
+    "_id": "draw_svg",
+    "title": "draw_svg",
+    "icon": "https://ccmjs.github.io/mkaul-components/draw_svg/resources/icon.svg",
+    "abstract": "SVG Editor for graphics and ccm components",
+    "description": "With this SVG Editor you can edit SVG graphics and include interactive ccm components",
+    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "small",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "small"
+                ]
+            },
+            {
+                "title": "medium",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "medium"
+                ]
+            },
+            {
+                "title": "full",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "full"
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+                        {
+                            "defaults": {
+                                "data": {
+                                    "inner": {
+                                        "tag": "svg",
+                                        "id": "svg",
+                                        "width": "100%",
+                                        "height": "100%",
+                                        "margin": 0,
+                                        "padding": 0,
+                                        "inner": [
+                                            {
+                                                "tag": "rect",
+                                                "x": 50,
+                                                "y": 50,
+                                                "width": 50,
+                                                "height": 50,
+                                                "fill": "lightgreen",
+                                                "stroke": "green",
+                                                "stroke-width": 4
+                                            },
+                                            {
+                                                "tag": "text",
+                                                "inner": "Press Mouse to draw",
+                                                "x": 70,
+                                                "y": 80
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "json_builder": [
+                                "ccm.component",
+                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                                {
+                                    "html.inner.1": "",
+                                    "directly": true
+                                }
+                            ],
+                            "entries": [
+                                {
+                                    "label": "Initial SVG graphics",
+                                    "name": "data",
+                                    "type": "json_builder",
+                                    "info": "Initial SVG graphics"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "updated_at": "2018-12-26T14:41:22+02:00",
+    "created_at": "2018-12-26T14:41:22+02:00"
+}

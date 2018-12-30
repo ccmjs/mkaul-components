@@ -22,14 +22,14 @@
      * @type {string}
      */
     name: 'draw_svg',
-    // version: [1,0,0],
+    version: [1,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -582,7 +582,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/ccm.html2json.js" ],
 
       css_awesome: [ "ccm.load",
         { context: "head",
