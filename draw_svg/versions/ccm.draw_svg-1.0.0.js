@@ -731,10 +731,9 @@
             "padding": 0,
             "inner": []}
         };
+        editor_div.appendChild( $.html( dataset.inner ) );
         if ( ! editor_div.querySelector('#svg') ){
-          dataset = { inner: [
-              dataset.inner,
-              {
+          editor_div.appendChild( $.html( {
                 "tag": "svg",
                 "id": "svg",
                 "width": "100%",
@@ -742,10 +741,8 @@
                 "margin": 0,
                 "padding": 0,
                 "inner": []
-              }]
-          };
+              } ) );
         }
-        editor_div.appendChild( $.html( dataset.inner ) );
 
         editor_div.addEventListener(self.updata_data_event, function(e){
           updateData();

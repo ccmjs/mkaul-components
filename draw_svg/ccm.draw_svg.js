@@ -731,21 +731,18 @@
             "padding": 0,
             "inner": []}
         };
-        if ( ! editor_div.querySelector('#svg') ){
-          dataset = { inner: [
-            dataset.inner,
-            {
-              "tag": "svg",
-              "id": "svg",
-              "width": "100%",
-              "height": "100%",
-              "margin": 0,
-              "padding": 0,
-              "inner": []
-            }]
-          };
-        }
         editor_div.appendChild( $.html( dataset.inner ) );
+        if ( ! editor_div.querySelector('#svg') ){
+          editor_div.appendChild( $.html( {
+            "tag": "svg",
+            "id": "svg",
+            "width": "100%",
+            "height": "100%",
+            "margin": 0,
+            "padding": 0,
+            "inner": []
+          } ) );
+        }
 
         editor_div.addEventListener(self.updata_data_event, function(e){
           updateData();
