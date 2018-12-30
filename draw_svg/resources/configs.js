@@ -6,6 +6,12 @@
  */
 
 ccm.files[ 'configs.js' ] = {
+  "tiny": {
+    key: "tiny",
+
+    enabled: [ 'color', 'undo', 'redo' ]
+
+  },
   "small": {
     key: "small",
 

@@ -13,6 +13,14 @@
     "ignore": {
         "demos": [
             {
+                "title": "tiny",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "tiny"
+                ]
+            },
+            {
                 "title": "small",
                 "config": [
                     "ccm.get",
@@ -85,6 +93,114 @@
                                 }
                             ],
                             "entries": [
+                                {
+                                    "label": "Toolbar",
+                                    "name": "enabled",
+                                    "type": "multi-checkbox",
+                                    "info": "Choose which tools to include into your toolbar",
+                                    "items": [
+                                        {
+                                            "label": "Color",
+                                            "value": "color"
+                                        },
+                                        {
+                                            "label": "Undo",
+                                            "value": "undo"
+                                        },
+                                        {
+                                            "label": "Redo",
+                                            "value": "redo"
+                                        },
+                                        {
+                                            "label": "free hand drawing",
+                                            "value": "free"
+                                        },
+                                        {
+                                            "label": "Line",
+                                            "value": "line"
+                                        },
+                                        {
+                                            "label": "Rectangle",
+                                            "value": "rect"
+                                        },
+                                        {
+                                            "label": "Circle",
+                                            "value": "circle"
+                                        },
+                                        {
+                                            "label": "Text",
+                                            "value": "text"
+                                        },
+                                        {
+                                            "label": "HTML",
+                                            "value": "html"
+                                        },
+                                        {
+                                            "label": "Clock",
+                                            "value": "ccm-clock"
+                                        },
+                                        {
+                                            "label": "Content Editor",
+                                            "value": "ccm-content_editor"
+                                        },
+                                        {
+                                            "label": "Quiz",
+                                            "value": "ccm-quiz"
+                                        },
+                                        {
+                                            "label": "Nested SVG Editor",
+                                            "value": "ccm-draw_svg"
+                                        },
+                                        {
+                                            "label": "Save Image",
+                                            "value": "save_image"
+                                        },
+                                        {
+                                            "label": "Load Image",
+                                            "value": "load_image"
+                                        },
+                                        {
+                                            "label": "Clear Image",
+                                            "value": "clear_image"
+                                        },
+                                        {
+                                            "label": "Embed Code",
+                                            "value": "embed"
+                                        },
+                                        {
+                                            "label": "Digital Maker Space DMS-ID",
+                                            "value": "dms"
+                                        },
+                                        {
+                                            "label": "Select component from DMS",
+                                            "value": "select"
+                                        },
+                                        {
+                                            "label": "View Editor",
+                                            "value": "view_editor"
+                                        },
+                                        {
+                                            "label": "View HTML and SVG code ",
+                                            "value": "view_html"
+                                        },
+                                        {
+                                            "label": "View JSON code",
+                                            "value": "view_json"
+                                        },
+                                        {
+                                            "label": "View both HTML and JSON",
+                                            "value": "view_html2json"
+                                        },
+                                        {
+                                            "label": "Stopp and Debug",
+                                            "value": "stop"
+                                        },
+                                        {
+                                            "label": "Add your own commands",
+                                            "value": "plus"
+                                        }
+                                    ]
+                                },
                                 {
                                     "label": "Initial SVG graphics",
                                     "name": "data",
