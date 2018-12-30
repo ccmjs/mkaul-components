@@ -5,6 +5,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
+ * version 1.1.0 30.12.2018 initial build
  * version 1.0.0 26.12.2018 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -22,14 +23,14 @@
      * @type {string}
      */
     name: 'draw_svg',
-    // version: [1,0,0],
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -622,7 +623,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/ccm.html2json.js" ],
 
       css_awesome: [ "ccm.load",
         { context: "head",
@@ -1138,7 +1139,7 @@
 
             this.mouse_leave_listener = this.mouse_leave_template();
             svg_div.addEventListener( 'mouseleave', this.mouse_leave_listener );
-
+            
             svg_div.addEventListener( 'mousemove', this.moveX1Y1 );
             svg_div.appendChild( newNode );
             help_div.innerText = self.helpText.insert;

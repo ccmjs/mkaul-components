@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/draw_svg/resources/icon.svg",
     "abstract": "SVG Editor for graphics and ccm components",
     "description": "With this SVG Editor you can edit SVG graphics and include interactive ccm components",
-    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-1.0.0.js",
-    "version": "1.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-1.1.0.js",
+    "version": "1.1.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -94,6 +94,15 @@
                             ],
                             "entries": [
                                 {
+                                    "label": "Stroke Width",
+                                    "name": "stroke_width",
+                                    "type": "range",
+                                    "min": 1,
+                                    "max": 10,
+                                    "info": "Width of lines"
+                                },
+                                "<legend>Toolbar</legend>",
+                                {
                                     "label": "Toolbar",
                                     "name": "enabled",
                                     "type": "multi-checkbox",
@@ -134,6 +143,10 @@
                                         {
                                             "label": "HTML",
                                             "value": "html"
+                                        },
+                                        {
+                                            "label": "HTML",
+                                            "value": "html_page"
                                         },
                                         {
                                             "label": "Clock",
@@ -198,6 +211,41 @@
                                         {
                                             "label": "Add your own commands",
                                             "value": "plus"
+                                        },
+                                        {
+                                            "label": "Hide toolbar to see graphics only",
+                                            "value": "hide_toolbar"
+                                        },
+                                        {
+                                            "label": "Remove Editor completely",
+                                            "value": "remove_editor"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Text Style",
+                                    "name": "textStyle",
+                                    "type": "text",
+                                    "info": "Style of SVG text elements"
+                                },
+                                "<legend>Update Data Event</legend>",
+                                {
+                                    "label": "select",
+                                    "name": "updata_data_event",
+                                    "type": "select",
+                                    "info": "How often must data be updated?",
+                                    "items": [
+                                        {
+                                            "inner": "pointerleave",
+                                            "value": "pointerleave"
+                                        },
+                                        {
+                                            "inner": "mouseleave",
+                                            "value": "mouseleave"
+                                        },
+                                        {
+                                            "inner": "mouseup",
+                                            "value": "mouseup"
                                         }
                                     ]
                                 },
@@ -228,6 +276,6 @@
             }
         ]
     },
-    "updated_at": "2018-12-26T14:41:22+02:00",
+    "updated_at": "2018-12-30T18:00:00+02:00",
     "created_at": "2018-12-26T14:41:22+02:00"
 }
