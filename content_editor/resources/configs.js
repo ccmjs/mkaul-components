@@ -101,6 +101,19 @@ ccm.files[ 'configs.js' ] = {
               "tag": "i",
               "class": "fa fa-underline"
             }
+          },
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "ccm-draw_svg",
+            "data-enabled": '[ "clear_image", "color", "undo", "redo", "line", "rect", "circle", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+            "title": "insert nested SVG editor",
+            "inner": {
+              "tag": "i",
+              "inner": "SVG",
+              "class": "fa"
+            }
           }
         ]
       }
@@ -138,7 +151,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "view_editor", "view_html", "view_json", "view_html2json" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "view_editor", "view_html", "view_json", "view_html2json", "ccm-draw_svg" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
