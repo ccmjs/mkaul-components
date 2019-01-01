@@ -101,32 +101,15 @@ ccm.files[ 'configs.js' ] = {
               "tag": "i",
               "class": "fa fa-underline"
             }
-          },
-          {
-            "tag": "a",
-            "href": "#",
-            "class": "click",
-            "data-command": "ccm-draw_svg",
-            "data-enabled": '[ "clear_image", "color", "undo", "redo", "line", "rect", "circle", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
-            "title": "insert nested SVG editor",
-            "inner": {
-              "tag": "i",
-              "inner": "SVG",
-              "class": "fa"
-            }
           }
         ]
       }
     },
 
-    "draw_svg": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.1.0.js", { "enabled": [ "clear_image", "color", "undo", "redo", "line", "rect", "circle", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ] } ],
-
     "css_awesome": [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     ],
-
-
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
 
