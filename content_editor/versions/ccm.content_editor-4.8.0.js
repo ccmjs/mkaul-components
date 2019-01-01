@@ -576,7 +576,7 @@
               "href": "#",
               "class": "click",
               "data-command": "ccm-draw_svg",
-              "data-enabled": '[ "color", "undo", "redo", "rect", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ]',
+              "data-enabled": '[ "color", "undo", "redo", "rect", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
               "title": "insert nested SVG editor",
               "inner": {
                 "tag": "i",
