@@ -101,6 +101,20 @@ ccm.files[ 'configs.js' ] = {
               "tag": "i",
               "class": "fa fa-underline"
             }
+          },
+
+          {
+            "tag": "a",
+            "href": "#",
+            "class": "click",
+            "data-command": "ccm-draw_svg",
+            "data-enabled": '[ "clear_image", "color", "undo", "redo", "line", "rect", "circle", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+            "title": "insert nested SVG editor",
+            "inner": {
+              "tag": "i",
+              "inner": "SVG",
+              "class": "fa"
+            }
           }
         ]
       }
@@ -110,6 +124,8 @@ ccm.files[ 'configs.js' ] = {
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     ],
+
+    "draw_svg": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.1.0.js", { "enabled": [ "clear_image", "color", "undo", "redo", "line", "rect", "circle", "free", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ] } ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
 
@@ -235,7 +251,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', '', '', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-content_editor', 'ccm-draw_svg', 'ccm-quiz', 'fontname', 'fontSize',  "view_editor", "view_html", "view_json", "view_html2json", 'my_special_listener', "plus", "hide_toolbar", "remove_editor" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'audio', 'video', 'embed', 'dms', 'select', 'ccm-clock', 'ccm-content_editor', 'ccm-draw_svg', 'ccm-quiz', 'fontname', 'fontSize',  "view_editor", "view_html", "view_json", "view_html2json", 'my_special_listener', "plus", "hide_toolbar", "remove_editor" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 

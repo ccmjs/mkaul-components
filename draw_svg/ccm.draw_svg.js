@@ -715,7 +715,6 @@
          */
         async function fill_select_input_field_for_all_components(){
 
-          if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
             const all_buttons = self.html.toolbar.inner;
             let select_array;
             if ( all_buttons ) for ( const button of all_buttons ){
@@ -727,20 +726,18 @@
               }
             }
 
-            if ( select_array ){
-              const data = await self.store.get({});
+            const data = await self.store.get({});
 
-              for ( const record of data ){
-                select_array.push( { tag: 'option', value: record.key, inner: record.key } );
-                // with version number
-                DMS_component_index[ $.getIndex( record.url ) ] = record.url;
-                // without version number
-                DMS_component_index[ record.key ] = record.url;
-              }
-
-              select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
+            for ( const record of data ){
+              select_array && select_array.push( { tag: 'option', value: record.key, inner: record.key } );
+              // with version number
+              DMS_component_index[ $.getIndex( record.url ) ] = record.url;
+              // without version number
+              DMS_component_index[ record.key ] = record.url;
             }
-          }
+
+            select_array && select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
+
         }
 
       };
@@ -1087,7 +1084,7 @@
               this.attributeNames = this.constructor.setupParams;
             }
             const newNode = (self.currentObject.node || this.node).cloneNode(true);
-            undoStack.push( this.undoTemplate( this, newNode ) );
+            undoStack.push( this.undoTemplate( newNode ) );
             this.node = newNode;
 
             this.mouse_leave_listener = this.mouse_leave_template();
@@ -1204,7 +1201,7 @@
           remove(){
             if ( this.node.parentNode === svg_div ){
               svg_div.removeChild( this.node );
-              redoStack.push( this.undoTemplate( this, this.node ) );
+              redoStack.push( this.undoTemplate() );
             }
           }
 
@@ -1239,7 +1236,8 @@
            * @param newNode instance of Node in DOM
            * @returns {{undo: undoAction, redo: redoAction}}
            */
-          undoTemplate( obj, newNode ){
+           undoTemplate( newNode ){
+            if ( ! newNode ) newNode = this.node;
             const action = {
               undo: _ => {
                 if ( newNode && newNode.parentNode === svg_div ) {
@@ -1252,12 +1250,14 @@
                 undoStack.push( action );
               },
               node: newNode,
-              obj: obj
+              obj: this
             };
             return action;
           }
 
+
         }
+
 
         class SvgLine extends SvgObject {
           constructor( obj ){
@@ -1607,7 +1607,7 @@
           const command = self.state;
           if ( command.toLowerCase().startsWith('ccm-') ) { // ccm component
             const componentName = command.substr( 4 ).toLowerCase();
-            const component = await getComponent( componentName, config );
+            const component = ( await getComponent( componentName, config ) ) || componentName;
             await insertComponent({ component, config });
           }
         }
@@ -1628,7 +1628,7 @@
                 self.currentObject.remove();
                 clear_current();
                 break;
-              case "finish":
+              case "finish": case "passive":
                 self.currentObject.removeAllListeners();
                 self.currentObject.addMinimalListeners();
                 clear_current();
@@ -1695,17 +1695,12 @@
          */
         async function getComponent( componentName, config ){
           if ( self.component.name === componentName ) return self.component;
-          const component =  dataset.components && dataset.components[ componentName ] || self[ componentName ] || DMS_component_index[ componentName ];
+          const component =  dataset.components && dataset.components[ componentName ]
+            || self[ componentName ]
+            || self.parent && self.parent[ componentName ]
+            || DMS_component_index[ componentName ];
 
-          if ( $.isComponent( component ) ) return component;
-
-          const solvedComponent = await $.solveDependency( component, config );
-          if ( $.isComponent( solvedComponent ) ){
-            dataset.components[ componentName ] = solvedComponent;
-            return solvedComponent;
-          } else {
-            return solvedComponent;
-          }
+          return component;
         }
 
         /**
@@ -1734,13 +1729,14 @@
           self.currentObject = foreignObject;
 
           // avoid painting into foreign object:
-          if ( self.stopPaintingIntoCCM ) foreignObject.addEventListener('mousedown' ,(e)=>{
-            e.stopPropagation()
-          });
+          // if ( self.stopPaintingIntoCCM ) foreignObject.addEventListener('mousedown' ,(e)=>{
+          //   e.stopPropagation()
+          // });
 
           // get config
           if ( ! config ) config = {};
           config.root = component_div;
+          config.parent = this;
 
           let instance;
 

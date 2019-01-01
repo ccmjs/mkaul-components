@@ -106,6 +106,11 @@ a[data-command='undo'] {
   border-radius: 3px 0 0 3px;
 }
 
+a[data-command='ccm-draw_svg'] {
+  margin-right: 0;
+  width: auto;
+}
+
 a[data-command='clear_image'],
 a[data-command='plus'],
 a[data-command='stop'] {
