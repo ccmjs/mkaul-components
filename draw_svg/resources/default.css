@@ -74,7 +74,29 @@ a {
   border-color: #8c8c8c;
 }
 
-a[data-command='color'],
+a[data-command='free']{
+  padding: 6px 0 3px 0;
+  margin: 2px 1px 0 0;
+  border-radius: 3px 0 0 3px;
+  width: 1.5em;
+  height: 1.3em;
+}
+
+a[data-command='color'] {
+  width: 2em;
+  heigth: 1em;
+  margin-right: 5px;
+  padding: 1px;
+  border-radius: 3px;
+}
+a[data-command='select'] {
+  width: 2em;
+  heigth: 1.3em;
+  margin-right: 4px;
+  padding: 4px;
+  border-radius: 3px;
+}
+
 a[data-command='redo'] {
   margin-right: 5px;
   border-radius: 0 3px 3px 0;
@@ -84,10 +106,9 @@ a[data-command='undo'] {
   border-radius: 3px 0 0 3px;
 }
 
+a[data-command='clear_image'],
 a[data-command='plus'],
-a[data-command='stop'],
-a[data-command='select']{
-  margin-left: 3px;
+a[data-command='stop'] {
   margin-right: 3px;
   border-radius: 3px;
 }
@@ -100,7 +121,7 @@ a[data-command='select']{
 
 .html_in_svg {
   border: thin solid rgba(255, 0, 0, .2);
-  background-color: rgba(200, 200, 200, .2);
+  background-color: rgba(200, 200, 200, .1);
   width: 100%;
   height: 100%;
   margin: 0;
@@ -110,7 +131,7 @@ a[data-command='select']{
 
 .html_page {
     border: thin solid rgba(0, 0, 255, .2);
-    background-color: rgba(230, 230, 230, .2);
+    background-color: rgba(230, 230, 230, .1);
     width: 100%;
     height: 100%;
     margin: 0;
@@ -120,7 +141,7 @@ a[data-command='select']{
 
 .ccm-component {
   border: thin solid rgba(255, 255, 0, .2);
-  background-color: rgba(230, 230, 230, .2);
+  background-color: rgba(230, 230, 230, .1);
   width: 100%;
   height: 100%;
   margin: 0;

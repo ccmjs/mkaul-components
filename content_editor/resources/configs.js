@@ -259,12 +259,5 @@ ccm.files[ 'configs.js' ] = {
 
     store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
     // onfinish: function( instance, results ){ console.log( results ); }
-  },
-
-  "localhost": {
-    key: "localhost",
-    css: [ 'ccm.load',  '../content_editor/resources/default.css' ],
-    language: 'de',
-    onfinish: function( instance, results ){ console.log( results ); }
   }
 };

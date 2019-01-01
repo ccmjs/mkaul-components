@@ -828,7 +828,7 @@
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
-      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-1.1.0.js" ],
+      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.0.0.js" ],
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
         "html.inner.1": "",

@@ -23,14 +23,14 @@
      * @type {string}
      */
     name: 'draw_svg',
-    // version: [1,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -621,7 +621,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/ccm.html2json.js" ],
 
       css_awesome: [ "ccm.load",
         { context: "head",
@@ -629,7 +629,7 @@
         },
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ],
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js', 'log' ] ],
