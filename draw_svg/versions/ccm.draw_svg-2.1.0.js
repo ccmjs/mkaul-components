@@ -1300,7 +1300,9 @@
           constructor( obj ){
             super( obj, 'circle' );
           }
-          static setupParams = [ 'cx', 'cy', 'r' ];
+          static get setupParams(){
+            return [ 'cx', 'cy', 'r' ];
+          }
         }
 
         class SvgText extends SvgObject {
@@ -1312,7 +1314,9 @@
             this.node.appendChild(textNode);
             draw_div.contentEditable = "true"; // see https://codepen.io/soffes/pen/RRmLgO
           }
-          static setupParams = [ 'x', 'y', 'textLength' ];
+          static get setupParams(){
+            return [ 'x', 'y', 'textLength' ];
+          }
         }
 
         class SvgForeignObject extends SvgObject {
@@ -1320,7 +1324,9 @@
             super( obj, 'foreignObject' );
             if ( div instanceof Element ) this.node.appendChild( div );
           }
-          static setupParams = [ 'x', 'y', 'width', 'height' ];
+          static get setupParams(){
+            return [ 'x', 'y', 'width', 'height' ];
+          }
 
           async nextNode(){
             super.nextNode( this );
