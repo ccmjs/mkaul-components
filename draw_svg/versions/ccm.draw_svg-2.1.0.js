@@ -1300,6 +1300,7 @@
           constructor( obj ){
             super( obj, 'circle' );
           }
+
           static get setupParams(){
             return [ 'cx', 'cy', 'r' ];
           }
