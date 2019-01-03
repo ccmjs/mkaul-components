@@ -3,8 +3,9 @@
  * @link https://github.com/santanubiswas948/draw-svg
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version latest (2.2.0)
  * @changes
+ * version 2.2.0 03.01.2019 enable recursive nesting of editors 
  * version 2.1.0 01.01.2019 make ccm components configurable via button configs
  * version 2.0.0 01.01.2019 add keyboard events, Undo Management, removeUnfinishedObject
  * version 1.0.0 26.12.2018 initial build
@@ -24,14 +25,14 @@
      * @type {string}
      */
     name: 'draw_svg',
-    // version: [1,0,0],
+    version: [2,2,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -295,12 +296,28 @@
               "class": "click",
               "data-command": "ccm-content_editor",
               "data-config": '["enabled"]',
-              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ]',
-              "title": "insert nested editor",
-              "data-help": "",
+              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+              "title": "nested editor",
+              "data-help": "insert nested editor",
               "inner": {
                 "tag": "i",
                 "inner": "E",
+                "class": "fa"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "style": "width: auto;",
+              "data-command": "ccm-draw_svg",
+              "data-config": '["enabled"]',
+              "data-enabled": '[ "free", "clear_image", "undo", "redo", "color", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+              "title": "nested SVG Editor",
+              "data-help": "insert nested SVG Editor",
+              "inner": {
+                "tag": "i",
+                "inner": "SVG",
                 "class": "fa"
               }
             },
@@ -314,22 +331,6 @@
               "inner": {
                 "tag": "i",
                 "inner": "Q",
-                "class": "fa"
-              }
-            },
-            {
-              "tag": "a",
-              "href": "#",
-              "class": "click",
-              "style": "width: auto;",
-              "data-command": "ccm-draw_svg",
-              "data-config": '["enabled"]',
-              "data-enabled": '[ "clear_image", "undo", "redo", "color", "ccm-content_editor", "ccm-draw_svg" ]',
-              "title": "insert nested SVG Editor",
-              "data-help": "",
-              "inner": {
-                "tag": "i",
-                "inner": "SVG",
                 "class": "fa"
               }
             },
@@ -574,7 +575,7 @@
 
       stroke_width: 2.2,
       updata_data_event: 'mouseleave',  // or mouseup etc
-      stopPaintingIntoCCM: false, // if drawing into ccm components is prohibited
+      stopPaintingIntoCCM: true, // if drawing into nested ccm components is prohibited
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
         init: 'Press mouse and draw! Choose color! Choose object!',
@@ -609,6 +610,10 @@
         html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
         }
       } ],
+
+      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.9.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
+
+      // content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.8.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
@@ -656,10 +661,42 @@
       let $;
 
       /**
-       * Fetch all ccm components from DMS. Store them as key-value pairs with name and URL
+       * Cache all ccm components from DMS. Store them as key-value pairs with name and URL
        * @type {Object}
        */
-      const DMS_component_index = {};
+      let DMS_component_index = null;
+
+      const dms_index = async () => {  // lazy load DMS on demand only
+        if ( DMS_component_index ) return DMS_component_index; else {
+
+          DMS_component_index = {};
+
+          const data = await self.store.get({});
+
+          const all_buttons = self.html.toolbar.inner;
+          let select_array;
+          if ( all_buttons ) for ( const button of all_buttons ){
+            if ( button["data-command"] === "select" ){ // "data-command": "select"
+              if ( button.inner ){
+                select_array = button.inner.inner;
+              }
+              break;
+            }
+          }
+
+          for ( const record of data ){
+            select_array && select_array.push( { tag: 'option', value: record.key, inner: record.key } );
+            // with version number
+            DMS_component_index[ $.getIndex( record.url ) ] = record.url;
+            // without version number
+            DMS_component_index[ record.key ] = record.url;
+          }
+
+          select_array && select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
+        }
+
+        return DMS_component_index;
+      };
 
       /**
        * dataset for rendering
@@ -707,43 +744,11 @@
        * is called once after the initialization and is then deleted
        */
       this.ready = async () => {
-
-        await fill_select_input_field_for_all_components();  // await necessary in ready()
-
-        /**
-         * The select button is filled with all component names from the DMS
-         */
-        async function fill_select_input_field_for_all_components(){
-
-          if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
-            const all_buttons = self.html.toolbar.inner;
-            let select_array;
-            if ( all_buttons ) for ( const button of all_buttons ){
-              if ( button["data-command"] === "select" ){ // "data-command": "select"
-                if ( button.inner ){
-                  select_array = button.inner.inner;
-                }
-                break;
-              }
-            }
-
-            if ( select_array ){
-              const data = await self.store.get({});
-
-              for ( const record of data ){
-                select_array.push( { tag: 'option', value: record.key, inner: record.key } );
-                // with version number
-                DMS_component_index[ $.getIndex( record.url ) ] = record.url;
-                // without version number
-                DMS_component_index[ record.key ] = record.url;
-              }
-
-              select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
-            }
-          }
+        if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
+          await dms_index();
         }
-
       };
+
         
       /**
        * starts the instance
@@ -764,12 +769,77 @@
             switch (evt.key) {
               case "Escape":
               case "Esc":
+                svg_div.removeEventListener('mousemove', drawNow );
+                self.state = null;
                 removeUnfinishedObject();
                 help_div.innerText = self.helpText.setupCancelled;
                 break;
               case "Backspace":
                 self.currentObject && self.currentObject.remove();
                 help_div.innerText = self.helpText.init;
+                break;
+              case "c": // TODO
+                // if ( evt.metaKey ){
+                //   const data = new DataTransfer();
+                //   data.items.add(self.currentObject.outerHTML, "text/plain" );
+                //   data.items.add(self.currentObject.outerHTML , 'text/html' );
+                //   data.items.add(self.currentObject.outerHTML , 'image/svg+xml' );
+                //   data.items.add(self.currentObject.outerHTML , 'application/xml, text/xml' );
+                //   // data.items.add(self.currentObject.outerHTML , 'application/xhtml+xml' );
+                //   // data.items.add(self.html2json_module.html2json( self.currentObject.outerHTML ), 'application/json' );
+                //   // data.items.add( self.currentObject.outerHTML, "text/html" );
+                //   navigator.clipboard.write(data).then(function() {
+                //     console.log( data );
+                //   }, function() {
+                //     console.error("Unable to write to clipboard. :-(");
+                //   });
+                // }
+                break;
+              case "v": // TODO
+                // if ( evt.metaKey ){
+                //   navigator.clipboard.read().then(function(data) {
+                //     for (let i = 0; i < data.items.length; i++) {
+                //       if ((data.items[i].kind === 'string') && (data.items[i].type.match('^text/plain'))) {
+                //         // This item is the target node
+                //         data.items[i].getAsString(function (s){
+                //           console.log( s );
+                //         });
+                //       } else if ((data.items[i].kind === 'string') && (data.items[i].type.match('^text/html'))) {
+                //         // Drag data item is HTML
+                //         data.items[i].getAsString(function (s){
+                //           console.log( 'text/html', s );
+                //           const newChild = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                //           newChild.innerHTML = s;
+                //           svg_div.appendChild( newChild );
+                //         });
+                //       } else if ((data.items[i].kind === 'string') && (data.items[i].type.match('^text/uri-list'))) {
+                //         // Drag data.items item is URI
+                //         data.items[i].getAsString(function (s){
+                //           console.log("... Drop: URI = " + s);
+                //         });
+                //       }
+                //     }
+                //   });
+                // }
+                break;
+              case "x": // TODO
+                // if ( evt.metaKey ) newCutListener(evt);
+                break;
+              case "ArrowRight":
+                self.currentObject && self.currentObject.setStateXAttribute(self.currentObject.getStateXAttribute() + 1);
+                mouse_x.value = parseInt( mouse_x.value ) + 1;
+                break;
+              case "ArrowLeft":
+                self.currentObject && self.currentObject.setStateXAttribute(self.currentObject.getStateXAttribute() - 1);
+                mouse_x.value -= 1;
+                break;
+              case "ArrowUp":
+                self.currentObject && self.currentObject.setStateYAttribute(self.currentObject.getStateYAttribute() - 1);
+                mouse_y.value -= 1;
+                break;
+              case "ArrowDown":
+                self.currentObject && self.currentObject.setStateYAttribute(self.currentObject.getStateYAttribute() + 1);
+                mouse_y.value = parseInt( mouse_y.value ) + 1;
                 break;
               case "Shift":
                 break;
@@ -783,10 +853,78 @@
                 break;
               case "Tab":
                 break;
+              default:
+                // debugger;  // de-comment for adding new keys
             }
           }
           oldKeyListener && oldKeyListener( evt );
         } );
+
+        /**
+         *
+         * https://w3c.github.io/clipboard-apis/#override-copy
+         */
+        // const oldCopyListener = document.oncopy;
+        // // ToDo
+        // const newCopyListener = function(e) {
+        //   // e.clipboardData is initially empty, but we can set it to the
+        //   // data that we want copied onto the clipboard.
+        //   // format see https://w3c.github.io/clipboard-apis/#reading-from-clipboard
+        //   e.clipboardData.setData('text/plain', self.currentObject.outerHTML );
+        //   e.clipboardData.setData('text/html', self.currentObject.outerHTML );
+        //   e.clipboardData.setData('image/svg+xml', self.currentObject.outerHTML );
+        //   e.clipboardData.setData('application/xml, text/xml', self.currentObject.outerHTML );
+        //   e.clipboardData.setData('application/xhtml+xml', self.currentObject.outerHTML );
+        //   e.clipboardData.setData('application/json', self.html2json_module.html2json( self.currentObject.outerHTML ) );
+        //
+        //   // This is necessary to prevent the current document selection from
+        //   // being written to the clipboard.
+        //   e.preventDefault();
+        // };
+        // document.addEventListener('copy', newCopyListener );
+
+        /**
+         *
+         * https://w3c.github.io/clipboard-apis/#override-paste
+         */
+        // const oldPasteListener = document.onpaste;
+        // // ToDo
+        // const newPasteListener = function(e) {
+        //   // e.clipboardData is initially empty, but we can set it to the
+        //   // data that we want copied onto the clipboard.
+        //   const newChild = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        //   svg_div.appendChild( newChild );
+        //   const data1 = e.clipboardData.getData('text/plain');
+        //   const data2 = e.clipboardData.getData('text/html');
+        //   const data3 = e.clipboardData.getData('image/svg+xml');
+        //   const data4 = e.clipboardData.getData('application/xml, text/xml');
+        //   const data5 = e.clipboardData.getData('application/xhtml+xml');
+        //   const data6 = $.html( e.clipboardData.getData('application/json') );
+        //
+        //   // This is necessary to prevent the current document selection from
+        //   // being written to the clipboard.
+        //   e.preventDefault();
+        // };
+        // document.addEventListener('paste', newPasteListener );
+
+        /**
+         *
+         * https://w3c.github.io/clipboard-apis/#override-cut
+         */
+        const oldCutListener = document.oncut;
+        const newCutListener = function(e) {
+          // e.clipboardData is initially empty, but we can set it to the
+          // data that we want copied onto the clipboard.
+          e.clipboardData.setData('text/plain', self.currentObject.outerHTML );
+          e.clipboardData.setData('text/html', self.currentObject.outerHTML );
+
+          self.currentObject.remove();
+
+          // This is necessary to prevent the current document selection from
+          // being written to the clipboard.
+          e.preventDefault();
+        };
+        document.addEventListener('cut', newCutListener );
 
         const editor_div = $.html( self.html.editor );
         // ToDo check editor_div.contentEditable = "true";
@@ -886,18 +1024,21 @@
           draw : () => {
             //start time of draw
             addListener('mousedown',(e)=>{
-              e.stopPropagation();
-              e.preventDefault();
-              addListener('mousemove', drawNow );
-
+              if ( self.state === 'free' ){
+                e.stopPropagation();
+                e.preventDefault();
+                addListener('mousemove', drawNow );
+              }
             });
             //draw end time
             addListener('mouseup',(e)=>{
-              e.stopPropagation();
-              e.preventDefault();
               svg_div.removeEventListener('mousemove', drawNow );
-              draw_obj.prevX=0;
-              draw_obj.prevY=0;
+              if ( self.state === 'free' ){
+                e.stopPropagation();
+                e.preventDefault();
+                draw_obj.prevX=0;
+                draw_obj.prevY=0;
+              }
             });
           }
 
@@ -918,7 +1059,7 @@
             if(draw_obj.flag===1) {
               let prevX=draw_obj.prevX;
               let prevY=draw_obj.prevY;
-              const path = new SvgPath({
+              const path = new SvgElement({
                 'd' : "M"+prevX+","+prevY+" L"+positionX+","+positionY,
                 'fill' : 'none',
                 'stroke' : self.color,
@@ -945,12 +1086,13 @@
               draw_obj.prevX=positionX;
               draw_obj.prevY=positionY;
             } else {
-              let lastchildPath=self.element.querySelector('#path'+(svg_div.children.length));
-              let get_d_attr=lastchildPath.getAttribute('d');
-              let curvX=(draw_obj.prevX+positionX)/2;
-              let curvY=(draw_obj.prevY+positionY)/2;
-              lastchildPath.setAttribute('d',get_d_attr+" C"+curvX+","+curvY+" "+curvX+","+curvY+" "+positionX+","+positionY);
-
+              const lastchildPath=self.element.querySelector('#path'+(svg_div.children.length));
+              if ( lastchildPath ){
+                const get_d_attr=lastchildPath.getAttribute('d');
+                const curvX=(draw_obj.prevX+positionX)/2;
+                const curvY=(draw_obj.prevY+positionY)/2;
+                lastchildPath.setAttribute('d',get_d_attr+" C"+curvX+","+curvY+" "+curvX+","+curvY+" "+positionX+","+positionY);
+              }
               draw_obj.prevX=positionX;
               draw_obj.prevY=positionY;
             }
@@ -979,8 +1121,17 @@
           return y;
         }
 
-        // create Path
-        function SvgPath( obj, type='path' ) {
+        // create SVG Path or any other SVG element
+
+
+        /**
+         * create SVG Path or any other SVG element
+         * @param obj - all attributes of the new SVG element
+         * @param type - the type of the SVG element
+         * @returns {HTMLElement | SVGAElement | SVGCircleElement | SVGClipPathElement | SVGComponentTransferFunctionElement | SVGDefsElement | SVGDescElement | SVGEllipseElement | SVGFEBlendElement | SVGFEColorMatrixElement | SVGFEComponentTransferElement | SVGFECompositeElement | SVGFEConvolveMatrixElement | SVGFEDiffuseLightingElement | SVGFEDisplacementMapElement | SVGFEDistantLightElement | SVGFEFloodElement | SVGFEFuncAElement | SVGFEFuncBElement | SVGFEFuncGElement | SVGFEFuncRElement | SVGFEGaussianBlurElement | SVGFEImageElement | SVGFEMergeElement | SVGFEMergeNodeElement | SVGFEMorphologyElement | SVGFEOffsetElement | SVGFEPointLightElement | SVGFESpecularLightingElement | SVGFESpotLightElement | SVGFETileElement | SVGFETurbulenceElement | SVGFilterElement | SVGForeignObjectElement | SVGGElement | SVGImageElement | SVGGradientElement | SVGLineElement | SVGLinearGradientElement | SVGMarkerElement | SVGMaskElement | SVGPathElement | SVGMetadataElement | SVGPatternElement | SVGPolygonElement | SVGPolylineElement | SVGRadialGradientElement | SVGRectElement | SVGSVGElement | SVGScriptElement | SVGStopElement | SVGStyleElement | SVGSwitchElement | SVGSymbolElement | SVGTSpanElement | SVGTextContentElement | SVGTextElement | SVGTextPathElement | SVGTextPositioningElement | SVGTitleElement | SVGUseElement | SVGViewElement | SVGElement | Element}
+         * @constructor
+         */
+        function SvgElement(obj, type='path' ) {
           let path=document.createElementNS('http://www.w3.org/2000/svg',type);
           for(let prop in obj) {
             path.setAttribute(prop,obj[prop]);
@@ -1003,7 +1154,7 @@
 
           constructor( obj, type='path' ){
             this.type = type;
-            this.node = new SvgPath( obj, type );
+            this.node = new SvgElement( obj, type );
             this.obj = obj;
             this.attributeNames = Object.keys( obj );
             if ( this.attributeNames.length === 0 ) this.attributeNames = ['x1','y1','x2','y2']; // default
@@ -1028,7 +1179,7 @@
           state(){
             if ( self.currentClickListener === this.clickListener1 ) return "move";
             if ( self.currentClickListener === this.clickListener2 ) return "resize";
-            if ( self.currentClickListener === this.clickListener3 ) return "finish";
+            if ( self.currentObject === this ) return "active";
             return "passive";
           }
 
@@ -1054,11 +1205,21 @@
           }
 
           getAttribute( nr ){
-            return this.node.getAttribute( this.attributeNames[ nr ] );
+            return parseInt( this.node.getAttribute( this.attributeNames[ nr ] ) );
           }
 
           setAttribute( nr, value ){
             this.node.setAttribute( this.attributeNames[ nr ], value );
+          }
+
+          getStateXAttribute(){
+            if ( this.state() === "resize" ) return this.getAttribute( 2 );
+            return this.getAttribute( 0 );
+          }
+
+          getStateYAttribute(){
+            if ( this.state() === "resize" ) return this.getAttribute( 3 );
+            return this.getAttribute( 1 );
           }
 
           setStateXAttribute( value ){
@@ -1087,7 +1248,7 @@
               this.attributeNames = this.constructor.setupParams;
             }
             const newNode = (self.currentObject.node || this.node).cloneNode(true);
-            undoStack.push( this.undoTemplate( this, newNode ) );
+            undoStack.push( this.undoTemplate( newNode ) );
             this.node = newNode;
 
             this.mouse_leave_listener = this.mouse_leave_template();
@@ -1101,15 +1262,14 @@
 
             this.clickListener1 = this.clickListener1_template();
             this.clickListener2 = this.clickListener2_template();
-            this.clickListener3 = this.clickListener3_template();
 
+            self.currentObject = this;
             addListener( 'mousemove', this.moveX1Y1 );
             svg_div.appendChild( newNode );
             help_div.innerText = self.helpText.insert;
 
             addListener( 'click', this.clickListener1 );
             self.currentClickListener = this.clickListener1;
-            self.currentObject = this;
 
           }
 
@@ -1120,6 +1280,7 @@
            */
           clickListener1_template(){
             return (evt) => {
+              self.currentObject = this;
               svg_div.removeEventListener( 'mousemove', this.moveX1Y1 );
               addListener( 'mousemove', this.moveX2Y2 );
               svg_div.removeEventListener( 'click', this.clickListener1 );
@@ -1136,22 +1297,25 @@
            */
           clickListener2_template(){
             return (evt) => {
+              self.currentObject = this;
               svg_div.removeEventListener('mousemove', this.moveX2Y2);
               svg_div.removeEventListener('click', this.clickListener2);
-              addListener('click', this.clickListener3);
-              self.currentClickListener = this.clickListener3;
-              help_div.innerText = self.helpText.nextObject;
-            }
-          }
-
-          clickListener3_template(){  // finish setup
-            return (evt) => {
               this.removeAllListeners();
               this.addMinimalListeners();
               clear_current();
-              // Recursion: insert next node
-              this.nextNode( this );
-            }
+              if ( evt.shiftKey ){
+                help_div.innerText = self.helpText.nextObject;
+                self.currentObject = this.nextNode();
+              } else {
+                help_div.innerText = self.helpText.init;
+              }
+             }
+          }
+
+          nextNode(){
+            const newObject = new this.constructor( this.obj, this.type );
+            self.currentObject = newObject;
+            return newObject; // includes setup
           }
 
           /**
@@ -1187,11 +1351,6 @@
             }
           }
 
-          nextNode( old ){
-            self.currentObject = new this.constructor( old.obj, old.type );
-            return self.currentObject;
-          }
-
           mouse_leave_template(){  // cancel setup
             return (e) => {
               if ( !e || e.target === svg_div ){  // only if mouse leaves svg_div
@@ -1204,7 +1363,7 @@
           remove(){
             if ( this.node.parentNode === svg_div ){
               svg_div.removeChild( this.node );
-              redoStack.push( this.undoTemplate( this, this.node ) );
+              redoStack.push( this.undoTemplate() );
             }
           }
 
@@ -1214,7 +1373,6 @@
             svg_div.removeEventListener( 'mousemove', this.moveX2Y2 );
             svg_div.removeEventListener( 'click', this.clickListener1 );
             svg_div.removeEventListener( 'click', this.clickListener2 );
-            svg_div.removeEventListener( 'click', this.clickListener3 );
             this.color_input.removeEventListener('change', this.colorListener );
           }
 
@@ -1239,7 +1397,8 @@
            * @param newNode instance of Node in DOM
            * @returns {{undo: undoAction, redo: redoAction}}
            */
-          undoTemplate( obj, newNode ){
+           undoTemplate( newNode ){
+            if ( ! newNode ) newNode = this.node;
             const action = {
               undo: _ => {
                 if ( newNode && newNode.parentNode === svg_div ) {
@@ -1252,12 +1411,14 @@
                 undoStack.push( action );
               },
               node: newNode,
-              obj: obj
+              obj: this
             };
             return action;
           }
 
+
         }
+
 
         class SvgLine extends SvgObject {
           constructor( obj ){
@@ -1330,7 +1491,7 @@
 
           async nextNode(){
             super.nextNode( this );
-            await insertNextComponent();
+            await insertNextComponent({ component: this.component, config: this.config } );
           }
         }
 
@@ -1591,8 +1752,9 @@
 
             default:
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
-
-                const config = {};
+                const componentName = command.substr( 4 ).toLowerCase();
+                const component = await getComponent( componentName );
+                const config = component.config || {};
                 if ( this.dataset["config"] ){
                   const config_keys = JSON.parse( this.dataset["config"] );
                   config_keys.forEach( key => {
@@ -1600,7 +1762,7 @@
                   });
                 }
                 // use this.dataset for config
-                await insertNextComponent( config );
+                await insertNextComponent({ component, config });
 
               } else { // editor extensions via functions remotely defined
                 extensionListener({ command, event: e, svg: svg_div, data: dataset } );
@@ -1608,13 +1770,17 @@
           }
         }
 
-        async function insertNextComponent( config ){
+        async function insertNextComponent({ component, config }){
           removeUnfinishedObject();
-          const command = self.state;
-          if ( command.toLowerCase().startsWith('ccm-') ) { // ccm component
-            const componentName = command.substr( 4 ).toLowerCase();
-            const component = await getComponent( componentName, config );
+          if ( component ){
             await insertComponent({ component, config });
+          } else {
+            const command = self.state;
+            if ( command.toLowerCase().startsWith('ccm-') ) { // ccm component
+              const componentName = command.substr( 4 ).toLowerCase();
+              const component = await getComponent( componentName );
+              await insertComponent({ component, config });
+            }
           }
         }
 
@@ -1634,7 +1800,7 @@
                 self.currentObject.remove();
                 clear_current();
                 break;
-              case "finish":
+              case "active": case "passive":
                 self.currentObject.removeAllListeners();
                 self.currentObject.addMinimalListeners();
                 clear_current();
@@ -1659,7 +1825,7 @@
               break;
             case "select": // select ccm component from DMS
               const select = toolbar_div.querySelector("a[data-command='select'] > select");
-              const component = DMS_component_index[select.options[select.selectedIndex].value];
+              const component = (await dms_index())[select.options[select.selectedIndex].value];
 
               await insertComponent({ component, config: {} });
               break;
@@ -1695,23 +1861,20 @@
         }
 
         /**
-         *
+         * get the component with the given name from configs or from DMS
          * @param componentName
-         * @returns {Promise<*>}
+         * @returns {Component}
          */
-        async function getComponent( componentName, config ){
+        async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
-          const component =  dataset.components && dataset.components[ componentName ] || self[ componentName ] || DMS_component_index[ componentName ];
+          if ( self[ componentName ] ) return self[ componentName ];
+          const find_parent = self.ccm.context.find( self, componentName, false );
+          let component = dataset.components && dataset.components[ componentName ]
+            || find_parent && find_parent[ componentName ]
+            || DMS_component_index && DMS_component_index[ componentName ];
 
-          if ( $.isComponent( component ) ) return component;
-
-          const solvedComponent = await $.solveDependency( component, config );
-          if ( $.isComponent( solvedComponent ) ){
-            dataset.components[ componentName ] = solvedComponent;
-            return solvedComponent;
-          } else {
-            return solvedComponent;
-          }
+          if ( Array.isArray( component ) ) component = await $.solveDependency( component );
+          return component;
         }
 
         /**
@@ -1738,15 +1901,19 @@
           foreignObject.className = 'ccm-component';
 
           self.currentObject = foreignObject;
+          self.currentObject.component = component;
+          self.currentObject.config = config;
+
 
           // avoid painting into foreign object:
-          if ( self.stopPaintingIntoCCM ) foreignObject.addEventListener('mousedown' ,(e)=>{
+          if ( self.stopPaintingIntoCCM ) addListener('mousedown' ,(e)=>{
             e.stopPropagation()
           });
 
           // get config
           if ( ! config ) config = {};
           config.root = component_div;
+          config.parent = this;
 
           let instance;
 
@@ -1755,11 +1922,10 @@
             if ( component.startsWith('http') ){
               instance = await self.ccm.start( component, config );
             } else {
-              component = await getComponent( component, config );
               if ( $.isComponent( component ) ){
                 instance = await component.start( config );
               } else {
-                instance = await self.ccm.start( component, config );
+                instance = await (await getComponent( component )).start( config );
               }
             }
           } else {
@@ -1845,7 +2011,7 @@
           } else { // e.g. Youtube embed code
             const embed_div = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'div' );
             embed_div.style = 'width: 100%; height: 100%; margin: 0; padding: 0;';
-            self.currentObject = new ForeignObject({
+            self.currentObject = new SvgForeignObject({
               x: 250,
               y: 100,
               width: 240,

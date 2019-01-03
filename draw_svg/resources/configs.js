@@ -15,15 +15,37 @@ ccm.files[ 'configs.js' ] = {
   "small": {
     key: "small",
 
-    enabled: [ 'color', 'undo', 'redo', 'free', 'rect', 'circle', 'text', 'html_page', 'clear_image', "hide_toolbar", "remove_editor" ]
+    enabled: [ 'color', 'undo', 'redo', 'free', 'rect', 'circle', 'text', 'html_page', 'clear_image', "hide_toolbar", "remove_editor", 'ccm-content_editor', 'ccm-draw_svg' ]
 
   },
   "medium": {
     key: "medium",
 
-    enabled: [ 'color', 'undo', 'redo', 'free', 'line', 'rect', 'circle', 'text', 'ccm-clock', 'save_image', 'clear_image', 'view_editor', 'view_html', 'view_json', 'view_html2json', "hide_toolbar", "remove_editor" ]
+    enabled: [ 'color', 'undo', 'redo', 'free', 'line', 'rect', 'circle', 'text', 'ccm-clock', 'save_image', 'clear_image', 'view_editor', 'view_html', 'view_json', 'view_html2json', "hide_toolbar", "remove_editor", 'ccm-content_editor', 'ccm-draw_svg' ]
+  },
+
+  "recursive": {
+    key: "recursive",
+
+    data: { // initial SVG diagram to be edited
+      inner: {
+        "tag": "svg",
+        "id": "svg",
+        "width": "100%",
+        "height": "100%",
+        "margin": 0,
+        "padding": 0,
+        "inner": [
+        ]
+      }
+    },
+
+    stopPaintingIntoCCM: true,
+
+    enabled: [ 'color', 'undo', 'redo', 'free', 'ccm-content_editor', 'ccm-draw_svg', 'embed', 'dms', 'select', 'view_editor', 'view_html', 'view_json', 'view_html2json', 'stop', "hide_toolbar", "remove_editor", 'plus' ]
 
   },
+
   "full": {
     key: "full",
 
