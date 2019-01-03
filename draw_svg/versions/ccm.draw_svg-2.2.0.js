@@ -61,7 +61,7 @@
             },
             {
               "tag": "text",
-              "inner": "Press Mouse to draw",
+              "inner": "Choose free drawing button and press mouse to draw",
               "x": 70,
               "y": 80
             }
@@ -536,7 +536,7 @@
         },
         helpbar: {
           "id": "help_div",
-          "inner": "Press mouse and draw! Choose color! Choose object!"
+          "inner": "Press button to begin."
         },
         html: {
           id: 'html',
