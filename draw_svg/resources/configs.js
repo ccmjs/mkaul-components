@@ -51,9 +51,10 @@ ccm.files[ 'configs.js' ] = {
           }
         ]
       },
-      components: [
-        [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.9.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ]
-      ]
+      components: {
+        "ccm-content_editor": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.9.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ]
+      }
+
     },
 
     stopPaintingIntoCCM: true,
