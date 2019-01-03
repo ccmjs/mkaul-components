@@ -36,6 +36,19 @@ ccm.files[ 'configs.js' ] = {
         "margin": 0,
         "padding": 0,
         "inner": [
+          {
+            "tag": "foreignobject",
+            "x": "235",
+            "y": "25",
+            "width": "396",
+            "height": "64",
+            "inner": [
+              {
+                "tag": "ccm-content_editor",
+                "style": "width: 100%; height: 100%; margin: 0px; padding: 0px;",
+              }
+            ]
+          }
         ]
       }
     },
