@@ -578,7 +578,7 @@
       stopPaintingIntoCCM: true, // if drawing into nested ccm components is prohibited
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
-        init: 'Press mouse and draw! Choose color! Choose object!',
+        init: 'Press button!',
         insert: 'Move object to its position!',
         resize: 'Resize the object!',
         nextObject: 'Click to insert similar object!',
