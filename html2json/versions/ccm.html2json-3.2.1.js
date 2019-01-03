@@ -2,9 +2,7 @@
  * @overview ccm component for html2json
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.2.0)
- * @changes
- * TODO: docu comments -> API
+ * @version latest
  * TODO: unit tests
  * TODO: builder component
  * TODO: i18n
@@ -21,7 +19,7 @@
      * @type {string}
      */
     name: 'html2json',
-    version: [3,2,0],
+    version: [3,2,1],
     
     /**
      * recommended used framework version
@@ -72,8 +70,8 @@
         "type": "module"
       } ],
 
-      // css: [ 'ccm.load',  '../html2json/resources/default.css' ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
+      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
@@ -182,7 +180,7 @@
         async function start_component( child ){
           if ( child.tagName.startsWith('CCM-')){
             const name = child.tagName.slice(4).toLowerCase();
-            const component = ( self.parent && self.parent.component && name === self.parent.component.name ) ? self.parent.component : self.data.components[ name ];
+            const component = getComponent( name );
             component.start($.integrate({root: child, parent: self},
               [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
                 all_attributes[attr] = child.getAttribute(attr);
@@ -191,6 +189,22 @@
           } else {
             start_all_Components( child );
           }
+        }
+
+        /**
+         * get the component with the given name from configs or from DMS
+         * @param componentName
+         * @returns {Component}
+         */
+        async function getComponent( componentName ){
+          if ( self.component.name === componentName ) return self.component;
+          if ( self[ componentName ] ) return self[ componentName ];
+          const find_parent = self.ccm.context.find( self, componentName, false );
+          let component = dataset.components && dataset.components[ componentName ]
+            || find_parent && find_parent[ componentName ];
+
+          if ( Array.isArray( component ) ) component = await $.solveDependency( component );
+          return component;
         }
 
         function reparse(){

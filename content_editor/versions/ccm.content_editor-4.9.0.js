@@ -848,7 +848,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.0.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
@@ -1167,7 +1167,7 @@
           const find_parent = self.ccm.context.find( self, componentName, false );
           let component = dataset.components && dataset.components[ componentName ]
             || find_parent && find_parent[ componentName ]
-            || DMS_component_index && DMS_component_index[ componentName ];
+            || (await dms_index())[ componentName ];
 
           if ( Array.isArray( component ) ) component = await $.solveDependency( component );
           return component;

@@ -627,7 +627,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
 
       css_awesome: [ "ccm.load",
         { context: "head",

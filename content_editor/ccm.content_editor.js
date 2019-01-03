@@ -1167,7 +1167,7 @@
           const find_parent = self.ccm.context.find( self, componentName, false );
           let component = dataset.components && dataset.components[ componentName ]
             || find_parent && find_parent[ componentName ]
-            || DMS_component_index && DMS_component_index[ componentName ];
+            || (await dms_index())[ componentName ];
 
           if ( Array.isArray( component ) ) component = await $.solveDependency( component );
           return component;

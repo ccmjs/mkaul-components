@@ -2,10 +2,7 @@
  * @overview ccm component for html2json
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
- * @changes
- * version 1.0.0 11/30/2018
- * TODO: docu comments -> API
+ * @version latest
  * TODO: unit tests
  * TODO: builder component
  * TODO: i18n
@@ -28,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.6.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -183,7 +180,7 @@
         async function start_component( child ){
           if ( child.tagName.startsWith('CCM-')){
             const name = child.tagName.slice(4).toLowerCase();
-            const component = ( self.parent && self.parent.component && name === self.parent.component.name ) ? self.parent.component : self.data.components[ name ];
+            const component = getComponent( name );
             component.start($.integrate({root: child, parent: self},
               [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
                 all_attributes[attr] = child.getAttribute(attr);
@@ -192,6 +189,22 @@
           } else {
             start_all_Components( child );
           }
+        }
+
+        /**
+         * get the component with the given name from configs or from DMS
+         * @param componentName
+         * @returns {Component}
+         */
+        async function getComponent( componentName ){
+          if ( self.component.name === componentName ) return self.component;
+          if ( self[ componentName ] ) return self[ componentName ];
+          const find_parent = self.ccm.context.find( self, componentName, false );
+          let component = dataset.components && dataset.components[ componentName ]
+            || find_parent && find_parent[ componentName ];
+
+          if ( Array.isArray( component ) ) component = await $.solveDependency( component );
+          return component;
         }
 
         function reparse(){
