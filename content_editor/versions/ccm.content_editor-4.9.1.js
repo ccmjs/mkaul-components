@@ -4,9 +4,16 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.0.1)
+ * @version latest (4.9.1)
  * @changes
- * version 4.0.1 12.12.2018
+ * version 4.9.1  add Backspace key listener and src attribute
+ * version 4.9.0  undo management
+ * version 4.8.0  refactoring
+ * version 4.7.0  allow dynamic extension of additional buttons
+ *                support multiple builders
+ * version 4.6.0
+ * version 4.5.0 18.12.2018 replace property dependencies by components
+ * version 4.1.0 13.12.2018
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -24,14 +31,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [4,0,1],
+    version: [4,9,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -40,17 +47,8 @@
     config: {
 
       data: {
-        inner: '<h1>HTML2JSON with <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>from component</p> ',
-        position: 6, // cursor position
-        dependencies: {
-          clock: [
-            "ccm.component",
-            "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js",
-            {
-              width: '10em'
-            }
-          ]
-        }
+        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js"><ccm-blank>Welcome from blank.</ccm-blank>',
+        position: 6
       },
 
       // data: {
@@ -58,9 +56,12 @@
       //   "key": "demo"
       // },
 
-      onchange: function(){ console.log( this.getValue() ); },
+      // onchange: function(){ console.log( this.getValue() ); },
 
       html: {
+        builder: {
+          id: 'builder'
+        },
         editor: {
           id: 'editor',
           contenteditable: true
@@ -76,8 +77,19 @@
         html2json: {
           id: 'html2json'
         },
-        builder: {
-          id: 'builder'
+        plus: {
+          "tag": "a",
+          "href": "#",
+          "data-command": "plus_action",
+          "data-address": "%actionAddress%",
+          "data-action": "%buttonName%",
+          "style": "width: auto; margin-right: 5px; border-radius: 3px;",
+          "class": "click",
+          "inner": {
+          "class": "fa",
+            "tag": "i",
+            "inner": "%buttonName%"
+          }
         },
         toolbar: {
           "class": "toolbar",
@@ -552,12 +564,30 @@
               "tag": "a",
               "href": "#",
               "class": "click",
-              "data-command": "ccm-editor",
-              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-editor", "ccm-quiz" ]',
-              "title": "insert nested editor",
+              "data-command": "ccm-content_editor",
+              "data-config": '["enabled"]',
+              "data-enabled": '[ "toggle", "bold", "h1", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+              "title": "nested editor",
+              "data-help": "insert nested editor",
               "inner": {
                 "tag": "i",
                 "inner": "E",
+                "class": "fa"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "style": "width: auto;",
+              "data-command": "ccm-draw_svg",
+              "data-config": '["enabled"]',
+              "data-enabled": '[ "free", "clear_image", "undo", "redo", "color", "ccm-content_editor", "ccm-draw_svg", "hide_toolbar", "remove_editor" ]',
+              "title": "nested SVG Editor",
+              "data-help": "insert nested SVG Editor",
+              "inner": {
+                "tag": "i",
+                "inner": "SVG",
                 "class": "fa"
               }
             },
@@ -694,7 +724,7 @@
             {
               "tag": "a",
               "href": "#",
-              "title": "paste plain text",
+              "title": "Hello World extension",
               "class": "click",
               "data-command": "my_special_listener", // editor extension
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
@@ -734,6 +764,41 @@
                   }
                 ]
               }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "add your own button to the toolbar",
+              "data-command": "plus",
+              "class": "click",
+              "inner": {
+                "class": "fa fa-plus",
+                "tag": "i"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "hide toolbar",
+              "data-help": "Hide toolbar to see text only",
+              "data-command": "hide_toolbar",
+              "class": "click",
+              "inner": {
+                "class": "fa fa-times",
+                "tag": "i"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "title": "remove editor",
+              "data-help": "Remove Editor completely and replace it by the produced text only",
+              "data-command": "remove_editor",
+              "class": "click",
+              "inner": {
+                "class": "fa fa-window-close",
+                "tag": "i"
+              }
             }
           ]
         }
@@ -759,6 +824,8 @@
 
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
 
+      inline_block: true,
+
       // other ccm components to be embeddable inside the editor text
       clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
         width: "40px",
@@ -767,6 +834,10 @@
       } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
+
+      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.3.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
+
+      // draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
         "html.inner.1": "",
@@ -778,7 +849,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.0.0.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
@@ -804,86 +875,81 @@
       let $;
 
       /**
-       * all ccm components from DMS with name and URL
+       * Fetch all ccm components from DMS. Store them as key-value pairs with name and URL
        * @type {Object}
        */
-      const all_components = {};
+      /**
+       * Cache all ccm components from DMS. Store them as key-value pairs with name and URL
+       * @type {Object}
+       */
+      let DMS_component_index = null;
+
+      const dms_index = async () => {  // lazy load DMS on demand only
+        if ( DMS_component_index ) return DMS_component_index; else {
+
+          DMS_component_index = {};
+
+          const data = await self.store.get({});
+
+          const all_buttons = self.html.toolbar.inner;
+          let select_array;
+          if ( all_buttons ) for ( const button of all_buttons ){
+            if ( button["data-command"] === "select" ){ // "data-command": "select"
+              if ( button.inner ){
+                select_array = button.inner.inner;
+              }
+              break;
+            }
+          }
+
+          for ( const record of data ){
+            select_array && select_array.push( { tag: 'option', value: record.key, inner: record.key } );
+            // with version number
+            DMS_component_index[ $.getIndex( record.url ) ] = record.url;
+            // without version number
+            DMS_component_index[ record.key ] = record.url;
+          }
+
+          select_array && select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
+        }
+
+        return DMS_component_index;
+      };
+
+      /**
+       * dataset for rendering
+       * The value of dataset starts with a clone of this.data,
+       *     but additional values might be added during component lifetime.
+       * this.data is never changed, only dataset is changed.
+       * @type {Object}
+       */
+      let dataset;
 
       this.init = async () => {
 
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        // no Light DOM? => use empty fragment
-        if ( !this.inner ) this.inner = document.createDocumentFragment();
+        // get data from config or remote database
+        dataset = await $.dataset( this.data );
 
-        // Light DOM is given as HTML string? => use fragment with HTML string as innerHTML
-        if ( typeof this.inner === 'string' ) this.inner = document.createRange().createContextualFragment( this.inner );
+        if ( typeof dataset === 'string' ) dataset = { inner: dataset };
 
-        // Light DOM is given as ccm HTML data? => convert to HTML DOM Elements
-        if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
-          this.inner = $.html( this.inner );
+        // Use LightDOM with higher priority than data from config
+        if ( this.inner ){
 
-        // dynamic replacement of placeholders
-        if ( this.placeholder ) [ ...this.inner.children ].map( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
+          // Light DOM is given as ccm JSON data? => convert to HTML DOM Elements
+          if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
+            this.inner = $.html( this.inner );
 
-        // collect all ccm dependencies in Light DOM
-        const self = this;
-        if ( !self.data.dependencies ){
-          self.data.dependencies = {};
+          // dynamic replacement of placeholders
+          if ( this.placeholder ) [ ...this.inner.children ].forEach( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
+
+          dataset.inner = this.inner;
         }
-        collectDependencies( this.inner );
 
-        /**
-         * see ccm.content.js
-         * collects all dependencies in given DOM Element Node (recursive)
-         * @param {Element} node - DOM Element Node
-         */
-        function collectDependencies( node ) {
-
-          // iterate over all child DOM Element Nodes
-          [ ...node.children ].map( child => {
-
-            // no ccm Custom Element? => abort and collect dependencies inside of it
-            if ( child.tagName.indexOf( 'CCM-' ) !== 0 ) return collectDependencies( child );  // recursive call
-
-            // generate ccm dependency out of collected ccm custom elements
-            const component = getComponent(); if ( !component ) return;
-            const config = $.generateConfig( child );
-            config.parent = self;
-            config.root = child;
-            const index = child.tagName.substr( 4 ).toLowerCase();
-            self.data.dependencies[index] = $.isComponent( component ) ? [ component, config ] : [ 'ccm.start', component, config ];
-
-            /**
-             * gets object, index or URL of ccm component that corresponds to founded ccm Custom Element
-             * @returns {Object|string}
-             */
-            function getComponent() {
-
-              /**
-               * index of ccm component
-               * @type {string}
-               */
-              const index = child.tagName.substr( 4 ).toLowerCase();
-
-              // editor embedded inside this editor
-              if (index === self.component.index) return self.component;
-
-              // has dependency to ccm component? => result is component object
-              if ( $.isComponent( self[ index ] ) ) return self[ index ];
-
-              // search inner HTML of own Custom Element for a source tag that contains the ccm component URL
-              const sources = self.inner.querySelectorAll( 'source' );
-              for ( let i = 0; i < sources.length; i++ )
-                if ( $.getIndex( sources[ i ].getAttribute( 'src' ) ) === index )
-                  return sources[ i ].getAttribute( 'src' );
-
-            }
-
-          } );
-
-        }
+        // initialize dataset.components if necessary
+        if ( ! dataset.components ) dataset.components = {};
 
       };
 
@@ -891,36 +957,9 @@
        * is called once after the initialization and is then deleted
        */
       this.ready = async () => {
-
-        await fill_select_input_field_for_all_components();
-
-        async function fill_select_input_field_for_all_components(){
-
-          if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
-            const all_buttons = self.html.toolbar.inner;
-            let select_array;
-            if ( all_buttons ) for ( const button of all_buttons ){
-              if ( button["data-command"] === "select" ){ // "data-command": "select"
-                if ( button.inner ){
-                  select_array = button.inner.inner;
-                }
-                break;
-              }
-            }
-
-            if ( select_array ){
-              const data = await self.store.get({});
-
-              for ( const record of data ){
-                select_array.push( { tag: 'option', value: record.key, inner: record.key } );
-                all_components[ record.key ] = record.url;
-              }
-
-              select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
-            }
-          }
+        if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
+          await dms_index();
         }
-
       };
 
       /**
@@ -928,47 +967,72 @@
        */
       this.start = async () => {
 
-        /**
-         * dataset for rendering
-         * @type {Object}
-         */
-        let dataset = await $.dataset( this.data );
-        if ( typeof dataset === 'string' ) self.data = { inner: self.data };
-
-        this.getValue = () => { // access to self.data
-          // component data:
-          //             id: instance.index,
-          //             name: instance.component.name,
-          //             url: all_components[ instance.component.name ],
-          //             config: config
-
-          const result = {};
-          const fragment = document.createElement('template');
-          fragment.innerHTML = self.data.inner;
-          Object.values(self.data.dependencies).forEach( dep => {
-            const newNode = document.createElement('ccm-'+dep.name );
-            const oldNode = fragment.content.querySelector('#' + dep.id );
-            if ( oldNode ) $.replace( newNode , oldNode );
-            result[ dep.name ] = [ "ccm.component", dep.url, dep.config ];
-          } );
-          result.inner = fragment.innerHTML;
-          return result;
-        };
-
         // logging of 'start' event
-        this.logger && this.logger.log( 'start', $.clone( self.data ) );
+        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+
+        const undoStack = [];
+        const redoStack = [];
+
+        // add keyboard events
+        const oldKeyListener = document.onkeydown;
+        document.addEventListener('keyup', function( evt ) {
+          evt = evt || window.event;
+          var isEscape = false;
+          if ("key" in evt) {
+            switch (evt.key) {
+              case "Backspace":
+                if ( undoStack > 0 && undoStack[undoStack.length - 1].command !== 'input' ){
+                  undoStack.pop().undo();
+                }
+                break;
+              default:
+                if ( undoStack.length === 0 || undoStack[undoStack.length - 1].command !== 'input' ) {
+                  const action = {
+                    undo: _ => {
+                      const result = document.execCommand( 'undo', false, null );
+                      redoStack.push( action );
+                    },
+                    redo: _ => {
+                      const result = document.execCommand( 'redo', false, null );
+                      undoStack.push( action );
+                    },
+                    command: 'input'
+                  };
+                  undoStack.push( action );
+                }
+            }
+          }
+        } );
 
         // render main HTML structure
         const editor_div = $.html( this.html.editor );
         if ( ! dataset.inner ) dataset.inner = 'Edit here';
-        $.setContent( editor_div, self.data.inner || 'Edit here' );
+        $.setContent( editor_div, dataset.inner );
 
-        // add keyup listener if configured
+        // collect <source> tags from dataset inner
+        const sources = [...editor_div.querySelectorAll( 'source' )];
+        for ( const source of sources ){
+          const src = source.getAttribute( 'src' );
+          const index = $.getIndex( src );
+          if ( ! dataset.components ) dataset.components = {};
+          if ( ! dataset.components[ index ] ){
+            dataset.components[ index ] = [ "ccm.component", src, {} ];
+          }
+        }
+
+        /**
+         * add keyup listener if
+         * config property change_listener_on_key_up is set truthy
+         */
         if ( self.change_listener_on_key_up )
           editor_div.addEventListener('keyup', function(e){
-            update_data();
+            updateData();
           });
 
+        /**
+         * paste event listener
+         * @param e Event
+         */
         editor_div.onpaste = function(e) {
           [...e.clipboardData.items].forEach((item)=>{
             switch( item.type ){
@@ -988,9 +1052,9 @@
 
                 // Use shadow root instead of document to get position of cursor in text
                 const shadowRoot = self.element.parentNode;
-                const selection = shadowRoot.getSelection();
-                if ( selection.rangeCount > 0 ){
-                  selection.getRangeAt(0).insertNode( pastedImage );
+                const range = getSelectionRange();
+                if ( range ){
+                  range.insertNode( pastedImage );
                 } else {
                   editor_div.appendChild( document.createTextNode(' '));
                   editor_div.appendChild( pastedImage );
@@ -1051,7 +1115,7 @@
           tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
         });
 
-        const builder_div = $.html( this.html.builder || {} );
+        const builder_div = $.html( self.html.builder || {} );
         const html_div = $.html( self.html.html || {} );
         const json_div = $.html( self.html.json || {} );
         const html2json_div = $.html( self.html.html2json || {} );
@@ -1059,78 +1123,173 @@
         // render main HTML structure
         $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div ] ) );
 
-        // render content that is given via Light DOM
-        if ( this.inner.childElementCount ) $.setContent( editor_div, this.inner );
-
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...this.element.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
 
-        await start_all_embedded_ccm_components();
+        startAllComponents( editor_div );
 
-        async function start_all_embedded_ccm_components(){
-          const dependencies = Object.values( self.data.dependencies );
-          for ( let i = 0; i < dependencies.length; i++ )
-            if ( $.isComponent( dependencies[ i ][ 0 ] ) )
-              await dependencies[ i ][ 0 ].start( dependencies[ i ][ 1 ] );
-            else
-              dependencies[ i ] = await $.solveDependency( dependencies[ i ] );
+        /**
+         *
+         * @param node
+         * @returns {Promise<void>}
+         */
+        async function startAllComponents( node ){
+          $.asyncForEach([...node.children], child => {
+            startComponent( child );
+          });
         }
 
-        // the same toolbar click listener for all tools
+        /**
+         *
+         * @param child
+         * @returns {Promise<void>}
+         */
+        async function startComponent( child ){
+          if ( child.tagName.startsWith('CCM-')){
+            const src = child.getAttribute('src');
+            const index = child.tagName.slice(4).toLowerCase();
+            let component = await getComponent( src || index );
+            if ( $.isComponent( component ) ){
+              const config = $.integrate(
+                // set root and parent:
+                {root: child, parent: self},
+                // collect all attributes:
+                [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
+                  all_attributes[attr] = child.getAttribute(attr);
+                  return all_attributes;
+                }, {}), component.config || {} );
+              const instance = await component.start( config );
+              child.addEventListener( isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
+            } else {
+              await self.ccm.start( src, config );   // TODO
+            }
+          } else {
+            startAllComponents( child );
+          }
+        }
+
+        /**
+         * get the component with the given name from configs or from DMS
+         * @param componentName
+         * @returns {Component}
+         */
+        async function getComponent( componentName ){
+          if ( self.component.name === componentName ) return self.component;
+          if ( self[ componentName ] ) return self[ componentName ];
+          if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;
+          const find_parent = self.ccm.context.find( self, componentName, false );
+          let component = dataset.components && dataset.components[ componentName ]
+            || find_parent && find_parent[ componentName ]
+            || (await dms_index())[ componentName ];
+
+          if ( Array.isArray( component ) ) component = await $.solveDependency( component );
+          return component;
+        }
+
+        function execCommand( command, showUI, value ){
+          document.execCommand( command, showUI, value );
+          const action = {
+            undo: _ => {
+              const result = document.execCommand( 'undo', showUI, value );
+              redoStack.push( action );
+            },
+            redo: _ => {
+              const result = document.execCommand( 'redo', showUI, value );
+              undoStack.push( action );
+            },
+            command: command
+          };
+          undoStack.push( action );
+        }
+
+        /**
+         * the same toolbar click listener for all tools
+         * @param e
+         * @returns {Promise<void>}
+         */
         async function toolbarClickListener(e){
           const command = this.dataset["command"].toLowerCase();
+
           switch (command){
             case 'toggle':
               const isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
               editor_div.setAttribute( "contenteditable", isNotEditable );
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
-            case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
-              document.execCommand('formatBlock', false, command);
+
+            case "plus":
+              const buttonName = prompt('Enter button name: ', 'my_special_listener');
+              const actionAddress = prompt('Enter HTTPS address of Button Action: ', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js');
+              const new_button = $.html( self.html.plus, { buttonName, actionAddress } );
+              new_button.addEventListener('click', ev => {
+                extensionListener( { command: buttonName, address: actionAddress, event: ev } );
+              });
+              toolbar_div.appendChild( new_button ) ;
               break;
+
+            case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
+              execCommand('formatBlock', false, command);
+              break;
+
             case 'forecolor': case 'backcolor': case 'hilitecolor':
-              document.execCommand( command, false, this.dataset["value"] );
+              execCommand( command, false, this.dataset["value"] );
               break;
             case 'createlink': case 'insertimage':
               const url = prompt('Enter the link here: ', 'https:\/\/');
-              document.execCommand(command, false, url);
+              execCommand(command, false, url);
               break;
+
             case 'audio': case 'video':
               const media_file = prompt('Enter URL here: ', 'https:\/\/');
               if ( media_file && media_file.length > 8 ){
-                document.execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>` );
+                execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>` );
               }
               break;
+
             case 'embed':
               const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
               if ( embed_code && embed_code.length > 8 ) {
-                // document.execCommand('insertHTML', false, embed_code );    // replaces quotes
-
-                insert_embed_code_via_node( embed_code );
+                // execCommand('insertHTML', false, embed_code );    // replaces quotes
+                insertEmbedCode( embed_code );
               }
               break;
+
             case 'dms':
               const component_name = prompt('Enter component name here: ', 'clock');
               const dms_id = prompt('Enter DMS-ID here: ', '1544379440973X6301133529121039');
-              if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+              if ( component_name && component_name.length > 1 && dms_id ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
                 await insertComponent({ component: component_name, config });
+                editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               }
               break;
+
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
-              const selection = editor_div.parentNode.parentNode.getSelection();
-              if ( selection.rangeCount > 0 ){
-                document.execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${self.element.parentNode.getSelection().getRangeAt(0).toString()}</a>`);
+              const range = getSelectionRange();
+              if ( range ){
+                execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${range.toString()}</a>`);
               } else {
                 editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
               }
               break;
-            case "undo": case "redo": case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
-              document.execCommand(command, false, null);
+
+            case "undo":
+              if ( ! undoStack.length ) break;
+              undoStack.pop().undo();
               break;
+
+            case "redo":
+              if ( ! redoStack.length ) break;
+              redoStack.pop().redo();
+              break;
+
+            case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
+              execCommand(command, false, null);
+              break;
+
             case "view_editor":
               html_div.style.display = 'none';
               json_div.style.display = 'none';
@@ -1145,13 +1304,21 @@
               html2json_div.style.display = 'none';
               html_div.style.display = 'block';
               break;
+
             case "view_json":
-              self.json_builder.start({ root: json_div, "data.json": $.integrate( { inner: self.html2json_module.html2json( editor_div.innerHTML ) }, self.getValue() ) });
+              const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } ) );
+              delete value_as_json.parent;
+              delete value_as_json.root;
+              self.json_builder.start({ root: json_div, data: { // avoid solveDependency by storing in ccm.store
+                  store: [ 'ccm.store', { local: { app: value_as_json }}  ],
+                  key: 'app'
+                } });
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
               json_div.style.display = 'block';
               break;
+
             case "view_html2json":
               self.html2json.start({ root: html2json_div, data: self.getValue() });
               editor_div.style.display = 'none';
@@ -1159,105 +1326,170 @@
               json_div.style.display = 'none';
               html2json_div.style.display = 'block';
               break;
+
+            case "hide_toolbar":
+              toolbar_div.style.display = 'none';
+              editor_div.style.display = 'block';
+              html_div.style.display = 'none';
+              html2json_div.style.display = 'none';
+              editor_div.addEventListener('dblclick', (e)=>{
+                toolbar_div.style.display = 'block';
+              });
+              break;
+
+            case "remove_editor":
+              const root = self.element.parentNode;
+              [...root.children].forEach(child=>{
+                root.removeChild(child);
+              });
+              root.appendChild( editor_div.cloneNode( true ) );
+              break;
+
             default:
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
                 const componentName = command.substr( 4 ).toLowerCase();
 
                 // get component
-                const component = self[ componentName ] || self.component;
+                const component = await getComponent( componentName );
 
                 // get config
-                const config = component.config;
+                const config = component.config || {};
 
-                // if this button has enabled data, overwrite config
-                if (this.dataset["enabled"]) config.enabled = this.dataset["enabled"];
+                if ( this.dataset["config"] ){
+                  const config_keys = JSON.parse( this.dataset["config"] );
+                  config_keys.forEach( key => {
+                    config[ key ] = this.dataset[ key ];
+                  });
+                }
 
-                insertComponent({ component, config });
+                const instance = await insertComponent({ component, config });
 
               } else { // editor extensions via function calls remotely defined
-                extension_listener(command, e);
+                extensionListener({command: command, action: this.dataset['action'], event: e});
               }
           }
-          update_data();
+          updateData();
         }
 
-        // standard listener for change events
+        /**
+         * standard listener for change events
+         * @param e
+         * @returns {Promise<void>}
+         */
         async function toolbarChangeListener(e){
           const command = this.dataset["command"].toLowerCase();
           const select = this.querySelector('select');
           const input = this.querySelector('input');
           switch (command){
             case 'forecolor': case 'backcolor': case 'hilitecolor':
-              document.execCommand( command, false, input.value );
+              execCommand( command, false, input.value );
               break;
             case "fontsize":
-              document.execCommand(command, false, parseInt( select.value ));
+              execCommand(command, false, parseInt( select.value ));
               select.value = 0; // set back to default
               break;
             case "fontname":
-              document.execCommand(command, false, select.value);
+              execCommand(command, false, select.value);
               select.value = 'default'; // set back to default
               break;
             case 'select': // select ccm component from DMS
-              const component = all_components[select.options[select.selectedIndex].value];
-              insertComponent({
+              const component = DMS_component_index[select.options[select.selectedIndex].value];
+              const instance = await insertComponent({
                 component,
                 config: {}
               });
               break;
-            default: // editor extensions
-              extension_listener(command, select, value, e);
+            default:
+              extensionListener({ command, event: e });
           }
-          update_data();
+          updateData();
         }
 
-        function update_data(){
-          self.data.inner = editor_div.innerHTML;
-          self.data.position = getCaretPosition();
+        /**
+         * refresh dataset after editing
+         */
+        function updateData(){
+          dataset.inner = editor_div.innerHTML;
+          dataset.position = getCaretPosition();
           self.onchange && self.onchange();
         }
 
-        // listeners for editor extensions
-        function extension_listener(command, e){
+        /**
+         * listeners for editor extensions
+         * @param command
+         * @param event
+         * @param address HTTPS address of ES6 module to be imported
+         */
+        async function extensionListener({ command, event, address }){
           // get listener from remote JavaScript or config or global namespace
-          if ( self.extensions && self.extensions[ command ] && typeof self.extensions[ command ] === 'function' ){
-            self.extensions[ command ](e)
-          } else if ( self[ command ] && typeof self[ command ] === 'function' ){
-            self[ command ](e)
-          } else if ( window[ name ] && typeof window[ name ] === 'function' ){
-            window[ name ](e)
+          if ( address ){
+            const action = await self.ccm.load({ url: address, type: 'module', import: command });
+            action(event);
           } else {
-            debugger;
+            if ( self.extensions && self.extensions[ command ] && typeof self.extensions[ command ] === 'function' ){
+              self.extensions[ command ](event)
+            } else if ( self[ command ] && typeof self[ command ] === 'function' ){
+              self[ command ](event)
+            } else if ( window[ name ] && typeof window[ name ] === 'function' ){
+              window[ name ](event)
+            } else {
+              debugger;
+            }
           }
         }
 
+        /**
+         *
+         * @returns {*}
+         */
         function getCaretPosition() {
           const shadowRoot = self.element.parentNode;
-          if ( shadowRoot.getSelection && shadowRoot.getSelection().getRangeAt && shadowRoot.getSelection().rangeCount ) {
-            const range = shadowRoot.getSelection().getRangeAt(0);
-            const selectedObj = shadowRoot.getSelection();
-            let rangeCount = 0;
-            const childNodes = selectedObj.anchorNode.parentNode.childNodes;
-            [...childNodes].forEach(childNode => {
-              if (childNode === selectedObj.anchorNode) {
-                return;
-              }
-              if (childNode.outerHTML)
-                rangeCount += childNode.outerHTML.length;
-              else if (childNode.nodeType === 3) {
-                rangeCount += childNode.textContent.length;
-              }
-            });
-            return range.startOffset + rangeCount;
+          if ( shadowRoot.getSelection ){ // Chrome
+            return position( shadowRoot.getSelection() )
+          } else { // Firefox 63
+            return position( document.getSelection() )
           }
-          return -1;
+
+          function position( selection ){
+            if ( selection.rangeCount ){
+              const range = selection.getRangeAt(0);
+              let rangeCount = 0;
+              const childNodes = selection.anchorNode.parentNode.childNodes;
+              [...childNodes].forEach(childNode => {
+                if (childNode === selection.anchorNode) {
+                  return rangeCount;
+                }
+                if (childNode.outerHTML)
+                  rangeCount += childNode.outerHTML.length;
+                else if (childNode.nodeType === 3) {
+                  rangeCount += childNode.textContent.length;
+                }
+              });
+              return range.startOffset + rangeCount;
+            } else {
+              return 0;
+            }
+          }
         }
 
+        /**
+         *
+         * @param component
+         * @param config
+         * @returns {Promise<void>}
+         */
         async function insertComponent({ component, config }){
+
+          // component
+          const index = component.index || $.getIndex( component ) || component;
+          const root = document.createElement('ccm-' + index );
+
+          if ( ! config ) config = {};
+
           // set parent and root
           config.parent = self;
-          const newSpan = document.createElement('span');
-          config.root = newSpan;
+          config.root = root;
+
           let instance;
 
           // start component
@@ -1265,61 +1497,348 @@
             if ( component.startsWith('http') ){
               instance = await self.ccm.start( component, config );
             } else {
-              component = self[ component ] || all_components[ component ];
-              instance = await self.ccm.start( component, config );
+              if ( $.isComponent( component ) ){
+                instance = await component.start( config );
+              } else {
+                instance = await (await getComponent( component )).start( config );
+              }
             }
           } else {
             instance = await component.start( config );
           }
 
-          self.data.dependencies[instance.index] = {
-            id: instance.index,
-            name: instance.component.name,
-            url: all_components[ instance.component.name ],
-            config: config
-          };
-
-          newSpan.firstChild.style = "display: inline-block;";
-
-          // insert at Cursor position or at the end of the text, if none
-          const selection = editor_div.parentNode.parentNode.getSelection();
-          if ( selection.rangeCount > 0 ){
-            selection.getRangeAt(0).insertNode( newSpan );
-          } else {
-            editor_div.appendChild( document.createTextNode(' '));
-            editor_div.appendChild( newSpan );
-            editor_div.appendChild( document.createTextNode(' '));
+          if ( dataset.components[ instance.component.index ] ){
+            // already registered as dependency.
+            // compare configs and write differences into attributes
+            const oldConfig = dataset.components[ instance.component.index ][2];
+            const newConfig = JSON.parse(instance.config);
+            const allDiffs = compareJSON( oldConfig, newConfig );
+            for ( const [ name, diff ] of allDiffs ){
+              root.setAttribute( name, diff );
+            }
+            if ( self.inline_block ) root.setAttribute( 'style', 'display: inline-block;' );
+          } else { // not yet registered as dependency
+            dataset.components[ instance.component.index ] = [ 'ccm.component',
+              instance.component.url,
+              JSON.parse(instance.config)
+            ];
           }
 
+          editor_div.dispatchEvent(new Event('keyup'));
+
+          if ( self.inline_block ) root.style = "display: inline-block;";
+          if ( self.inline_block ) root.firstChild.style = "display: inline-block;";
+          root.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
+
+          // insert component at Cursor position or at the end of the text, if none
+          // const selection = editor_div.getSelection && editor_div.getSelection()
+          //   || editor_div.parentNode.getSelection && editor_div.parentNode.getSelection()
+          //   || editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection()
+          //   || document.getSelection();
+          const range = getSelectionRange();
+          if ( range ){
+            editor_div.focus();
+            if ( $.isSafari() ){
+              // TODO split text into two parts, append component after the first text
+              editor_div.appendChild(document.createTextNode(' '));
+              editor_div.appendChild(root);
+              editor_div.appendChild(document.createTextNode(' '));
+            } else {
+              range.insertNode( document.createTextNode(' '));
+              range.insertNode( root );
+              range.insertNode( document.createTextNode(' '));
+            }
+          } else {
+            editor_div.appendChild( document.createTextNode(' '));
+            editor_div.appendChild( root );
+            editor_div.appendChild( document.createTextNode(' '));
+          }
+          editor_div.focus();
+
+          undoStack.push( undoTemplate( instance, config ) );
+
+          return instance;
         }
 
-        async function insert_embed_code_via_node( embed_code ){
-          if ( embed_code.toLowerCase().includes('ccm-') ){
+        function undoTemplate( instance, config ){
+          const action = {
+            undo: _ => { // TODO remove
+              config.root.style.display = 'none';
+              redoStack.push( action );
+            },
+            redo: _ => { // TODO restart
+              config.root.style.display = 'inline-block';
+              // instance.start( config );
+              undoStack.push( action );
+            },
+            instance: instance
+          };
+          return action;
+        }
+
+        /**
+         * open builder for double clicked component, which is inside the edited text
+         * @param instance
+         * @param config
+         * @returns {Function} event handler for double click
+         */
+        function openBuilder( instance, config ){  // TODO config not used
+          // persist the builder as property of instance
+          return async function( event ){
+            if ( event.type === 'dblclick' || ( event.type === 'click' && event.shiftKey ) ) {
+              if ( instance.json_builder ){
+                // replace builder_div with old json_builder
+                builder_div.appendChild( instance.builder_div );
+              } else {
+                const instance_builder_div = document.createElement('div');
+                instance.json_builder = await self.json_builder.start({
+                  root: instance_builder_div,
+                  data: { // avoid solveDependency by storing in ccm.store
+                    store: [ 'ccm.store', { local: { app: JSON.parse( instance.config ) }}  ],
+                    key: 'app'
+                  },
+                  html: {
+                    "tag": "form",
+                    "onsubmit": "%onclick%",
+                    "inner": [
+                      {
+                        "tag": "textarea",
+                        "id": "input",
+                        "oninput": "%oninput%",
+                        "onchange": "%onchange%"
+                      },
+                      {
+                        "tag": "input",
+                        "id": "button",
+                        "type": "submit",
+                        "onclick": "%onclick%"
+                      }
+                    ]
+                  },
+                  onfinish: async function( e ){
+                    const json_builder_value = instance.json_builder.getValue();
+                    const instance_config = JSON.parse( instance.config );
+                    const all_diffs = compareJSON( instance_config, json_builder_value );
+
+                    // set attributes only for different values
+                    for ( const [ name, diff ] of all_diffs ){
+                      instance.root.parentNode.setAttribute( name, diff );
+                    }
+
+                    /********** Restart component instance **********/
+                    // await instance.start() is not necessary because of MutationObserver
+                    Object.assign( instance, await $.solveDependencies( json_builder_value ) );
+                    Object.assign( instance.json_builder, { data: {
+                        // avoid solveDependency by storing in ccm.store
+                        store: [ 'ccm.store', { local: { app: json_builder_value }}  ],
+                        key: 'app'
+                      } } );
+                    builder_div.style.display = 'none';
+                    builder_div.removeChild( instance.builder_div );
+                    editor_div.dispatchEvent(new Event('keyup'));
+                    editor_div.focus();
+                  }
+                });
+                instance.builder_div = instance_builder_div;
+                builder_div.appendChild( instance.builder_div );
+              }
+              builder_div.style.display = 'block';
+              builder_div.focus();
+            }
+          }
+        }
+
+        /**
+         * insert embed code
+         * @param embedCode
+         * @returns {Promise<void>}
+         */
+        async function insertEmbedCode( embedCode ){
+          if ( embedCode.toLowerCase().includes('ccm-') ){
             // extract ccm component and config and start component
             const regex = /(http[^("|')]+).*ccm-(\w+).*?(\w+\d+)["]/gi;
-            const match = regex.exec( embed_code );
+            const match = regex.exec( embedCode );
             const component_uri = match[1];
             const component_name = match[2];
             const dms_id = match[3];
             if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
               const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
-              await insertComponent({ component: component_uri, config });
+              const instance = await insertComponent({ component: component_uri, config });
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElement('div');
-            embed_div.innerHTML = embed_code;
+            embed_div.innerHTML = embedCode;
             // selection = self.element.parentNode.getSelection();
-            const embed_selection = editor_div.parentNode.parentNode.getSelection();
+            const embed_selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
             if (embed_selection.rangeCount > 0) {
+              editor_div.appendChild(document.createTextNode(' '));
               embed_selection.getRangeAt(0).insertNode(embed_div);
+              editor_div.appendChild(document.createTextNode(' '));
             } else {
               editor_div.appendChild(document.createTextNode(' '));
               editor_div.appendChild(embed_div);
               editor_div.appendChild( document.createTextNode(' '));
             }
           }
+
+          editor_div.focus();
         }
 
+        /**
+         * compare two objects and return the differences
+         * @param {Object} oldJson
+         * @param {Object} newJson
+         * @return {Array} differences as array of key-value pairs
+         */
+        function compareJSON( oldJson, newJson ) {
+          const result = [];
+          collect( [], oldJson, newJson );
+          return result;
+          function collect( prefix, oldJson, newJson ){
+            if ( oldJson && ! newJson ) return result.push([ dots(), null ]);
+            if ( ! oldJson && newJson ) return result.push([ dots(), newJson ]);
+            if ( oldJson == newJson ) return;
+            // oldJson && newJson && oldJson != newJson
+            if ( typeof newJson === 'object' ){
+              if ( Array.isArray( newJson ) ){
+                for ( let i = 0; i<newJson.length; i++ ){
+                  collect( [ ...prefix, i ], oldJson[i], newJson[i] );
+                }
+              } else { // object is not an array
+                for ( const key of [...new Set([...Object.keys( oldJson ), ...Object.keys( newJson )])] ){
+                  collect( [ ...prefix, key ], oldJson[key], newJson[key] );
+                }
+              }
+            } else  {
+              result.push([ dots(), newJson ]);
+            }
+            function dots(){
+              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
+            }
+          }
+        }
+
+        /**
+         * ToDo No longer used => remove dead code
+         * serialize JSON structure into attributes
+         * @param json
+         * @returns {Array} attribute names and values
+         */
+        function attributeNamesAndValues( json ){
+          const result = [];
+          collect( [], json );
+          return result;
+          function collect( prefix, json ){
+            if ( typeof json === 'object' ){
+              if ( Array.isArray( json ) ){
+                for ( let i = 0; i<json.length; i++ ){
+                  collect( [ ...prefix, i ], json[i] );
+                }
+              } else { // object is not an array
+                for ( const [ key, value ] of Object.entries( json ) ){
+                  collect( [ ...prefix, key ], value );
+                }
+              }
+            } else  {
+              result.push([ dots(), json ]);
+            }
+            function dots(){
+              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
+            }
+          }
+        }
+
+      };
+
+      /**
+       * ToDo No longer used => remove dead code
+       * collect all attributes from instance
+       * @param instance
+       */
+      function collectAttributes( instance ){
+        return [ ...instance.root.parentNode.attributes ].reduce((a,b)=>{
+          a[b.name] = b.value;
+          return a;
+        },{});
+      }
+
+      /**
+       * set or (re-)store a selection
+       * @param {Range} range
+       */
+      function setSelectionRange( range ){
+        const shadowRoot = self.element.parentNode;
+        if ( range && shadowRoot.getSelection ){
+          const sel = shadowRoot.getSelection();
+          sel.removeAllRanges();
+          sel.addRange( range );
+        }
+        if ( range && window.getSelection ){
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange( range );
+        }
+      }
+
+      /**
+       * get the current selection range or null
+       * @returns {Range}
+       */
+      function getSelectionRange() {
+        const shadowRoot = self.element.parentNode;
+        if ( shadowRoot.getSelection &&  shadowRoot.getSelection() ){
+          const sel = shadowRoot.getSelection();
+          const range = sel.rangeCount && sel.getRangeAt(0);
+          return range;
+        }
+        if ( window.getSelection ) {
+          const sel = window.getSelection();
+          if (sel.getRangeAt && sel.rangeCount) {
+            const range = sel.getRangeAt(0);
+            return range;
+          }
+          else  { // Safari
+            const range = document.createRange();
+            range.setStart(sel.anchorNode, sel.anchorOffset);
+            range.setEnd(sel.focusNode, sel.focusOffset);
+            return range;
+          }
+        }
+        return null;
+      }
+
+      /**
+       * checks whether editor is run on a mobile platform
+       * @url https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+       * @returns {boolean}
+       */
+      function isMobile() {
+        return 'ontouchstart' in window && window.screen.availWidth < 768;
+      }
+
+      /**
+       * current state of this editor
+       * @returns {Object} state of editor
+       */
+      this.getValue = () => {
+        // clone dataset
+        const result = $.clone( dataset );
+
+        for ( const [ index, dep ] of Object.entries( dataset.components ) ){
+          if ( ! Array.isArray( dep ) ){
+            // transform dep into action data
+            result.components[ index ] = [ 'ccm.component',
+              dep.url,
+              dep.config ? $.clone( dep.config ) : {}
+            ];
+          }
+          // add second index without version number
+          if ( index.includes('-') ){
+            const name = index.slice(0, index.indexOf('-'));
+            result.components[ name ] = result.components[ index ];
+          }
+        }
+        return result;
       };
 
     }

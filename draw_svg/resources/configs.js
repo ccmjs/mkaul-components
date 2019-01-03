@@ -38,7 +38,7 @@ ccm.files[ 'configs.js' ] = {
         "inner": [
           {
             "tag": "foreignobject",
-            "x": "235",
+            "x": "25",
             "y": "25",
             "width": "396",
             "height": "64",

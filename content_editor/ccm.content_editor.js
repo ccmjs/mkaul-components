@@ -4,8 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.9.0)
+ * @version latest (4.9.1)
  * @changes
+ * version 4.9.1  add Backspace key listener and src attribute
  * version 4.9.0  undo management
  * version 4.8.0  refactoring
  * version 4.7.0  allow dynamic extension of additional buttons
@@ -975,19 +976,31 @@
         // add keyboard events
         const oldKeyListener = document.onkeydown;
         document.addEventListener('keyup', function( evt ) {
-          if ( undoStack.length === 0 || undoStack[undoStack.length - 1].command !== 'input' ) {
-            const action = {
-              undo: _ => {
-                const result = document.execCommand( 'undo', false, null );
-                redoStack.push( action );
-              },
-              redo: _ => {
-                const result = document.execCommand( 'redo', false, null );
-                undoStack.push( action );
-              },
-              command: 'input'
-            };
-            undoStack.push( action );
+          evt = evt || window.event;
+          var isEscape = false;
+          if ("key" in evt) {
+            switch (evt.key) {
+              case "Backspace":
+                if ( undoStack > 0 && undoStack[undoStack.length - 1].command !== 'input' ){
+                  undoStack.pop().undo();
+                }
+                break;
+              default:
+                if ( undoStack.length === 0 || undoStack[undoStack.length - 1].command !== 'input' ) {
+                  const action = {
+                    undo: _ => {
+                      const result = document.execCommand( 'undo', false, null );
+                      redoStack.push( action );
+                    },
+                    redo: _ => {
+                      const result = document.execCommand( 'redo', false, null );
+                      undoStack.push( action );
+                    },
+                    command: 'input'
+                  };
+                  undoStack.push( action );
+                }
+            }
           }
         } );
 
@@ -1135,8 +1148,9 @@
          */
         async function startComponent( child ){
           if ( child.tagName.startsWith('CCM-')){
+            const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
-            let component = await getComponent( index );
+            let component = await getComponent( src || index );
             if ( $.isComponent( component ) ){
               const config = $.integrate(
                 // set root and parent:
@@ -1149,7 +1163,7 @@
               const instance = await component.start( config );
               child.addEventListener( isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
             } else {
-              debugger;
+              await self.ccm.start( src, config );   // TODO
             }
           } else {
             startAllComponents( child );
@@ -1164,6 +1178,7 @@
         async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
           if ( self[ componentName ] ) return self[ componentName ];
+          if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;
           const find_parent = self.ccm.context.find( self, componentName, false );
           let component = dataset.components && dataset.components[ componentName ]
             || find_parent && find_parent[ componentName ]
@@ -1244,7 +1259,7 @@
             case 'dms':
               const component_name = prompt('Enter component name here: ', 'clock');
               const dms_id = prompt('Enter DMS-ID here: ', '1544379440973X6301133529121039');
-              if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+              if ( component_name && component_name.length > 1 && dms_id ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
                 await insertComponent({ component: component_name, config });
                 editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
@@ -1271,7 +1286,7 @@
               redoStack.pop().redo();
               break;
 
-            case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifyCenter": case "justifyRight": case "justifyFull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
+            case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               execCommand(command, false, null);
               break;
 
@@ -1547,11 +1562,11 @@
 
         function undoTemplate( instance, config ){
           const action = {
-            undo: _ => {
+            undo: _ => { // TODO remove
               config.root.style.display = 'none';
               redoStack.push( action );
             },
-            redo: _ => {
+            redo: _ => { // TODO restart
               config.root.style.display = 'inline-block';
               // instance.start( config );
               undoStack.push( action );
