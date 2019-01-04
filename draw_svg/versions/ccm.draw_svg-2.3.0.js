@@ -970,8 +970,8 @@
         /**
          * refresh dataset after editing
          */
-        function updateData(){
-          dataset.inner = editor_div.innerHTML;
+        function updateData( inner ){
+          if ( inner ) dataset.inner = inner; else dataset.inner = editor_div.innerHTML;
           self.onchange && self.onchange();
         }
 
@@ -1005,19 +1005,22 @@
         });
 
         // start all embedded ccm components from dataset.inner
-        const ccm_component_divs = [...editor_div.querySelectorAll( '*' )];
-        ccm_component_divs.forEach(async root => {
-          if ( root.tagName.startsWith('CCM-') ){
-            const name = root.tagName.slice(4).toLowerCase();
-            const src = root.getAttribute('src');
-            const component = await getComponent( name );
-            if ( $.isComponent( component ) ){
-              component.start( { root: root } );
-            } else {
-              self.ccm.start( src, { root: root } );
+        startAllComponents( editor_div );
+        function startAllComponents( node ){
+          const ccm_component_divs = [...node.querySelectorAll( '*' )];
+          ccm_component_divs.forEach(async root => {
+            if ( root.tagName.startsWith('CCM-') ){
+              const name = root.tagName.slice(4).toLowerCase();
+              const src = root.getAttribute('src');
+              const component = await getComponent( name );
+              if ( $.isComponent( component ) ){
+                component.start( { root: root } );
+              } else {
+                self.ccm.start( src, { root: root } );
+              }
             }
-          }
-        });
+          });
+        }
 
         const draw_div = self.element.querySelector('#draw_div');
         const svg_div = self.element.querySelector('#svg');
@@ -1708,6 +1711,8 @@
               break;
 
             case "view_editor":
+              $.setContent( editor_div, dataset.inner );
+              startAllComponents( editor_div );
               html_div.style.display = 'none';
               json_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1716,6 +1721,9 @@
 
             case "view_html":
               html_div.innerText = editor_div.innerHTML;
+              html_div.addEventListener( 'input', (e) => {
+                updateData( html_div.innerText );
+              });
               html_div.style['background-color'] = 'lightblue';
               editor_div.style.display = 'none';
               json_div.style.display = 'none';
@@ -1727,10 +1735,16 @@
               const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } ) );
               delete value_as_json.parent;
               delete value_as_json.root;
-              self.json_builder.start({ root: json_div, data: { // avoid solveDependency by storing in ccm.store
-                  store: [ 'ccm.store', { local: { app: value_as_json }}  ],
-                  key: 'app'
-                } });
+              let view_json_instance = null;
+              if ( ! view_json_instance ){
+                view_json_instance = await self.json_builder.start({
+                  root: json_div,
+                  onchange: function(){ dataset.inner = $.html( view_json_instance.getValue().inner )  },
+                  data: { // avoid solveDependency by storing in ccm.store
+                    store: [ 'ccm.store', { local: { app: value_as_json }}  ],
+                    key: 'app'
+                  } });
+              }
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1738,7 +1752,14 @@
               break;
 
             case "view_html2json":
-              self.html2json.start({ root: html2json_div, data: self.getValue() });
+              let html2json_instance = null;
+              if ( ! html2json_instance ){
+                html2json_instance = await self.html2json.start({
+                  root: html2json_div,
+                  onchange: function(){ dataset.inner = $.html( html2json_instance.getValue().inner ) },
+                  data: self.getValue()
+                });
+              }
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               json_div.style.display = 'none';
