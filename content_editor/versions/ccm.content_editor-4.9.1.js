@@ -1862,6 +1862,7 @@
         const result = $.clone( dataset );
 
         for ( const [ index, dep ] of Object.entries( dataset.components ) ){
+          if ( ['find','has'].includes( index ) ) continue;
           if ( ! Array.isArray( dep ) ){
             // transform dep into action data
             result.components[ index ] = [ 'ccm.component',
