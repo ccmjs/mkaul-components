@@ -799,6 +799,18 @@
                 "class": "fa fa-window-close",
                 "tag": "i"
               }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "stop",
+              "title": "stop and call debugger",
+              "style": "width: auto; color: red;",
+              "inner": {
+                "class": "fa fa-stop",
+                "tag": "i"
+              }
             }
           ]
         }
@@ -1288,6 +1300,10 @@
 
             case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               execCommand(command, false, null);
+              break;
+
+            case "stop":
+              debugger;
               break;
 
             case "view_editor":
