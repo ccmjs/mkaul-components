@@ -149,7 +149,6 @@
         html_div.addEventListener( 'keyup', async (e) => {
           dataset.inner = html_div.innerText;
           self.onchange && self.onchange();
-          updateData();
           preview_div.innerHTML = typeof dataset.inner === 'string' ? dataset.inner : dataset.inner.innerHTML;
           start_all_Components( preview_div );
           reparse();
