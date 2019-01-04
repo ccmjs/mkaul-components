@@ -180,7 +180,7 @@
         async function start_component( child ){
           if ( child.tagName.startsWith('CCM-')){
             const name = child.tagName.slice(4).toLowerCase();
-            const component = getComponent( name );
+            const component = await getComponent( name );
             component.start($.integrate({root: child, parent: self},
               [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
                 all_attributes[attr] = child.getAttribute(attr);
