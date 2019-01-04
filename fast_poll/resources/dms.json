@@ -35,7 +35,7 @@
         "config": {
           "builder": [
             "ccm.component",
-            "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.4.0.js",
+            "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
             {
               "entries": [
                 "<legend>Intro and Outro:</legend>",

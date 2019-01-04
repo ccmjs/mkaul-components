@@ -34,6 +34,8 @@ label {
   overflow: auto;
   border: thin solid grey;
   background-color: lightgrey;
+  font-size: xx-large;
+  padding: 1rem;
 }
 
 #html {

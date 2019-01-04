@@ -14,7 +14,7 @@
     name: 'game_chooser',
     version: [ 1, 0, 0 ],
   
-    ccm: 'https://akless.github.io/ccm/version/ccm-14.3.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
   
     config: {
       

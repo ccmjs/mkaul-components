@@ -112,5 +112,8 @@ ccm.files[ 'configs.js' ] = {
     'then [Task3] lasts 5 days\n' +
     'then [Task4] lasts 6 days\n' +
     '@endgantt'
+  },
+  "submit": {
+
   }
 };
