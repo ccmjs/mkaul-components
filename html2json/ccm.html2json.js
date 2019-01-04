@@ -53,7 +53,7 @@
       //   "key": "demo"
       // },
 
-      onchange: function(){ console.log( this.getValue() ); },
+      // onchange: function(){ console.log( this.getValue() ); },
 
       html: {
         id: 'main',
@@ -148,6 +148,7 @@
         html_div.contentEditable = "true";
         html_div.addEventListener( 'keyup', async (e) => {
           dataset.inner = html_div.innerText;
+          self.onchange && self.onchange();
           preview_div.innerHTML = typeof dataset.inner === 'string' ? dataset.inner : dataset.inner.innerHTML;
           start_all_Components( preview_div );
           reparse();
@@ -160,6 +161,7 @@
           const div = $.html( json_inner );
           const html_code = div.innerHTML;
           dataset.inner = html_code;
+          self.onchange && self.onchange();
           html_div.innerText = html_code;
           $.setContent( preview_div, div );
           start_all_Components( preview_div );
