@@ -12,7 +12,7 @@
 
     name: 'clock',
 
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {

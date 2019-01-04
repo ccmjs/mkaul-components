@@ -27,7 +27,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -35,14 +35,33 @@
      * @type {object}
      */
     config: {
-      markdown: '# Hello Markdown!<br>## Please edit here.',
+
+      data: {
+        markdown: '# Hello Markdown!<br>## Please edit here.'
+      },
+
+      onchange: function(){ console.log( this.getValue() ); },
+
+      // data: {
+      //   "store": [ "ccm.store", { local: 'resources/dataset.json' } ],
+      //   "key": "demo"
+      // },
+
       html: {
         inner: [
+          // in combination with hljs:
+          // { inner: { tag: 'pre', inner: { tag: 'code', class: 'markdown hljs', inner: '%markdown%' } } },
           { id: 'markdown', inner: '%markdown%' },
-          { id: 'preview', inner: '%preview%' }
+          { id: 'preview' }
         ]
       },
-      showdownjs: ["ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.7/showdown.min.js"],
+
+      showdownjs: [ "ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.7/showdown.min.js"],
+
+      // highlightjs: [ "ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"],
+
+      // highlightcss: [ "ccm.load", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/monokai-sublime.min.css"],
+
       css: [ 'ccm.load',  'resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/markdown_editor/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
@@ -69,6 +88,12 @@
       let $;
 
       /**
+       * markdown data
+       * @type {string}
+       */
+      let dataset;
+
+      /**
        * is called once after the initialization and is then deleted
        */
       this.ready = async () => {
@@ -78,6 +103,8 @@
 
         // set shortcut to help functions
         $ = this.ccm.helper;
+
+        self.inner = $.html( self.inner );
 
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
@@ -90,6 +117,9 @@
 
         this.converter = new showdown.Converter();
 
+        // https://github.com/highlightjs/highlight.js/issues/907
+        // hljs.configure({ useBR: true });
+
       };
 
       /**
@@ -97,17 +127,26 @@
        */
       this.start = async () => {
 
-        // logging of 'start' event
-        this.logger && this.logger.log( 'start' );
+        /**
+         * dataset for rendering
+         * @type {Object}
+         */
+        const dataset = await $.dataset( this.data );
 
-        let html_code = this.converter.makeHtml( this.lightDOM || this.markdown.replace('<br>', "\n") );
+        // logging of 'start' event
+        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+
+        // const data = { markdown: '# Hello Markdown!<br>## Please edit here.' };
+
+        let html_code = this.converter.makeHtml( this.lightDOM || dataset.markdown.replace('<br>', "\n") );
 
         const main_div = $.html( this.html, {
-          markdown: this.markdown,
-          // preview: html_code  // TODO Bug in ccm.helper.parse ?
+          markdown: dataset.markdown,
+          // preview: html_code.replace(/"/g,"\\\"")  // escape apostrophe
         } );
 
         const div = {};      // container for all div elements with id
+        div.markdown = main_div.querySelector('.markdown');
 
         // collect all div elements with id into container
         [...main_div.querySelectorAll('div[id]')].forEach( elem => {
@@ -117,22 +156,25 @@
         div.markdown.contentEditable = "true";
         div.preview.innerHTML = html_code;
 
-        enterPreviewMode();
+        enterPreviewMode(); // TODO onchange nicht beim start ausrufen
 
-        div.markdown.addEventListener('mouseleave', (e) => {
-          enterPreviewMode(e);
-        });
+        div.markdown.addEventListener( 'mouseleave', enterPreviewMode );
 
-        div.preview.addEventListener('mouseenter', (e) => {
-          enterEditingMode(e);
-        });
+        div.markdown.addEventListener( 'keyup', (e)=>{this.data.markdown = div.markdown.innerText});
+
+        div.preview.addEventListener(  'mouseenter', enterEditingMode );
 
         // render main HTML structure
         $.setContent( this.element, main_div );
 
         function enterPreviewMode(e){
+          // ToDo call onchange only if the text has been edited
+          self.onchange && self.onchange.call( self );
+          dataset.markdown = div.markdown.innerText || dataset.markdown;
           const html_code = self.converter.makeHtml( div.markdown.innerText );
           div.preview.innerHTML = html_code;
+          // hljs.highlightBlock( div.preview );
+          // highlight special chars of markdown syntax
           div.markdown.style.display = 'none';
           div.preview.style.display = 'block';
         }
@@ -151,6 +193,10 @@
           // div.markdown.style['min-height'] = height + 'px';
         }
 
+      };
+
+      this.getValue = () => {
+        return $.clone( dataset );
       };
 
     }

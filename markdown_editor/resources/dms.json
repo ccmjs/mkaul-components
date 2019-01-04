@@ -1,10 +1,10 @@
 
 {
     "_id": "markdown_editor",
-    "title": "markdown_editor",
+    "title": "Markdown In-place Editor",
     "icon": "https://ccmjs.github.io/mkaul-components/markdown_editor/resources/icon.svg",
-    "abstract": "Markdown Inplace Editor with Live Update based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Markdown Syntax</a>.",
-    "description": "Markdown is something like the opposite of markup (HTML, XML, SGML, ...) and can simplify web editing. This Markdown Inplace Editor comes with Live Update functionality and is based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a>. For the syntax of Markdown see <a target=_blank href=http://demo.showdownjs.com/ rel=noopener> demo.showdownjs.com </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Wikipedia on Markdown</a>",
+    "abstract": "Markdown In-place Editor with Live Update based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Markdown Syntax</a>.",
+    "description": "Markdown is something like the opposite of markup (HTML, XML, SGML, ...) and can simplify web editing. This Markdown In-place Editor comes with Live Update functionality and is based on <a target=_blank href=https://github.com/showdownjs/showdown rel=noopener> Showdown </a>. For the syntax of Markdown see <a target=_blank href=http://demo.showdownjs.com/ rel=noopener> demo.showdownjs.com </a> and <a target=_blank href='https://de.wikipedia.org/wiki/Markdown' rel='noopener'>Wikipedia on Markdown</a>",
     "url": "https://ccmjs.github.io/mkaul-components/markdown_editor/versions/ccm.markdown_editor-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
@@ -28,7 +28,7 @@
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.0.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
                             "defaults": {
                                 "x": "Hello World",
@@ -62,6 +62,6 @@
             }
         ]
     },
-    "updated_at": "2018-11-14T14:41:22+02:00",
-    "created_at": "2018-11-14T14:41:22+02:00"
+    "updated_at": "2018-11-17T11:40:56+01:00",
+    "created_at": "2018-11-17T11:40:56+01:00"
 }

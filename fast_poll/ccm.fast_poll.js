@@ -24,7 +24,7 @@
      */
 
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.3.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
 
     /**
      * default instance configuration
@@ -71,7 +71,7 @@
         column: true
       },
 
-      css: ['ccm.load', 'https://ccmjs.github.io/mkaul-components/fast_poll/resources/default.css'],
+      css: ['ccm.load', '../fast_poll/resources/default.css'],
 
       onfinish: function (instance, results) {
         console.log(results);

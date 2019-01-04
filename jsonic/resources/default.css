@@ -17,12 +17,13 @@
 }
 
 #jsonic, #json {
+  overflow: auto;
   margin: 0.5em;
   padding: 0.3em;
   max-width: 96%
 }
 
-#json, label {
+#jsonic, #json, label {
   flex: 1;
 }
 
@@ -31,7 +32,6 @@ label {
 }
 
 #jsonic {
-  overflow: auto;
   border: thin solid grey;
   background-color: lightgrey;
 }

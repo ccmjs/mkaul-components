@@ -19,16 +19,12 @@
 #markdown {
   overflow: auto;
   border: thin solid grey;
-  background-color: lightgrey;
+  background-color: black;
+  color: white;
   font-size: x-large;
 }
 
 #preview {
   border: thin solid orange;
   background-color: lightyellow;
-}
-
-#markdown:hover{
-  background-color: white;
-  border: thin solid red;
 }

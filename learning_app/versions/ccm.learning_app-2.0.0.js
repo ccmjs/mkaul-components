@@ -12,7 +12,7 @@
     name: 'learning_app',
     version: [2,0,0],
   
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
     // ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {

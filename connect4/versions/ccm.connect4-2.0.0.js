@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://akless.github.io/ccm/version/ccm-18.3.0.min.js',
+    ccm: 'https://akless.github.io/ccm/version/ccm-18.6.5.min.js',
     // ccm: 'https://akless.github.io/ccm/ccm.js',
 
     /**
@@ -80,7 +80,7 @@
 
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+         if ( this.inner && this.inner.innerHTML.trim() && this.inner.innerHTML.startsWith('{') ){
 
           // interprete LightDOM
           self.lightDOM = JSON.parse( self.inner.innerHTML );

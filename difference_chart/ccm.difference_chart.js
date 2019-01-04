@@ -95,7 +95,7 @@
 
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
-        if ( self.inner && self.inner.innerHTML.trim() ){
+         if ( this.inner && this.inner.innerHTML.trim() && this.inner.innerHTML.startsWith('{') ){
 
           // interprete LightDOM
           if ( self.inner.innerHTML.trim().startsWith('<') ){ // try XML parsing

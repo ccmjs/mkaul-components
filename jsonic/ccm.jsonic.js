@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.5.1.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**

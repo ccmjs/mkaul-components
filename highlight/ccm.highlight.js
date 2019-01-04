@@ -89,7 +89,7 @@
 
       this.style = 0;
 
-      this.setStyle = function( style_nr ) {
+      this.setStyle = function( style_nr ) { // ToDo Use document.execCommand('UseCSS',...)
         self.style = style_nr;
         self.style %= self.css_alternatives.length;
         self.element.parentNode.querySelector('link').href = self.css_alternatives[ self.style ] ;
