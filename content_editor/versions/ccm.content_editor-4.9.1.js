@@ -1148,22 +1148,20 @@
          */
         async function startComponent( child ){
           if ( child.tagName.startsWith('CCM-')){
+
+            const config = $.generateConfig( child );
+            config.root = child;
+            config.parent = self;
+
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
             let component = await getComponent( src || index );
+
             if ( $.isComponent( component ) ){
-              const config = $.integrate(
-                // set root and parent:
-                {root: child, parent: self},
-                // collect all attributes:
-                [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
-                  all_attributes[attr] = child.getAttribute(attr);
-                  return all_attributes;
-                }, {}), component.config || {} );
               const instance = await component.start( config );
               child.addEventListener( isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
-            } else {
-              await self.ccm.start( src, config );   // TODO
+            } else { // The http address of the component is only given
+              await self.ccm.start( src || component, config );
             }
           } else {
             startAllComponents( child );
@@ -1171,9 +1169,9 @@
         }
 
         /**
-         * get the component with the given name from configs or from DMS
+         * get the component or its URL with the given name from configs or from DMS
          * @param componentName
-         * @returns {Component}
+         * @returns {ccm.types.component|ccm.types.url}
          */
         async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
@@ -1352,8 +1350,7 @@
                 // get component
                 const component = await getComponent( componentName );
 
-                // get config
-                const config = component.config || {};
+                const config = {};
 
                 if ( this.dataset["config"] ){
                   const config_keys = JSON.parse( this.dataset["config"] );
@@ -1493,18 +1490,16 @@
           let instance;
 
           // start component
-          if ( typeof component === 'string' ){
-            if ( component.startsWith('http') ){
-              instance = await self.ccm.start( component, config );
+          if ( $.isComponent( component ) ){
+            instance = await component.start( config );
+          } else if ( typeof component === 'string' ) {
+            if (component.startsWith('http')) {
+              instance = await self.ccm.start(component, config);
             } else {
-              if ( $.isComponent( component ) ){
-                instance = await component.start( config );
-              } else {
-                instance = await (await getComponent( component )).start( config );
-              }
+              instance = await (await getComponent(component)).start(config);
             }
           } else {
-            instance = await component.start( config );
+            debugger;
           }
 
           if ( dataset.components[ instance.component.index ] ){

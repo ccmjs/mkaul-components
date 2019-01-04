@@ -1782,7 +1782,7 @@
               if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
                 const componentName = command.substr( 4 ).toLowerCase();
                 const component = await getComponent( componentName );
-                const config = component.config || {};
+                const config = {};
                 if ( this.dataset["config"] ){
                   const config_keys = JSON.parse( this.dataset["config"] );
                   config_keys.forEach( key => {
@@ -1889,9 +1889,9 @@
         }
 
         /**
-         * get the component with the given name from configs or from DMS
+         * get the component or its URL with the given name from configs or from DMS
          * @param componentName
-         * @returns {Component}
+         * @returns {ccm.types.component|ccm.types.url}
          */
         async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
@@ -1900,7 +1900,7 @@
           const find_parent = self.ccm.context.find( self, componentName, false );
           let component = dataset.components && dataset.components[ componentName ]
             || find_parent && find_parent[ componentName ]
-            || DMS_component_index && DMS_component_index[ componentName ];
+            || (await dms_index())[ componentName ];
 
           if ( Array.isArray( component ) ) component = await $.solveDependency( component );
           return component;
@@ -1947,18 +1947,16 @@
           let instance;
 
           // start component
-          if ( typeof component === 'string' ){
-            if ( component.startsWith('http') ){
-              instance = await self.ccm.start( component, config );
+          if ( $.isComponent( component ) ){
+            instance = await component.start( config );
+          } else if ( typeof component === 'string' ) {
+            if (component.startsWith('http')) {
+              instance = await self.ccm.start(component, config);
             } else {
-              if ( $.isComponent( component ) ){
-                instance = await component.start( config );
-              } else {
-                instance = await (await getComponent( component )).start( config );
-              }
+              instance = await (await getComponent(component)).start(config);
             }
           } else {
-            instance = await component.start( config );
+            debugger;
           }
 
           if ( dataset.components && dataset.components[ instance.component.index ] ){
