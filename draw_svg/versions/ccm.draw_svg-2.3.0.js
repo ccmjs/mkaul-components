@@ -1950,10 +1950,15 @@
           if ( $.isComponent( component ) ){
             instance = await component.start( config );
           } else if ( typeof component === 'string' ) {
-            if (component.startsWith('http')) {
-              instance = await self.ccm.start(component, config);
+            if ( component.startsWith('http') ) {
+              instance = await self.ccm.start( component, config );
             } else {
-              instance = await (await getComponent(component)).start(config);
+              const componentOrUrl = await getComponent( component );
+              if ( $.isComponent( componentOrUrl ) ){
+                instance = await componentOrUrl.start( config );
+              } else {
+                self.ccm.start( componentOrUrl, config );
+              }
             }
           } else {
             debugger;

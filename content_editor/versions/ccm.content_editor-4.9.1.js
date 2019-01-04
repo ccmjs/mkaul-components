@@ -1275,13 +1275,15 @@
               break;
 
             case "undo":
+              document.execCommand( 'undo', false, null );
               if ( ! undoStack.length ) break;
-              undoStack.pop().undo();
+              if ( undoStack[ undoStack.length - 1 ].command !== 'input' ) undoStack.pop().undo();
               break;
 
             case "redo":
+              document.execCommand( 'redo', false, null );
               if ( ! redoStack.length ) break;
-              redoStack.pop().redo();
+              if ( redoStack[ redoStack.length - 1 ].command !== 'input' ) redoStack.pop().redo();
               break;
 
             case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
@@ -1493,10 +1495,15 @@
           if ( $.isComponent( component ) ){
             instance = await component.start( config );
           } else if ( typeof component === 'string' ) {
-            if (component.startsWith('http')) {
-              instance = await self.ccm.start(component, config);
+            if ( component.startsWith('http') ) {
+              instance = await self.ccm.start( component, config );
             } else {
-              instance = await (await getComponent(component)).start(config);
+              const componentOrUrl = await getComponent( component );
+              if ( $.isComponent( componentOrUrl ) ){
+                instance = await componentOrUrl.start( config );
+              } else {
+                self.ccm.start( componentOrUrl, config );
+              }
             }
           } else {
             debugger;
@@ -1566,7 +1573,8 @@
               // instance.start( config );
               undoStack.push( action );
             },
-            instance: instance
+            instance: instance,
+            command: 'insert'
           };
           return action;
         }
