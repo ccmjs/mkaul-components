@@ -37,7 +37,7 @@
         main: {
           inner: [
             { tag: "h3", inner: "Vier gewinnt!" },
-            { tag: "svg" }
+            { tag: "svg" } // html.main.inner[1]
           ]
         }
       },
@@ -106,32 +106,6 @@
        * starts the instance
        */
       this.start = async () => {
-
-        Object.prototype.has = function( search ){
-          const self = this;
-          return Object.keys( search ).every( key => self[key] === search[key] );
-        };
-
-        // find sub-object in object similar to Array.prototype.find
-        // e.g. html.find(elem => elem.has({tag:"svg"}))
-        Object.prototype.find = function( search ){
-          if ( Array.isArray( this ) ){
-            for (let i=0; i<this.length; i++){
-              if ( search( this[i] ) ){
-                return this[i];
-              } else {
-                let found = this[i].find( search );
-                if ( found ) return found;
-              }
-            }
-          } else {
-            if ( search( this ) ) return this;
-            for (let elem of Object.values(this) ) {
-              let found = elem.find( search );
-              if ( found ) return found;
-            }
-          }
-        };
 
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
@@ -214,7 +188,7 @@
         </svg>`;
 
         // prepare main HTML structure
-        self.html.main.find(elem => elem.has({tag:"svg"})).inner = svg;
+        self.html.main.inner[1].inner = svg;
         const main_elem = $.html( self.html.main );
 
         // select inner containers
