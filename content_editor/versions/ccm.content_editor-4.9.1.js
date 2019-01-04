@@ -1502,7 +1502,7 @@
               if ( $.isComponent( componentOrUrl ) ){
                 instance = await componentOrUrl.start( config );
               } else {
-                self.ccm.start( componentOrUrl, config );
+                instance = self.ccm.start( componentOrUrl, config );
               }
             }
           } else {
