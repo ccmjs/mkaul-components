@@ -1957,7 +1957,7 @@
               if ( $.isComponent( componentOrUrl ) ){
                 instance = await componentOrUrl.start( config );
               } else {
-                instance = self.ccm.start( componentOrUrl, config );
+                instance = await self.ccm.start( componentOrUrl, config );
               }
             }
           } else {
