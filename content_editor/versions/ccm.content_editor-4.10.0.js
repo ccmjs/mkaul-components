@@ -1281,13 +1281,13 @@
                   <head>
                       <meta charset="UTF-8">
                       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      <title>Editor Content</title>
+                      <title>Content ${new Date().toGMTString()}</title>
                   </head>`) + dataset.inner;
               const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
               const save_btn = this;
               save_btn.href = htmlUrl;
-              save_btn.download = "filename.html";
+              save_btn.download = `content-${new Date().toISOString()}.html`;
               break;
 
             case "load_file":
