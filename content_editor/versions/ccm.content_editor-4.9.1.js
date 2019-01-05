@@ -83,6 +83,7 @@
           "data-command": "plus_action",
           "data-address": "%actionAddress%",
           "data-action": "%buttonName%",
+          "title": "%title%",
           "style": "width: auto; margin-right: 5px; border-radius: 3px;",
           "class": "click",
           "inner": {
@@ -99,6 +100,7 @@
               "href": "#",
               "class": "click",
               "data-command": "undo",
+              "title": "undo last edit",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-undo"
@@ -109,6 +111,7 @@
               "href": "#",
               "class": "click",
               "data-command": "redo",
+              "title": "redo last edit",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-repeat"
@@ -462,6 +465,7 @@
               "href": "#",
               "class": "click",
               "data-command": "createlink",
+              "title": "create HTTP hyperlink",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-link"
@@ -472,6 +476,7 @@
               "href": "#",
               "class": "click",
               "data-command": "unlink",
+              "title": "unlink: remove hyperlink",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-unlink"
@@ -482,6 +487,7 @@
               "href": "#",
               "class": "click",
               "data-command": "insertimage",
+              "title": "insert image",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-image"
@@ -492,6 +498,7 @@
               "href": "#",
               "class": "click",
               "data-command": "p",
+              "title": "insert paragraph",
               "inner": "P"
             },
             {
@@ -552,7 +559,7 @@
               "href": "#",
               "class": "click",
               "data-command": "dms",
-              "title": "DMS-ID",
+              "title": "DMS-ID: insert App with ID from DMS",
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "tag": "i",
@@ -565,7 +572,7 @@
               "href": "#",
               "class": "change",
               "data-command": "select",
-              "title": "select ccm component from DMS",
+              "title": "insert ccm component from DMS with empty config",
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "class": "fa",
@@ -632,7 +639,7 @@
               "href": "#",
               "class": "click",
               "data-command": "view_editor",
-              "title": "switch to editor view",
+              "title": "switch back to editor view",
               "inner": {
                 "class": "fa fa-eye",
                 "tag": "i",
