@@ -3,8 +3,9 @@
  * @link https://github.com/santanubiswas948/draw-svg
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (2.3.0)
+ * @version latest (2.4.0)
  * @changes
+ * version 2.4.0 05.01.2019 toolbar at fixed position
  * version 2.3.0 03.01.2019 load via src attribute, collect <source> tags from inner,
  *                          start all embedded ccm components from dataset.inner
  * version 2.2.0 03.01.2019 enable recursive nesting of editors
@@ -555,6 +556,9 @@
           "id": "draw_div",
           // "contentEditable": "true"
         },
+        bottom: {
+          class: 'bottom'
+        },
         plus: {
           "tag": "a",
           "href": "#",
@@ -997,7 +1001,9 @@
         const html_div = $.html( self.html.html || {} );
         const json_div = $.html( self.html.json || {} );
         const html2json_div = $.html( self.html.html2json || {} );
-        $.setContent( self.element, $.html( [ toolbar_div, help_div, html_div, json_div, html2json_div, editor_div ] ) );
+        const bottom_div = $.html( self.html.bottom || { class: 'bottom' } );
+
+        $.setContent( self.element, $.html( [ toolbar_div, help_div, html_div, json_div, html2json_div, editor_div, bottom_div ] ) );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...self.element.querySelectorAll('svg')].forEach(svg=>{

@@ -8,7 +8,22 @@ a {
   cursor: pointer;
 }
 
+:host {
+  height: 100%;
+  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+  margin: 0;  /*removes default style*/
+  display: flex;  /*enables flex content for its children*/
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+.bottom {
+  flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: auto;  /*adds scroll to this container*/
+}
+
 #editor {
+  flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   box-shadow: 0 0 2px #CCC;
   min-height: 150px;
   overflow: auto;
@@ -19,12 +34,14 @@ a {
 }
 
 #html {
+  flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   display: none;
   border: solid thin black;
   margin: 0.5em;
 }
 
 .toolbar {
+  flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   text-align: center;
 }
 

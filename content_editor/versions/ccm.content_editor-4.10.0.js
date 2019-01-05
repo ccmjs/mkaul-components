@@ -4,8 +4,9 @@
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (4.9.1)
+ * @version latest (4.10.0)
  * @changes
+ * version 4.10.0 toolbar at fixed position
  * version 4.9.1  add Backspace key listener and src attribute
  * version 4.9.0  undo management
  * version 4.8.0  refactoring
@@ -31,14 +32,14 @@
      * @type {string}
      */
     name: 'content_editor',
-    // version: [4,1,0],
+    version: [4,9,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -77,12 +78,16 @@
         html2json: {
           id: 'html2json'
         },
+        bottom: {
+          class: 'bottom'
+        },
         plus: {
           "tag": "a",
           "href": "#",
           "data-command": "plus_action",
           "data-address": "%actionAddress%",
           "data-action": "%buttonName%",
+          "title": "%title%",
           "style": "width: auto; margin-right: 5px; border-radius: 3px;",
           "class": "click",
           "inner": {
@@ -99,6 +104,7 @@
               "href": "#",
               "class": "click",
               "data-command": "undo",
+              "title": "undo last edit",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-undo"
@@ -109,6 +115,7 @@
               "href": "#",
               "class": "click",
               "data-command": "redo",
+              "title": "redo last edit",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-repeat"
@@ -123,6 +130,30 @@
               "inner": {
                 "tag": "i",
                 "class": "fa fa-toggle-on"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "save_file",
+              "title": "Save content as HTML file",
+              "data-help": "Store content of editor as HTML file",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-save"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "load_file",
+              "title": "Load from HTML file",
+              "data-help": "Enter HTTP address of HTML file!",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-download"
               }
             },
             {
@@ -438,6 +469,7 @@
               "href": "#",
               "class": "click",
               "data-command": "createlink",
+              "title": "create HTTP hyperlink",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-link"
@@ -448,6 +480,7 @@
               "href": "#",
               "class": "click",
               "data-command": "unlink",
+              "title": "unlink: remove hyperlink",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-unlink"
@@ -458,6 +491,7 @@
               "href": "#",
               "class": "click",
               "data-command": "insertimage",
+              "title": "insert image",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-image"
@@ -468,6 +502,7 @@
               "href": "#",
               "class": "click",
               "data-command": "p",
+              "title": "insert paragraph",
               "inner": "P"
             },
             {
@@ -528,7 +563,7 @@
               "href": "#",
               "class": "click",
               "data-command": "dms",
-              "title": "DMS-ID",
+              "title": "DMS-ID: insert App with ID from DMS",
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "tag": "i",
@@ -541,7 +576,7 @@
               "href": "#",
               "class": "change",
               "data-command": "select",
-              "title": "select ccm component from DMS",
+              "title": "insert ccm component from DMS with empty config",
               "style": "width: auto; margin-right: 5px; border-radius: 3px;",
               "inner": {
                 "class": "fa",
@@ -608,7 +643,7 @@
               "href": "#",
               "class": "click",
               "data-command": "view_editor",
-              "title": "switch to editor view",
+              "title": "switch back to editor view",
               "inner": {
                 "class": "fa fa-eye",
                 "tag": "i",
@@ -799,9 +834,26 @@
                 "class": "fa fa-window-close",
                 "tag": "i"
               }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "stop",
+              "title": "stop and call debugger",
+              "style": "width: auto; color: red;",
+              "inner": {
+                "class": "fa fa-stop",
+                "tag": "i"
+              }
             }
           ]
         }
+      },
+
+      helpText: {
+        load_html_prompt: "Enter http address of the HTML page to load into the editor",
+        load_html_default: "https://kaul.inf.h-brs.de"
       },
 
       change_listener_on_key_up: true,
@@ -822,7 +874,7 @@
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ],
 
-      css: [ 'ccm.load',  '../content_editor/resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
 
       inline_block: true,
 
@@ -835,9 +887,9 @@
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
-      draw_svg: [ "ccm.component", "../draw_svg/ccm.draw_svg.js", { key: ["ccm.get", "../draw_svg/resources/configs.js", "small"] } ],
+      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.4.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
 
-      // draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
+      // draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.4.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
         "html.inner.1": "",
@@ -849,7 +901,7 @@
         "type": "module"
       } ],
 
-      html2json: [ "ccm.component", "../html2json/ccm.html2json.js" ],
+      html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
 
       store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
 
@@ -1119,9 +1171,10 @@
         const html_div = $.html( self.html.html || {} );
         const json_div = $.html( self.html.json || {} );
         const html2json_div = $.html( self.html.html2json || {} );
+        const bottom_div = $.html( self.html.bottom || { class: 'bottom' } );
 
         // render main HTML structure
-        $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div ] ) );
+        $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div, bottom_div ] ) );
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...this.element.querySelectorAll('svg')].forEach(svg=>{
@@ -1148,22 +1201,20 @@
          */
         async function startComponent( child ){
           if ( child.tagName.startsWith('CCM-')){
+
+            const config = $.generateConfig( child );
+            config.root = child;
+            config.parent = self;
+
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
             let component = await getComponent( src || index );
+
             if ( $.isComponent( component ) ){
-              const config = $.integrate(
-                // set root and parent:
-                {root: child, parent: self},
-                // collect all attributes:
-                [...child.getAttributeNames()].reduce((all_attributes,attr)=>{
-                  all_attributes[attr] = child.getAttribute(attr);
-                  return all_attributes;
-                }, {}), component.config || {} );
               const instance = await component.start( config );
               child.addEventListener( isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
-            } else {
-              await self.ccm.start( src, config );   // TODO
+            } else { // The http address of the component is only given
+              await self.ccm.start( src || component, config );
             }
           } else {
             startAllComponents( child );
@@ -1171,9 +1222,9 @@
         }
 
         /**
-         * get the component with the given name from configs or from DMS
+         * get the component or its URL with the given name from configs or from DMS
          * @param componentName
-         * @returns {Component}
+         * @returns {ccm.types.component|ccm.types.url}
          */
         async function getComponent( componentName ){
           if ( self.component.name === componentName ) return self.component;
@@ -1217,6 +1268,23 @@
               const isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
               editor_div.setAttribute( "contenteditable", isNotEditable );
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
+              break;
+
+            case "save_file":
+              const htmlData = editor_div.innerHTML;
+              const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
+              const htmlUrl = URL.createObjectURL(htmlBlob);
+              const save_btn = this;
+              save_btn.href = htmlUrl;
+              save_btn.download = "filename.html";
+              break;
+
+            case "load_file":
+              const html_url = prompt(self.helpText.load_html_prompt, self.helpText.load_html_default);
+              if ( html_url && html_url.length > 5 ){
+                const html = await self.ccm.load( { url: html_url, type: 'html' } );
+                editor_div.appendChild( html );
+              }
               break;
 
             case "plus":
@@ -1277,20 +1345,28 @@
               break;
 
             case "undo":
+              document.execCommand( 'undo', false, null );
               if ( ! undoStack.length ) break;
-              undoStack.pop().undo();
+              if ( undoStack[ undoStack.length - 1 ].command !== 'input' ) undoStack.pop().undo();
               break;
 
             case "redo":
+              document.execCommand( 'redo', false, null );
               if ( ! redoStack.length ) break;
-              redoStack.pop().redo();
+              if ( redoStack[ redoStack.length - 1 ].command !== 'input' ) redoStack.pop().redo();
               break;
 
             case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               execCommand(command, false, null);
               break;
 
+            case "stop":
+              debugger;
+              break;
+
             case "view_editor":
+              $.setContent( editor_div, dataset.inner );
+              startAllComponents( editor_div );
               html_div.style.display = 'none';
               json_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1298,6 +1374,9 @@
               break;
             case "view_html":
               html_div.innerText = editor_div.innerHTML;
+              html_div.addEventListener( 'input', (e) => {
+                updateData( html_div.innerText );
+              });
               html_div.style['background-color'] = 'lightblue';
               editor_div.style.display = 'none';
               json_div.style.display = 'none';
@@ -1309,10 +1388,16 @@
               const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } ) );
               delete value_as_json.parent;
               delete value_as_json.root;
-              self.json_builder.start({ root: json_div, data: { // avoid solveDependency by storing in ccm.store
-                  store: [ 'ccm.store', { local: { app: value_as_json }}  ],
-                  key: 'app'
-                } });
+              let view_json_instance = null;
+              if ( ! view_json_instance ){
+                view_json_instance = await self.json_builder.start({
+                  root: json_div,
+                  onchange: function(){ dataset.inner = $.html( view_json_instance.getValue().inner )  },
+                  data: { // avoid solveDependency by storing in ccm.store
+                    store: [ 'ccm.store', { local: { app: value_as_json }}  ],
+                    key: 'app'
+                  } });
+              }
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1320,7 +1405,14 @@
               break;
 
             case "view_html2json":
-              self.html2json.start({ root: html2json_div, data: self.getValue() });
+              let html2json_instance = null;
+              if ( ! html2json_instance ){
+                html2json_instance = await self.html2json.start({
+                  root: html2json_div,
+                  onchange: function(){ dataset.inner = $.html( html2json_instance.getValue().inner ) },
+                  data: self.getValue()
+                });
+              }
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
               json_div.style.display = 'none';
@@ -1352,8 +1444,7 @@
                 // get component
                 const component = await getComponent( componentName );
 
-                // get config
-                const config = component.config || {};
+                const config = {};
 
                 if ( this.dataset["config"] ){
                   const config_keys = JSON.parse( this.dataset["config"] );
@@ -1408,8 +1499,8 @@
         /**
          * refresh dataset after editing
          */
-        function updateData(){
-          dataset.inner = editor_div.innerHTML;
+        function updateData( inner ){
+          if ( inner ) dataset.inner = inner; else dataset.inner = editor_div.innerHTML;
           dataset.position = getCaretPosition();
           self.onchange && self.onchange();
         }
@@ -1493,18 +1584,21 @@
           let instance;
 
           // start component
-          if ( typeof component === 'string' ){
-            if ( component.startsWith('http') ){
+          if ( $.isComponent( component ) ){
+            instance = await component.start( config );
+          } else if ( typeof component === 'string' ) {
+            if ( component.startsWith('http') ) {
               instance = await self.ccm.start( component, config );
             } else {
-              if ( $.isComponent( component ) ){
-                instance = await component.start( config );
+              const componentOrUrl = await getComponent( component );
+              if ( $.isComponent( componentOrUrl ) ){
+                instance = await componentOrUrl.start( config );
               } else {
-                instance = await (await getComponent( component )).start( config );
+                instance = await self.ccm.start( componentOrUrl, config );
               }
             }
           } else {
-            instance = await component.start( config );
+            debugger;
           }
 
           if ( dataset.components[ instance.component.index ] ){
@@ -1571,7 +1665,8 @@
               // instance.start( config );
               undoStack.push( action );
             },
-            instance: instance
+            instance: instance,
+            command: 'insert'
           };
           return action;
         }

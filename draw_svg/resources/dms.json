@@ -5,7 +5,7 @@
     "icon": "https://ccmjs.github.io/mkaul-components/draw_svg/resources/icon.svg",
     "abstract": "SVG Editor for graphics and ccm components",
     "description": "Simply choose an object from the toolbar menu. Insert the object into the editor. Use the shift key to insert multiple objects. With this SVG Editor you can edit SVG graphics and include interactive ccm components, even recursively. Use single click to make an object active. Use double click to restart setup precedure for the clicked object ( i.e. move and resize ).",
-    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.3.0.js",
+    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-2.4.0.js",
     "version": "2.3.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
