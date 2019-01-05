@@ -35,7 +35,7 @@ a {
 
 #help_div {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
-  border: thin solid #aaa;
+  border: thin solid #AAA;
   box-shadow: 0 0 4px #CCC;
   border-radius: 0.5em;
   margin: 0;
@@ -54,11 +54,11 @@ a {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   box-shadow: 0 0 4px #CCC;
   border-radius: 1em;
-  min-height: 150px;
+  min-height: 1500px;
   overflow: auto;
   padding: 1px;
   margin-top: 3px;
-  resize: both;
+  resize: vertical;
   outline: none;
 }
 

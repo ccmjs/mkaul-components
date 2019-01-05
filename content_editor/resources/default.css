@@ -24,7 +24,8 @@ a {
 
 #editor {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
-  box-shadow: 0 0 2px #CCC;
+  box-shadow: 0 0 4px #CCC;
+  border-radius: 1em;
   min-height: 150px;
   overflow: auto;
   padding: 1em;
@@ -38,11 +39,13 @@ a {
   display: none;
   border: solid thin black;
   margin: 0.5em;
+  border-radius: 1em;
 }
 
 .toolbar {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   text-align: center;
+  border-radius: 1em;
 }
 
 .toolbar a,
