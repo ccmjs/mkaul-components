@@ -13,7 +13,7 @@
     name: 'clock',
     version: [3,0,0],
 
-    ccm: '//ccmjs.github.io/ccm/versions/ccm-18.3.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
     // ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {
@@ -31,7 +31,7 @@
       // title: 'Berlin',
       color: '#000000', // black
       background: '#ffffff', // white
-      css: [ "ccm.load", "//ccmjs.github.io/mkaul-components/clock/resources/default.css" ],
+      css: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/clock/resources/default.css" ],
       lit_html: [ "ccm.load", { url: "//unpkg.com/lit-html?module", type: "module" } ]
       // lit_html: [ "ccm.load", { "url": "../lib/lit-html.js", "type": "module" } ]
       // lit_html: [ "ccm.load", { "url": "https://ccmjs.github.io/mkaul-components/lib/lit-html.js", "type": "module" } ]
