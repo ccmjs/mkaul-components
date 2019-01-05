@@ -1203,13 +1203,13 @@
         async function startComponent( child ){
           if ( child.tagName.startsWith('CCM-')){
 
-            const config = $.generateConfig( child );
-            config.root = child;
-            config.parent = self;
-
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
             let component = await getComponent( src || index );
+
+            const config = $.integrate( $.generateConfig( child ), component.config );
+            config.root = child;
+            config.parent = self;
 
             if ( $.isComponent( component ) ){
               const instance = await component.start( config );

@@ -1018,11 +1018,15 @@
             if ( root.tagName.startsWith('CCM-') ){
               const name = root.tagName.slice(4).toLowerCase();
               const src = root.getAttribute('src');
-              const component = await getComponent( name );
+              const component = await getComponent( src || name );
+              const config = $.integrate( $.generateConfig( root ), component.config );
+              config.root = root;
+              config.parent = self;
+
               if ( $.isComponent( component ) ){
-                component.start( { root: root } );
+                component.start( config );
               } else {
-                self.ccm.start( src, { root: root } );
+                self.ccm.start( src, config );
               }
             }
           });
