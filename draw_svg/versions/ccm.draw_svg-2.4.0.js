@@ -28,7 +28,7 @@
      * @type {string}
      */
     name: 'draw_svg',
-    version: [2,3,0],
+    version: [2,4,0],
     
     /**
      * recommended used framework version

@@ -33,7 +33,7 @@
      * @type {string}
      */
     name: 'content_editor',
-    version: [4,9,1],
+    version: [4,10,0],
     
     /**
      * recommended used framework version
