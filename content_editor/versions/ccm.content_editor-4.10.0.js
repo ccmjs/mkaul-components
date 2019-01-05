@@ -7,6 +7,7 @@
  * @version latest (4.10.0)
  * @changes
  * version 4.10.0 toolbar at fixed position
+ *                see https://www.bitovi.com/blog/use-flexbox-to-create-a-sticky-header-and-sidebar-with-flexible-content
  * version 4.9.1  add Backspace key listener and src attribute
  * version 4.9.0  undo management
  * version 4.8.0  refactoring
@@ -1271,7 +1272,17 @@
               break;
 
             case "save_file":
-              const htmlData = editor_div.innerHTML;
+              const htmlData = Object.keys( dataset.components ).reduce((html,key)=>{
+                const componentActionData = dataset.components[key];
+                html += `<script src="${componentActionData[1]}"></script>`;
+                return html;
+              },` <!DOCTYPE html>
+                  <html lang="en">
+                  <head>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Editor Content</title>
+                  </head>`) + dataset.inner;
               const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
               const save_btn = this;
