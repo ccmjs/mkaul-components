@@ -1612,18 +1612,18 @@
             debugger;
           }
 
-          if ( dataset.components[ instance.component.index ] ){
+          if ( dataset.components[ index ] ){
             // already registered as dependency.
             // compare configs and write differences into attributes
-            const oldConfig = dataset.components[ instance.component.index ][2];
+            const oldConfig = dataset.components[ index ][2];
             const newConfig = JSON.parse(instance.config);
             const allDiffs = compareJSON( oldConfig, newConfig );
             for ( const [ name, diff ] of allDiffs ){
-              root.setAttribute( name, diff );
+              root.setAttribute( name, diff.replace(/"/g, "'") );
             }
             if ( self.inline_block ) root.setAttribute( 'style', 'display: inline-block;' );
           } else { // not yet registered as dependency
-            dataset.components[ instance.component.index ] = [ 'ccm.component',
+            dataset.components[ index ] = [ 'ccm.component',
               instance.component.url,
               JSON.parse(instance.config)
             ];
