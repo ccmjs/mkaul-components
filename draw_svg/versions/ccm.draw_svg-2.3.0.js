@@ -341,8 +341,8 @@
               "href": "#",
               "class": "click",
               "data-command": "save_image",
-              "title": "",
-              "data-help": "",
+              "title": "Save image",
+              "data-help": "Save image as SVG file",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-save"
@@ -354,7 +354,7 @@
               "class": "click",
               "data-command": "load_image",
               "title": "Load SVG image",
-              "data-help": "Enter HTTP address of SVG image!",
+              "data-help": "Enter HTTP address of SVG image and load into editor",
               "inner": {
                 "tag": "i",
                 "class": "fa fa-download"

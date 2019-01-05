@@ -129,6 +129,30 @@
               "tag": "a",
               "href": "#",
               "class": "click",
+              "data-command": "save_file",
+              "title": "Save content as HTML file",
+              "data-help": "Store content of editor as HTML file",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-save"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "load_file",
+              "title": "Load from HTML file",
+              "data-help": "Enter HTTP address of HTML file!",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-download"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
               "data-command": "bold",
               "inner": {
                 "tag": "i",
@@ -816,6 +840,11 @@
         }
       },
 
+      helpText: {
+        load_html_prompt: "Enter http address of the HTML page to load into the editor",
+        load_html_default: "https://kaul.inf.h-brs.de"
+      },
+
       change_listener_on_key_up: true,
 
       extensions: [ "ccm.load", { // // editor extensions
@@ -1227,6 +1256,23 @@
               const isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
               editor_div.setAttribute( "contenteditable", isNotEditable );
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
+              break;
+
+            case "save_file":
+              const htmlData = editor_div.innerHTML;
+              const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
+              const htmlUrl = URL.createObjectURL(htmlBlob);
+              const save_btn = this;
+              save_btn.href = htmlUrl;
+              save_btn.download = "filename.html";
+              break;
+
+            case "load_file":
+              const html_url = prompt(self.helpText.load_html_prompt, self.helpText.load_html_default);
+              if ( html_url && html_url.length > 5 ){
+                const html = await self.ccm.load( { url: html_url, type: 'html' } );
+                editor_div.appendChild( html );
+              }
               break;
 
             case "plus":
@@ -1862,7 +1908,6 @@
         const result = $.clone( dataset );
 
         for ( const [ index, dep ] of Object.entries( dataset.components ) ){
-          if ( ['find','has'].includes( index ) ) continue;
           if ( ! Array.isArray( dep ) ){
             // transform dep into action data
             result.components[ index ] = [ 'ccm.component',
