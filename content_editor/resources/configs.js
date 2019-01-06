@@ -111,7 +111,7 @@ ccm.files[ 'configs.js' ] = {
       components: { "clock": ["ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js"]}
     },
 
-    enabled:["toggle", 'undo', 'redo', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json", "stop" ],
+    enabled:["toggle", 'undo', 'redo', 'save_file', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json", "stop" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
