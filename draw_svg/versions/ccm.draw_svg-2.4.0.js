@@ -1925,6 +1925,7 @@
          * @returns {ccm.types.component|ccm.types.url}
          */
         async function getComponent( componentName ){
+          if ( $.isComponent( componentName ) ) return componentName;
           if ( self.component.name === componentName ) return self.component;
           if ( self[ componentName ] ) return self[ componentName ];
           if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;

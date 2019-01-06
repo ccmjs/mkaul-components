@@ -1228,6 +1228,7 @@
          * @returns {ccm.types.component|ccm.types.url}
          */
         async function getComponent( componentName ){
+          if ( $.isComponent( componentName ) ) return componentName;
           if ( self.component.name === componentName ) return self.component;
           if ( self[ componentName ] ) return self[ componentName ];
           if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;
@@ -1272,17 +1273,27 @@
               break;
 
             case "save_file":  // ToDo add version to ccm tags
-              const htmlData = Object.keys( dataset.components ).reduce((html,key)=>{
-                const componentActionData = dataset.components[key];
-                html += `\n<script src="${componentActionData[1]}"></script>`;
-                return html;
-              },` <!DOCTYPE html>
+
+              let htmlData = ` <!DOCTYPE html>
                   <html lang="en">
                   <head>
                       <meta charset="UTF-8">
                       <meta name="viewport" content="width=device-width, initial-scale=1.0">
                       <title>Content ${new Date().toGMTString()}</title>
-                  </head>`) + "\n" + dataset.inner;
+                  </head>
+              `;
+
+              Object.keys( dataset.components ).forEach( key => {
+                const componentActionData = dataset.components[key];
+                const config = componentActionData[2];
+                htmlData += `\n<script src="${componentActionData[1]}"></script>`;
+                [...dataset.inner.querySelectorAll('*')].forEach( child => {
+                  if ( child.tagName === key.toUpperCase()  ){
+                    child.setAttribute( 'key', $.stringify( config ) );
+                  }
+                });
+              });
+
               const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
               const save_btn = this;
