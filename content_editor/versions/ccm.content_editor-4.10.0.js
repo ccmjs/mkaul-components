@@ -1283,16 +1283,20 @@
                   </head>
               `;
 
+              const editor_content = editor_div.cloneNode(true);
+
               Object.keys( dataset.components ).forEach( key => {
                 const componentActionData = dataset.components[key];
                 const config = componentActionData[2];
                 htmlData += `\n<script src="${componentActionData[1]}"></script>`;
-                [...dataset.inner.querySelectorAll('*')].forEach( child => {
-                  if ( child.tagName === key.toUpperCase()  ){
+                  [...editor_content.querySelectorAll('*')].forEach( child => {
+                  if ( child.tagName === 'CCM-' + key.toUpperCase()  ){
                     child.setAttribute( 'key', $.stringify( config ) );
                   }
                 });
               });
+
+              htmlData += editor_content.innerHTML;
 
               const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);

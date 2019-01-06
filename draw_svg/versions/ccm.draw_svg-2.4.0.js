@@ -1673,12 +1673,26 @@
 
             case "save_image":
               svg_div.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-              const svgData = svg_div.outerHTML;
-              const svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+
+              let scripts = '';
+              const svgClone = svg_div.cloneNode(true);
+
+              Object.keys( dataset.components ).forEach( key => {
+                const componentActionData = dataset.components[key];
+                const config = componentActionData[2];
+                scripts += `<script src="${componentActionData[1]}"></script>\n`;
+                [...svgClone.querySelectorAll('*')].forEach( child => {
+                  if ( child.tagName === 'CCM-' + key.toUpperCase()  ){
+                    child.setAttribute( 'key', $.stringify( config ) );
+                  }
+                });
+              });
+
+              const svgBlob = new Blob([scripts + svgClone.outerHTML], {type:"image/svg+xml;charset=utf-8"});
               const svgUrl = URL.createObjectURL(svgBlob);
               const save_btn = this;
               save_btn.href = svgUrl;
-              save_btn.download = "san.svg";
+              save_btn.download = `image-${new Date().toISOString()}.html`;
               break;
 
             case "load_image":
