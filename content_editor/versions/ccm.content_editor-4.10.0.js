@@ -1271,10 +1271,10 @@
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
 
-            case "save_file":
+            case "save_file":  // ToDo add version to ccm tags
               const htmlData = Object.keys( dataset.components ).reduce((html,key)=>{
                 const componentActionData = dataset.components[key];
-                html += `<script src="${componentActionData[1]}"></script>`;
+                html += `\n<script src="${componentActionData[1]}"></script>`;
                 return html;
               },` <!DOCTYPE html>
                   <html lang="en">
@@ -1282,7 +1282,7 @@
                       <meta charset="UTF-8">
                       <meta name="viewport" content="width=device-width, initial-scale=1.0">
                       <title>Content ${new Date().toGMTString()}</title>
-                  </head>`) + dataset.inner;
+                  </head>`) + "\n" + dataset.inner;
               const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
               const save_btn = this;
@@ -1583,7 +1583,8 @@
         async function insertComponent({ component, config }){
 
           // component
-          const index = component.index || $.getIndex( component ) || component;
+          const componentOrUrl = await getComponent( component );
+          const index = $.isComponent( componentOrUrl ) ? componentOrUrl.index : $.getIndex( componentOrUrl );
           const root = document.createElement('ccm-' + index );
 
           if ( ! config ) config = {};
@@ -1601,7 +1602,6 @@
             if ( component.startsWith('http') ) {
               instance = await self.ccm.start( component, config );
             } else {
-              const componentOrUrl = await getComponent( component );
               if ( $.isComponent( componentOrUrl ) ){
                 instance = await componentOrUrl.start( config );
               } else {
@@ -1612,14 +1612,14 @@
             debugger;
           }
 
-          if ( dataset.components[ index ] ){
+          if ( dataset.components && dataset.components[ index ] ){
             // already registered as dependency.
             // compare configs and write differences into attributes
             const oldConfig = dataset.components[ index ][2];
             const newConfig = JSON.parse(instance.config);
             const allDiffs = compareJSON( oldConfig, newConfig );
             for ( const [ name, diff ] of allDiffs ){
-              root.setAttribute( name, diff.replace(/"/g, "'") );
+              root.setAttribute( name, diff ); // .replace(/"/g, "'") not necessary
             }
             if ( self.inline_block ) root.setAttribute( 'style', 'display: inline-block;' );
           } else { // not yet registered as dependency

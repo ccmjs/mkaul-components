@@ -1945,7 +1945,9 @@
          */
         async function insertComponent({ component, config }){
 
-          const index = component.index || $.getIndex( component ) || component;
+          // component
+          const componentOrUrl = await getComponent( component );
+          const index = $.isComponent( componentOrUrl ) ? componentOrUrl.index : $.getIndex( componentOrUrl );
 
           const component_div = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'ccm-' + index );
           component_div.style = 'width: 100%; height: 100%; margin: 0; padding: 0;';
@@ -1984,7 +1986,6 @@
             if ( component.startsWith('http') ) {
               instance = await self.ccm.start( component, config );
             } else {
-              const componentOrUrl = await getComponent( component );
               if ( $.isComponent( componentOrUrl ) ){
                 instance = await componentOrUrl.start( config );
               } else {
@@ -1995,10 +1996,10 @@
             debugger;
           }
 
-          if ( dataset.components && dataset.components[ instance.component.index ] ){
+          if ( dataset.components && dataset.components[ index ] ){
             // already registered as dependency.
             // compare configs and write differences into attributes
-            const oldConfig = dataset.components[ instance.component.index ][2];
+            const oldConfig = dataset.components[ index ][2];
             const newConfig = JSON.parse(instance.config);
             const allDiffs = compareJSON( oldConfig, newConfig );
             for ( const [ name, diff ] of allDiffs ){
@@ -2007,7 +2008,7 @@
             if ( self.inline_block ) root.setAttribute( 'style', 'display: inline-block;' );
           } else { // not yet registered as dependency
             if ( ! dataset.components ) dataset.components = {};
-            dataset.components[ instance.component.index ] = [ 'ccm.component',
+            dataset.components[ index ] = [ 'ccm.component',
               instance.component.url,
               JSON.parse(instance.config)
             ];
