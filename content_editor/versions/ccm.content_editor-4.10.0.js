@@ -854,7 +854,9 @@
 
       helpText: {
         load_html_prompt: "Enter http address of the HTML page to load into the editor",
-        load_html_default: "https://kaul.inf.h-brs.de"
+        load_html_default: "https://kaul.inf.h-brs.de",
+        config_prompt: "Enter DMS-ID for your config of ",
+        config_default: "1546889115604X2224608869287512",
       },
 
       change_listener_on_key_up: true,
@@ -1133,6 +1135,7 @@
               "href": "#",
               "class": "click",
               "data-command": label,
+              "data-prompt": "DMS-ID",
               "style": "width: auto; margin-right: 3px; border-radius: 3px;",
               "inner": {
                 "class": "fa",
@@ -1490,13 +1493,19 @@
                 // get component
                 const component = await getComponent( componentName );
 
-                const config = {};
+                let config = {};
 
-                if ( this.dataset["config"] ){
-                  const config_keys = JSON.parse( this.dataset["config"] );
-                  config_keys.forEach( key => {
-                    config[ key ] = this.dataset[ key ];
-                  });
+                if ( this.dataset["prompt"] ){
+                  const dms_id = prompt( self.helpText.config_prompt + componentName ,
+                    self.helpText.config_default );
+                  if ( dms_id ) config = await self.ccm.get({ name: componentName, url: "https://ccm2.inf.h-brs.de" }, dms_id );
+                } else {
+                  if ( this.dataset["config"] ){
+                    const config_keys = JSON.parse( this.dataset["config"] );
+                    config_keys.forEach( key => {
+                      config[ key ] = this.dataset[ key ];
+                    });
+                  }
                 }
 
                 const instance = await insertComponent({ component, config });
