@@ -1560,7 +1560,7 @@
          * @returns {*}
          */
         function getCaretPosition() {
-          const shadowRoot = self.element.parentNode;
+          const shadowRoot = self.element.parentNode || self.element;  // HTML body is no parent node
           if ( shadowRoot.getSelection ){ // Chrome
             return position( shadowRoot.getSelection() )
           } else { // Firefox 63
@@ -1782,7 +1782,7 @@
             const component_uri = match[1];
             const component_name = match[2];
             const dms_id = match[3];
-            if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+            if ( component_name && component_name.length > 1 && dms_id ){
               const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
               const instance = await insertComponent({ component: component_uri, config });
             }
