@@ -141,6 +141,25 @@ ccm.files[ 'configs.js' ] = {
 
   },
 
+  "interactive_textbook": {
+    key: "interactive_textbook",
+
+    data: {
+      inner: '<h1>Interactive Textbook Editor</h1><p>Start editing here</p>',
+      position: 48 // cursor position
+    },
+
+    enabled:['undo', 'redo', 'save_file', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'insertimage', 'p', 'subscript', 'superscript', 'audio', 'video', 'fontname', 'fontSize', 'ccm-clock', 'ccm-slidecast', 'ccm-pdf_viewer', 'ccm-quiz', 'ccm-cloze', 'ccm-thumb_rating','ccm-highchart','ccm-connect4','ccm-comment' ],
+
+    css_awesome: [ "ccm.load",
+      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    ],
+
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+
+  },
+
   "full": {
 
     key: "full",

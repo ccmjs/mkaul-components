@@ -1120,10 +1120,30 @@
           });
         };
 
-        // filter enabled tools
+
+
         if ( self.enabled && self.html.toolbar.inner ){
+          // filter enabled tools
           self.html.toolbar.inner = self.html.toolbar.inner.filter(tool=>self.enabled.includes(tool['data-command']) || ! tool['data-command'] );
+          // add special buttons
+          const commands = self.html.toolbar.inner.map( tool => tool['data-command'] );
+          self.enabled.forEach( label => {
+            if ( ! commands.includes( label ) ) self.html.toolbar.inner.push({
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": label,
+              "style": "width: auto; margin-right: 3px; border-radius: 3px;",
+              "inner": {
+                "class": "fa",
+                "tag": "i",
+                "inner": label.slice(4)
+              }
+            });
+          });
+
         }
+
 
         const toolbar_div = $.html( this.html.toolbar );
 
