@@ -1727,7 +1727,7 @@
             case "dms":
               const component_name = prompt(self.helpText.dms_prompt, self.helpText.dms_default);
               const dms_id = prompt(self.helpText.dms_id_prompt, self.helpText.dms_id_default);
-              if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+              if ( component_name && component_name.length > 1 && dms_id ){
                 const config = await self.ccm.get({ name: component_name, url: self.dms_url }, dms_id );
 
                 await insertComponent({ component: component_name, config });
@@ -2082,7 +2082,7 @@
             const component_uri = match[1];
             const component_name = match[2];
             const dms_id = match[3];
-            if ( component_name && component_name.length > 1 && dms_id && dms_id.length > 8 ){
+            if ( component_name && component_name.length > 1 && dms_id ){
               const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
               removeUnfinishedObject();
               await insertComponent({ component: component_uri, config });
