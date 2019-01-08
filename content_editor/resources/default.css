@@ -46,7 +46,6 @@ a {
 .toolbar {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   text-align: center;
-  border-radius: 1em;
 }
 
 .toolbar a,

@@ -66,13 +66,7 @@ a {
 
 .toolbar {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
-  background-color: #eee;
-  border: thin solid #AAA;
-  box-shadow: 0 0 4px #CCC;
-  border-radius: 0.5em;
   text-align: center;
-  padding: 0.1em;
-  margin-bottom: 0.2em;
 }
 
 .toolbar a {
