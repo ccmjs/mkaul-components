@@ -24,7 +24,8 @@ a {
 
 #editor {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
-  box-shadow: 0 0 4px #CCC;
+  border: thin solid #AAA;
+  box-shadow: inset 0 0 6px 3px rgba(0,0,0,0.69);
   border-radius: 1em;
   min-height: 150px;
   overflow: auto;
