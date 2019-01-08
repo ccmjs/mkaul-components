@@ -1115,6 +1115,7 @@
                   editor_div.appendChild( pastedImage );
                   editor_div.appendChild( document.createTextNode(' '));
                 }
+                pastedImage.focus();
                 break;
               default:
                 debugger;
@@ -1702,7 +1703,7 @@
             editor_div.appendChild( root );
             editor_div.appendChild( document.createTextNode(' '));
           }
-          editor_div.focus();
+          root.focus();
 
           undoStack.push( undoTemplate( instance, config ) );
 
