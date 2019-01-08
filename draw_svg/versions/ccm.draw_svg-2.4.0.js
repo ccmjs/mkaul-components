@@ -34,7 +34,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -1831,7 +1831,7 @@
                 if ( this.dataset["config"] ){
                   const config_keys = JSON.parse( this.dataset["config"] );
                   config_keys.forEach( key => {
-                    config[ key ] = this.dataset[ key ];
+                    config[ key ] = JSON.parse( this.dataset[ key ] );
                   });
                 }
                 // use this.dataset for config
