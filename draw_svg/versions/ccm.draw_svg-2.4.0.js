@@ -584,7 +584,7 @@
       stopPaintingIntoCCM: true, // if drawing into nested ccm components is prohibited
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
-        init: 'Press button! Use shift key for multiple objects!',
+        init: 'Press button! Use shift key for resize & multiple objects!',
         insert: 'Move object to its position!',
         resize: 'Resize the object!',
         nextObject: 'Click to insert similar object!',
@@ -618,8 +618,6 @@
       } ],
 
       content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
-
-      // content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
@@ -1321,13 +1319,19 @@
            */
           clickListener1_template(){
             return (evt) => {
-              self.currentObject = this;
               svg_div.removeEventListener( 'mousemove', this.moveX1Y1 );
-              addListener( 'mousemove', this.moveX2Y2 );
               svg_div.removeEventListener( 'click', this.clickListener1 );
-              addListener( 'click', this.clickListener2 );
-              self.currentClickListener = this.clickListener2;
-              help_div.innerText = self.helpText.resize;
+              clear_current();
+              if ( evt.shiftKey ){
+                addListener( 'mousemove', this.moveX2Y2 );
+                addListener( 'click', this.clickListener2 );
+                self.currentClickListener = this.clickListener2;
+                help_div.innerText = self.helpText.resize;
+              } else {
+                this.removeAllListeners();
+                this.addMinimalListeners();
+                help_div.innerText = self.helpText.init;
+              }
             }
           }
 
@@ -1394,7 +1398,7 @@
 
           mouse_leave_template(){  // cancel setup
             return (e) => {
-              if ( !e || e.target === svg_div ){  // only if mouse leaves svg_div
+              if ( !e || e.target === svg_div && e.movementY < 0 ){  // only if mouse leaves svg_div at the top
                 removeUnfinishedObject();
                 help_div.innerText = self.helpText.init;
               }
@@ -1970,8 +1974,8 @@
           const foreignObject = new SvgForeignObject({
             x: 50,
             y: 50,
-            width: 240,
-            height: 120,
+            width: 460,
+            height: 340,
             fill: self.color
           }, component_div );
 
