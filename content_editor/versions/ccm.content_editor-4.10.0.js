@@ -1461,6 +1461,8 @@
 
             case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               execCommand(command, false, null);
+              const editMarker = getSelectionRange();
+              if ( editMarker ) editMarker.focus();
               break;
 
             case "set_anchor":
