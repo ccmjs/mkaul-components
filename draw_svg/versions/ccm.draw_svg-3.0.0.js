@@ -3,8 +3,9 @@
  * @link https://github.com/santanubiswas948/draw-svg
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (2.4.0)
+ * @version latest (3.0.0)
  * @changes
+ * version 3.0.0 09.01.2019
  * version 2.4.0 05.01.2019 toolbar at fixed position
  * version 2.3.0 03.01.2019 load via src attribute, collect <source> tags from inner,
  *                          start all embedded ccm components from dataset.inner
@@ -28,7 +29,7 @@
      * @type {string}
      */
     name: 'draw_svg',
-    version: [2,4,0],
+    version: [3,0,0],
     
     /**
      * recommended used framework version
@@ -584,9 +585,9 @@
       stopPaintingIntoCCM: true, // if drawing into nested ccm components is prohibited
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
-        init: 'Press button! Use shift key for multiple objects!',
-        insert: 'Move object to its position!',
-        resize: 'Resize the object!',
+        init: 'Press button! Use shift key for resize & multiple objects!',
+        insert: 'Move object to its position! Hold shift key to resize object!',
+        resize: 'Resize the object! Hold shift key to add multiple objects!',
         nextObject: 'Click to insert similar object!',
         load_image_prompt: 'Please enter Image URL:',
         load_image_default: 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/icon.svg',
@@ -618,8 +619,6 @@
       } ],
 
       content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
-
-      // content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
@@ -760,8 +759,6 @@
        * starts the instance
        */
       this.start = async () => {
-
-        self.color = dataset.color || '#000'; // black
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
@@ -985,6 +982,9 @@
         }
 
         const toolbar_div = $.html( self.html.toolbar );
+        self.color = dataset.color || '#000'; // black
+        self.color_input = toolbar_div.querySelector("a[data-command='color'] > input");
+        self.color_input.value = self.color;
 
         // add click event listener
         [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
@@ -1003,9 +1003,23 @@
         const html2json_div = $.html( self.html.html2json || {} );
         const bottom_div = $.html( self.html.bottom || { class: 'bottom' } );
 
+        const all_divs = [ html_div, json_div, html2json_div, editor_div ];
+
+        /**
+         * switch to display div only
+         * @param div
+         */
+        function switch_display_state( div ){
+          all_divs.forEach( single_div => {
+            if ( single_div === div ) return;
+            single_div.style.display = 'none';
+          });
+          div.style.display = 'block';
+        }
+
         $.setContent( self.element, $.html( [ toolbar_div, help_div, html_div, json_div, html2json_div, editor_div, bottom_div ] ) );
 
-        // SVG hack: paint all svg icons which are inside the DOM but not painted
+       // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...self.element.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
@@ -1199,11 +1213,6 @@
             this.obj = obj;
             this.attributeNames = Object.keys( obj );
             if ( this.attributeNames.length === 0 ) this.attributeNames = ['x1','y1','x2','y2']; // default
-
-            this.color_input = toolbar_div.querySelector("a[data-command='color'] > input");
-            this.colorListener = this.color_listener_template();
-            this.color_input.addEventListener('change', this.colorListener );
-
             self.currentObject = this;
 
             this.setup();
@@ -1211,6 +1220,10 @@
 
           toString(){
             return `${this.constructor.toString()}[${this.state()}]`;
+          }
+
+          setColor( color ){
+            this.node.setAttribute('fill', color );
           }
 
           /**
@@ -1321,13 +1334,19 @@
            */
           clickListener1_template(){
             return (evt) => {
-              self.currentObject = this;
               svg_div.removeEventListener( 'mousemove', this.moveX1Y1 );
-              addListener( 'mousemove', this.moveX2Y2 );
               svg_div.removeEventListener( 'click', this.clickListener1 );
-              addListener( 'click', this.clickListener2 );
-              self.currentClickListener = this.clickListener2;
-              help_div.innerText = self.helpText.resize;
+              if ( evt.shiftKey ){
+                addListener( 'mousemove', this.moveX2Y2 );
+                addListener( 'click', this.clickListener2 );
+                self.currentClickListener = this.clickListener2;
+                help_div.innerText = self.helpText.resize;
+              } else {
+                this.removeAllListeners();
+                this.addMinimalListeners();
+                clear_current();
+                help_div.innerText = self.helpText.init;
+              }
             }
           }
 
@@ -1386,15 +1405,9 @@
             return this.moveListener_template(x, y, funx, funy );
           }
 
-          color_listener_template(){
-            return (e)=> {
-              this.node.setAttribute('fill', this.color_input.value );
-            }
-          }
-
           mouse_leave_template(){  // cancel setup
             return (e) => {
-              if ( !e || e.target === svg_div ){  // only if mouse leaves svg_div
+              if ( !e || e.target === svg_div && e.movementY < 0 ){  // only if mouse leaves svg_div at the top
                 removeUnfinishedObject();
                 help_div.innerText = self.helpText.init;
               }
@@ -1414,7 +1427,6 @@
             svg_div.removeEventListener( 'mousemove', this.moveX2Y2 );
             svg_div.removeEventListener( 'click', this.clickListener1 );
             svg_div.removeEventListener( 'click', this.clickListener2 );
-            this.color_input.removeEventListener('change', this.colorListener );
           }
 
           addMinimalListeners(){
@@ -1512,6 +1524,9 @@
             super( obj, 'text' );
             this.node.setAttribute( 'class', 'svgtext');
             this.node.setAttribute( 'fill', self.color);
+            this.node.setAttribute('stroke-width', 3);
+            // this.node.setAttribute('stroke-opacity', 0.8);
+            // this.node.style.opacity = 0.8;
             const textNode = document.createTextNode(content);
             this.node.appendChild(textNode);
             draw_div.contentEditable = "true"; // see https://codepen.io/soffes/pen/RRmLgO
@@ -1587,11 +1602,8 @@
               new SvgText({
                 x: 250,
                 y: 100,
-                fill: self.color,
-                "fill-opacity": 0.2,
-                'stroke-width': 3,
-                'stroke-opacity': 1
-              }, prompt(self.helpText.text_prompt, self.helpText.text_default));
+                fill: self.color
+              }, prompt(self.helpText.text_prompt, self.helpText.text_default)).node.focus();
               break;
 
             case 'html':
@@ -1606,13 +1618,14 @@
                 x: 200,
                 y: 100,
                 width: 320,
-                height: 120,
+                height: 320,
                 fill: self.color,
                 "fill-opacity": 0.2,
                 'stroke-width': 3,
                 'stroke-opacity': 1
               }, newDiv);
-              newHTML.className = 'html_in_svg';
+              newHTML.node.setAttribute('class', 'html_in_svg' );
+              newHTML.node.focus();
               break;
 
             case "html_page":
@@ -1633,7 +1646,8 @@
                 'stroke-width': 3,
                 'stroke-opacity': 1
               }, newPage);
-              newHTMLPage.className = 'html_page';
+              newHTMLPage.node.setAttribute('class', 'html_page' );
+              newHTMLPage.node.focus();
               break;
 
             case 'rect':
@@ -1737,10 +1751,7 @@
             case "view_editor":
               $.setContent( editor_div, dataset.inner );
               startAllComponents( editor_div );
-              html_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              editor_div.style.display = 'block';
+              switch_display_state( editor_div );
               break;
 
             case "view_html":
@@ -1748,11 +1759,7 @@
               html_div.addEventListener( 'input', (e) => {
                 updateData( html_div.innerText );
               });
-              html_div.style['background-color'] = 'lightblue';
-              editor_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              html_div.style.display = 'block';
+              switch_display_state( html_div );
               break;
 
             case "view_json":
@@ -1769,10 +1776,7 @@
                     key: 'app'
                   } });
               }
-              editor_div.style.display = 'none';
-              html_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              json_div.style.display = 'block';
+              switch_display_state( json_div );
               break;
 
             case "view_html2json":
@@ -1784,10 +1788,7 @@
                   data: self.getValue()
                 });
               }
-              editor_div.style.display = 'none';
-              html_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'block';
+              switch_display_state( html2json_div );
               break;
 
             case "stop":
@@ -1899,7 +1900,6 @@
             case "select": // select ccm component from DMS
               const select = toolbar_div.querySelector("a[data-command='select'] > select");
               const component = (await dms_index())[select.options[select.selectedIndex].value];
-
               await insertComponent({ component, config: {} });
               break;
             default:
@@ -1970,12 +1970,12 @@
           const foreignObject = new SvgForeignObject({
             x: 50,
             y: 50,
-            width: 240,
-            height: 120,
+            width: 340,
+            height: 340,
             fill: self.color
           }, component_div );
 
-          foreignObject.className = 'ccm-component';
+          // foreignObject.node.setAttribute('class', 'ccm-component' );
 
           self.currentObject = foreignObject;
           self.currentObject.component = component;
@@ -2030,8 +2030,6 @@
           }
 
           editor_div.dispatchEvent(new Event('keyup'), { 'bubbles': true });  // for triggering update of preview in DMS
-
-          // ToDo editor_div.focus();
         }
 
         /**
@@ -2091,10 +2089,10 @@
             const embed_div = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'div' );
             embed_div.style = 'width: 100%; height: 100%; margin: 0; padding: 0;';
             self.currentObject = new SvgForeignObject({
-              x: 250,
-              y: 100,
+              x: 50,
+              y: 50,
               width: 240,
-              height: 120,
+              height: 150,
               fill: self.color,
               style: 'resize: both; border: thin solid black; margin: 0; padding: 0;'
             }, embed_div );
