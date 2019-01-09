@@ -1569,10 +1569,8 @@
          */
         async function toolbarClickListener(e) {
           const command = this.dataset["command"].toLowerCase();
-          if ( self.state !== command ){
-            removeUnfinishedObject();
-            self.state = command;
-          }
+          removeUnfinishedObject();
+          self.state = command;
           const title = this.getAttribute('title');
           const help = this.dataset["help"] || title || command;
           if ( help && help.length > 1 ){
@@ -1584,6 +1582,8 @@
           switch (command) {
 
             case 'free':
+              // self.state = 'free';  // same as self.state = command;
+              // draw_obj.draw();
               break;
 
             case 'line':
@@ -1749,8 +1749,12 @@
               break;
 
             case "view_editor":
-              $.setContent( editor_div, dataset.inner );
-              startAllComponents( editor_div );
+              // $.setContent( editor_div, dataset.inner );  // TODO creates new objects
+              // editor_div has internal draw_div which is overwritten
+              // Thereby drawing is discontinued.
+              // draw_div.innerHTML = dataset.inner; // has the same problems
+              // TODO Open issue: How to update editor_div from modified dataset.inner ?
+              startAllComponents( draw_div );
               switch_display_state( editor_div );
               break;
 
