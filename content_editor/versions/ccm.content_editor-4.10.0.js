@@ -491,6 +491,30 @@
               "tag": "a",
               "href": "#",
               "class": "click",
+              "data-command": "set_anchor",
+              "title": "set in-page anchor",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-anchor"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "change",
+              "style": "min-width: 1.2em; width: auto; margin-right: 5px; border-radius: 3px;",
+              "data-command": "select_anchor",
+              "title": "select in-page anchor",
+              "inner": {
+                "class": "fa",
+                "tag": "select",
+                "inner": []
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
               "data-command": "insertimage",
               "title": "insert image",
               "inner": {
@@ -857,6 +881,8 @@
         load_html_default: "https://kaul.inf.h-brs.de",
         config_prompt: "Enter DMS-ID for your config of ",
         config_default: "1546889115604X2224608869287512",
+        anchor_prompt: "Enter Anchor ID or Name:",
+        anchor_default: "link_target"
       },
 
       change_listener_on_key_up: true,
@@ -1150,6 +1176,33 @@
 
 
         const toolbar_div = $.html( this.html.toolbar );
+        const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
+
+        class Anchors {
+          constructor(){
+            this.set_of_all_anchors = ["_"];
+          }
+          add( newAnchor ){
+            this.set_of_all_anchors.push( newAnchor );
+            select_anchor_button.childNodes.forEach(child=>{
+              select_anchor_button.removeChild( child );
+            });
+            this.options().forEach( option => {
+              select_anchor_button.appendChild( $.html( option ) );
+            });
+          }
+          options(){
+            return this.set_of_all_anchors.reduce(( list_of_options, single_option ) => {
+              list_of_options.push({
+                tag: 'option',
+                value: single_option,
+                inner: single_option
+              });
+              return list_of_options;
+            }, []);
+          }
+        }
+        const page_anchors = new Anchors();
 
         // render color palette
         ['fore', 'back'].forEach( pal => {
@@ -1410,6 +1463,17 @@
               execCommand(command, false, null);
               break;
 
+            case "set_anchor":
+              const anchor_id = prompt( self.helpText.anchor_prompt, self.helpText.anchor_default );
+              page_anchors.add( anchor_id );
+              const anchor_range = getSelectionRange();
+              const newAnchor = document.createElement('span');
+              newAnchor.setAttribute('id', anchor_id );
+              // newAnchor.innerHTML = anchor_range.toString();
+              anchor_range.insertNode( newAnchor );
+              newAnchor.focus();
+              break;
+
             case "stop":
               debugger;
               break;
@@ -1538,6 +1602,15 @@
             case "fontname":
               execCommand(command, false, select.value);
               select.value = 'default'; // set back to default
+              break;
+            case "select_anchor":
+              const uri = select_anchor_button.options[select_anchor_button.selectedIndex].value;
+              const range = getSelectionRange();
+              if ( range ){
+                execCommand('insertHTML', false, `<a href="#${uri}">${range.toString() || uri}</a>`);
+              } else {
+                editor_div.appendChild( $.html({ tag: 'a', href: '#' + uri, inner: uri }) );
+              }
               break;
             case 'select': // select ccm component from DMS
               const component = DMS_component_index[select.options[select.selectedIndex].value];
