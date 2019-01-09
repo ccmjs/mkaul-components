@@ -585,8 +585,8 @@
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
         init: 'Press button! Use shift key for resize & multiple objects!',
-        insert: 'Move object to its position!',
-        resize: 'Resize the object!',
+        insert: 'Move object to its position! Hold shift key to resize object!',
+        resize: 'Resize the object! Hold shift key to add multiple objects!',
         nextObject: 'Click to insert similar object!',
         load_image_prompt: 'Please enter Image URL:',
         load_image_default: 'https://ccmjs.github.io/mkaul-components/paper_generator/resources/icon.svg',
@@ -758,8 +758,6 @@
        * starts the instance
        */
       this.start = async () => {
-
-        self.color = dataset.color || '#000'; // black
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
@@ -983,6 +981,9 @@
         }
 
         const toolbar_div = $.html( self.html.toolbar );
+        self.color = dataset.color || '#000'; // black
+        self.color_input = toolbar_div.querySelector("a[data-command='color'] > input");
+        self.color_input.value = self.color;
 
         // add click event listener
         [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
@@ -1001,9 +1002,24 @@
         const html2json_div = $.html( self.html.html2json || {} );
         const bottom_div = $.html( self.html.bottom || { class: 'bottom' } );
 
+        const all_divs = [ html_div, json_div, html2json_div, editor_div ];
+
+        /**
+         * switch to display div only
+         * @param div
+         */
+        function switch_display_state( div ){
+          all_divs.forEach( single_div => {
+            if ( single_div === div ) return;
+            single_div.style.display = 'none';
+          });
+          div.style.display = 'block';
+          div.focus();
+        }
+
         $.setContent( self.element, $.html( [ toolbar_div, help_div, html_div, json_div, html2json_div, editor_div, bottom_div ] ) );
 
-        // SVG hack: paint all svg icons which are inside the DOM but not painted
+       // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...self.element.querySelectorAll('svg')].forEach(svg=>{
           svg.parentNode.innerHTML += '';
         });
@@ -1197,11 +1213,6 @@
             this.obj = obj;
             this.attributeNames = Object.keys( obj );
             if ( this.attributeNames.length === 0 ) this.attributeNames = ['x1','y1','x2','y2']; // default
-
-            this.color_input = toolbar_div.querySelector("a[data-command='color'] > input");
-            this.colorListener = this.color_listener_template();
-            this.color_input.addEventListener('change', this.colorListener );
-
             self.currentObject = this;
 
             this.setup();
@@ -1209,6 +1220,10 @@
 
           toString(){
             return `${this.constructor.toString()}[${this.state()}]`;
+          }
+
+          setColor( color ){
+            this.node.setAttribute('fill', color );
           }
 
           /**
@@ -1418,7 +1433,6 @@
             svg_div.removeEventListener( 'mousemove', this.moveX2Y2 );
             svg_div.removeEventListener( 'click', this.clickListener1 );
             svg_div.removeEventListener( 'click', this.clickListener2 );
-            this.color_input.removeEventListener('change', this.colorListener );
           }
 
           addMinimalListeners(){
@@ -1516,6 +1530,9 @@
             super( obj, 'text' );
             this.node.setAttribute( 'class', 'svgtext');
             this.node.setAttribute( 'fill', self.color);
+            this.node.setAttribute('stroke-width', 3);
+            // this.node.setAttribute('stroke-opacity', 0.8);
+            // this.node.style.opacity = 0.8;
             const textNode = document.createTextNode(content);
             this.node.appendChild(textNode);
             draw_div.contentEditable = "true"; // see https://codepen.io/soffes/pen/RRmLgO
@@ -1584,18 +1601,15 @@
                 stroke: self.color,
                 'stroke-width': 3,
                 'stroke-opacity': 1
-              });
+              }).focus();
               break;
 
             case 'text':
               new SvgText({
                 x: 250,
                 y: 100,
-                fill: self.color,
-                "fill-opacity": 0.2,
-                'stroke-width': 3,
-                'stroke-opacity': 1
-              }, prompt(self.helpText.text_prompt, self.helpText.text_default));
+                fill: self.color
+              }, prompt(self.helpText.text_prompt, self.helpText.text_default)).focus();
               break;
 
             case 'html':
@@ -1617,6 +1631,7 @@
                 'stroke-opacity': 1
               }, newDiv);
               newHTML.className = 'html_in_svg';
+              newHTML.focus();
               break;
 
             case "html_page":
@@ -1638,6 +1653,7 @@
                 'stroke-opacity': 1
               }, newPage);
               newHTMLPage.className = 'html_page';
+              newHTMLPage.focus();
               break;
 
             case 'rect':
@@ -1650,7 +1666,7 @@
                 "stroke-width": 3,
                 "fill-opacity": 0.5,
                 'stroke-opacity': 1
-              }, 'rect');
+              }, 'rect').focus();
               break;
 
             case 'circle':
@@ -1662,7 +1678,7 @@
                 "stroke-width": 3,
                 "fill-opacity": 0.5,
                 'stroke-opacity': 1
-              }, 'circle');
+              }, 'circle').focus();
               break;
 
             case 'undo':
@@ -1708,6 +1724,7 @@
                 // const newSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 // newSVG.innerHTML = dataset;
                 svg_div.appendChild( image );
+                image.focus();
               }
               break;
 
@@ -1741,10 +1758,7 @@
             case "view_editor":
               $.setContent( editor_div, dataset.inner );
               startAllComponents( editor_div );
-              html_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              editor_div.style.display = 'block';
+              switch_display_state( editor_div );
               break;
 
             case "view_html":
@@ -1752,11 +1766,7 @@
               html_div.addEventListener( 'input', (e) => {
                 updateData( html_div.innerText );
               });
-              html_div.style['background-color'] = 'lightblue';
-              editor_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              html_div.style.display = 'block';
+              switch_display_state( html_div );
               break;
 
             case "view_json":
@@ -1773,10 +1783,7 @@
                     key: 'app'
                   } });
               }
-              editor_div.style.display = 'none';
-              html_div.style.display = 'none';
-              html2json_div.style.display = 'none';
-              json_div.style.display = 'block';
+              switch_display_state( json_div );
               break;
 
             case "view_html2json":
@@ -1788,10 +1795,7 @@
                   data: self.getValue()
                 });
               }
-              editor_div.style.display = 'none';
-              html_div.style.display = 'none';
-              json_div.style.display = 'none';
-              html2json_div.style.display = 'block';
+              switch_display_state( html2json_div );
               break;
 
             case "stop":
@@ -1816,7 +1820,9 @@
               addListener('dblclick', (e)=>{
                 toolbar_div.style.display = 'block';
                 help_div.style.display = 'block';
+                draw_div.focus();
               });
+              draw_div.focus();
               break;
 
             case "remove_editor":
@@ -1825,6 +1831,7 @@
                 root.removeChild(child);
               });
               root.appendChild( svg_div.cloneNode( true ) );
+              draw_div.focus();
               break;
 
             default:
@@ -1903,7 +1910,6 @@
             case "select": // select ccm component from DMS
               const select = toolbar_div.querySelector("a[data-command='select'] > select");
               const component = (await dms_index())[select.options[select.selectedIndex].value];
-
               await insertComponent({ component, config: {} });
               break;
             default:
@@ -2035,7 +2041,7 @@
 
           editor_div.dispatchEvent(new Event('keyup'), { 'bubbles': true });  // for triggering update of preview in DMS
 
-          // ToDo editor_div.focus();
+          component_div.focus();
         }
 
         /**
@@ -2103,6 +2109,7 @@
               style: 'resize: both; border: thin solid black; margin: 0; padding: 0;'
             }, embed_div );
             embed_div.innerHTML = embedCode;
+            embed_div.focus();
           }
         }
 

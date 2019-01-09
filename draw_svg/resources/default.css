@@ -31,6 +31,10 @@
   margin: 0.5em;
 }
 
+#html {
+  background-color: #E4FCFF;
+}
+
 a {
   cursor: pointer;
 }
@@ -48,10 +52,6 @@ a {
   overflow: hidden;
 }
 
-.svgtext {
-  font: bold 30px sans-serif;
-}
-
 #draw_div {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   border: thin solid #AAA;
@@ -67,6 +67,7 @@ a {
 .toolbar {
   flex-shrink: 0;  /*makes sure that content is not cut off in a smaller browser window*/
   text-align: center;
+  margin-bottom: 5px;
 }
 
 .toolbar a {
@@ -136,6 +137,11 @@ a[data-command='stop'] {
   white-space:nowrap;
   display: inline-block;
   margin: 3px;
+}
+
+.svgtext {
+  font: bold 30px sans-serif;
+  fill-opacity: 0.8
 }
 
 .html_in_svg {
