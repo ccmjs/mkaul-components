@@ -1210,6 +1210,7 @@
           constructor( obj, type='path' ){
             this.type = type;
             this.node = new SvgElement( obj, type );
+            this.node.focus();
             this.obj = obj;
             this.attributeNames = Object.keys( obj );
             if ( this.attributeNames.length === 0 ) this.attributeNames = ['x1','y1','x2','y2']; // default
