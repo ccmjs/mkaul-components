@@ -1158,7 +1158,7 @@
                   editor_div.appendChild( pastedImage );
                   editor_div.appendChild( document.createTextNode(' '));
                 }
-                pastedImage.focus();
+                pastedImage.focus && pastedImage.focus();
                 break;
               default:
                 debugger;
@@ -1534,7 +1534,7 @@
             case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
               execCommand(command, false, null);
               const editMarker = getSelectionRange();
-              if ( editMarker ) editMarker.focus();
+              if ( editMarker && editMarker.focus ) editMarker.focus();
               break;
 
             case "set_anchor":
@@ -1545,7 +1545,7 @@
               newAnchor.setAttribute('id', anchor_id );
               // newAnchor.innerHTML = anchor_range.toString();
               anchor_range.insertNode( newAnchor );
-              newAnchor.focus();
+              newAnchor.focus && newAnchor.focus();
               break;
 
             case "stop":
