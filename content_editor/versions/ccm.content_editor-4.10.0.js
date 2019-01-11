@@ -1129,14 +1129,17 @@
           [...e.clipboardData.items].forEach((item)=>{
             switch( item.type ){
               case 'text/plain':
+                updateInPageAnchors();
                 const pastedText = e.clipboardData.getData('text/plain');
                 // process pastedText here
                 break;
               case 'text/html':
+                updateInPageAnchors();
                 const pastedHTML = e.clipboardData.getData('text/html');
                 // process pastedHTML here
                 break;
               case 'text/rtf':
+                updateInPageAnchors();
                 const pastedRTF = e.clipboardData.getData('text/rtf');
                 break;
               case 'image/png':
@@ -1219,10 +1222,14 @@
           }
         }
         const page_anchors = new Anchors();
-        // add all initial in-page anchors
-        [...editor_div.querySelectorAll('[id]')].forEach( id => {
-          page_anchors.add( id );
-        });
+
+        updateInPageAnchors();
+
+        function updateInPageAnchors(){
+          [...editor_div.querySelectorAll('[id]')].forEach( id => {
+            page_anchors.add( id );
+          });
+        }
 
         // render color palette
         ['fore', 'back'].forEach( pal => {
@@ -1369,7 +1376,7 @@
               toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
 
-            case "save_file":  // ToDo add version to ccm tags
+            case "save_file":
 
               let htmlData = ` <!DOCTYPE html>
                   <html lang="en">
@@ -1384,11 +1391,18 @@
 
               Object.keys( dataset.components ).forEach( key => {
                 const componentActionData = dataset.components[key];
+                const index = $.getIndex( componentActionData[1] );
                 const config = componentActionData[2];
                 htmlData += `\n<script src="${componentActionData[1]}"></script>`;
                   [...editor_content.querySelectorAll('*')].forEach( child => {
                   if ( child.tagName === 'CCM-' + key.toUpperCase()  ){
-                    child.setAttribute( 'key', $.stringify( config ) );
+                    if ( key === index ){
+                      child.setAttribute( 'key', $.stringify( config ) );
+                    } else {
+                      const newChild = document.createElement( 'CCM-' + index.toUpperCase() );
+                      newChild.setAttribute( 'key', $.stringify( config ) );
+                      child.parentNode.appendChild( newChild );
+                    }
                   }
                 });
               });
@@ -1540,6 +1554,8 @@
 
             case "view_editor":
               $.setContent( editor_div, dataset.inner );
+              // TODO restore all event listeners
+              updateInPageAnchors();
               startAllComponents( editor_div );
               html_div.style.display = 'none';
               json_div.style.display = 'none';
