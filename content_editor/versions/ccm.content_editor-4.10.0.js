@@ -403,6 +403,17 @@
             {
               "tag": "a",
               "href": "#",
+              "class": "click",
+              "data-command": "toc",
+              "title": "insert table of contents",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-info"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
               "data-command": "h1",
               "class": "click",
               "inner": "H1"
@@ -1125,6 +1136,9 @@
                 const pastedHTML = e.clipboardData.getData('text/html');
                 // process pastedHTML here
                 break;
+              case 'text/rtf':
+                const pastedRTF = e.clipboardData.getData('text/rtf');
+                break;
               case 'image/png':
                 const URLObj = window.URL || window.webkitURL;
                 const pastedImage = document.createElement('img');
@@ -1180,11 +1194,12 @@
 
         class Anchors {
           constructor(){
-            this.set_of_all_anchors = ["_"];
+            this.set_of_all_anchors = new Set();
+            this.set_of_all_anchors;
           }
           add( newAnchor ){
-            this.set_of_all_anchors.push( newAnchor );
-            select_anchor_button.childNodes.forEach(child=>{
+            this.set_of_all_anchors.add( newAnchor );
+            [...select_anchor_button.children].forEach(child=>{
               select_anchor_button.removeChild( child );
             });
             this.options().forEach( option => {
@@ -1192,14 +1207,15 @@
             });
           }
           options(){
-            return this.set_of_all_anchors.reduce(( list_of_options, single_option ) => {
+            const list_of_options = [{tag: 'option', value: '_', inner: '_'}];
+            this.set_of_all_anchors.forEach(( single_option ) => {
               list_of_options.push({
                 tag: 'option',
                 value: single_option,
                 inner: single_option
               });
-              return list_of_options;
-            }, []);
+            });
+            return list_of_options;
           }
         }
         const page_anchors = new Anchors();
@@ -1404,6 +1420,44 @@
               execCommand('formatBlock', false, command);
               break;
 
+            case "toc":  // insert structure with links
+              let structure = { tag: 'ol', inner: [] };
+              let nextId = 1;
+              const headings = [...editor_div.querySelectorAll('h1,h2,h3,h4,h5,h6')];
+              headings.forEach( heading => {
+                const id = heading.getAttribute('id') || 'heading_' + nextId++ ;
+                if ( id === '_' ) return;
+                heading.setAttribute('id', id );
+                page_anchors.add( id );
+                const id_listener = e => {
+                  e.preventDefault();
+                  editor_div.querySelector( '#' + id ).scrollIntoView({
+                    behavior: 'smooth'
+                  });
+                };
+                structure.inner.push({
+                  tag: 'li',
+                  onclick: id_listener,
+                  inner: {
+                    tag: 'a',
+                    href: '#' + id,
+                    inner: heading.innerText
+                  }
+                });
+              });
+              const toc_range = getSelectionRange();
+              // execCommand('insertHTML', false, $.html( structure ) );  // without event listener
+              if ( toc_range ){
+                try {
+                  toc_range.commonAncestorContainer.appendChild( $.html( structure ) );
+                } catch {
+                  toc_range.commonAncestorContainer.parentNode.appendChild( $.html( structure ) );
+                }
+              } else {
+                $.prepend( editor_div, $.html( structure ) );
+              }
+              break;
+
             case 'forecolor': case 'backcolor': case 'hilitecolor':
               execCommand( command, false, this.dataset["value"] );
               break;
@@ -1606,16 +1660,23 @@
               select.value = 'default'; // set back to default
               break;
             case "select_anchor":
-              const uri = select_anchor_button.options[select_anchor_button.selectedIndex].value;
+              const anchor = select_anchor_button.options[select_anchor_button.selectedIndex].value;
+              const anchorListener = e => {
+                e.preventDefault();
+                editor_div.querySelector( '#' + anchor ).scrollIntoView({
+                  behavior: 'smooth'
+                });
+              };
               const range = getSelectionRange();
+              const anchorReference = $.html({ tag: 'a', href: '#' + anchor, inner: range.toString() || anchor, onclick: anchorListener });
               if ( range ){
-                execCommand('insertHTML', false, `<a href="#${uri}">${range.toString() || uri}</a>`);
+                  range.commonAncestorContainer.parentNode.appendChild( anchorReference );
               } else {
-                editor_div.appendChild( $.html({ tag: 'a', href: '#' + uri, inner: uri }) );
+                editor_div.appendChild( anchorReference );
               }
               break;
             case 'select': // select ccm component from DMS
-              const component = DMS_component_index[select.options[select.selectedIndex].value];
+              const component = DMS_component_index[ select.options[ select.selectedIndex ].value ];
               const instance = await insertComponent({
                 component,
                 config: {}
