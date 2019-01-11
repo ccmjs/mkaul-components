@@ -1219,6 +1219,10 @@
           }
         }
         const page_anchors = new Anchors();
+        // add all initial in-page anchors
+        [...editor_div.querySelectorAll('[id]')].forEach( id => {
+          page_anchors.add( id );
+        });
 
         // render color palette
         ['fore', 'back'].forEach( pal => {
