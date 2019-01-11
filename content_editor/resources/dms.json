@@ -189,6 +189,18 @@
                                             "value": "insertOrderedList"
                                         },
                                         {
+                                            "label": "Table of Contents",
+                                            "value": "toc"
+                                        },
+                                        {
+                                            "label": "Create an In-Page Anchor",
+                                            "value": "set_anchor"
+                                        },
+                                        {
+                                            "label": "Create a link to the In-Page Anchor",
+                                            "value": "select_anchor"
+                                        },
+                                        {
                                             "label": "Header H1",
                                             "value": "h1"
                                         },
@@ -383,6 +395,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-07T16:00:00+00:00",
+    "updated_at": "2019-01-09T18:00:00+02:00",
     "created_at": "2018-12-01T14:41:22+02:00"
 }
