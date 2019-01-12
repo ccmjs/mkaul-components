@@ -1227,6 +1227,7 @@
 
         function updateInPageAnchors(){
           [...editor_div.querySelectorAll('[id]')].forEach( elem => {
+            if ( elem.parentNode.tagName.startsWith('CCM-')) return;
             page_anchors.add( elem.getAttribute( 'id' ) );
           });
         }
@@ -1683,7 +1684,8 @@
               const anchor = select_anchor_button.options[select_anchor_button.selectedIndex].value;
               const anchorListener = e => {
                 e.preventDefault();
-                editor_div.querySelector( '#' + anchor ).scrollIntoView({
+                const target = editor_div.querySelector( '#' + anchor );
+                if ( target ) target.scrollIntoView({
                   behavior: 'smooth'
                 });
               };
