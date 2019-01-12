@@ -1226,8 +1226,8 @@
         updateInPageAnchors();
 
         function updateInPageAnchors(){
-          [...editor_div.querySelectorAll('[id]')].forEach( id => {
-            page_anchors.add( id );
+          [...editor_div.querySelectorAll('[id]')].forEach( elem => {
+            page_anchors.add( elem.getAttribute( 'id' ) );
           });
         }
 
