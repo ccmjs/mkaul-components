@@ -916,7 +916,7 @@
                   if ( self.currentObject.remove ){
                     self.currentObject.remove();
                   } else {
-                    svg_div.removeChild( self.currentObject );
+                    if ( self.currentObject.parentNode === svg_div ) svg_div.removeChild( self.currentObject );
                   }
                   self.currentObject = null;
                   help_div.innerText = self.helpText.init;
@@ -1418,14 +1418,14 @@
           svg_div  = editor_div.querySelector('#svg');
           [...svg_div.children].forEach( elem => {
             // addMinimalListeners
-            elem.addEventListener('click', e => {
-              // make this object active
-              self.currentObject = this;
-            });
             if ( elem.tagName === 'FOREIGNOBJECT' && elem.firstChild.tagName.startsWith('CCM-') ){
               elem.addEventListener( isMobile() ? 'click' : 'dblclick',
                 openBuilder( foreignObjects[ elem.firstChild.firstChild.getAttribute('id') ].instance ));
-
+            } else {
+              elem.addEventListener('click', e => {
+                // make this object active
+                self.currentObject = e.target;
+              });
             }
           });
           self.currentObject = null;
