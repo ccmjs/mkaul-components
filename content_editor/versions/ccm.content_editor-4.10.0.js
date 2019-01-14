@@ -39,7 +39,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -49,7 +49,7 @@
     config: {
 
       data: {
-        inner: 'Demo Text with embedded ccm <source src="https://ccmjs.github.io/akless-components/blank/ccm.blank.js"><ccm-blank>Welcome from blank.</ccm-blank>',
+        inner: '',
         position: 6
       },
 
@@ -1064,6 +1064,7 @@
 
         const undoStack = [];
         const redoStack = [];
+        const ccmInstances = {};
 
         // add keyboard events
         const oldKeyListener = document.onkeydown;
@@ -1151,7 +1152,7 @@
                 // Use shadow root instead of document to get position of cursor in text
                 const shadowRoot = self.element.parentNode;
                 const range = getSelectionRange();
-                if ( range ){
+                if ( range && getSelection().containsNode( range.commonAncestorContainer ) ){
                   range.insertNode( pastedImage );
                 } else {
                   editor_div.appendChild( document.createTextNode(' '));
@@ -1369,12 +1370,13 @@
          */
         async function toolbarClickListener(e){
           const command = this.dataset["command"].toLowerCase();
+          self.state = command;
 
           switch (command){
             case 'toggle':
-              const isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
-              editor_div.setAttribute( "contenteditable", isNotEditable );
-              toolbar_div.querySelector('[data-command=toggle] i').classList = isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
+              self.isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
+              editor_div.setAttribute( "contenteditable", self.isNotEditable.toString() );
+              toolbar_div.querySelector('[data-command=toggle] i').classList = self.isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
 
             case "save_file":
@@ -1788,13 +1790,16 @@
           // component
           const componentOrUrl = await getComponent( component );
           const index = $.isComponent( componentOrUrl ) ? componentOrUrl.index : $.getIndex( componentOrUrl );
-          const root = document.createElement('ccm-' + index );
+          const component_div = document.createElement('ccm-' + index );
 
-          if ( ! config ) config = {};
-
-          // set parent and root
+          // get config
+          if ( ! config ) config = $.isComponent( componentOrUrl ) ? componentOrUrl.config : {};
+          if ( config.root ){
+            config = $.integrate( $.generateConfig( config.root ), componentOrUrl.config );
+          } else {
+            config.root = component_div;
+          }
           config.parent = self;
-          config.root = root;
 
           let instance;
 
@@ -1815,6 +1820,8 @@
             debugger;
           }
 
+          ccmInstances[ instance.index ] = instance;
+
           if ( dataset.components && dataset.components[ index ] ){
             // already registered as dependency.
             // compare configs and write differences into attributes
@@ -1822,9 +1829,9 @@
             const newConfig = JSON.parse(instance.config);
             const allDiffs = compareJSON( oldConfig, newConfig );
             for ( const [ name, diff ] of allDiffs ){
-              root.setAttribute( name, diff ); // .replace(/"/g, "'") not necessary
+              component_div.setAttribute( name, diff ); // .replace(/"/g, "'") not necessary
             }
-            if ( self.inline_block ) root.setAttribute( 'style', 'display: inline-block;' );
+            if ( self.inline_block ) component_div.setAttribute( 'style', 'display: inline-block;' );
           } else { // not yet registered as dependency
             dataset.components[ index ] = [ 'ccm.component',
               instance.component.url,
@@ -1834,9 +1841,9 @@
 
           editor_div.dispatchEvent(new Event('keyup'));
 
-          if ( self.inline_block ) root.style = "display: inline-block;";
-          if ( self.inline_block ) root.firstChild.style = "display: inline-block;";
-          root.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
+          if ( self.inline_block ) component_div.style = "display: inline-block;";
+          if ( self.inline_block ) component_div.firstChild.style = "display: inline-block;";
+          component_div.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
 
           // insert component at Cursor position or at the end of the text, if none
           // const selection = editor_div.getSelection && editor_div.getSelection()
@@ -1844,24 +1851,16 @@
           //   || editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection()
           //   || document.getSelection();
           const range = getSelectionRange();
-          if ( range ){
-            editor_div.focus();
-            if ( $.isSafari() ){
-              // TODO split text into two parts, append component after the first text
-              editor_div.appendChild(document.createTextNode(' '));
-              editor_div.appendChild(root);
-              editor_div.appendChild(document.createTextNode(' '));
-            } else {
-              range.insertNode( document.createTextNode(' '));
-              range.insertNode( root );
-              range.insertNode( document.createTextNode(' '));
-            }
+          if ( range && getSelection().containsNode( range.commonAncestorContainer ) && ! $.isSafari() ){
+            range.insertNode( document.createTextNode(' '));
+            range.insertNode( component_div );
+            range.insertNode( document.createTextNode(' '));
           } else {
             editor_div.appendChild( document.createTextNode(' '));
-            editor_div.appendChild( root );
+            editor_div.appendChild( component_div );
             editor_div.appendChild( document.createTextNode(' '));
           }
-          root.focus();
+          component_div.focus();
 
           undoStack.push( undoTemplate( instance, config ) );
 
@@ -2112,6 +2111,21 @@
             range.setEnd(sel.focusNode, sel.focusOffset);
             return range;
           }
+        }
+        return null;
+      }
+
+      /**
+       * get the current selection
+       * @returns {Selection}
+       */
+      function getSelection() {
+        const shadowRoot = self.element.parentNode;
+        if ( shadowRoot.getSelection &&  shadowRoot.getSelection() ){
+          return  shadowRoot.getSelection();
+        }
+        if ( window.getSelection ) {
+          return window.getSelection();
         }
         return null;
       }
