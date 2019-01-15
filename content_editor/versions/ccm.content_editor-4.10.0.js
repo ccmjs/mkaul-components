@@ -58,7 +58,7 @@
       //   "key": "demo"
       // },
 
-      // onchange: function(){ console.log( this.getValue() ); },
+      // onchange: function( dataset ){ console.log( this.getValue() ); },
 
       html: {
         builder: {
@@ -1152,7 +1152,7 @@
                 // Use shadow root instead of document to get position of cursor in text
                 const shadowRoot = self.element.parentNode;
                 const range = getSelectionRange();
-                if ( range && getSelection().containsNode( range.commonAncestorContainer ) ){
+                if ( range ){
                   range.insertNode( pastedImage );
                 } else {
                   editor_div.appendChild( document.createTextNode(' '));
@@ -1721,7 +1721,7 @@
         function updateData( inner ){
           if ( inner ) dataset.inner = inner; else dataset.inner = editor_div.innerHTML;
           dataset.position = getCaretPosition();
-          self.onchange && self.onchange();
+          self.onchange && self.onchange( dataset );
         }
 
         /**
@@ -1854,7 +1854,7 @@
           //   || editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection()
           //   || document.getSelection();
           const range = getSelectionRange();
-          if ( range && getSelection().containsNode( range.commonAncestorContainer ) && ! $.isSafari() ){
+          if ( range && ! $.isSafari() ){
             range.insertNode( document.createTextNode(' '));
             range.insertNode( component_div );
             range.insertNode( document.createTextNode(' '));
