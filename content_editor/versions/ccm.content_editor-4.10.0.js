@@ -1511,7 +1511,6 @@
               if ( component_name && component_name.length > 1 && dms_id ){
                 const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
                 await insertComponent({ component: component_name, config });
-                editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
               }
               break;
 
@@ -1804,24 +1803,8 @@
           }
           config.parent = self;
 
-          let instance;
-
-          // start component
-          if ( $.isComponent( component ) ){
-            instance = await component.start( config );
-          } else if ( typeof component === 'string' ) {
-            if ( component.startsWith('http') ) {
-              instance = await self.ccm.start( component, config );
-            } else {
-              if ( $.isComponent( componentOrUrl ) ){
-                instance = await componentOrUrl.start( config );
-              } else {
-                instance = await self.ccm.start( componentOrUrl, config );
-              }
-            }
-          } else {
-            debugger;
-          }
+          const instance = $.isComponent( componentOrUrl ) ?
+            await componentOrUrl.start( config ) : await self.ccm.start( componentOrUrl, config );
 
           ccmInstances[ instance.index ] = instance;
 
@@ -1842,7 +1825,7 @@
             ];
           }
 
-          editor_div.dispatchEvent(new Event('keyup'));
+          editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
 
           if ( self.inline_block ) component_div.style = "display: inline-block;";
           if ( self.inline_block ) component_div.firstChild.style = "display: inline-block;";
@@ -1946,7 +1929,8 @@
                       } } );
                     builder_div.style.display = 'none';
                     builder_div.removeChild( instance.builder_div );
-                    editor_div.dispatchEvent(new Event('keyup'));
+                    editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
+                    updateData();
                     editor_div.focus();
                   }
                 });
