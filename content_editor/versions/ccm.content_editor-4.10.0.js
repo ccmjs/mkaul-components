@@ -1172,20 +1172,21 @@
         if ( self.enabled && self.html.toolbar.inner ){
           // filter enabled tools
           self.html.toolbar.inner = self.html.toolbar.inner.filter(tool=>self.enabled.includes(tool['data-command']) || ! tool['data-command'] );
-          // add special buttons
+
+          // add special buttons for ccm components
           const commands = self.html.toolbar.inner.map( tool => tool['data-command'] );
           self.enabled.forEach( label => {
             if ( ! commands.includes( label ) ) self.html.toolbar.inner.push({
               "tag": "a",
               "href": "#",
               "class": "click",
-              "data-command": label,
+              "data-command": label,  // label is the name of a ccm component
               "data-prompt": "DMS-ID",
               "style": "width: auto; margin-right: 3px; border-radius: 3px;",
               "inner": {
                 "class": "fa",
                 "tag": "i",
-                "inner": label.slice(4)
+                "inner": label.slice(4)  // name of a ccm component without ccm prefix
               }
             });
           });
@@ -1194,7 +1195,7 @@
 
 
         const toolbar_div = $.html( this.html.toolbar );
-        let select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
+        const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
 
         class Anchors {
           constructor(){
@@ -1207,12 +1208,10 @@
               [...select_anchor_button.children].forEach(child=>{
                 select_anchor_button.removeChild( child );
               });
-            } else {
-              select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
+              this.options().forEach( option => {
+                select_anchor_button.appendChild( $.html( option ) );
+              });
             }
-            this.options().forEach( option => {
-              select_anchor_button.appendChild( $.html( option ) );
-            });
           }
           options(){
             const list_of_options = [{tag: 'option', value: '_', inner: '_'}];
