@@ -1194,7 +1194,7 @@
 
 
         const toolbar_div = $.html( this.html.toolbar );
-        const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
+        let select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
 
         class Anchors {
           constructor(){
@@ -1203,9 +1203,13 @@
           }
           add( newAnchor ){
             this.set_of_all_anchors.add( newAnchor );
-            [...select_anchor_button.children].forEach(child=>{
-              select_anchor_button.removeChild( child );
-            });
+            if ( select_anchor_button ){
+              [...select_anchor_button.children].forEach(child=>{
+                select_anchor_button.removeChild( child );
+              });
+            } else {
+              select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
+            }
             this.options().forEach( option => {
               select_anchor_button.appendChild( $.html( option ) );
             });
