@@ -5,7 +5,7 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Content Editor for rich texts and ccm components. Double-click on component to open builder.",
     "description": "<p>Content Editor for rich texts using contentEditable. With this tiny editor rich text editing can be embedded in any web page or any ccm component. Double-click on component to open builder. On mobile devices use shift-click instead.</p><p>For more information see <a target=_blank href='https://www.stifterverband.org/file/5203/download?token=lay3iM9c' rel='noopener'>Paper Digital Maker Space (DMS)</a>.</p><p>To publish your content use the Digital Maker Space (DMS) as follows:</p>  <img src='https://ccmjs.github.io/mkaul-components/content_editor/resources/cycle.svg'>",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-5.0.0.js",
     "version": "4.10.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",

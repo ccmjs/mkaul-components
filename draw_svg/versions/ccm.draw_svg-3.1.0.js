@@ -622,7 +622,7 @@
         }
       } ],
 
-      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-4.10.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
+      content_editor: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-5.0.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ],
 
       quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
 
@@ -2006,26 +2006,10 @@
           } else {
             config.root = component_div;
           }
-          config.parent = this;
+          config.parent = self;
 
-          let instance;
-
-          // start component
-          if ( $.isComponent( component ) ){
-            instance = await component.start( config );
-          } else if ( typeof component === 'string' ) {
-            if ( component.startsWith('http') ) {
-              instance = await self.ccm.start( component, config );
-            } else {
-              if ( $.isComponent( componentOrUrl ) ){
-                instance = await componentOrUrl.start( config );
-              } else {
-                instance = await self.ccm.start( componentOrUrl, config );
-              }
-            }
-          } else {
-            debugger;
-          }
+          const instance = $.isComponent( componentOrUrl ) ?
+            await componentOrUrl.start( config ) : await self.ccm.start( componentOrUrl, config );
 
           foreignObject.instance = instance;
           foreignObjects[ instance.index ] = foreignObject;
