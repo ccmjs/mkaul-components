@@ -1047,7 +1047,7 @@
         if ( ! dataset.components ) dataset.components = {};
 
         // add listeners to in page anchors
-        const afterStartCallback = () => {
+        const afterStartCallback = function(){
           [...element.querySelectorAll('a[href^="#"]')].forEach( anchor => {
             const id = anchor.href;
             anchor.addEventListener( e => {
