@@ -920,6 +920,7 @@
       inline_block: false,
 
       save_format: 'content',  // or 'script'
+      ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
 
       // other ccm components to be embeddable inside the editor text
       clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
@@ -1044,6 +1045,21 @@
 
         // initialize dataset.components if necessary
         if ( ! dataset.components ) dataset.components = {};
+
+        // add listeners to in page anchors
+        const afterStartCallback = () => {
+          [...element.querySelectorAll('a[href^="#"]')].forEach( anchor => {
+            const id = anchor.href;
+            anchor.addEventListener( e => {
+              e.preventDefault();
+              this.element.querySelector( id ).scrollIntoView({
+                behavior: 'smooth'
+              });
+            });
+          });
+        };
+
+        dataset.afterStartCallback = afterStartCallback;
 
       };
 
@@ -1338,6 +1354,7 @@
 
           if ( Array.isArray( component ) ) component = await $.solveDependency( component );
           if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;
+          if ( ! component ) debugger;
           return component;
         }
 
@@ -1408,8 +1425,8 @@
 
               } else if ( self.save_format === 'content' ){
                 htmlData += `
-                  <script src="${self.ccm.url}"></script>
-                  <div id="content">Please wait ... </div>
+                  <script src="${self.ccm_save}"></script>
+                  <div id="content">Loading ... </div>
                   <script>
                       const content = document.getElementById("content");
                       const content_config = ${JSON.stringify( dataset, null, 2)};
