@@ -52,7 +52,7 @@ ccm.files[ 'configs.js' ] = {
         ]
       },
       components: {
-        "ccm-content_editor": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-5.0.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ]
+        "ccm-content_editor": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-5.1.0.js", { key: ["ccm.get","https://ccmjs.github.io/mkaul-components/content_editor/resources/configs.js","small"] } ]
       }
 
     },
