@@ -1011,19 +1011,19 @@
         if (!dataset.components) dataset.components = {};
 
         // add listeners to in page anchors
-        const afterStartCallback = function () {
-          [...element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
-            const id = anchor.href;
-            anchor.addEventListener(e => {
+        const afterstart = function () {
+          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+            const id = anchor.href.split('#')[1];
+            anchor.addEventListener( 'click', e => {
               e.preventDefault();
-              this.element.querySelector(id).scrollIntoView({
+              this.element.querySelector( '#' + id ).scrollIntoView({
                 behavior: 'smooth'
               });
             });
           });
         };
 
-        dataset.afterStartCallback = afterStartCallback;
+        dataset.afterstart = afterstart;
 
       };
 
@@ -1051,6 +1051,7 @@
             }
           }
 
+          select_array.push({ tag: 'option', value: '_', inner: '_' });
           for (const record of data) {
             select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
             // with version number
@@ -1707,7 +1708,14 @@
             await self.ccm.component( componentName ) :
             DMS_component_index[ componentName ];
           if ( $.isComponent( component ) ) return component;
-          return self.ccm.component( component );
+          const component2 = await self.ccm.component( component );
+          if ( $.isComponent( component2 ) ) return component2;
+          const component_url = DMS_component_index[ componentName ];
+          const component3 =  await self.ccm.component( component_url );
+          if ( $.isComponent( component3 ) ) return component3;
+          const component4 = await self.ccm.component( DMS_component_index[ componentName.split('-')[0] ] );
+          if ( $.isComponent( component4 ) ) return component4;
+          debugger;
         }
 
         /**
@@ -1756,9 +1764,9 @@
               }
               break;
             case 'select': // select ccm component from DMS
-              const component_url = (await self.dms_index.get(select.options[select.selectedIndex].value)).url;
+              const component_url = DMS_component_index[ select.options[select.selectedIndex].value ];
               const instance = await insertComponent({
-                component: component_url
+                component: await getComponent( component_url )
               });
               break;
             default:
