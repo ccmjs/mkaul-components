@@ -925,19 +925,6 @@
       save_format: 'content',  // or 'script'
       ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
 
-      // other ccm components to be embeddable inside the editor text
-      clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
-        width: "40px",
-        html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
-        }
-      } ],
-
-      quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
-
-      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
-
-      // draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
-
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
         "html.inner.1": "",
         "directly": true
@@ -949,6 +936,8 @@
       } ],
 
       html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
+
+      dms_store_url: "https://ccm2.inf.h-brs.de",
 
       // fetch all component descriptions from DMS and store them locally
       dms_index: [ "ccm.store", [ "ccm.get", { "name": "components", "url": "https://ccm2.inf.h-brs.de" }, {} ] ]
@@ -1687,15 +1676,15 @@
                     name: componentName,
                     url: "https://ccm2.inf.h-brs.de"
                   }, dms_id);
+                } else if (this.dataset["config"]) {
+                  const config_keys = JSON.parse(this.dataset["config"]);
+                  config_keys.forEach(key => {
+                    config[key] = (/^[{[]/.test(this.dataset[key])) ?
+                      JSON.parse(this.dataset[key]) :
+                      this.dataset[key];
+                  });
                 } else {
-                  if (this.dataset["config"]) {
-                    const config_keys = JSON.parse(this.dataset["config"]);
-                    config_keys.forEach(key => {
-                      config[key] = (/^[{[]/.test(this.dataset[key])) ?
-                        JSON.parse(this.dataset[key]) :
-                        this.dataset[key];
-                    });
-                  }
+                  config = await ccm.get({name: componentName, url: self.dms_store_url }, 'demo');
                 }
 
                 const instance = await insertComponent({component, config});
@@ -1885,7 +1874,7 @@
             config
           ];
 
-          updateData();
+          // updateData();
 
           editor_div.dispatchEvent(new Event('keyup', {'bubbles': true}));
 
@@ -2138,10 +2127,10 @@
               ];
             }
             // add second index without version number
-            if (index.includes('-')) {
-              const name = index.slice(0, index.indexOf('-'));
-              result.components[name] = result.components[index];
-            }
+            // if (index.includes('-')) {
+            //   const name = index.slice(0, index.indexOf('-'));
+            //   result.components[name] = result.components[index];
+            // }
           }
           return result;
         };
