@@ -1874,7 +1874,7 @@
             config
           ];
 
-          // updateData();
+          updateData();
 
           editor_div.dispatchEvent(new Event('keyup', {'bubbles': true}));
 
