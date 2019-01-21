@@ -670,18 +670,6 @@
               "tag": "a",
               "href": "#",
               "class": "click",
-              "data-command": "ccm-quiz",
-              "title": "insert nested quiz",
-              "inner": {
-                "tag": "i",
-                "inner": "Q",
-                "class": "fa"
-              }
-            },
-            {
-              "tag": "a",
-              "href": "#",
-              "class": "click",
               "data-command": "view_editor",
               "title": "switch back to editor view",
               "inner": {
