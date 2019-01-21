@@ -1049,16 +1049,18 @@
             }
           }
 
-          select_array.push({ tag: 'option', value: '_', inner: '_' });
-          for (const record of data) {
-            select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
-            // with version number
-            DMS_component_index[ $.getIndex( record.url )] = record.url;
-            // without version number
-            DMS_component_index[ record.key ] = record.url;
-          }
+          if ( select_array ){
+            select_array.push({ tag: 'option', value: '_', inner: '_' });
+            for (const record of data) {
+              select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
+              // with version number
+              DMS_component_index[ $.getIndex( record.url )] = record.url;
+              // without version number
+              DMS_component_index[ record.key ] = record.url;
+            }
 
-          select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
+            select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
+          }
 
       };
 
