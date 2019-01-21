@@ -76,7 +76,8 @@ if (typeof ShadowRoot.prototype.caretRangeFromPoint === 'undefined') {
     };
 }
 
-if ( ! MonacoEditor ){
+if ( ! window.MonacoEditor ){
+
     class MonacoEditor extends HTMLElement {
 
         static get observedAttributes() {
