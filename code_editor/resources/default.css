@@ -1,0 +1,23 @@
+/**
+ * @overview default layout of ccm component code_editor
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+:host {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  height: auto;
+}
+monaco-editor {
+  margin: 0.2em;
+  padding: 0.2em;
+  border: thin solid grey;
+  display: block;
+  width: 95%;
+  height: 300px;
+}
+h2 {
+  text-align: center;
+}
