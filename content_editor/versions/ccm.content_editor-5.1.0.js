@@ -925,7 +925,7 @@
       save_format: 'content',  // or 'script'
       ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
 
-      json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js", {
+      json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js", {
         "html.inner.1": "",
         "directly": true
       } ],
@@ -1034,7 +1034,7 @@
 
         // fill select menu with DMS components
 
-        if (!self.enabled || (self.enabled && self.enabled.includes('select'))) {
+        // if (!self.enabled || (self.enabled && self.enabled.includes('select'))) {
 
           DMS_component_index = {};
 
@@ -1061,7 +1061,7 @@
           }
 
           select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
-        }
+
       };
 
 
