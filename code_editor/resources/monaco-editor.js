@@ -76,256 +76,258 @@ if (typeof ShadowRoot.prototype.caretRangeFromPoint === 'undefined') {
     };
 }
 
-class MonacoEditor extends HTMLElement {
+if ( ! MonacoEditor ){
+    class MonacoEditor extends HTMLElement {
 
-    static get observedAttributes() {
-        return ['value', 'language', 'theme', 'read-only', 'no-line-numbers',
+        static get observedAttributes() {
+            return ['value', 'language', 'theme', 'read-only', 'no-line-numbers',
                 'namespace', 'no-rounded-selection', 'no-scroll-beyond-last-line',
                 'no-minimap', 'no-drag-and-drop'];
-    }
-
-    constructor () {
-        super();
-        this.createdCallback();
-    }
-
-    createdCallback () {
-        this._value = '';
-        this._namespace = 'https://ccmjs.github.io/mkaul-components/code_editor/dist/monaco-editor/vs';
-        this._theme = 'vs';
-
-        this.addStringProperty('language', 'language', 'javascript');
-
-        this.addBooleanProperty('readOnly', 'readOnly', false);
-        this.addBooleanProperty('noLineNumbers', 'lineNumbers', false, false, true);
-        this.addBooleanProperty('noRoundedSelection', 'roundedSelection', false, false, true);
-        this.addBooleanProperty('noScrollBeyondLastLine', 'scrollBeyondLastLine', false, false, true);
-        this.addBooleanProperty('noMinimap', 'minimap.enabled', false, false, true);
-        this.addBooleanProperty('noDragAndDrop', 'dragAndDrop', false, false, true);
-    }
-
-    attachedCallback () {
-        this.connectedCallback.apply(this, arguments);
-    }
-
-    detachedCallback () {
-        this.disconnectedCallback.apply(this, arguments);
-    }
-
-    connectedCallback () {
-        this._loading = true;
-        // Create a shadow root to host the style and the editor's container'
-        this.root = typeof this.attachShadow === 'function' ? this.attachShadow({ mode: 'open' }) : this.createShadowRoot();
-        this.styleEl = document.createElement('style');
-        this.container = document.createElement('div');
-        // Expand the container to the element's size
-        this.container.style.width = '100%';
-        this.container.style.height = '100%';
-        // Append the style and container to the shadow root
-        this.root.appendChild(this.styleEl);
-        this.root.appendChild(this.container);
-        // Get the dependencies if needed
-        this._loadDependency().then(() => {
-            // Fill the style element with the stylesheet content
-            this.styleEl.innerHTML = MonacoEditor._styleText;
-            // Create the editor
-            this.editor = monaco.editor.create(this.container, this.editorOptions);
-            this.root.insertBefore(this.editor._themeService._styleElement, this.root.firstChild);
-            this.editor.viewModel._shadowRoot = this.root;
-            this.bindEvents();
-            this._loading = false;
-            // Notify that the editor is ready
-            this.dispatchEvent(new CustomEvent('ready', { bubbles: true }));
-        });
-    }
-
-    bindEvents () {
-        this.editor.onDidChangeModelContent(event => {
-            this.value = this.editor.getValue();
-            this.dispatchEvent(new CustomEvent('changed', { bubbles: true }));
-        });
-    }
-
-    /**
-    * Loads the monaco dependencies and the required stylesheet. Prevent data to be loaded twice
-    */
-    _loadDependency () {
-        if (!MonacoEditor._loadingPromise) {
-            MonacoEditor._loadingPromise = Promise.all([
-                this._loadMonaco(),
-                this._loadStylesheet()
-            ]);
         }
-        return MonacoEditor._loadingPromise;
-    }
 
-    /**
-     * Use the require method from the vscode-loader to import all the dependencies
-     */
-    _loadMonaco () {
-        return new Promise((resolve, reject) => {
-            require.config({ paths: { 'vs': this.editorOptions.namespace }});
-            require(['vs/editor/editor.main'], resolve);
-        });
-    }
+        constructor () {
+            super();
+            this.createdCallback();
+        }
 
-    /**
-     * We need to embed this stylesheet in a style tag inside the shadow root
-     */
-    _loadStylesheet () {
-        return fetch(`${this.editorOptions.namespace}/editor/editor.main.css`)
-            .then(r => r.text())
-            .then(style => {
-                MonacoEditor._styleText = style;
-                return style;
+        createdCallback () {
+            this._value = '';
+            this._namespace = 'https://ccmjs.github.io/mkaul-components/code_editor/dist/monaco-editor/vs';
+            this._theme = 'vs';
+
+            this.addStringProperty('language', 'language', 'javascript');
+
+            this.addBooleanProperty('readOnly', 'readOnly', false);
+            this.addBooleanProperty('noLineNumbers', 'lineNumbers', false, false, true);
+            this.addBooleanProperty('noRoundedSelection', 'roundedSelection', false, false, true);
+            this.addBooleanProperty('noScrollBeyondLastLine', 'scrollBeyondLastLine', false, false, true);
+            this.addBooleanProperty('noMinimap', 'minimap.enabled', false, false, true);
+            this.addBooleanProperty('noDragAndDrop', 'dragAndDrop', false, false, true);
+        }
+
+        attachedCallback () {
+            this.connectedCallback.apply(this, arguments);
+        }
+
+        detachedCallback () {
+            this.disconnectedCallback.apply(this, arguments);
+        }
+
+        connectedCallback () {
+            this._loading = true;
+            // Create a shadow root to host the style and the editor's container'
+            this.root = typeof this.attachShadow === 'function' ? this.attachShadow({ mode: 'open' }) : this.createShadowRoot();
+            this.styleEl = document.createElement('style');
+            this.container = document.createElement('div');
+            // Expand the container to the element's size
+            this.container.style.width = '100%';
+            this.container.style.height = '100%';
+            // Append the style and container to the shadow root
+            this.root.appendChild(this.styleEl);
+            this.root.appendChild(this.container);
+            // Get the dependencies if needed
+            this._loadDependency().then(() => {
+                // Fill the style element with the stylesheet content
+                this.styleEl.innerHTML = MonacoEditor._styleText;
+                // Create the editor
+                this.editor = monaco.editor.create(this.container, this.editorOptions);
+                this.root.insertBefore(this.editor._themeService._styleElement, this.root.firstChild);
+                this.editor.viewModel._shadowRoot = this.root;
+                this.bindEvents();
+                this._loading = false;
+                // Notify that the editor is ready
+                this.dispatchEvent(new CustomEvent('ready', { bubbles: true }));
             });
-    }
+        }
 
-    disconnectedCallback () {
-        this.root.removeChild(this.container);
-        this.editor.dispose();
-    }
+        bindEvents () {
+            this.editor.onDidChangeModelContent(event => {
+                this.value = this.editor.getValue();
+                this.dispatchEvent(new CustomEvent('changed', { bubbles: true }));
+            });
+        }
 
-    attributeChangedCallback (name, oldValue, newValue) {
-        let camelCased = name.replace(/-([a-z])/g, (m, w) => {
-            return w.toUpperCase();
-        });
-        this[camelCased] = newValue;
-    }
-
-    addStringProperty (name, monacoName, value, reflectToAttribute) {
-        let cachedName = '_' + name,
-            attrName = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
-            monacoOptions = {};
-        this[cachedName] = value;
-        Object.defineProperty(this, name, {
-            get: () => {
-                return this[cachedName];
-            },
-            set: (value) => {
-                if (this[cachedName] === value) {
-                    return;
-                }
-                this[cachedName] = value;
-                if (reflectToAttribute) {
-                    this.setAttribute(attrName, this[cachedName])
-                }
-                if (this.editor) {
-                    monacoName.split('.').reduce((acc, property, index, self) => {
-                        if (index === self.length - 1) {
-                            return acc[property] = this[cachedName];
-                        }
-                        return acc[property] = {};
-                    }, monacoOptions);
-                    this.editor.updateOptions(monacoOptions);
-                }
+        /**
+         * Loads the monaco dependencies and the required stylesheet. Prevent data to be loaded twice
+         */
+        _loadDependency () {
+            if (!MonacoEditor._loadingPromise) {
+                MonacoEditor._loadingPromise = Promise.all([
+                    this._loadMonaco(),
+                    this._loadStylesheet()
+                ]);
             }
-        });
-    }
-    
-    addBooleanProperty (name, monacoName, value, reflectToAttribute, invert) {
-        let cachedName = '_' + name,
-        attrName = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
-        monacoOptions = {};
-        value = Boolean(value);
-        this[cachedName] = value;
-        Object.defineProperty(this, name, {
-            get: () => {
-                return this[cachedName];
-            },
-            set: (value) => {
-                value = value == '' ? true : Boolean(value);
-                if (this[cachedName] === value) {
-                    return;
-                }
-                this[cachedName] = value;
-                if (reflectToAttribute) {
-                    if (value) {
-                        this.setAttribute(attrName, '');
-                    } else {
-                        this.removeAttribute(attrName);
+            return MonacoEditor._loadingPromise;
+        }
+
+        /**
+         * Use the require method from the vscode-loader to import all the dependencies
+         */
+        _loadMonaco () {
+            return new Promise((resolve, reject) => {
+                require.config({ paths: { 'vs': this.editorOptions.namespace }});
+                require(['vs/editor/editor.main'], resolve);
+            });
+        }
+
+        /**
+         * We need to embed this stylesheet in a style tag inside the shadow root
+         */
+        _loadStylesheet () {
+            return fetch(`${this.editorOptions.namespace}/editor/editor.main.css`)
+              .then(r => r.text())
+              .then(style => {
+                  MonacoEditor._styleText = style;
+                  return style;
+              });
+        }
+
+        disconnectedCallback () {
+            this.root.removeChild(this.container);
+            this.editor.dispose();
+        }
+
+        attributeChangedCallback (name, oldValue, newValue) {
+            let camelCased = name.replace(/-([a-z])/g, (m, w) => {
+                return w.toUpperCase();
+            });
+            this[camelCased] = newValue;
+        }
+
+        addStringProperty (name, monacoName, value, reflectToAttribute) {
+            let cachedName = '_' + name,
+              attrName = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
+              monacoOptions = {};
+            this[cachedName] = value;
+            Object.defineProperty(this, name, {
+                get: () => {
+                    return this[cachedName];
+                },
+                set: (value) => {
+                    if (this[cachedName] === value) {
+                        return;
+                    }
+                    this[cachedName] = value;
+                    if (reflectToAttribute) {
+                        this.setAttribute(attrName, this[cachedName])
+                    }
+                    if (this.editor) {
+                        monacoName.split('.').reduce((acc, property, index, self) => {
+                            if (index === self.length - 1) {
+                                return acc[property] = this[cachedName];
+                            }
+                            return acc[property] = {};
+                        }, monacoOptions);
+                        this.editor.updateOptions(monacoOptions);
                     }
                 }
-                if (this.editor) {
-                    monacoName.split('.').reduce((acc, property, index, self) => {
-                        if (index === self.length - 1) {
-                            return acc[property] = invert ? !this[cachedName] : this[cachedName];
+            });
+        }
+
+        addBooleanProperty (name, monacoName, value, reflectToAttribute, invert) {
+            let cachedName = '_' + name,
+              attrName = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
+              monacoOptions = {};
+            value = Boolean(value);
+            this[cachedName] = value;
+            Object.defineProperty(this, name, {
+                get: () => {
+                    return this[cachedName];
+                },
+                set: (value) => {
+                    value = value == '' ? true : Boolean(value);
+                    if (this[cachedName] === value) {
+                        return;
+                    }
+                    this[cachedName] = value;
+                    if (reflectToAttribute) {
+                        if (value) {
+                            this.setAttribute(attrName, '');
+                        } else {
+                            this.removeAttribute(attrName);
                         }
-                        return acc[property] = {};
-                    }, monacoOptions);
-                    this.editor.updateOptions(monacoOptions);
+                    }
+                    if (this.editor) {
+                        monacoName.split('.').reduce((acc, property, index, self) => {
+                            if (index === self.length - 1) {
+                                return acc[property] = invert ? !this[cachedName] : this[cachedName];
+                            }
+                            return acc[property] = {};
+                        }, monacoOptions);
+                        this.editor.updateOptions(monacoOptions);
+                    }
                 }
+            });
+        }
+
+        set value (value) {
+            if (this._value === value) {
+                return;
             }
-        });
-    }
-
-    set value (value) {
-        if (this._value === value) {
-            return;
+            this._value = value;
+            if (this.editor) {
+                this.editor.setValue(this._value);
+            }
         }
-        this._value = value;
-        if (this.editor) {
-            this.editor.setValue(this._value);
+
+        get value () {
+            return this._value;
         }
-    }
 
-    get value () {
-        return this._value;
-    }
-
-    get editorOptions () {
-        return {
-            namespace: this.namespace,
-            value: this.value,
-            theme: this._theme,
-            language: this.language,
-            readOnly: this.readOnly,
-            lineNumbers: !this.noLineNumbers,
-            roundedSelection: !this.noRoundedSelection,
-            scrollBeyondLastLine: !this.noScrollBeyondLastLine,
-            minimap: {
-                enabled: !this.noMinimap
-            },
-            dragAndDrop: !this.noDragAndDrop
+        get editorOptions () {
+            return {
+                namespace: this.namespace,
+                value: this.value,
+                theme: this._theme,
+                language: this.language,
+                readOnly: this.readOnly,
+                lineNumbers: !this.noLineNumbers,
+                roundedSelection: !this.noRoundedSelection,
+                scrollBeyondLastLine: !this.noScrollBeyondLastLine,
+                minimap: {
+                    enabled: !this.noMinimap
+                },
+                dragAndDrop: !this.noDragAndDrop
+            }
         }
-    }
 
-    set namespace (ns) {
-        if (this._namespace === ns) {
-            return;
+        set namespace (ns) {
+            if (this._namespace === ns) {
+                return;
+            }
+            this._namespace = ns;
         }
-        this._namespace = ns;
-    }
 
-    get namespace () {
-        return this._namespace;
-    }
+        get namespace () {
+            return this._namespace;
+        }
 
-    getEditor () {
-        return this.editor;
-    }
+        getEditor () {
+            return this.editor;
+        }
 
-    get loading () {
-        return this._loading;
-    }
+        get loading () {
+            return this._loading;
+        }
 
-    set theme (value) {
-        this._theme = value;
-        if ('monaco' in window) {
-            monaco.editor.setTheme(this._theme);
+        set theme (value) {
+            this._theme = value;
+            if ('monaco' in window) {
+                monaco.editor.setTheme(this._theme);
+            }
+        }
+
+        get theme () {
+            return this._theme;
         }
     }
 
-    get theme () {
-        return this._theme;
+    if ('customElements' in window) {
+        customElements.define('monaco-editor', MonacoEditor);
+    } else if ('registerElement' in document) {
+        document.registerElement('monaco-editor', MonacoEditor);
+    } else {
+        console.error('Defining a custom element is not supported in this browser');
     }
-}
-
-if ('customElements' in window) {
-    customElements.define('monaco-editor', MonacoEditor);
-} else if ('registerElement' in document) {
-    document.registerElement('monaco-editor', MonacoEditor);
-} else {
-    console.error('Defining a custom element is not supported in this browser');
 }
 
