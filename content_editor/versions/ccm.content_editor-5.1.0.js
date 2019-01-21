@@ -976,12 +976,6 @@
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        // get data from config or remote database
-        dataset = await $.dataset(this.data);
-
-
-        if (typeof dataset === 'string') dataset = {inner: dataset};
-
         // Use LightDOM with higher priority than data from config
         if (this.inner) {
 
@@ -994,24 +988,6 @@
 
           dataset.inner = this.inner;
         }
-
-        // initialize dataset.components if necessary
-        if (!dataset.components) dataset.components = {};
-
-        // add listeners to in page anchors
-        const afterstart = function () {
-          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
-            const id = anchor.href.split('#')[1];
-            anchor.addEventListener( 'click', e => {
-              e.preventDefault();
-              this.element.querySelector( '#' + id ).scrollIntoView({
-                behavior: 'smooth'
-              });
-            });
-          });
-        };
-
-        dataset.afterstart = afterstart;
 
       };
 
@@ -1057,6 +1033,29 @@
        * starts the instance
        */
       this.start = async () => {
+
+        // get data from config or remote database
+        dataset = await $.dataset(this.data);
+
+        if (typeof dataset === 'string') dataset = {inner: dataset};
+
+        // initialize dataset.components if necessary
+        if (!dataset.components) dataset.components = {};
+
+        // add listeners to in page anchors
+        const afterstart = function () {
+          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+            const id = anchor.href.split('#')[1];
+            anchor.addEventListener( 'click', e => {
+              e.preventDefault();
+              this.element.querySelector( '#' + id ).scrollIntoView({
+                behavior: 'smooth'
+              });
+            });
+          });
+        };
+
+        dataset.afterstart = afterstart;
 
         // logging of 'start' event
         this.logger && this.logger.log('start', $.clone(dataset));
