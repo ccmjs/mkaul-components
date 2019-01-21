@@ -1043,19 +1043,17 @@
         if (!dataset.components) dataset.components = {};
 
         // add listeners to in page anchors
-        const afterstart = function () {
-          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+        dataset.afterstart = function () {
+          [...self.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
             const id = anchor.href.split('#')[1];
             anchor.addEventListener( 'click', e => {
               e.preventDefault();
-              this.element.querySelector( '#' + id ).scrollIntoView({
+              self.element.querySelector( '#' + id ).scrollIntoView({
                 behavior: 'smooth'
               });
             });
           });
         };
-
-        dataset.afterstart = afterstart;
 
         // logging of 'start' event
         this.logger && this.logger.log('start', $.clone(dataset));
