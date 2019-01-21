@@ -1302,15 +1302,15 @@
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
             let component = dataset.components[ index ] || await getComponent( src || index );
-            if ( Array.isArray( component ) ) component = $.solveDependency( component );
+            if ( Array.isArray( component ) ) component = await $.solveDependency( component );
 
-            component.root = child;
+            component.config.root = child;
 
             if ($.isComponent(component)) {
-              const instance = await component.start() ;
+              const instance = await component.start({ root: child }) ;
               child.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance ));
             } else { // The http address of the component is only given
-              await window.ccm.start( src || component );
+              await window.ccm.start( src || component, { root: child } );
             }
           } else {
             startAllComponents(child);
