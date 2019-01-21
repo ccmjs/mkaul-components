@@ -76,7 +76,15 @@ if (typeof ShadowRoot.prototype.caretRangeFromPoint === 'undefined') {
     };
 }
 
-if ( ! window.MonacoEditor ){
+function wasRegistered( tagName ) {
+    switch( document.createElement( tagName ).constructor ) {
+        case HTMLElement: return false;
+        case HTMLUnknownElement: return undefined;
+    }
+    return true;
+}
+
+if ( ! wasRegistered( 'monaco-editor' ) ){
 
     class MonacoEditor extends HTMLElement {
 
