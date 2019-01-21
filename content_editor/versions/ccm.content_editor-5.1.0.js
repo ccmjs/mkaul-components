@@ -1034,8 +1034,6 @@
 
         // fill select menu with DMS components
 
-        // if (!self.enabled || (self.enabled && self.enabled.includes('select'))) {
-
           DMS_component_index = {};
 
           const data = await self.dms_index.get({});
