@@ -1301,7 +1301,9 @@
 
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
-            const component = dataset.components[ index ] || await getComponent( src || index );
+            let component = dataset.components[ index ] || await getComponent( src || index );
+            if ( Array.isArray( component ) ) component = $.solveDependency( component );
+
             component.root = child;
 
             if ($.isComponent(component)) {
