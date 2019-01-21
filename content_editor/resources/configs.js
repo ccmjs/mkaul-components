@@ -151,7 +151,7 @@ ccm.files[ 'configs.js' ] = {
       position: 48 // cursor position
     },
 
-    enabled:['undo', 'redo', 'save_file', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'set_anchor', 'select_anchor', 'toc', 'insertimage', 'p', 'subscript', 'superscript', 'audio', 'video', 'fontname', 'fontSize', 'ccm-clock', 'ccm-slidecast', 'ccm-pdf_viewer', 'ccm-quiz', 'ccm-cloze', 'ccm-thumb_rating','ccm-star_rating','ccm-highchart','ccm-connect4','ccm-comment', 'ccm-live_poll' ],
+    enabled:['undo', 'redo', 'save_file', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'set_anchor', 'select_anchor', 'toc', 'insertimage', 'p', 'subscript', 'superscript', 'audio', 'video', 'fontname', 'fontSize', 'embed', 'ccm-clock', 'ccm-slidecast', 'ccm-pdf_viewer', 'ccm-quiz', 'ccm-cloze', 'ccm-thumb_rating','ccm-star_rating','ccm-highchart','ccm-connect4','ccm-comment', 'ccm-live_poll' ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
