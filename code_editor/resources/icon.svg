@@ -9,7 +9,7 @@
     <path d="M 425 429 C 425 444 412 457 396 457 L 148 457 C 132 457 119 444 119 429 L 119 420 L 106 420 L 106 433 C 106 454 122 470 143 470 L 401 470 C 421 470 438 454 438 433 L 438 45 L 425 57 L 425 429 Z" id="XMLID_9_" style=""/>
     <path d="M 119 75 C 119 59 132 46 148 46 L 411 46 C 410 41 421 38 425 34 L 143 33 C 122 33 106 49 106 70 L 106 297 L 119 297 L 119 75 Z" id="XMLID_8_" style=""/>
     <path d="M 383 359 C 383 330 360 306 331 306 L 93 306 L 93 411 L 331 411 C 360 411 383 387 383 359" id="XMLID_788_" style="" bx:origin="0 0"/>
-    <text style="fill: rgb(255, 255, 255); font-family: Roboto; font-size: 108px; font-weight: 700; white-space: pre;"><tspan x="154" y="392" style="fill: rgb(140, 0, 255);">c</tspan><tspan style="fill: rgb(245, 0, 0);">o</tspan><tspan style="fill: rgb(0, 255, 85);">d</tspan><tspan style="fill: rgb(255, 0, 0);">e</tspan></text>
+    <text style="fill: rgb(255, 255, 255); font-family: Roboto; font-size: 108px; font-weight: 700; white-space: pre;"><tspan x="154" y="392" style="fill: rgb(210, 160, 251);">c</tspan><tspan style="fill: rgb(252, 255, 171);">o</tspan><tspan style="fill: rgb(0, 255, 85);">d</tspan><tspan style="fill: rgb(255, 172, 172);">e</tspan></text>
   </g>
   <g transform="matrix(7.72018, -0.77954, 1.56764, 7.73909, 0.52412, -31.71444)" bx:origin="5 1">
     <path d="M 55 22 L 48 15 C 47 14 45 14 44 15 L 40 18 L 40 19 L 23 35 L 21 45 L 20 49 L 25 48 L 35 47 L 51 30 L 52 30 L 55 26 C 56 25 56 23 55 22 Z" fill="#231F20" opacity="0.2"/>
