@@ -43,10 +43,6 @@
           class: 'container',
           inner: [
             {
-              tag: 'h2',
-              inner: 'Monaco Editor'
-            },
-            {
               tag: 'monaco-editor',
               value: '%value%'
             }

@@ -91,7 +91,7 @@ class MonacoEditor extends HTMLElement {
 
     createdCallback () {
         this._value = '';
-        this._namespace = './dist/monaco-editor/vs';
+        this._namespace = 'https://ccmjs.github.io/mkaul-components/code_editor/dist/monaco-editor/vs';
         this._theme = 'vs';
 
         this.addStringProperty('language', 'language', 'javascript');
