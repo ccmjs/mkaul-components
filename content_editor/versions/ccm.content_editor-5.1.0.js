@@ -1301,17 +1301,14 @@
 
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
-            const component = await getComponent( src || index );
-
-            const config = $.integrate( $.generateConfig(child), component.config );
-            config.root = child;
-            config.parent = self;
+            const component = dataset.components[ index ] || await getComponent( src || index );
+            component.root = child;
 
             if ($.isComponent(component)) {
-              const instance = await component.start( config );
-              child.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ));
+              const instance = await component.start() ;
+              child.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance ));
             } else { // The http address of the component is only given
-              await window.ccm.start( src || component, config );
+              await window.ccm.start( src || component );
             }
           } else {
             startAllComponents(child);
