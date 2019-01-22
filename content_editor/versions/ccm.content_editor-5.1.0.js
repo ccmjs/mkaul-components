@@ -912,6 +912,7 @@
 
       save_format: 'content',  // or 'script'
       ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
+      content_url: 'https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.0.js',
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js", {
         "html.inner.1": "",
@@ -1044,11 +1045,13 @@
 
         // add listeners to in page anchors
         dataset.afterstart = function () {
-          [...self.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+          // this === content component instance with dataset as config
+          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
             const id = anchor.href.split('#')[1];
+            if ( ! id ) return;
             anchor.addEventListener( 'click', e => {
               e.preventDefault();
-              self.element.querySelector( '#' + id ).scrollIntoView({
+              this.element.querySelector( '#' + id ).scrollIntoView({
                 behavior: 'smooth'
               });
             });
@@ -1382,20 +1385,32 @@
                   });
                 });
 
+                htmlData += editor_content.innerHTML;
+
               } else if (self.save_format === 'content') {
                 htmlData += `
                   <script src="${self.ccm_save}"></script>
                   <div id="content">Loading ... </div>
                   <script>
                       const content = document.getElementById("content");
-                      const content_config = ${JSON.stringify(dataset, null, 2)};
+                      const content_config = ${$.stringify(dataset, null, 2)};
+                      content_config.afterstart = function () {
+                        [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+                          const id = anchor.href.split('#')[1];
+                          if ( ! id ) return;
+                          anchor.addEventListener( 'click', e => {
+                            e.preventDefault();
+                            this.element.querySelector( '#' + id ).scrollIntoView({
+                              behavior: 'smooth'
+                            });
+                          });
+                        });
+                      };
                       content_config.root = content;
-                      window.ccm.start('https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.0.js', content_config );
+                      window.ccm.start( "${self.content_url}", content_config );
                   </script>                       
                 `;
               }
-
-              htmlData += editor_content.innerHTML;
 
               const htmlBlob = new Blob([htmlData], {type: "text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
