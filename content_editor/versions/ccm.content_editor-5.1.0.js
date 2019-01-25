@@ -1290,7 +1290,7 @@
         let safariRange;
         // https://github.com/GoogleChromeLabs/shadow-selection-polyfill
         document.addEventListener('-shadow-selectionchange', () => {
-          const safariRange = getRange( self.element.parentNode );
+          safariRange = self.shadow_polyfill.getRange( self.element.parentNode );
         });
 
         startAllComponents(editor_div);
