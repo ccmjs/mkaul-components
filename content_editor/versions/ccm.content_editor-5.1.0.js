@@ -41,7 +41,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -911,7 +911,7 @@
       inline_block: true,
 
       save_format: 'content',  // or 'script'
-      ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
+      ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',  // for saving content
       content_url: 'https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.0.js',
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js", {
@@ -921,6 +921,12 @@
 
       html2json_module: [ "ccm.load", {
         "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/html2json.mjs",
+        "type": "module"
+      } ],
+
+      // https://github.com/GoogleChromeLabs/shadow-selection-polyfill/blob/master/shadow.js
+      shadow_polyfill: [ "ccm.load", {
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/shadow-selection-polyfill.mjs",
         "type": "module"
       } ],
 
@@ -1281,6 +1287,12 @@
           svg.parentNode.innerHTML += '';
         });
 
+        let safariRange;
+        // https://github.com/GoogleChromeLabs/shadow-selection-polyfill
+        document.addEventListener('-shadow-selectionchange', () => {
+          const safariRange = getRange( self.element.parentNode );
+        });
+
         startAllComponents(editor_div);
 
         /**
@@ -1422,6 +1434,7 @@
             case "load_file":
               const html_url = prompt(self.helpText.load_html_prompt, self.helpText.load_html_default);
               if (html_url && html_url.length > 5) {
+                // TODO shadow DOM:  protect Editor from imported HTML
                 const html = await self.ccm.load({url: html_url, type: 'html'});
                 editor_div.appendChild(html);
               }
@@ -1891,11 +1904,15 @@
           component_div.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder(instance, config));
 
           const range = getSelectionRange();
-          if (range && !$.isSafari()) {
+          if ( range ) { // && !$.isSafari()
             range.insertNode(document.createTextNode(' '));
             range.insertNode(component_div);
             range.insertNode(document.createTextNode(' '));
-          } else {
+          } else if ( safariRange ) {
+            safariRange.insertNode(document.createTextNode(' '));
+            safariRange.insertNode(component_div);
+            safariRange.insertNode(document.createTextNode(' '));
+          } else { // no range available
             editor_div.appendChild(document.createTextNode(' '));
             editor_div.appendChild(component_div);
             editor_div.appendChild(document.createTextNode(' '));
