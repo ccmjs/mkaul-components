@@ -1904,7 +1904,7 @@
           component_div.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder(instance, config));
 
           const range = getSelectionRange();
-          if ( range ) {
+          if ( range && ! $.isSafari() ) {
             range.insertNode(document.createTextNode(' '));
             range.insertNode(component_div);
             range.insertNode(document.createTextNode(' '));
