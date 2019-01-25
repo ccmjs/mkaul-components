@@ -2043,13 +2043,17 @@
             embed_div.innerHTML = embedCode;
             // selection = self.element.parentNode.getSelection();
             const embed_selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
-            if (embed_selection.rangeCount > 0) {
+            if (embed_selection.rangeCount > 0 && ! $.isSafari() ) {
               editor_div.appendChild(document.createTextNode(' '));
-              embed_selection.getRangeAt(0).insertNode(embed_div);
+              embed_selection.getRangeAt(0).insertNode( embed_div );
               editor_div.appendChild(document.createTextNode(' '));
+            } else if ( safariRange ) {
+              safariRange.insertNode(document.createTextNode(' '));
+              safariRange.insertNode( embed_div );
+              safariRange.insertNode(document.createTextNode(' '));
             } else {
               editor_div.appendChild(document.createTextNode(' '));
-              editor_div.appendChild(embed_div);
+              editor_div.appendChild( embed_div );
               editor_div.appendChild(document.createTextNode(' '));
             }
           }
