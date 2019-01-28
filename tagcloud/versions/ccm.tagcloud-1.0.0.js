@@ -59,7 +59,7 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      d3: [ "ccm.load", { import: 'd3', url: "https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.min.js", type: "module" } ],
+      d3: [ "ccm.load", { import: 'd3', url: "https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.js", type: "module" } ],
 
       d3_layout: [ "ccm.load", { url: "https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.layout.cloud.js", type: "module" } ],
       
