@@ -5,19 +5,35 @@
     "icon": "https://ccmjs.github.io/mkaul-components/tagcloud/resources/icon.png",
     "abstract": "Tag Cloud",
     "description": "A tag cloud or word cloud visually describes words and their related importance. For every word the corresponding weight must be given.",
-    "url": "https://ccmjs.github.io/mkaul-components/tagcloud/versions/ccm.tagcloud-1.0.0.js",
-    "version": "1.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/tagcloud/versions/ccm.tagcloud-1.1.0.js",
+    "version": "1.1.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
     "ignore": {
         "demos": [
             {
-                "title": "demo",
+                "title": "small",
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/tagcloud/resources/configs.js",
-                    "demo"
+                    "small"
+                ]
+            },
+            {
+                "title": "medium",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/tagcloud/resources/configs.js",
+                    "medium"
+                ]
+            },
+            {
+                "title": "big",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/tagcloud/resources/configs.js",
+                    "big"
                 ]
             }
         ],
@@ -31,7 +47,10 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
                             "defaults": {
-
+                                "font": "impact",
+                                "data": {
+                                    "tags": [{"key": "Cat", "value": 26}]
+                                }
                             },
                             "entries": [
                                 {
@@ -97,6 +116,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-28T18:32:36+01:00",
+    "updated_at": "2019-01-29T09:00:00+01:00",
     "created_at": "2019-01-28T18:32:36+01:00"
 }

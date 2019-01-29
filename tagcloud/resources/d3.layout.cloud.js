@@ -1,9 +1,9 @@
 // Word cloud layout by Jason Davies, http://www.jasondavies.com/word-cloud/
 // Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
 
-import {d3} from './d3.js';
+import {d3} from 'https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.js';
 
-  function cloud() {
+  export function cloud() {
     var size = [256, 256],
         text = cloudText,
         font = cloudFont,

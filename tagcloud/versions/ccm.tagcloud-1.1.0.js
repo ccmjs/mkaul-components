@@ -5,6 +5,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
+ * version 1.1.0 29.01.2019 switch to datasets
  * version 1.0.0 28.01.2019 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -21,14 +22,14 @@
      * @type {string}
      */
     name: 'tagcloud',
-    // version: [1,0,0],
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -46,15 +47,15 @@
       scale: 'sqrt',
       
       data: {  // fetched from store
-        "store": [ "ccm.store", './resources/datasets.js' ],
+        "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/tagcloud/resources/datasets.js' ],
         "key": "small"
       },
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      d3: [ "ccm.load", { import: 'd3', url: "./resources/d3.js", type: "module" } ],
+      d3: [ "ccm.load", { import: 'd3', url: "https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.js", type: "module" } ],
 
-      d3_cloud: [ "ccm.load", { import: 'cloud', url: "./resources/d3.layout.cloud.js", type: "module" } ],
+      d3_cloud: [ "ccm.load", { import: 'cloud', url: "https://ccmjs.github.io/mkaul-components/tagcloud/resources/d3.layout.cloud.js", type: "module" } ],
       
       // css: [ 'ccm.load',  './resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/tagcloud/resources/default.css' ],
