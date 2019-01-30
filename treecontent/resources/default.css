@@ -1,0 +1,89 @@
+/**
+ * @overview default layout of ccm component treecontent
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+
+:host {
+  margin: 0;
+  padding: 0;
+  font-size: xx-large;
+}
+
+h1 {
+  font-family: initial;
+  font-size: x-large;
+  text-align: center;
+}
+
+.tree > ul { /* top level ul */
+  margin: 0;
+  padding: 0;
+}
+
+.tree * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  padding-inline-start: 1.1em;
+  width: 100%;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+li > button, .likes, .dislikes {
+  flex-basis: auto; /* min space */
+  font-size: inherit;
+}
+
+button {
+  width: 34px;
+}
+
+li > .label {
+  flex-grow: 10; /* max space */
+  border-bottom: thin dashed black;
+}
+
+.likes {
+  color: green;
+  text-indent: 12px;
+  font-size: 18px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-up.svg);
+  background-size: 32px 32px;
+}
+
+.dislikes {
+  color: red;
+  text-indent: 12px;
+  font-size: 18px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-down.svg);
+  background-size: 32px 32px;
+}
+
+.empty .label {
+  color: grey;
+  font-style: italic;
+  font-size: large;
+  font-family: "times new roman", times, serif;
+  background-color: lightgrey;
+}
+
+.empty button {
+  text-align: center;
+  padding-left: 0.15em;
+}
