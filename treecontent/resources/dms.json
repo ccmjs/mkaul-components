@@ -1,10 +1,10 @@
 
 {
     "_id": "treecontent",
-    "title": "treecontent",
-    "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.svg",
-    "abstract": "",
-    "description": "",
+    "title": "TreeContent",
+    "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.png",
+    "abstract": "Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
+    "description": "A tree content editor is a hierarchical List of editable content. Just type into the labels and open subtrees via the + button. Close with - button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
     "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
@@ -13,11 +13,35 @@
     "ignore": {
         "demos": [
             {
-                "title": "demo",
+                "title": "Empty",
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js",
-                    "demo"
+                    "void"
+                ]
+            },
+            {
+                "title": "Small",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js",
+                    "small"
+                ]
+            },
+            {
+                "title": "Medium",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js",
+                    "medium"
+                ]
+            },
+            {
+                "title": "Leitbild",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js",
+                    "leitbild"
                 ]
             }
         ],
@@ -31,15 +55,14 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
                             "defaults": {
-                                "x": "Hello World",
-                                "template": "<h1>${x}</h1>"
+                                "header": "Hello World"
                             },
                             "entries": [
                                 {
-                                    "label": "Title",
-                                    "name": "title",
+                                    "label": "Header Title",
+                                    "name": "header",
                                     "type": "text",
-                                    "info": "Title of the paper"
+                                    "info": "Title of tree content"
                                 }
                             ]
                         }
@@ -62,6 +85,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-04T14:41:22+02:00",
-    "created_at": "2019-01-04T14:41:22+02:00"
+    "updated_at": "2019-01-30T12:41:22+02:00",
+    "created_at": "2019-01-30T12:41:22+02:00"
 }

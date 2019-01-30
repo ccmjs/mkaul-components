@@ -10,12 +10,10 @@ ccm.files[ 'datasets.js' ] = {
 
   "void": {
     "key": "void",
-    "header": "Empty Tree Content",
   },
 
   "small": {
     "key": "small",
-    "header": "Small size Tree Content",
     "inner": [
       {
         label: 'Label 1',
@@ -27,7 +25,6 @@ ccm.files[ 'datasets.js' ] = {
 
   "medium": {
     "key": "medium",
-    "header": "Medium size Tree Content",
     "inner": [
       {
         label: 'Label 1',

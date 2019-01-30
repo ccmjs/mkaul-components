@@ -8,6 +8,7 @@
 ccm.files[ 'configs.js' ] = {
   "void": {
     key: "void",
+    "header": "Empty Tree Content",
     data: {
       "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
       "key": "void"
@@ -15,6 +16,7 @@ ccm.files[ 'configs.js' ] = {
   },
   "small": {
     key: "small",
+    "header": "Small size Tree Content",
     data: {
       "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
       "key": "small"
@@ -22,6 +24,7 @@ ccm.files[ 'configs.js' ] = {
   },
   "medium": {
     key: "medium",
+    "header": "Medium size Tree Content",
     data: {
       "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
       "key": "medium"
@@ -29,6 +32,7 @@ ccm.files[ 'configs.js' ] = {
   },
   "leitbild": {
     key: "leitbild",
+    header: "Leitbild Lehre",
     data: {
       "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
       "key": "leitbild"
