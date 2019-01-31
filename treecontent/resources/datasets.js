@@ -10,6 +10,7 @@ ccm.files[ 'datasets.js' ] = {
 
   "void": {
     "key": "void",
+    "id": "a"
   },
 
   "small": {
@@ -17,8 +18,20 @@ ccm.files[ 'datasets.js' ] = {
     "inner": [
       {
         label: 'Label 1',
-        likes: 3,
+        likes: 1,
         dislikes: 0
+      },
+      {
+        label: 'Label 2',
+        likes: 2,
+        dislikes: 0,
+        inner: [
+          {
+            label: 'Label 2.1',
+            likes: 0,
+            dislikes: 3
+          }
+        ]
       }
     ]
   },

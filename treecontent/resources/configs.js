@@ -37,5 +37,12 @@ ccm.files[ 'configs.js' ] = {
       "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
       "key": "leitbild"
     }
+  },
+  "collab": {
+    "key": "collab",
+    "data": {
+      "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+      "key": "collab"
+    }
   }
 };

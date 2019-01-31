@@ -28,15 +28,11 @@ h1 {
 ul {
   list-style-type: none;
   padding-inline-start: 1.1em;
-  width: 100%;
 }
 
 li {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 li > button, .likes, .dislikes {
@@ -49,7 +45,8 @@ button {
 }
 
 li > .label {
-  flex-grow: 10; /* max space */
+  flex-grow: 1; /* max space */
+  flex-basis: calc(100% - 98px); /* sum of px button + thumbs */
   border-bottom: thin dashed black;
 }
 
@@ -58,6 +55,7 @@ li > .label {
   text-indent: 12px;
   font-size: 18px;
   display: inline-block;
+  align-self: flex-end;
   width: 32px;
   height: 32px;
   background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-up.svg);
@@ -69,12 +67,31 @@ li > .label {
   text-indent: 12px;
   font-size: 18px;
   display: inline-block;
+  align-self: flex-end;
   width: 32px;
   height: 32px;
   background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-down.svg);
   background-size: 32px 32px;
 }
 
+:empty::before {
+  content: "Add new text here ...";
+  color: grey;
+  font-style: italic;
+  font-size: large;
+  font-family: "times new roman", times, serif;
+  background-color: lightgrey;
+}
+
+:empty+.likes {
+  display: none;
+}
+
+:empty+.likes+.dislikes {
+  display: none;
+}
+
+/*
 .empty .label {
   color: grey;
   font-style: italic;
@@ -82,6 +99,7 @@ li > .label {
   font-family: "times new roman", times, serif;
   background-color: lightgrey;
 }
+*/
 
 .empty button {
   text-align: center;

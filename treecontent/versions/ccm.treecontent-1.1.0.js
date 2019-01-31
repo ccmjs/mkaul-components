@@ -4,6 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
+ * version 1.1.0 31.01.2019 bugfixes, improve layout and functions
  * version 1.0.0 29.01.2019 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -20,14 +21,14 @@
      * @type {string}
      */
     name: 'treecontent',
-    // version: [1,0,0],
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -55,7 +56,7 @@
       },
       
       data: {
-        "store": [ "ccm.store", './resources/datasets.js' ],
+        "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
         "key": "small"
       },
 
@@ -72,7 +73,7 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
       
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js', 'log' ] ],
