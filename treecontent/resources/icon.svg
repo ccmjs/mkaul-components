@@ -17,9 +17,9 @@
   <rect x="18.76" y="13.36" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
   <rect x="30.55" y="24.96" width="25.37" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
   <rect x="18.69" y="36.26" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
-  <text style="fill: rgb(51, 51, 51); font-size: 17px; white-space: pre;" x="8.09" y="24.88">+</text>
-  <text style="fill: rgb(51, 51, 51); font-size: 17px; white-space: pre;" x="7.87" y="47.89">+</text>
+  <text style="fill: rgb(51, 51, 51); white-space: pre; font-size: 15px;" x="8.55" y="24.01">+</text>
+  <text style="fill: rgb(51, 51, 51); white-space: pre; font-size: 15px;" x="8.47" y="47.2">+</text>
   <text style="fill: rgb(51, 51, 51); font-size: 17px; white-space: pre;" x="21.66" y="35.23">-</text>
-  <text style="fill: rgb(38, 0, 254); font-size: 11px; white-space: pre;" x="20.23" y="22.79">Tree</text>
-  <text style="fill: rgb(38, 0, 254); font-size: 11px; letter-spacing: -0.5px; white-space: pre;" x="19.65" y="45.37">Content</text>
+  <text style="fill: rgb(38, 0, 254); font-size: 9px; font-weight: 700; white-space: pre;" x="21.17" y="21.79">Tree</text>
+  <text style="fill: rgb(38, 0, 254); font-size: 9px; font-weight: 700; letter-spacing: -0.5px; white-space: pre;" x="20.51" y="44.92">Content</text>
 </svg>
