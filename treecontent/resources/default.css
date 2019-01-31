@@ -7,7 +7,7 @@
 :host {
   margin: 0;
   padding: 0;
-  font-size: x-large;
+  font-size: xx-large;
 }
 
 h1 {
@@ -46,32 +46,28 @@ button {
 
 li > .label {
   flex-grow: 1; /* max space */
-  flex-basis: calc(100% - 5em); /* sum of px button + thumbs */
+  flex-basis: calc(100% - 8em); /* sum of button + thumbs */
   border-bottom: thin dashed black;
+}
+
+.likes, .dislikes {
+  text-align: center;
+  font-size: 0.6em;
+  align-self: flex-end;
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
 }
 
 .likes {
   color: green;
-  text-indent: 12px;
-  font-size: 18px;
-  display: inline-block;
-  align-self: flex-end;
-  width: 32px;
-  height: 32px;
   background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-up.svg);
-  background-size: 32px 32px;
 }
 
 .dislikes {
   color: red;
-  text-indent: 12px;
-  font-size: 18px;
-  display: inline-block;
-  align-self: flex-end;
-  width: 32px;
-  height: 32px;
   background: url(https://ccmjs.github.io/mkaul-components/treecontent/resources/thumb-down.svg);
-  background-size: 32px 32px;
+  background-size: 32px;
 }
 
 :empty::before {
@@ -90,16 +86,6 @@ li > .label {
 :empty+.likes+.dislikes {
   display: none;
 }
-
-/*
-.empty .label {
-  color: grey;
-  font-style: italic;
-  font-size: large;
-  font-family: "times new roman", times, serif;
-  background-color: lightgrey;
-}
-*/
 
 .empty button {
   text-align: center;
