@@ -2,8 +2,10 @@
  * @overview ccm component for treecontent
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.0.0)
  * @changes
+ * version 2.0.0 31.01.2019 add save via WebSocket get und set
+ * version 1.1.0 31.01.2019 bugfixes, improve layout and functions
  * version 1.0.0 29.01.2019 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -53,10 +55,10 @@
           ]
         }
       },
-      
-      data: {
-        "store": [ "ccm.store", './resources/datasets.js' ],
-        "key": "small"
+
+      "data": {
+        "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+        "key": "collab"
       },
 
       empty_row: {
@@ -242,15 +244,16 @@
             if ( item.classList.contains( 'empty' ) ){
               delete row.class;
               label.innerText = '';
-              // placeholder solution
+              // placeholder solution:
               // https://stackoverflow.com/questions/20726174/placeholder-for-contenteditable-div
-                  // label.innerText = e.data; // TODO move cursor forward
+              // label.innerText = e.data; // TODO move cursor forward
               makeNextChild( row, item );
               console.log( 3, dataset );
             }
             item.classList.remove('empty' );
             item.querySelector('button').innerText = '+';
             updateDataset( item );
+            save();
           }
 
           function buttonClickListener(e){
@@ -263,6 +266,7 @@
               if ( ! row.inner ){
                 makeFirstChild( row, item );
                 updateDataset( item );
+                save();
                 console.log( 4, dataset );
               }
             } else if ( this.innerText === '-' ){
@@ -309,6 +313,7 @@
           function likesClickListener(e){
             this.innerText = parseInt( this.innerText ) + 1;
             updateDataset( this.parentNode );
+            save();
           }
         }
 
@@ -316,7 +321,6 @@
           const id = item.id;
           const row = rowIndex[ id ];
           const label = item.querySelector('.label');
-          const button = item.querySelector('button');
           const likes = item.querySelector('.likes');
           const dislikes = item.querySelector('.dislikes');
           row.label = label.innerText;
@@ -335,6 +339,21 @@
 
         function level( row ){
           return row.id.length;
+        }
+
+        /**
+         * updates app state data and restarts app
+         * @param {boolean} [no_restart] - prevent implicit app restart
+         * @returns {Promise<void>}
+         */
+        async function save() {
+
+          // no datastore? => abort
+          if ( !$.isDatastore( self.data.store ) ) return;
+
+          await self.data.store.set( dataset );  // update app state data
+          // await self.start();     // restart app
+
         }
 
       };

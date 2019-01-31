@@ -39,10 +39,11 @@ ccm.files[ 'configs.js' ] = {
     }
   },
   "collab": {
-    "key": "collab",
-    "data": {
+    key: "collab",
+    header: "Leitbild Lehre 1",
+    data: {
       "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-      "key": "collab"
+      "key": "leitbild1"
     }
   }
 };
