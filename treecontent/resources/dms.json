@@ -63,7 +63,12 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
                             "defaults": {
-                                "header": "Hello World"
+                                "header": "Hello World",
+                                "data": {
+                                    "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+                                    "key": "test"
+                                },
+                                "data.key": "test"
                             },
                             "entries": [
                                 {
@@ -71,6 +76,16 @@
                                     "name": "header",
                                     "type": "text",
                                     "info": "Title of tree content"
+                                },
+                                {
+                                    "name": "data",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Collaboration Key",
+                                    "name": "data.key",
+                                    "type": "text",
+                                    "info": "Key for Collaboration"
                                 }
                             ]
                         }
@@ -93,6 +108,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-31T12:05:00+02:00",
+    "updated_at": "2019-01-31T17:01:00+02:00",
     "created_at": "2019-01-30T12:41:22+02:00"
 }

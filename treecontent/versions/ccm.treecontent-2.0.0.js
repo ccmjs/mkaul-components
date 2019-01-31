@@ -138,6 +138,7 @@
       
         dataset = await $.dataset( this.data );
         if ( ! dataset ) dataset = {};
+        if ( typeof dataset === 'string' ) dataset = { key: dataset };
         if ( ! dataset.key ) dataset.key = $.generateKey();
 
         // given default values? => integrate them as defaults into initial values

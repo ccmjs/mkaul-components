@@ -7,7 +7,7 @@
 :host {
   margin: 0;
   padding: 0;
-  font-size: xx-large;
+  font-size: x-large;
 }
 
 h1 {
@@ -46,7 +46,7 @@ button {
 
 li > .label {
   flex-grow: 1; /* max space */
-  flex-basis: calc(100% - 98px); /* sum of px button + thumbs */
+  flex-basis: calc(100% - 5em); /* sum of px button + thumbs */
   border-bottom: thin dashed black;
 }
 
