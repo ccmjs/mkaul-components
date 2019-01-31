@@ -182,7 +182,7 @@
           const result = $.clone( self.html.list );
           if (list) {
             list.forEach(row => {
-              if ( row.class === 'empty' ) return;
+              // if ( row.class === 'empty' ) return;
               if ( ! row.id ) row.id = next_id();
               rowIndex[ row.id ] = row;
               const item = $.format(self.html.item, row);

@@ -36,7 +36,7 @@
      * @type {object}
      */
     config: {
-      header: "Tree Content",
+      header: "Leitbild Lehre 1",
       html: {
         main: {
           inner: [
@@ -56,9 +56,14 @@
         }
       },
 
+      // data: {
+      //   "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
+      //   "key": "small"
+      // },
+
       "data": {
         "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-        "key": "collab"
+        "key": "leitbild1"
       },
 
       empty_row: {
@@ -182,7 +187,7 @@
           const result = $.clone( self.html.list );
           if (list) {
             list.forEach(row => {
-              if ( row.class === 'empty' ) return;
+              // if ( row.class === 'empty' ) return;
               if ( ! row.id ) row.id = next_id();
               rowIndex[ row.id ] = row;
               const item = $.format(self.html.item, row);
