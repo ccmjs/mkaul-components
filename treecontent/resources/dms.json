@@ -2,7 +2,7 @@
 {
     "_id": "treecontent",
     "title": "TreeContent",
-    "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.png",
+    "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.svg",
     "abstract": "Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
     "description": "A tree content editor is a hierarchical List of editable content. Just type into the labels and open subtrees via the + button. Close with - button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
     "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-2.0.0.js",
