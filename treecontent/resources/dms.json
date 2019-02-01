@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.svg",
     "abstract": "Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
     "description": "A tree content editor is a hierarchical List of editable content. Just type into the labels and open subtrees via the + button. Close with - button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
-    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-2.0.0.js",
-    "version": "2.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-2.1.0.js",
+    "version": "2.1.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -56,19 +56,47 @@
         "builder": [
           {
                 "title": "Input Mask",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.2.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.2.1.js",
                 "config": {
                     "builder": [
                         "ccm.component",
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
                         {
-                            "defaults": {
+                            "ignore.defaults": {
                                 "header": "Hello World",
                                 "data": {
                                     "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-                                    "key": "test"
+                                    "key": "collab"
                                 },
-                                "data.key": "test"
+                                "data.key": "collab",
+                                "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css" ],
+                                "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
+                                    "logging": {
+                                        "data": true,
+                                        "browser": true,
+                                        "parent": true,
+                                        "root": true,
+                                        "user": true,
+                                        "website": true
+                                    },
+                                    "onfinish": {
+                                        "store": {
+                                            "settings": { "store": "logger", "url": "https://ccm2.inf.h-brs.de" },
+                                            "permissions": {
+                                                "creator": "mkaul2m",
+                                                "group": {
+                                                    "mkaul2m": true,
+                                                    "akless2m": true
+                                                },
+                                                "access": {
+                                                    "get": "group",
+                                                    "set": "creator",
+                                                    "del": "creator"
+                                                }
+                                            }
+                                        }
+                                    }
+                                } ]
                             },
                             "entries": [
                                 {
@@ -76,6 +104,60 @@
                                     "name": "header",
                                     "type": "text",
                                     "info": "Title of tree content"
+                                },
+                                {
+                                    "label": "Font Max Size",
+                                    "name": "font_max_size",
+                                    "type": "number",
+                                    "info": "Max size of Font",
+                                    "min": 8
+                                },
+                                {
+                                    "label": "Font Min Size",
+                                    "name": "font_min_size",
+                                    "type": "number",
+                                    "info": "Min. size of Font",
+                                    "min": 6
+                                },
+                                {
+                                    "label": "Font Decrease Factor",
+                                    "name": "font_decrease_factor",
+                                    "type": "range",
+                                    "info": "Text Text Text",
+                                    "min": 1,
+                                    "max": 14
+                                },
+                                {
+                                    "label": "Sorting",
+                                    "name": "sorted",
+                                    "type": "checkbox",
+                                    "info": "sorting lines by thumb rating"
+                                },
+                                {
+                                    "label": "One click per thumb",
+                                    "name": "one_click_per_thumb",
+                                    "type": "checkbox",
+                                    "info": "Every user should have only one click, one vote per thumb"
+                                },
+                                {
+                                    "name": "css",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "CSS Style Sheet",
+                                    "name": "css.2",
+                                    "type": "url",
+                                    "info": "Text Text Text"
+                                },
+                                {
+                                    "name": "logger",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Logger",
+                                    "name": "logger.3.onfinish.store.settings.store",
+                                    "type": "text",
+                                    "info": "Name of the logging store"
                                 },
                                 {
                                     "name": "data",
@@ -94,7 +176,7 @@
             },
             {
                 "title": "JSON Builder",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.2.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.2.1.js",
                 "config": {
                     "builder": [
                         "ccm.component",
@@ -108,6 +190,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-31T17:01:00+02:00",
+    "updated_at": "2019-02-01T12:05:00+02:00",
     "created_at": "2019-01-30T12:41:22+02:00"
 }

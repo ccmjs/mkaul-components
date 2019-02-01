@@ -2,8 +2,9 @@
  * @overview ccm component for treecontent
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version latest (2.1.0)
  * @changes
+ * version 2.1.0 01.02.2019 add login, logger, sorting
  * version 2.0.0 31.01.2019 add save via WebSocket get und set
  * version 1.1.0 31.01.2019 bugfixes, improve layout and functions
  * version 1.0.0 29.01.2019 initial build
@@ -22,14 +23,14 @@
      * @type {string}
      */
     name: 'treecontent',
-    // version: [1,0,0],
+    version: [2,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -63,7 +64,7 @@
 
       data: {
         "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-        "key": "test"
+        "key": "leitbild1"
       },
 
       empty_row: {
@@ -82,7 +83,7 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
       
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.3.1.js", [ "ccm.get", "https://ccmjs.github.io/akless-components/user/resources/configs.js", "guest" ] ],
       "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
