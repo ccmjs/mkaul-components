@@ -69,7 +69,13 @@
                                     "key": "collab"
                                 },
                                 "data.key": "collab",
+                                "font_max_size": 36,
+                                "font_min_size": 8,
+                                "font_decrease_factor": 2,
+                                "sorted": true,
+                                "one_click_per_thumb": true,
                                 "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css" ],
+                                "css.2": "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css",
                                 "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
                                     "logging": {
                                         "data": true,
@@ -96,7 +102,8 @@
                                             }
                                         }
                                     }
-                                } ]
+                                } ],
+                                "logger.3.onfinish.store.settings.store": "logger"
                             },
                             "entries": [
                                 {
