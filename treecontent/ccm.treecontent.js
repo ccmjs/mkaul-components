@@ -56,15 +56,15 @@
         }
       },
 
-      // data: {
-      //   "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
-      //   "key": "small"
-      // },
-
-      "data": {
-        "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-        "key": "leitbild1"
+      data: {
+        "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/treecontent/resources/datasets.js' ],
+        "key": "small"
       },
+
+      // data: {
+      //   "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+      //   "key": "leitbild1"
+      // },
 
       empty_row: {
         class: 'empty',
@@ -76,6 +76,9 @@
       font_max_size: 36,
       font_min_size: 8,
       font_decrease_factor: 2,
+
+      sorted: true,
+      one_click_per_thumb: false,
 
       // onchange: function(){ console.log( this.getValue() ); },
       
@@ -229,17 +232,51 @@
 
         }
 
+        function likesClickListener(e){
+          this.innerText = parseInt( this.innerText ) + 1;
+          updateDataset( this.parentNode );
+          if ( self.one_click_per_thumb ) this.removeEventListener('click', likesClickListener );
+          if ( self.sorted ) sort( this );
+          save();
+        }
+
+        function sort( clickedNode ){
+          const parent = clickedNode.parentNode;
+          const grandParent = parent.parentNode;
+          const allItems = getAllSiblings( parent );
+          const itemValue = allItems.reduce((allValues,item)=>{
+            const thumbsUpValue = parseInt( item.querySelector('.likes').innerText );
+            const thumbsDownValue = parseInt( item.querySelector('.dislikes').innerText );
+            allValues[item.id] = item.classList.contains( 'empty' ) ? -9999 :  thumbsUpValue - thumbsDownValue;
+            return allValues;
+          },{});
+          const sortedIds = Object.keys( itemValue ).sort((a,b)=>itemValue[a]-itemValue[b]);
+          sortedIds.forEach(id=>{
+            const movedItem = grandParent.querySelector('#'+id);
+            grandParent.prepend( movedItem );
+          });
+          function getAllSiblings(elem) {
+            var sibs = [];
+            elem = elem.parentNode.firstChild;
+            do {
+              if (elem.nodeType === 3) continue; // text node
+              sibs.push(elem);
+            } while (elem = elem.nextSibling);
+            return sibs;
+          }
+        }
+
         function addListeners( root ){
 
           [...root.querySelectorAll('li')].forEach( item => {
             const label = item.querySelector('.label');
-            label.addEventListener('input', inputListener.bind(label) );
+            label.addEventListener('input', inputListener );
             const button = item.querySelector('button');
-            button.addEventListener('click', buttonClickListener.bind(button) );
+            button.addEventListener('click', buttonClickListener );
             const likes = item.querySelector('.likes');
-            likes.addEventListener('click', likesClickListener.bind(likes) );
+            likes.addEventListener('click', likesClickListener );
             const dislikes = item.querySelector('.dislikes');
-            dislikes.addEventListener('click', likesClickListener.bind(dislikes) );
+            dislikes.addEventListener('click', likesClickListener );
           });
 
           function inputListener(e){
@@ -316,11 +353,6 @@
             addListeners( nextChild.parentNode );
           }
 
-          function likesClickListener(e){
-            this.innerText = parseInt( this.innerText ) + 1;
-            updateDataset( this.parentNode );
-            save();
-          }
         }
 
         function updateDataset( item ){
