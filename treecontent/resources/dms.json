@@ -3,10 +3,10 @@
     "_id": "treecontent",
     "title": "TreeContent",
     "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.svg",
-    "abstract": "Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
-    "description": "A tree content editor is a hierarchical List of editable content. Just type into the labels and open subtrees via the + button. Close with - button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
-    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-2.1.0.js",
-    "version": "2.1.0",
+    "abstract": "Collaborative Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
+    "description": "A collaborative tree content editor is a hierarchical list of editable items. Just type into the labels and open subtrees via the \"+\" button. Close with \"-\" button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
+    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-2.2.0.js",
+    "version": "2.2.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -60,7 +60,7 @@
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
                         {
                             "ignore.defaults": {
                                 "header": "Hello World",
@@ -87,7 +87,7 @@
                                     },
                                     "onfinish": {
                                         "store": {
-                                            "settings": { "store": "logger", "url": "https://ccm2.inf.h-brs.de" },
+                                            "settings": { "store": "HBRS_log_my_unique_key", "url": "https://ccm2.inf.h-brs.de" },
                                             "permissions": {
                                                 "creator": "mkaul2m",
                                                 "group": {
@@ -103,7 +103,7 @@
                                         }
                                     }
                                 } ],
-                                "logger.3.onfinish.store.settings.store": "logger"
+                                "logger.3.onfinish.store.settings.store": "HBRS_log_my_unique_key"
                             },
                             "entries": [
                                 {
@@ -130,7 +130,7 @@
                                     "label": "Font Decrease Factor",
                                     "name": "font_decrease_factor",
                                     "type": "range",
-                                    "info": "Text Text Text",
+                                    "info": "decrease font size from level to level",
                                     "min": 1,
                                     "max": 14
                                 },
@@ -154,7 +154,7 @@
                                     "label": "CSS Style Sheet",
                                     "name": "css.2",
                                     "type": "url",
-                                    "info": "Text Text Text"
+                                    "info": "CSS Style Sheet"
                                 },
                                 {
                                     "name": "logger",
@@ -197,6 +197,6 @@
             }
         ]
     },
-    "updated_at": "2019-02-01T12:05:00+02:00",
+    "updated_at": "2019-02-02T12:00:00+02:00",
     "created_at": "2019-01-30T12:41:22+02:00"
 }
