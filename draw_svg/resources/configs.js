@@ -82,7 +82,7 @@ ccm.files[ 'configs.js' ] = {
     key: "websocket",
     data: {
       "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
-      "key": "small"
+      "key": "test"
     }
   }
 };
