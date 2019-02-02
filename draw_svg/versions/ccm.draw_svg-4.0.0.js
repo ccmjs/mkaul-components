@@ -47,15 +47,15 @@
      */
     config: {
 
-      // data: {
-      //   "store": [ "ccm.store", './resources/datasets.js' ],
-      //   "key": "small"
-      // },
-
       data: {
-        "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
-        "key": "test"
+        "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/draw_svg/resources/datasets.js' ],
+        "key": "small"
       },
+
+      // data: {
+      //   "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
+      //   "key": "test"
+      // },
 
       // data: {  // fetched from store
       //   "store": [ "ccm.store", { local: 'resources/dataset.json' } ],
