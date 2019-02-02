@@ -217,7 +217,7 @@
 
         addListeners( self.element );
 
-        console.log( 1, dataset );
+        // console.log( 1, dataset );
 
         /**
          * transform dataset into JSON format as intermediate datastructure for rendering HTML
@@ -255,7 +255,7 @@
 
           append_empty_row();
 
-          console.log( 2, parentRow );
+          // console.log( 2, parentRow );
 
           return result;
 
@@ -357,7 +357,7 @@
               // https://stackoverflow.com/questions/20726174/placeholder-for-contenteditable-div
               // label.innerText = e.data; // TODO move cursor forward
               makeNextChild( row, item );
-              console.log( 3, dataset );
+              // console.log( 3, dataset );
             }
             item.classList.remove('empty' );
             item.querySelector('button').innerText = '+';
@@ -386,7 +386,7 @@
                 makeFirstChild( row, item );
                 updateDataset( item );
                 save();
-                console.log( 4, dataset );
+                // console.log( 4, dataset );
               }
             } else if ( this.innerText === '-' ){
               this.innerText = '+';
