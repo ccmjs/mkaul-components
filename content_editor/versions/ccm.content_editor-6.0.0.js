@@ -1210,7 +1210,7 @@
           // add special buttons for ccm components
           const commands = self.html.toolbar.inner.map(tool => tool['data-command']);
           self.enabled.forEach(label => {
-            if (!commands.includes(label)) self.html.toolbar.inner.push({
+            if ( label && ! commands.includes(label) ) self.html.toolbar.inner.push({
               "tag": "a",
               "href": "#",
               "class": "click",
@@ -1228,7 +1228,7 @@
         }
 
 
-        const toolbar_div = $.html(this.html.toolbar);
+        const toolbar_div = $.html( self.html.toolbar.inner );
         const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
 
         class Anchors {
