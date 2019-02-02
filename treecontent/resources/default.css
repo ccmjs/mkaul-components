@@ -46,7 +46,7 @@ button {
 
 li > .label {
   flex-grow: 1; /* max space */
-  flex-basis: calc(100% - 8em); /* sum of button + thumbs */
+  flex-basis: calc(100% - 100px); /* sum of button + thumbs */
   border-bottom: thin dashed black;
 }
 
