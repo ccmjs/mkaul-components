@@ -840,7 +840,7 @@
         const toolbar_div = $.html( self.html.toolbar );
         self.color = dataset.color || '#000'; // black
         self.color_input = toolbar_div.querySelector("a[data-command='color'] > input");
-        self.color_input.value = self.color;
+        if ( self.color_input ) self.color_input.value = self.color;
 
         // add click event listener
         [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
