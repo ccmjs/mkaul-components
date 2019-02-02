@@ -36,8 +36,8 @@ ccm.files[ 'configs.js' ] = {
     enabled: ['undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p' ],
 
     "css_awesome": [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
@@ -74,8 +74,8 @@ ccm.files[ 'configs.js' ] = {
     fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
 
     "css_awesome": [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
@@ -93,8 +93,8 @@ ccm.files[ 'configs.js' ] = {
     enabled:['undo', 'redo', "toggle", "bold", "h1", "h2", "indent", "outdent", "embed", "audio", "video", "ccm-clock", "view_editor", "view_html", "view_json", "view_html2json" ],
 
     "css_awesome": [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
@@ -114,8 +114,8 @@ ccm.files[ 'configs.js' ] = {
     enabled:["toggle", 'undo', 'redo', 'save_file', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json", "stop" ],
 
     css_awesome: [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
@@ -133,11 +133,11 @@ ccm.files[ 'configs.js' ] = {
     enabled:["toggle", 'undo', 'redo', "bold", "h1", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", 'ccm-draw_svg', "view_editor", "view_html", "view_json", "view_html2json", "hide_toolbar", "remove_editor", "stop" ],
 
     css_awesome: [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
-    draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
+    draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-4.0.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
 
@@ -154,8 +154,8 @@ ccm.files[ 'configs.js' ] = {
     enabled:['undo', 'redo', 'save_file', 'toggle', 'bold', 'italic', 'underline', 'strikeThrough', 'forecolor', 'backcolor', 'hilitecolor', 'copy', 'cut', 'delete', 'insertHorizontalRule', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'removeformat', 'makeExternalLink', 'createlink', 'unlink', 'set_anchor', 'select_anchor', 'toc', 'insertimage', 'p', 'subscript', 'superscript', 'audio', 'video', 'fontname', 'fontSize', 'embed', 'ccm-clock', 'ccm-slidecast', 'ccm-pdf_viewer', 'ccm-quiz', 'ccm-cloze', 'ccm-thumb_rating','ccm-star_rating','ccm-highchart','ccm-connect4','ccm-comment', 'ccm-live_poll' ],
 
     css_awesome: [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
@@ -192,8 +192,8 @@ ccm.files[ 'configs.js' ] = {
     fontList: ['Arial', 'Arial Black', 'Helvetica', 'Times New Roman', 'Times', 'Courier New', 'Courier', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS', 'Impact' ],
 
     css_awesome: [ "ccm.load",
-      { "context": "head", "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" },
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],

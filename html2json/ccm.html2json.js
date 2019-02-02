@@ -25,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
     ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -199,6 +199,7 @@
          * @returns {Component}
          */
         async function getComponent( componentName ){
+          if ( $.isComponent( componentName ) ) return componentName;
           if ( self.component.name === componentName ) return self.component;
           if ( self[ componentName ] ) return self[ componentName ];
           const find_parent = self.ccm.context.find( self, componentName, false );
