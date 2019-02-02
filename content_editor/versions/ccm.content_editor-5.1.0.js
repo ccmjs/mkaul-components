@@ -1715,6 +1715,7 @@
          * @returns {Promise<Component>}
          */
         async function getComponent( componentName ){
+          if ( $.isComponent( componentName ) ) return componentName;
           if ( self[ componentName ] ) return self[ componentName ];
           const component = ( componentName.includes('-') ) ?
             await self.ccm.component( componentName ) :

@@ -209,5 +209,22 @@ ccm.files[ 'configs.js' ] = {
 
     store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
     // onfinish: function( instance, results ){ console.log( results ); }
+  },
+
+  "dataset": {
+    key: "dataset",
+    data: {
+      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/content_editor/resources/datasets.js' ],
+      "key": "small"
+    },
+  },
+
+  "websocket": {
+    key: "websocket",
+    data: {
+      "store": [ "ccm.store", { "name": "content_editor", "url": "wss://ccm2.inf.h-brs.de" } ],
+      "key": "small"
+    }
   }
+
 };

@@ -1,11 +1,13 @@
 /**
  * @overview ccm component for content_editor
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018, 2019
  * @url https://code.tutsplus.com/tutorials/create-a-wysiwyg-editor-with-the-contenteditable-attribute--cms-25657
  * @url https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md
  * @license The MIT License (MIT)
- * @version latest (5.0.0)
+ * @version latest (6.0.0)
  * @changes
+ * version 6.0.0  add collaboration support
+ * version 5.1.0  major refactorings: use dataset.components
  * version 5.0.0  switch to full config objects for every instance in dataset.components
  * version 4.10.0 toolbar at fixed position
  *                see https://www.bitovi.com/blog/use-flexbox-to-create-a-sticky-header-and-sidebar-with-flexible-content
@@ -34,13 +36,13 @@
      * @type {string}
      */
     name: 'content_editor',
-    version: [5,0,0],
+    version: [6,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -49,9 +51,14 @@
      */
     config: {
 
+      // data: {
+      //    "store": [ "ccm.store", './resources/datasets.js' ],
+      //    "key": "small"
+      //  },
+
       data: {
-        inner: '',
-        position: 6
+        "store": [ "ccm.store", { "name": "content_editor", "url": "wss://ccm2.inf.h-brs.de" } ],
+        "key": "test"
       },
 
       // data: {
@@ -626,6 +633,8 @@
               "href": "#",
               "class": "click",
               "data-command": "ccm-clock",
+              "data-config": '["width"]',
+              "data-width": "40px",
               "title": "insert live Clock",
               "inner": {
                 "tag": "i",
@@ -660,18 +669,6 @@
               "inner": {
                 "tag": "i",
                 "inner": "SVG",
-                "class": "fa"
-              }
-            },
-            {
-              "tag": "a",
-              "href": "#",
-              "class": "click",
-              "data-command": "ccm-quiz",
-              "title": "insert nested quiz",
-              "inner": {
-                "tag": "i",
-                "inner": "Q",
                 "class": "fa"
               }
             },
@@ -910,30 +907,18 @@
 
       css_awesome: [ "ccm.load",
         { context: "head",
-          url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          url: "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
         },
-        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
       ],
 
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
 
-      inline_block: false,
+      inline_block: true,
 
       save_format: 'content',  // or 'script'
-      ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',  // for saving content
-
-      // other ccm components to be embeddable inside the editor text
-      clock: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js", {
-        width: "40px",
-        html: { main: { id: 'main', inner: [ { id: 'clock' } ] }
-        }
-      } ],
-
-      quiz: [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.1.js", { key: ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/configs.js","demo"] } ],
-
-      draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
-
-      // draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
+      ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',  // for saving content
+      content_url: 'https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.0.js',
 
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js", {
         "html.inner.1": "",
@@ -942,12 +927,22 @@
 
       html2json_module: [ "ccm.load", {
         "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/html2json.mjs",
+        "type": "module",
+        "import": "html2json"
+      } ],
+
+      // https://github.com/GoogleChromeLabs/shadow-selection-polyfill/blob/master/shadow.js
+      shadow_polyfill: [ "ccm.load", {
+        "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/shadow-selection-polyfill.mjs",
         "type": "module"
       } ],
 
       html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/versions/ccm.html2json-3.2.1.js" ],
 
-      store: [ "ccm.store", { "name": "components", "url": "https://ccm2.inf.h-brs.de" } ]
+      dms_store_url: "https://ccm2.inf.h-brs.de",
+
+      // fetch all component descriptions from DMS and store them locally
+      dms_index: [ "ccm.store", [ "ccm.get", { "name": "components", "url": "https://ccm2.inf.h-brs.de" }, {} ] ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -974,42 +969,6 @@
        * Fetch all ccm components from DMS. Store them as key-value pairs with name and URL
        * @type {Object}
        */
-      /**
-       * Cache all ccm components from DMS. Store them as key-value pairs with name and URL
-       * @type {Object}
-       */
-      let DMS_component_index = null;
-
-      const dms_index = async () => {  // lazy load DMS on demand only
-        if ( DMS_component_index ) return DMS_component_index; else {
-
-          DMS_component_index = {};
-
-          const data = await self.store.get({});
-
-          const all_buttons = self.html.toolbar.inner;
-          let select_array;
-          if ( all_buttons ) for ( const button of all_buttons ){
-            if ( button["data-command"] === "select" ){ // "data-command": "select"
-              if ( button.inner ){
-                select_array = button.inner.inner;
-              }
-              break;
-            }
-          }
-
-          for ( const record of data ){
-            select_array && select_array.push( { tag: 'option', value: record.key, inner: record.key } );
-            // with version number
-            DMS_component_index[ $.getIndex( record.url ) ] = record.url;
-
-          }
-
-          select_array && select_array.sort((a,b)=>  ('' + a.value).localeCompare(b.value) );
-        }
-
-        return DMS_component_index;
-      };
 
       /**
        * dataset for rendering
@@ -1020,46 +979,32 @@
        */
       let dataset;
 
+      /**
+       * Cache all ccm components from DMS. Store them as key-value pairs with name and URL
+       * @type {Object}
+       */
+      let DMS_component_index = null;
+
       this.init = async () => {
 
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        // get data from config or remote database
-        dataset = await $.dataset( this.data );
-
-        if ( typeof dataset === 'string' ) dataset = { inner: dataset };
+        // listen to datastore changes => restart
+        if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
         // Use LightDOM with higher priority than data from config
-        if ( this.inner ){
+        if (this.inner) {
 
           // Light DOM is given as ccm JSON data? => convert to HTML DOM Elements
-          if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
-            this.inner = $.html( this.inner );
+          if ($.isObject(this.inner) && !$.isElementNode(this.inner))
+            this.inner = $.html(this.inner);
 
           // dynamic replacement of placeholders
-          if ( this.placeholder ) [ ...this.inner.children ].forEach( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
+          if (this.placeholder) [...this.inner.children].forEach(child => child.innerHTML = $.format(child.innerHTML, this.placeholder));
 
           dataset.inner = this.inner;
         }
-
-        // initialize dataset.components if necessary
-        if ( ! dataset.components ) dataset.components = {};
-
-        // add listeners to in page anchors
-        const afterStartCallback = function(){
-          [...element.querySelectorAll('a[href^="#"]')].forEach( anchor => {
-            const id = anchor.href;
-            anchor.addEventListener( e => {
-              e.preventDefault();
-              this.element.querySelector( id ).scrollIntoView({
-                behavior: 'smooth'
-              });
-            });
-          });
-        };
-
-        dataset.afterStartCallback = afterStartCallback;
 
       };
 
@@ -1067,18 +1012,100 @@
        * is called once after the initialization and is then deleted
        */
       this.ready = async () => {
-        if ( ! self.enabled || ( self.enabled && self.enabled.includes('select') ) ){
-          await dms_index();
-        }
+
+        // fill select menu with DMS components
+
+          DMS_component_index = {};
+
+          const data = await self.dms_index.get({});
+
+          const all_buttons = self.html.toolbar.inner;
+          let select_array;
+          if (all_buttons) for (const button of all_buttons) {
+            if (button["data-command"] === "select") { // "data-command": "select"
+              if (button.inner) {
+                select_array = button.inner.inner;
+              }
+              break;
+            }
+          }
+
+          if ( select_array ){
+            select_array.push({ tag: 'option', value: '_', inner: '_' });
+            for (const record of data) {
+              select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
+              // with version number
+              DMS_component_index[ $.getIndex( record.url )] = record.url;
+              // without version number
+              DMS_component_index[ record.key ] = record.url;
+            }
+
+            select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
+          }
+
       };
+
 
       /**
        * starts the instance
        */
       this.start = async () => {
 
+        /**
+         * username of logged in member
+         * @type {string}
+         */
+        let user;
+
+        if ( self.user ){
+          // login user, if not logged in
+          await self.user.login();
+          user = this.user.data().user;
+        } else {
+          user = await pseudonym();
+        }
+
+        async function pseudonym(){
+          const buf = await digestMessage(`${navigator.appVersion};${navigator.hardwareConcurrency};${navigator.deviceMemory};${JSON.stringify(navigator.languages)};${navigator.product};${navigator.productSub};${navigator.userAgent};${navigator.vendor};` + self.SALT);
+          return String.fromCharCode.apply(null, new Uint8Array(buf));
+        }
+
+        async function digestMessage(message) {
+          let encoder = new TextEncoder();
+          let data = encoder.encode(message);
+          return await window.crypto.subtle.digest('SHA-384', data);
+        }
+
+        dataset = await $.dataset( this.data );
+        if ( ! dataset ) dataset = {};
+        if ( typeof dataset === 'string' ) dataset = { key: dataset };
+        if ( ! dataset.key ) dataset.key = self.data.key;
+        if ( ! dataset.components ) dataset.components = {};
+        if ( ! dataset.indexMap ) dataset.indexMap = {};
+
+        // given default values? => integrate them as defaults into initial values
+        if ( this.ignore ) dataset = $.integrate( this.ignore.defaults, dataset, true );
+
+        // initialize dataset.components if necessary
+        if (!dataset.components) dataset.components = {};
+
+        // add listeners to in page anchors
+        dataset.afterstart = function () {
+          // this === content component instance with dataset as config
+          [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+            const id = anchor.href.split('#')[1];
+            if ( ! id ) return;
+            anchor.addEventListener( 'click', e => {
+              e.preventDefault();
+              this.element.querySelector( '#' + id ).scrollIntoView({
+                behavior: 'smooth'
+              });
+            });
+          });
+        };
+
         // logging of 'start' event
-        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+        self.logger && self.logger.log( 'start', { user: user, dataset: $.clone( dataset ) } );
 
         const undoStack = [];
         const redoStack = [];
@@ -1086,56 +1113,57 @@
 
         // add keyboard events
         const oldKeyListener = document.onkeydown;
-        document.addEventListener('keyup', function( evt ) {
+        document.addEventListener('keyup', function (evt) {
           evt = evt || window.event;
           var isEscape = false;
           if ("key" in evt) {
             switch (evt.key) {
               case "Backspace":
-                if ( undoStack > 0 && undoStack[undoStack.length - 1].command !== 'input' ){
+                if (undoStack > 0 && undoStack[undoStack.length - 1].command !== 'input') {
                   undoStack.pop().undo();
                 }
                 break;
               default:
-                if ( undoStack.length === 0 || undoStack[undoStack.length - 1].command !== 'input' ) {
+                if (undoStack.length === 0 || undoStack[undoStack.length - 1].command !== 'input') {
                   const action = {
                     undo: _ => {
-                      const result = document.execCommand( 'undo', false, null );
-                      redoStack.push( action );
+                      const result = document.execCommand('undo', false, null);
+                      redoStack.push(action);
                     },
                     redo: _ => {
-                      const result = document.execCommand( 'redo', false, null );
-                      undoStack.push( action );
+                      const result = document.execCommand('redo', false, null);
+                      undoStack.push(action);
                     },
                     command: 'input'
                   };
-                  undoStack.push( action );
+                  undoStack.push(action);
                 }
             }
           }
-        } );
+        });
 
         // render main HTML structure
-        const editor_div = $.html( this.html.editor );
-        if ( ! dataset.inner ) dataset.inner = 'Edit here';
-        $.setContent( editor_div, dataset.inner );
+        const editor_div = $.html(this.html.editor);
+        if (!dataset.inner) dataset.inner = 'Edit here';
+        $.setContent(editor_div, $.html( dataset.inner ));
 
         /**
          * add keyup listener if
          * config property change_listener_on_key_up is set truthy
          */
-        if ( self.change_listener_on_key_up )
-          editor_div.addEventListener('keyup', function(e){
+        if (self.change_listener_on_key_up)
+          editor_div.addEventListener('keyup', function (e) {
             updateData();
+            save();
           });
 
         /**
          * paste event listener
          * @param e Event
          */
-        editor_div.onpaste = function(e) {
-          [...e.clipboardData.items].forEach((item)=>{
-            switch( item.type ){
+        editor_div.onpaste = function (e) {
+          [...e.clipboardData.items].forEach((item) => {
+            switch (item.type) {
               case 'text/plain':
                 updateInPageAnchors();
                 const pastedText = e.clipboardData.getData('text/plain');
@@ -1159,12 +1187,12 @@
                 // Use shadow root instead of document to get position of cursor in text
                 const shadowRoot = self.element.parentNode;
                 const range = getSelectionRange();
-                if ( range ){
-                  range.insertNode( pastedImage );
+                if (range) {
+                  range.insertNode(pastedImage);
                 } else {
-                  editor_div.appendChild( document.createTextNode(' '));
-                  editor_div.appendChild( pastedImage );
-                  editor_div.appendChild( document.createTextNode(' '));
+                  editor_div.appendChild(document.createTextNode(' '));
+                  editor_div.appendChild(pastedImage);
+                  editor_div.appendChild(document.createTextNode(' '));
                 }
                 pastedImage.focus && pastedImage.focus();
                 break;
@@ -1175,15 +1203,14 @@
         };
 
 
-
-        if ( self.enabled && self.html.toolbar.inner ){
+        if (self.enabled && self.html.toolbar.inner) {
           // filter enabled tools
-          self.html.toolbar.inner = self.html.toolbar.inner.filter(tool=>self.enabled.includes(tool['data-command']) || ! tool['data-command'] );
+          self.html.toolbar.inner = self.html.toolbar.inner.filter(tool => self.enabled.includes(tool['data-command']) || !tool['data-command']);
 
           // add special buttons for ccm components
-          const commands = self.html.toolbar.inner.map( tool => tool['data-command'] );
-          self.enabled.forEach( label => {
-            if ( ! commands.includes( label ) ) self.html.toolbar.inner.push({
+          const commands = self.html.toolbar.inner.map(tool => tool['data-command']);
+          self.enabled.forEach(label => {
+            if (!commands.includes(label)) self.html.toolbar.inner.push({
               "tag": "a",
               "href": "#",
               "class": "click",
@@ -1201,28 +1228,29 @@
         }
 
 
-        const toolbar_div = $.html( this.html.toolbar );
+        const toolbar_div = $.html(this.html.toolbar);
         const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
 
         class Anchors {
-          constructor(){
+          constructor() {
             this.set_of_all_anchors = new Set();
-            this.set_of_all_anchors;
           }
-          add( newAnchor ){
-            this.set_of_all_anchors.add( newAnchor );
-            if ( select_anchor_button ){
-              [...select_anchor_button.children].forEach(child=>{
-                select_anchor_button.removeChild( child );
+
+          add(newAnchor) {
+            this.set_of_all_anchors.add(newAnchor);
+            if (select_anchor_button) {
+              [...select_anchor_button.children].forEach(child => {
+                select_anchor_button.removeChild(child);
               });
-              this.options().forEach( option => {
-                select_anchor_button.appendChild( $.html( option ) );
+              this.options().forEach(option => {
+                select_anchor_button.appendChild($.html(option));
               });
             }
           }
-          options(){
+
+          options() {
             const list_of_options = [{tag: 'option', value: '_', inner: '_'}];
-            this.set_of_all_anchors.forEach(( single_option ) => {
+            this.set_of_all_anchors.forEach((single_option) => {
               list_of_options.push({
                 tag: 'option',
                 value: single_option,
@@ -1232,25 +1260,26 @@
             return list_of_options;
           }
         }
+
         const page_anchors = new Anchors();
 
         updateInPageAnchors();
 
-        function updateInPageAnchors(){
-          [...editor_div.querySelectorAll('[id]')].forEach( elem => {
-            if ( elem.parentNode.tagName.startsWith('CCM-')) return;
-            page_anchors.add( elem.getAttribute( 'id' ) );
+        function updateInPageAnchors() {
+          [...editor_div.querySelectorAll('[id]')].forEach(elem => {
+            if (elem.parentNode.tagName.startsWith('CCM-')) return;
+            page_anchors.add(elem.getAttribute('id'));
           });
         }
 
         // render color palette
-        ['fore', 'back'].forEach( pal => {
-          const palette = toolbar_div.querySelector('.'+pal+'-palette');
-          self.colorPalette && self.colorPalette.forEach( color => {
+        ['fore', 'back'].forEach(pal => {
+          const palette = toolbar_div.querySelector('.' + pal + '-palette');
+          self.colorPalette && self.colorPalette.forEach(color => {
             palette && palette.append($.html({
               tag: 'a',
               href: '#',
-              'data-command': pal+'color',
+              'data-command': pal + 'color',
               'data-value': color,
               style: 'background-color:' + color + ';',
               class: 'click palette-item'
@@ -1259,55 +1288,61 @@
         });
 
         // render font palette
-        if ( self.fontList ){
+        if (self.fontList) {
           const palette = [];
           self.fontList.unshift('choose font'); // no font selected
-          for ( const font of self.fontList ){
+          for (const font of self.fontList) {
             palette.push({
               tag: 'option',
               value: font,
               inner: font
             });
           }
-          if ( toolbar_div.querySelector('.select.fontname') ){
-            $.setContent( toolbar_div.querySelector('.select.fontname'), $.html(palette) );
+          if (toolbar_div.querySelector('.select.fontname')) {
+            $.setContent(toolbar_div.querySelector('.select.fontname'), $.html(palette));
           }
         }
 
         // add click event listener
-        [...toolbar_div.querySelectorAll('.click')].forEach( tool => {
-          tool.addEventListener('click', toolbarClickListener.bind( tool ) );
+        [...toolbar_div.querySelectorAll('.click')].forEach(tool => {
+          tool.addEventListener('click', toolbarClickListener.bind(tool));
         });
 
         // add change event listener
-        [...toolbar_div.querySelectorAll('.change')].forEach( tool => {
-          tool.addEventListener('change', toolbarChangeListener.bind( tool ) );
+        [...toolbar_div.querySelectorAll('.change')].forEach(tool => {
+          tool.addEventListener('change', toolbarChangeListener.bind(tool));
         });
 
-        const builder_div = $.html( self.html.builder || {} );
-        const html_div = $.html( self.html.html || {} );
-        const json_div = $.html( self.html.json || {} );
-        const html2json_div = $.html( self.html.html2json || {} );
-        const bottom_div = $.html( self.html.bottom || { class: 'bottom' } );
+        const builder_div = $.html(self.html.builder || {});
+        const html_div = $.html(self.html.html || {});
+        const json_div = $.html(self.html.json || {});
+        const html2json_div = $.html(self.html.html2json || {});
+        const bottom_div = $.html(self.html.bottom || {class: 'bottom'});
 
         // render main HTML structure
-        $.setContent( this.element, $.html( [ toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div, bottom_div ] ) );
+        $.setContent(this.element, $.html([toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div, bottom_div]));
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
-        [...this.element.querySelectorAll('svg')].forEach(svg=>{
+        [...this.element.querySelectorAll('svg')].forEach(svg => {
           svg.parentNode.innerHTML += '';
         });
 
-        startAllComponents( editor_div );
+        let safariRange;
+        // https://github.com/GoogleChromeLabs/shadow-selection-polyfill
+        document.addEventListener('-shadow-selectionchange', () => {
+          safariRange = self.shadow_polyfill.getRange( self.element.parentNode );
+        });
+
+        startAllComponents(editor_div);
 
         /**
          *
          * @param node
          * @returns {Promise<void>}
          */
-        async function startAllComponents( node ){
+        async function startAllComponents(node) {
           $.asyncForEach([...node.children], child => {
-            startComponent( child );
+            startComponent(child);
           });
         }
 
@@ -1316,62 +1351,41 @@
          * @param child
          * @returns {Promise<void>}
          */
-        async function startComponent( child ){
-          if ( child.tagName.startsWith('CCM-')){
+        async function startComponent( child ) {
+          if (child.tagName.startsWith('CCM-')) {
 
             const src = child.getAttribute('src');
             const index = child.tagName.slice(4).toLowerCase();
-            let component = await getComponent( src || index );
+            let component = dataset.components[ index ] || await getComponent( src || index );
+            if ( Array.isArray( component ) ) component = await $.solveDependency( component );
 
-            const config = $.integrate( $.generateConfig( child ), component.config );
-            config.root = child;
-            config.parent = self;
+            component.config.root = child;
 
-            if ( $.isComponent( component ) ){
-              const instance = await component.start( config );
-              child.addEventListener( isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
+            if ($.isComponent(component)) {
+              const instance = await component.start({ root: child }) ;
+              child.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance ));
             } else { // The http address of the component is only given
-              await self.ccm.start( src || component, config );
+              await window.ccm.start( src || component, { root: child } );
             }
           } else {
-            startAllComponents( child );
+            startAllComponents(child);
           }
         }
 
-        /**
-         * get the component or its URL with the given name from configs or from DMS
-         * @param componentName
-         * @returns {ccm.types.component|ccm.types.url}
-         */
-        async function getComponent( componentName ){
-          if ( $.isComponent( componentName ) ) return componentName;
-          if ( self.component.name === componentName ) return self.component;
-          if ( self[ componentName ] ) return self[ componentName ];
-          const find_parent = self.ccm.context.find( self, componentName, false );
-          let component = dataset.components && dataset.components[ componentName ]
-            || find_parent && find_parent[ componentName ]
-            || (await dms_index())[ componentName ];
-
-          if ( Array.isArray( component ) ) component = await $.solveDependency( component );
-          if ( typeof componentName === 'string' && componentName.startsWith('http') ) return componentName;
-          if ( ! component ) debugger;
-          return component;
-        }
-
-        function execCommand( command, showUI, value ){
-          document.execCommand( command, showUI, value );
+        function execCommand(command, showUI, value) {
+          document.execCommand(command, showUI, value);
           const action = {
             undo: _ => {
-              const result = document.execCommand( 'undo', showUI, value );
-              redoStack.push( action );
+              const result = document.execCommand('undo', showUI, value);
+              redoStack.push(action);
             },
             redo: _ => {
-              const result = document.execCommand( 'redo', showUI, value );
-              undoStack.push( action );
+              const result = document.execCommand('redo', showUI, value);
+              undoStack.push(action);
             },
             command: command
           };
-          undoStack.push( action );
+          undoStack.push(action);
         }
 
         /**
@@ -1379,14 +1393,14 @@
          * @param e
          * @returns {Promise<void>}
          */
-        async function toolbarClickListener(e){
+        async function toolbarClickListener(e) {
           const command = this.dataset["command"].toLowerCase();
           self.state = command;
 
-          switch (command){
+          switch (command) {
             case 'toggle':
               self.isNotEditable = editor_div.getAttribute("contenteditable") === 'false';
-              editor_div.setAttribute( "contenteditable", self.isNotEditable.toString() );
+              editor_div.setAttribute("contenteditable", self.isNotEditable.toString());
               toolbar_div.querySelector('[data-command=toggle] i').classList = self.isNotEditable ? 'fa fa-toggle-on' : 'fa fa-toggle-off';
               break;
 
@@ -1403,42 +1417,54 @@
 
               const editor_content = editor_div.cloneNode(true);
 
-              if ( self.save_format === 'script' ){
+              if (self.save_format === 'script') {
 
-                Object.keys( dataset.components ).forEach( key => {
+                Object.keys(dataset.components).forEach(key => {
                   const componentActionData = dataset.components[key];
-                  const index = $.getIndex( componentActionData[1] );
+                  const index = $.getIndex(componentActionData[1]);
                   const config = componentActionData[2];
                   htmlData += `\n<script src="${componentActionData[1]}"></script>`;
-                  [...editor_content.querySelectorAll('*')].forEach( child => {
-                    if ( child.tagName === 'CCM-' + key.toUpperCase()  ){
-                      if ( key === index ){
-                        child.setAttribute( 'key', $.stringify( config ) );
+                  [...editor_content.querySelectorAll('*')].forEach(child => {
+                    if (child.tagName === 'CCM-' + key.toUpperCase()) {
+                      if (key === index) {
+                        child.setAttribute('key', $.stringify(config));
                       } else {
-                        const newChild = document.createElement( 'CCM-' + index.toUpperCase() );
-                        newChild.setAttribute( 'key', $.stringify( config ) );
-                        child.parentNode.appendChild( newChild );
+                        const newChild = document.createElement('CCM-' + index.toUpperCase());
+                        newChild.setAttribute('key', $.stringify(config));
+                        child.parentNode.appendChild(newChild);
                       }
                     }
                   });
                 });
 
-              } else if ( self.save_format === 'content' ){
+                htmlData += editor_content.innerHTML;
+
+              } else if (self.save_format === 'content') {
                 htmlData += `
                   <script src="${self.ccm_save}"></script>
                   <div id="content">Loading ... </div>
                   <script>
                       const content = document.getElementById("content");
-                      const content_config = ${JSON.stringify( dataset, null, 2)};
+                      const content_config = ${$.stringify(dataset, null, 2)};
+                      content_config.afterstart = function () {
+                        [...this.element.querySelectorAll('a[href^="#"]')].forEach(anchor => {
+                          const id = anchor.href.split('#')[1];
+                          if ( ! id ) return;
+                          anchor.addEventListener( 'click', e => {
+                            e.preventDefault();
+                            this.element.querySelector( '#' + id ).scrollIntoView({
+                              behavior: 'smooth'
+                            });
+                          });
+                        });
+                      };
                       content_config.root = content;
-                      ccm.start('https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.1.0.js', content_config );
+                      window.ccm.start( "${self.content_url}", content_config );
                   </script>                       
                 `;
               }
 
-              htmlData += editor_content.innerHTML;
-
-              const htmlBlob = new Blob([htmlData], {type:"text/html;charset=utf-8"});
+              const htmlBlob = new Blob([htmlData], {type: "text/html;charset=utf-8"});
               const htmlUrl = URL.createObjectURL(htmlBlob);
               const save_btn = this;
               save_btn.href = htmlUrl;
@@ -1447,38 +1473,45 @@
 
             case "load_file":
               const html_url = prompt(self.helpText.load_html_prompt, self.helpText.load_html_default);
-              if ( html_url && html_url.length > 5 ){
-                const html = await self.ccm.load( { url: html_url, type: 'html' } );
-                editor_div.appendChild( html );
+              if (html_url && html_url.length > 5) {
+                // TODO shadow DOM:  protect Editor from imported HTML
+                const html = await self.ccm.load({url: html_url, type: 'html'});
+                editor_div.appendChild(html);
               }
               break;
 
             case "plus":
               const buttonName = prompt('Enter button name: ', 'my_special_listener');
               const actionAddress = prompt('Enter HTTPS address of Button Action: ', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js');
-              const new_button = $.html( self.html.plus, { buttonName, actionAddress } );
+              const new_button = $.html(self.html.plus, {buttonName, actionAddress});
               new_button.addEventListener('click', ev => {
-                extensionListener( { command: buttonName, address: actionAddress, event: ev } );
+                extensionListener({command: buttonName, address: actionAddress, event: ev});
               });
-              toolbar_div.appendChild( new_button ) ;
+              toolbar_div.appendChild(new_button);
               break;
 
-            case 'p': case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
+            case 'p':
+            case 'h1':
+            case 'h2':
+            case 'h3':
+            case 'h4':
+            case 'h5':
+            case 'h6':
               execCommand('formatBlock', false, command);
               break;
 
             case "toc":  // insert structure with links
-              let structure = { tag: 'ol', inner: [] };
+              let structure = {tag: 'ol', inner: []};
               let nextId = 1;
               const headings = [...editor_div.querySelectorAll('h1,h2,h3,h4,h5,h6')];
-              headings.forEach( heading => {
-                const id = heading.getAttribute('id') || 'heading_' + nextId++ ;
-                if ( id === '_' ) return;
-                heading.setAttribute('id', id );
-                page_anchors.add( id );
+              headings.forEach(heading => {
+                const id = heading.getAttribute('id') || 'heading_' + nextId++;
+                if (id === '_') return;
+                heading.setAttribute('id', id);
+                page_anchors.add(id);
                 const id_listener = e => {
                   e.preventDefault();
-                  editor_div.querySelector( '#' + id ).scrollIntoView({
+                  editor_div.querySelector('#' + id).scrollIntoView({
                     behavior: 'smooth'
                   });
                 };
@@ -1494,85 +1527,110 @@
               });
               const toc_range = getSelectionRange();
               // execCommand('insertHTML', false, $.html( structure ) );  // without event listener
-              if ( toc_range ){
+              if (toc_range) {
                 try {
-                  toc_range.commonAncestorContainer.appendChild( $.html( structure ) );
+                  toc_range.commonAncestorContainer.appendChild($.html(structure));
                 } catch {
-                  toc_range.commonAncestorContainer.parentNode.appendChild( $.html( structure ) );
+                  toc_range.commonAncestorContainer.parentNode.appendChild($.html(structure));
                 }
               } else {
-                $.prepend( editor_div, $.html( structure ) );
+                $.prepend(editor_div, $.html(structure));
               }
               break;
 
-            case 'forecolor': case 'backcolor': case 'hilitecolor':
-              execCommand( command, false, this.dataset["value"] );
+            case 'forecolor':
+            case 'backcolor':
+            case 'hilitecolor':
+              execCommand(command, false, this.dataset["value"]);
               break;
-            case 'createlink': case 'insertimage':
+            case 'createlink':
+            case 'insertimage':
               const url = prompt('Enter the link here: ', 'https:\/\/');
               execCommand(command, false, url);
               break;
 
-            case 'audio': case 'video':
+            case 'audio':
+            case 'video':
               const media_file = prompt('Enter URL here: ', 'https:\/\/');
-              if ( media_file && media_file.length > 8 ){
-                execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>` );
+              if (media_file && media_file.length > 8) {
+                execCommand('insertHTML', false, `<${command} src="${media_file}" controls ${this.dataset['autoplay']} ${this.dataset['loop']}>Your browser does not support the <code>audio</code> element.</${command}>`);
               }
               break;
 
             case 'embed':
               const embed_code = prompt('Enter embed code here: ', 'html_embed_code');
-              if ( embed_code && embed_code.length > 8 ) {
+              if (embed_code && embed_code.length > 8) {
                 // execCommand('insertHTML', false, embed_code );    // replaces quotes
-                insertEmbedCode( embed_code );
+                insertEmbedCode(embed_code);
               }
               break;
 
             case 'dms':
               const component_name = prompt('Enter component name here: ', 'clock');
               const dms_id = prompt('Enter DMS-ID here: ', '1544379440973X6301133529121039');
-              if ( component_name && component_name.length > 1 && dms_id ){
-                const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
-                await insertComponent({ component: component_name, config });
+              if (component_name && component_name.length > 1 && dms_id) {
+                const component_url = (await self.dms_index.get(component_name)).url;
+                const config = await self.ccm.get({name: component_name, url: "https://ccm2.inf.h-brs.de"}, dms_id);
+                await insertComponent({component: component_url, config});
               }
               break;
 
             case 'makeexternallink':
               const uri = prompt('Enter the link here: ', 'https:\/\/');
               const range = getSelectionRange();
-              if ( range ){
+              if (range) {
                 execCommand('insertHTML', false, `<a href="${uri}" target="_blank">${range.toString()}</a>`);
               } else {
-                editor_div.appendChild( $.html({ tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link' }) );
+                editor_div.appendChild($.html({tag: 'a', href: uri, target: '_blank', rel: 'noopener', inner: 'Link'}));
               }
               break;
 
             case "undo":
-              document.execCommand( 'undo', false, null );
-              if ( ! undoStack.length ) break;
-              if ( undoStack[ undoStack.length - 1 ].command !== 'input' ) undoStack.pop().undo();
+              document.execCommand('undo', false, null);
+              if (!undoStack.length) break;
+              if (undoStack[undoStack.length - 1].command !== 'input') undoStack.pop().undo();
               break;
 
             case "redo":
-              document.execCommand( 'redo', false, null );
-              if ( ! redoStack.length ) break;
-              if ( redoStack[ redoStack.length - 1 ].command !== 'input' ) redoStack.pop().redo();
+              document.execCommand('redo', false, null);
+              if (!redoStack.length) break;
+              if (redoStack[redoStack.length - 1].command !== 'input') redoStack.pop().redo();
               break;
 
-            case "bold": case "italic": case "underline": case "strikethrough": case "copy": case "cut": case "delete": case "inserthorizontalrule": case "justifyleft": case "justifycenter": case "justifyright": case "justifyfull": case "indent": case "outdent": case "insertunorderedlist": case "insertorderedlist": case "unlink": case "subscript": case "superscript": case "inserthtml": case "removeformat":
+            case "bold":
+            case "italic":
+            case "underline":
+            case "strikethrough":
+            case "copy":
+            case "cut":
+            case "delete":
+            case "inserthorizontalrule":
+            case "justifyleft":
+            case "justifycenter":
+            case "justifyright":
+            case "justifyfull":
+            case "indent":
+            case "outdent":
+            case "insertunorderedlist":
+            case "insertorderedlist":
+            case "unlink":
+            case "subscript":
+            case "superscript":
+            case "inserthtml":
+            case "removeformat":
               execCommand(command, false, null);
               const editMarker = getSelectionRange();
-              if ( editMarker && editMarker.focus ) editMarker.focus();
+              if (editMarker && editMarker.focus) editMarker.focus();
               break;
 
             case "set_anchor":
-              const anchor_id = prompt( self.helpText.anchor_prompt, self.helpText.anchor_default );
-              page_anchors.add( anchor_id );
+              const anchor_id = prompt(self.helpText.anchor_prompt, self.helpText.anchor_default);
+              page_anchors.add(anchor_id);
               const anchor_range = getSelectionRange();
               const newAnchor = document.createElement('span');
-              newAnchor.setAttribute('id', anchor_id );
+              newAnchor.setAttribute('id', anchor_id);
               // newAnchor.innerHTML = anchor_range.toString();
-              anchor_range.insertNode( newAnchor );
+              anchor_range.insertNode(newAnchor);
               newAnchor.focus && newAnchor.focus();
               break;
 
@@ -1581,10 +1639,10 @@
               break;
 
             case "view_editor":
-              $.setContent( editor_div, dataset.inner );
+              $.setContent(editor_div, $.html( dataset.inner ));
               // TODO restore all event listeners
               updateInPageAnchors();
-              startAllComponents( editor_div );
+              startAllComponents(editor_div);
               html_div.style.display = 'none';
               json_div.style.display = 'none';
               html2json_div.style.display = 'none';
@@ -1592,8 +1650,9 @@
               break;
             case "view_html":
               html_div.innerText = editor_div.innerHTML;
-              html_div.addEventListener( 'input', (e) => {
-                updateData( html_div.innerText );
+              html_div.addEventListener('input', (e) => {
+                updateData(html_div.innerText);
+                save();
               });
               html_div.style['background-color'] = 'lightblue';
               editor_div.style.display = 'none';
@@ -1603,18 +1662,19 @@
               break;
 
             case "view_json":
-              const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } ) );
+              const value_as_json = $.clone(Object.assign({}, self.getValue(), {inner: self.html2json_module(editor_div.innerHTML)}));
               delete value_as_json.parent;
               delete value_as_json.root;
               let view_json_instance = null;
-              if ( ! view_json_instance ){
+              if (!view_json_instance) {
                 view_json_instance = await self.json_builder.start({
                   root: json_div,
-                  onchange: function(){ dataset.inner = $.html( view_json_instance.getValue().inner )  },
+                  onchange: function () { dataset.inner = $.html(view_json_instance.getValue().inner) },
                   data: { // avoid solveDependency by storing in ccm.store
-                    store: [ 'ccm.store', { local: { app: value_as_json }}  ],
+                    store: ['ccm.store', {local: {app: value_as_json}}],
                     key: 'app'
-                  } });
+                  }
+                });
               }
               editor_div.style.display = 'none';
               html_div.style.display = 'none';
@@ -1624,10 +1684,10 @@
 
             case "view_html2json":
               let html2json_instance = null;
-              if ( ! html2json_instance ){
+              if (!html2json_instance) {
                 html2json_instance = await self.html2json.start({
                   root: html2json_div,
-                  onchange: function(){ dataset.inner = $.html( html2json_instance.getValue().inner ) },
+                  onchange: function () { dataset.inner = $.html(html2json_instance.getValue().inner) },
                   data: self.getValue()
                 });
               }
@@ -1642,42 +1702,46 @@
               editor_div.style.display = 'block';
               html_div.style.display = 'none';
               html2json_div.style.display = 'none';
-              editor_div.addEventListener('dblclick', (e)=>{
+              editor_div.addEventListener('dblclick', (e) => {
                 toolbar_div.style.display = 'block';
               });
               break;
 
             case "remove_editor":
               const root = self.element.parentNode;
-              [...root.children].forEach(child=>{
+              [...root.children].forEach(child => {
                 root.removeChild(child);
               });
-              root.appendChild( editor_div.cloneNode( true ) );
+              root.appendChild(editor_div.cloneNode(true));
               break;
 
             default:
-              if ( command.toLowerCase().startsWith('ccm-') ){ // ccm component
-                const componentName = command.substr( 4 ).toLowerCase();
+              if (command.toLowerCase().startsWith('ccm-')) { // ccm component
 
-                // get component
+                const componentName = command.substr(4 ).toLowerCase();
                 const component = await getComponent( componentName );
 
                 let config = {};
 
-                if ( this.dataset["prompt"] ){
-                  const dms_id = prompt( self.helpText.config_prompt + componentName ,
-                    self.helpText.config_default );
-                  if ( dms_id ) config = await self.ccm.get({ name: componentName, url: "https://ccm2.inf.h-brs.de" }, dms_id );
+                if (this.dataset["prompt"]) {
+                  const dms_id = prompt(self.helpText.config_prompt + componentName,
+                    self.helpText.config_default);
+                  if (dms_id) config = await self.ccm.get({
+                    name: componentName,
+                    url: "https://ccm2.inf.h-brs.de"
+                  }, dms_id);
+                } else if (this.dataset["config"]) {
+                  const config_keys = JSON.parse(this.dataset["config"]);
+                  config_keys.forEach(key => {
+                    config[key] = (/^[{[]/.test(this.dataset[key])) ?
+                      JSON.parse(this.dataset[key]) :
+                      this.dataset[key];
+                  });
                 } else {
-                  if ( this.dataset["config"] ){
-                    const config_keys = JSON.parse( this.dataset["config"] );
-                    config_keys.forEach( key => {
-                      config[ key ] = JSON.parse( this.dataset[ key ] );
-                    });
-                  }
+                  config = await ccm.get({name: componentName, url: self.dms_store_url }, 'demo');
                 }
 
-                const instance = await insertComponent({ component, config });
+                const instance = await insertComponent({component, config});
 
               } else { // editor extensions via function calls remotely defined
                 extensionListener({command: command, action: this.dataset['action'], event: e});
@@ -1687,20 +1751,44 @@
         }
 
         /**
+         * get component by name via ccm register or via DMS
+         * @param componentName {String}
+         * @returns {Promise<Component>}
+         */
+        async function getComponent( componentName ){
+          if ( $.isComponent( componentName ) ) return componentName;
+          if ( self[ componentName ] ) return self[ componentName ];
+          const component = ( componentName.includes('-') ) ?
+            await self.ccm.component( componentName ) :
+            DMS_component_index[ componentName ];
+          if ( $.isComponent( component ) ) return component;
+          const component2 = await self.ccm.component( component );
+          if ( $.isComponent( component2 ) ) return component2;
+          const component_url = DMS_component_index[ componentName ];
+          const component3 =  await self.ccm.component( component_url );
+          if ( $.isComponent( component3 ) ) return component3;
+          const component4 = await self.ccm.component( DMS_component_index[ componentName.split('-')[0] ] );
+          if ( $.isComponent( component4 ) ) return component4;
+          debugger;
+        }
+
+        /**
          * standard listener for change events
          * @param e
          * @returns {Promise<void>}
          */
-        async function toolbarChangeListener(e){
+        async function toolbarChangeListener(e) {
           const command = this.dataset["command"].toLowerCase();
           const select = this.querySelector('select');
           const input = this.querySelector('input');
-          switch (command){
-            case 'forecolor': case 'backcolor': case 'hilitecolor':
-              execCommand( command, false, input.value );
+          switch (command) {
+            case 'forecolor':
+            case 'backcolor':
+            case 'hilitecolor':
+              execCommand(command, false, input.value);
               break;
             case "fontsize":
-              execCommand(command, false, parseInt( select.value ));
+              execCommand(command, false, parseInt(select.value));
               select.value = 0; // set back to default
               break;
             case "fontname":
@@ -1711,28 +1799,32 @@
               const anchor = select_anchor_button.options[select_anchor_button.selectedIndex].value;
               const anchorListener = e => {
                 e.preventDefault();
-                const target = editor_div.querySelector( '#' + anchor );
-                if ( target ) target.scrollIntoView({
+                const target = editor_div.querySelector('#' + anchor);
+                if (target) target.scrollIntoView({
                   behavior: 'smooth'
                 });
               };
               const range = getSelectionRange();
-              const anchorReference = $.html({ tag: 'a', href: '#' + anchor, inner: range.toString() || anchor, onclick: anchorListener });
-              if ( range ){
-                  range.commonAncestorContainer.parentNode.appendChild( anchorReference );
+              const anchorReference = $.html({
+                tag: 'a',
+                href: '#' + anchor,
+                inner: range.toString() || anchor,
+                onclick: anchorListener
+              });
+              if (range) {
+                range.commonAncestorContainer.parentNode.appendChild(anchorReference);
               } else {
-                editor_div.appendChild( anchorReference );
+                editor_div.appendChild(anchorReference);
               }
               break;
             case 'select': // select ccm component from DMS
-              const component = DMS_component_index[ select.options[ select.selectedIndex ].value ];
+              const component_url = DMS_component_index[ select.options[select.selectedIndex].value ];
               const instance = await insertComponent({
-                component,
-                config: {}
+                component: await getComponent( component_url )
               });
               break;
             default:
-              extensionListener({ command, event: e });
+              extensionListener({command, event: e});
           }
           updateData();
         }
@@ -1740,10 +1832,10 @@
         /**
          * refresh dataset after editing
          */
-        function updateData( inner ){
-          if ( inner ) dataset.inner = inner; else dataset.inner = editor_div.innerHTML;
+        function updateData(inner) {
+          dataset.inner = self.html2json_module( inner ? inner : editor_div.innerHTML );
           dataset.position = getCaretPosition();
-          self.onchange && self.onchange( dataset );
+          self.onchange && self.onchange(dataset);
         }
 
         /**
@@ -1752,18 +1844,18 @@
          * @param event
          * @param address HTTPS address of ES6 module to be imported
          */
-        async function extensionListener({ command, event, address }){
+        async function extensionListener({command, event, address}) {
           // get listener from remote JavaScript or config or global namespace
-          if ( address ){
-            const action = await self.ccm.load({ url: address, type: 'module', import: command });
+          if (address) {
+            const action = await self.ccm.load({url: address, type: 'module', import: command});
             action(event);
           } else {
-            if ( self.extensions && self.extensions[ command ] && typeof self.extensions[ command ] === 'function' ){
-              self.extensions[ command ](event)
-            } else if ( self[ command ] && typeof self[ command ] === 'function' ){
-              self[ command ](event)
-            } else if ( window[ name ] && typeof window[ name ] === 'function' ){
-              window[ name ](event)
+            if (self.extensions && self.extensions[command] && typeof self.extensions[command] === 'function') {
+              self.extensions[command](event)
+            } else if (self[command] && typeof self[command] === 'function') {
+              self[command](event)
+            } else if (window[name] && typeof window[name] === 'function') {
+              window[name](event)
             } else {
               debugger;
             }
@@ -1776,14 +1868,14 @@
          */
         function getCaretPosition() {
           const shadowRoot = self.element.parentNode || self.element;  // HTML body is no parent node
-          if ( shadowRoot.getSelection ){ // Chrome
-            return position( shadowRoot.getSelection() )
+          if (shadowRoot.getSelection) { // Chrome
+            return position(shadowRoot.getSelection())
           } else { // Firefox 63
-            return position( document.getSelection() )
+            return position(document.getSelection())
           }
 
-          function position( selection ){
-            if ( selection.rangeCount ){
+          function position(selection) {
+            if (selection.rangeCount) {
               const range = selection.getRangeAt(0);
               let rangeCount = 0;
               const childNodes = selection.anchorNode.parentNode.childNodes;
@@ -1806,76 +1898,85 @@
 
         /**
          *
-         * @param component
-         * @param config
+         * @param component {Object}
+         * @param config {Object}
          * @returns {Promise<void>}
          */
-        async function insertComponent({ component, config }){
+        async function insertComponent({component, config = {}}) {
 
           // component
-          const componentOrUrl = await getComponent( component );
-          const urlIndex = $.isComponent( componentOrUrl ) ? componentOrUrl.index : $.getIndex( componentOrUrl );
-          const counter = Object.keys( ccmInstances ).length;
+          const urlIndex = component.index;
+          const counter = Object.keys(ccmInstances).length;
           const tagIndex = urlIndex + '-' + counter; // unique
           const tagName = 'ccm-' + tagIndex;
-          const component_div = document.createElement( tagName );
+          const component_div = document.createElement(tagName);
 
-          // get config
-          if ( ! config || Object.keys(config).length === 0 ) config = $.isComponent( componentOrUrl ) ? componentOrUrl.config : {};
-          if ( config.root ){
-            config = $.integrate( $.generateConfig( config.root ), componentOrUrl.config );
+          // get config  // refactored => move this code into all 4 calls of insertComponent
+          // if (!config || Object.keys(config).length === 0) config = $.isComponent(component) ? component.config : {};
+
+          if (config.root) {
+            // read attributes for configuration
+            config = $.integrate($.generateConfig(config.root), component.config);
           } else {
             config.root = component_div;
           }
           config.parent = self;
 
-          const instance = $.isComponent( componentOrUrl ) ?
-            await componentOrUrl.start( config ) : await self.ccm.start( componentOrUrl, config );
+          const instance = $.isComponent(component) ?
+            await component.start(config) : await window.ccm.start( component, config );
 
           delete config.root;
           delete config.parent;
 
-          ccmInstances[ tagIndex ] = instance; 
+          ccmInstances[ tagIndex ] = instance;
+          dataset.indexMap[ instance.index ] = tagIndex;
 
-          dataset.components[ tagIndex ] = [ 'ccm.component',
-            $.isComponent( componentOrUrl ) ? componentOrUrl.url : componentOrUrl,
+          dataset.components[ tagIndex ] = ['ccm.component',
+            $.isComponent(component) ? component.url : component,
             config
           ];
 
-          editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
+          updateData();
+          save();
 
-          if ( self.inline_block ) component_div.style = "display: inline-block;";
-          if ( self.inline_block ) component_div.firstChild.style = "display: inline-block;";
+          editor_div.dispatchEvent(new Event('keyup', {'bubbles': true}));
 
-          component_div.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder( instance, config ) );
+          if (self.inline_block) component_div.style = "display: inline-block;";
+          if (self.inline_block) component_div.firstChild.style = "display: inline-block;";
+
+          component_div.addEventListener(isMobile() ? 'click' : 'dblclick', openBuilder(instance, config));
 
           const range = getSelectionRange();
-          if ( range && ! $.isSafari() ){
-            range.insertNode( document.createTextNode(' '));
-            range.insertNode( component_div );
-            range.insertNode( document.createTextNode(' '));
-          } else {
-            editor_div.appendChild( document.createTextNode(' '));
-            editor_div.appendChild( component_div );
-            editor_div.appendChild( document.createTextNode(' '));
+          if ( range && ! $.isSafari() ) {
+            range.insertNode(document.createTextNode(' '));
+            range.insertNode(component_div);
+            range.insertNode(document.createTextNode(' '));
+          } else if ( safariRange ) {
+            safariRange.insertNode(document.createTextNode(' '));
+            safariRange.insertNode(component_div);
+            safariRange.insertNode(document.createTextNode(' '));
+          } else { // no range available
+            editor_div.appendChild(document.createTextNode(' '));
+            editor_div.appendChild(component_div);
+            editor_div.appendChild(document.createTextNode(' '));
           }
           component_div.focus();
 
-          undoStack.push( undoTemplate( instance, config ) );
+          undoStack.push(undoTemplate(instance, config));
 
           return instance;
         }
 
-        function undoTemplate( instance, config ){
+        function undoTemplate(instance, config) {
           const action = {
             undo: _ => { // TODO remove
               config.root.style.display = 'none';
-              redoStack.push( action );
+              redoStack.push(action);
             },
             redo: _ => { // TODO restart
               config.root.style.display = 'inline-block';
               // instance.start( config );
-              undoStack.push( action );
+              undoStack.push(action);
             },
             instance: instance,
             command: 'insert'
@@ -1889,19 +1990,19 @@
          * @param config
          * @returns {Function} event handler for double click
          */
-        function openBuilder( instance, config ){  // TODO config not used
+        function openBuilder(instance, config) {  // TODO config not used
           // persist the builder as property of instance
-          return async function( event ){
-            if ( event.type === 'dblclick' || ( event.type === 'click' && event.shiftKey ) ) {
-              if ( instance.json_builder ){
+          return async function (event) {
+            if (event.type === 'dblclick' || (event.type === 'click' && event.shiftKey)) {
+              if (instance.json_builder) {
                 // replace builder_div with old json_builder
-                builder_div.appendChild( instance.builder_div );
+                builder_div.appendChild(instance.builder_div);
               } else {
                 const instance_builder_div = document.createElement('div');
                 instance.json_builder = await self.json_builder.start({
                   root: instance_builder_div,
                   data: { // avoid solveDependency by storing in ccm.store
-                    store: [ 'ccm.store', { local: { app: JSON.parse( instance.config ) }}  ],
+                    store: ['ccm.store', {local: {app: JSON.parse(instance.config)}}],
                     key: 'app'
                   },
                   html: {
@@ -1922,33 +2023,43 @@
                       }
                     ]
                   },
-                  onfinish: async function( e ){
+                  onfinish: async function (e) {
                     const json_builder_value = instance.json_builder.getValue();
                     const instance_config = JSON.parse( instance.config );
-                    const all_diffs = compareJSON( instance_config, json_builder_value );
 
-                    // set attributes only for different values
-                    for ( const [ name, diff ] of all_diffs ){
-                      instance.root.parentNode.setAttribute( name, diff );
-                    }
+                    // store configs into dataset.components
+                    dataset.components[ dataset.indexMap && dataset.indexMap[ instance.index ] || instance.index ][2] = json_builder_value;
+
+                    // Alternative: store different config values in attributes
+                    // const all_diffs = compareJSON(instance_config, json_builder_value);
+                    // for (const [name, diff] of all_diffs) {
+                    //   instance.root.parentNode.setAttribute(name, diff);
+                    // }
 
                     /********** Restart component instance **********/
-                    // await instance.start() is not necessary because of MutationObserver
-                    Object.assign( instance, await $.solveDependencies( json_builder_value ) );
-                    Object.assign( instance.json_builder, { data: {
-                        // avoid solveDependency by storing in ccm.store
-                        store: [ 'ccm.store', { local: { app: json_builder_value }}  ],
-                        key: 'app'
-                      } } );
+                    Object.assign(instance, await $.solveDependencies(json_builder_value));
+                    await instance.start();
+
+                    /********** Alternative: Mutation ***** via MutationObserver *****/
+                    // Object.assign(instance, await $.solveDependencies(json_builder_value));
+                    // Object.assign(instance.json_builder, {
+                    //   data: {
+                    //     // avoid solveDependency by storing in ccm.store
+                    //     store: ['ccm.store', {local: {app: json_builder_value}}],
+                    //     key: 'app'
+                    //   }
+                    // });
+                    builder_div.style.transition = 'display 2s';
                     builder_div.style.display = 'none';
-                    builder_div.removeChild( instance.builder_div );
-                    editor_div.dispatchEvent(new Event('keyup', { 'bubbles': true }));
+                    builder_div.removeChild(instance.builder_div);
+                    editor_div.dispatchEvent(new Event('keyup', {'bubbles': true}));
                     updateData();
+                    save();
                     editor_div.focus();
                   }
                 });
                 instance.builder_div = instance_builder_div;
-                builder_div.appendChild( instance.builder_div );
+                builder_div.appendChild(instance.builder_div);
               }
               builder_div.style.display = 'block';
               builder_div.focus();
@@ -1961,31 +2072,35 @@
          * @param embedCode
          * @returns {Promise<void>}
          */
-        async function insertEmbedCode( embedCode ){
-          if ( embedCode.toLowerCase().includes('ccm-') ){
+        async function insertEmbedCode(embedCode) {
+          if (embedCode.toLowerCase().includes('ccm-')) {
             // extract ccm component and config and start component
             const regex = /(http[^("|')]+).*ccm-(\w+).*?(\w+\d+)["]/gi;
-            const match = regex.exec( embedCode );
+            const match = regex.exec(embedCode);
             const component_uri = match[1];
             const component_name = match[2];
             const dms_id = match[3];
-            if ( component_name && component_name.length > 1 && dms_id ){
-              const config = await self.ccm.get({ name: component_name, url: "https://ccm2.inf.h-brs.de" }, dms_id );
-              const instance = await insertComponent({ component: component_uri, config });
+            if (component_name && component_name.length > 1 && dms_id) {
+              const config = await self.ccm.get({name: component_name, url: "https://ccm2.inf.h-brs.de"}, dms_id);
+              const instance = await insertComponent({component: component_uri, config});
             }
           } else { // e.g. Youtube embed code
             const embed_div = document.createElement('div');
             embed_div.innerHTML = embedCode;
             // selection = self.element.parentNode.getSelection();
             const embed_selection = editor_div.parentNode.parentNode.getSelection && editor_div.parentNode.parentNode.getSelection() || document.getSelection();
-            if (embed_selection.rangeCount > 0) {
+            if (embed_selection.rangeCount > 0 && ! $.isSafari() ) {
               editor_div.appendChild(document.createTextNode(' '));
-              embed_selection.getRangeAt(0).insertNode(embed_div);
+              embed_selection.getRangeAt(0).insertNode( embed_div );
               editor_div.appendChild(document.createTextNode(' '));
+            } else if ( safariRange ) {
+              safariRange.insertNode(document.createTextNode(' '));
+              safariRange.insertNode( embed_div );
+              safariRange.insertNode(document.createTextNode(' '));
             } else {
               editor_div.appendChild(document.createTextNode(' '));
-              editor_div.appendChild(embed_div);
-              editor_div.appendChild( document.createTextNode(' '));
+              editor_div.appendChild( embed_div );
+              editor_div.appendChild(document.createTextNode(' '));
             }
           }
 
@@ -1998,175 +2113,126 @@
          * @param {Object} newJson
          * @return {Array} differences as array of key-value pairs
          */
-        function compareJSON( oldJson, newJson ) {
+        function compareJSON(oldJson, newJson) {
           const result = [];
-          collect( [], oldJson, newJson );
+          collect([], oldJson, newJson);
           return result;
-          function collect( prefix, oldJson, newJson ){
-            if ( oldJson && ! newJson ) return result.push([ dots(), null ]);
-            if ( ! oldJson && newJson ) return result.push([ dots(), newJson ]);
-            if ( oldJson == newJson ) return;
+
+          function collect(prefix, oldJson, newJson) {
+            if (oldJson && !newJson) return result.push([dots(), null]);
+            if (!oldJson && newJson) return result.push([dots(), newJson]);
+            if (oldJson == newJson) return;
             // oldJson && newJson && oldJson != newJson
-            if ( typeof newJson === 'object' ){
-              if ( Array.isArray( newJson ) ){
-                for ( let i = 0; i<newJson.length; i++ ){
-                  collect( [ ...prefix, i ], oldJson[i], newJson[i] );
+            if (typeof newJson === 'object') {
+              if (Array.isArray(newJson)) {
+                for (let i = 0; i < newJson.length; i++) {
+                  collect([...prefix, i], oldJson[i], newJson[i]);
                 }
               } else { // object is not an array
-                for ( const key of [...new Set([...Object.keys( oldJson ), ...Object.keys( newJson )])] ){
-                  collect( [ ...prefix, key ], oldJson[key], newJson[key] );
+                for (const key of [...new Set([...Object.keys(oldJson), ...Object.keys(newJson)])]) {
+                  collect([...prefix, key], oldJson[key], newJson[key]);
                 }
               }
-            } else  {
-              result.push([ dots(), newJson ]);
+            } else {
+              result.push([dots(), newJson]);
             }
-            function dots(){
-              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
+
+            function dots() {
+              return prefix.reduce((a, b) => {
+                if (a) { a += '.' + b } else {a = b}
+                return a
+              }, null);
             }
           }
+        }
+
+
+        /**
+         * get the current selection range or null
+         * @returns {Range}
+         */
+        function getSelectionRange() {
+          const shadowRoot = self.element.parentNode;
+          if (shadowRoot.getSelection && shadowRoot.getSelection()) {
+            const sel = shadowRoot.getSelection();
+            const range = sel.rangeCount && sel.getRangeAt(0);
+            return range;
+          }
+          if (window.getSelection) {
+            const sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+              const range = sel.getRangeAt(0);
+              return range;
+            } else { // Safari
+              const range = document.createRange();
+              range.setStart(sel.anchorNode, sel.anchorOffset);
+              range.setEnd(sel.focusNode, sel.focusOffset);
+              return range;
+            }
+          }
+          return null;
+        }
+
+
+        /**
+         * checks whether editor is run on a mobile platform
+         * @url https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+         * @returns {boolean}
+         */
+        function isMobile() {
+          return 'ontouchstart' in window && window.screen.availWidth < 768;
         }
 
         /**
-         * ToDo No longer used => remove dead code
-         * serialize JSON structure into attributes
-         * @param json
-         * @returns {Array} attribute names and values
+         * updates app state data and restarts app
+         * @returns {Promise<void>}
          */
-        function attributeNamesAndValues( json ){
-          const result = [];
-          collect( [], json );
+        async function save() {
+
+          // no datastore? => abort
+          if ( !$.isDatastore( self.data.store ) ) return;
+
+          delete dataset.afterstart;
+          dataset.user = user;      // protocol who has written finally to store
+          dataset.key = self.data.key;   // same store
+
+          await self.data.store.set( dataset );  // update app state data
+          // await self.start();     // restart app
+
+        }
+
+
+      };
+
+        /**
+         * current state of this editor
+         * @returns {Object} state of editor
+         */
+        this.getValue = () => {
+          // clone dataset
+          const result = $.clone(dataset);
+
+          for (const [index, dep] of Object.entries(dataset.components)) {
+            if (!Array.isArray(dep)) {
+              // transform dep into action data
+              result.components[index] = ['ccm.component',
+                dep.url,
+                dep.config ? $.clone(dep.config) : {}
+              ];
+            }
+            // add second index without version number
+            // if (index.includes('-')) {
+            //   const name = index.slice(0, index.indexOf('-'));
+            //   result.components[name] = result.components[index];
+            // }
+          }
           return result;
-          function collect( prefix, json ){
-            if ( typeof json === 'object' ){
-              if ( Array.isArray( json ) ){
-                for ( let i = 0; i<json.length; i++ ){
-                  collect( [ ...prefix, i ], json[i] );
-                }
-              } else { // object is not an array
-                for ( const [ key, value ] of Object.entries( json ) ){
-                  collect( [ ...prefix, key ], value );
-                }
-              }
-            } else  {
-              result.push([ dots(), json ]);
-            }
-            function dots(){
-              return prefix.reduce((a,b)=>{ if(a){ a += '.' + b } else {a=b} return a },null);
-            }
-          }
-        }
-
-      };
-
-      /**
-       * ToDo No longer used => remove dead code
-       * collect all attributes from instance
-       * @param instance
-       */
-      function collectAttributes( instance ){
-        return [ ...instance.root.parentNode.attributes ].reduce((a,b)=>{
-          a[b.name] = b.value;
-          return a;
-        },{});
-      }
-
-      /**
-       * set or (re-)store a selection
-       * @param {Range} range
-       */
-      function setSelectionRange( range ){
-        const shadowRoot = self.element.parentNode;
-        if ( range && shadowRoot.getSelection ){
-          const sel = shadowRoot.getSelection();
-          sel.removeAllRanges();
-          sel.addRange( range );
-        }
-        if ( range && window.getSelection ){
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange( range );
-        }
-      }
-
-      /**
-       * get the current selection range or null
-       * @returns {Range}
-       */
-      function getSelectionRange() {
-        const shadowRoot = self.element.parentNode;
-        if ( shadowRoot.getSelection &&  shadowRoot.getSelection() ){
-          const sel = shadowRoot.getSelection();
-          const range = sel.rangeCount && sel.getRangeAt(0);
-          return range;
-        }
-        if ( window.getSelection ) {
-          const sel = window.getSelection();
-          if (sel.getRangeAt && sel.rangeCount) {
-            const range = sel.getRangeAt(0);
-            return range;
-          }
-          else  { // Safari
-            const range = document.createRange();
-            range.setStart(sel.anchorNode, sel.anchorOffset);
-            range.setEnd(sel.focusNode, sel.focusOffset);
-            return range;
-          }
-        }
-        return null;
-      }
-
-      /**
-       * get the current selection
-       * @returns {Selection}
-       */
-      function getSelection() {
-        const shadowRoot = self.element.parentNode;
-        if ( shadowRoot.getSelection &&  shadowRoot.getSelection() ){
-          return  shadowRoot.getSelection();
-        }
-        if ( window.getSelection ) {
-          return window.getSelection();
-        }
-        return null;
-      }
-
-      /**
-       * checks whether editor is run on a mobile platform
-       * @url https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
-       * @returns {boolean}
-       */
-      function isMobile() {
-        return 'ontouchstart' in window && window.screen.availWidth < 768;
-      }
-
-      /**
-       * current state of this editor
-       * @returns {Object} state of editor
-       */
-      this.getValue = () => {
-        // clone dataset
-        const result = $.clone( dataset );
-
-        for ( const [ index, dep ] of Object.entries( dataset.components ) ){
-          if ( ! Array.isArray( dep ) ){
-            // transform dep into action data
-            result.components[ index ] = [ 'ccm.component',
-              dep.url,
-              dep.config ? $.clone( dep.config ) : {}
-            ];
-          }
-          // add second index without version number
-          if ( index.includes('-') ){
-            const name = index.slice(0, index.indexOf('-'));
-            result.components[ name ] = result.components[ index ];
-          }
-        }
-        return result;
-      };
+        };
 
     }
 
   };
+
 
   let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||["latest"])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){window.ccm[c].component(component);document.head.removeChild(a)};a.src=component.ccm.url}
 } )();
