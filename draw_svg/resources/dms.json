@@ -80,12 +80,13 @@
                         {
                             "ignore.defaults": {
                                 "data": {
-                                    "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-                                    "key": "collab"
+                                    "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
+                                    "key": "test"
                                 },
-                                "data.key": "collab",
-                                "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css" ],
-                                "css.2": "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css",
+                                "data.key": "test",
+                                "enabled": [ "color", "undo", "redo", "free", "rect", "circle", "text", "html_page", "clear_image", "hide_toolbar", "remove_editor", "ccm-clock", "ccm-content_editor", "ccm-draw_svg" ],
+                                "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css" ],
+                                "css.2": "https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css",
                                 "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
                                     "logging": {
                                         "data": true,
@@ -331,7 +332,7 @@
             }
         ]
     },
-    "updated_at": "2019-01-18T15:00:00+02:00",
+    "updated_at": "2019-02-02T18:20:00+02:00",
     "created_at": "2018-12-26T14:41:22+02:00",
     "_": {
         "creator": "akless2m",

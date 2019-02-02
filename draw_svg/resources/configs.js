@@ -41,7 +41,7 @@ ccm.files[ 'configs.js' ] = {
             "x": "25",
             "y": "25",
             "width": "396",
-            "height": "64",
+            "height": "240",
             "inner": [
               {
                 "tag": "ccm-content_editor",
