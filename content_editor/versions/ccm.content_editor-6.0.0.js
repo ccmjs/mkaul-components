@@ -1228,7 +1228,7 @@
         }
 
 
-        const toolbar_div = $.html( self.html.toolbar.inner );
+        const toolbar_div = $.html( self.html.toolbar );
         const select_anchor_button = toolbar_div.querySelector("a[data-command='select_anchor'] > select");
 
         class Anchors {
