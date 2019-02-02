@@ -3,8 +3,9 @@
  * @link https://github.com/santanubiswas948/draw-svg
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version latest (3.2.0)
  * @changes
+ * version 3.2.0 28.01.2019
  * version 3.1.0 13.01.2019 switching between html view and editor view with re-installing all listeners
  * version 3.0.0 09.01.2019
  * version 2.4.0 05.01.2019 toolbar at fixed position
@@ -30,13 +31,13 @@
      * @type {string}
      */
     name: 'draw_svg',
-    version: [3,1,0],
+    version: [3,2,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**

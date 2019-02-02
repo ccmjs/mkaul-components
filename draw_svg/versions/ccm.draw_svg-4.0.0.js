@@ -3,8 +3,10 @@
  * @link https://github.com/santanubiswas948/draw-svg
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version latest (4.0.0)
  * @changes
+ * version 4.0.0 02.02.2019 add collaboration support
+ * version 3.2.0 28.01.2019
  * version 3.1.0 13.01.2019 switching between html view and editor view with re-installing all listeners
  * version 3.0.0 09.01.2019
  * version 2.4.0 05.01.2019 toolbar at fixed position
@@ -30,13 +32,13 @@
      * @type {string}
      */
     name: 'draw_svg',
-    version: [3,1,0],
+    version: [4,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -45,33 +47,14 @@
      */
     config: {
 
-      data: { // initial SVG diagram to be edited
-        inner: {
-          "tag": "svg",
-          "id": "svg",
-          "width": "100%",
-          "height": "100%",
-          "margin": 0,
-          "padding": 0,
-          "inner": [
-            {
-              "tag": "rect",
-              "x": 50,
-              "y": 50,
-              "width": 50,
-              "height": 50,
-              "fill": "lightgreen",
-              "stroke": "green",
-              "stroke-width": 4
-            },
-            {
-              "tag": "text",
-              "inner": "Choose free drawing button and press mouse to draw",
-              "x": 70,
-              "y": 80
-            }
-          ]
-        }
+      // data: {
+      //   "store": [ "ccm.store", './resources/datasets.js' ],
+      //   "key": "small"
+      // },
+
+      data: {
+        "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
+        "key": "test"
       },
 
       // data: {  // fetched from store
@@ -585,7 +568,7 @@
       // enabled: ['undo', 'redo', 'color', 'text', 'html', 'line', 'rect', 'circle', 'ccm-clock', 'ccm-content_editor', 'ccm-draw_svg', 'ccm-quiz', 'save_image', 'clear_image', 'plus' ],
 
       stroke_width: 2.2,
-      updata_data_event: 'mouseleave',  // or mouseup etc
+      updata_data_event: 'mouseup', // 'mouseleave',  // or 'mouseup' etc
       stopPaintingIntoCCM: true, // if drawing into nested ccm components is prohibited
       textStyle: 'font: bold 30px sans-serif;',
       helpText: {
@@ -633,16 +616,17 @@
 
       html2json_module: [ "ccm.load", {
         "url": "https://ccmjs.github.io/mkaul-components/content_editor/resources/html2json.mjs",
-        "type": "module"
+        "type": "module",
+        "import": "html2json"
       } ],
 
       html2json: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/html2json/ccm.html2json.js" ],
 
       css_awesome: [ "ccm.load",
         { context: "head",
-          url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          url: "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
         },
-        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
       ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/draw_svg/resources/default.css' ],
@@ -724,28 +708,8 @@
         // set shortcut to help functions
         $ = this.ccm.helper;
 
-        // get data from config or remote database
-        dataset = await $.dataset( this.data );
-
-        // Use LightDOM with higher priority than data from config
-        if ( this.inner ){
-
-          // Light DOM is given as ccm JSON data? => convert to HTML DOM Elements
-          if ( $.isObject( this.inner ) && !$.isElementNode( this.inner ) )
-            this.inner = $.html( this.inner );
-
-          // dynamic replacement of placeholders
-          if ( this.placeholder ) [ ...this.inner.children ].forEach( child => child.innerHTML = $.format( child.innerHTML, this.placeholder ) );
-
-          dataset.inner = this.inner;
-        }
-
-        if ( typeof dataset === 'string' ) dataset = { inner: dataset };
-
-        if ( ! dataset ) dataset = {};
-
-        // initialize dataset.components if necessary
-        if ( ! dataset.components ) dataset.components = {};
+        // listen to datastore changes => restart
+        if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
       };
 
@@ -768,6 +732,40 @@
         const redoStack = [];  // Interface Redoable
 
         /**
+         * username of logged in member
+         * @type {string}
+         */
+        let user;
+
+        if ( self.user ){
+          // login user, if not logged in
+          await self.user.login();
+          user = this.user.data().user;
+        } else {
+          user = await pseudonym();
+        }
+
+        async function pseudonym(){
+          const buf = await digestMessage(`${navigator.appVersion};${navigator.hardwareConcurrency};${navigator.deviceMemory};${JSON.stringify(navigator.languages)};${navigator.product};${navigator.productSub};${navigator.userAgent};${navigator.vendor};` + self.SALT);
+          return String.fromCharCode.apply(null, new Uint8Array(buf));
+        }
+
+        async function digestMessage(message) {
+          let encoder = new TextEncoder();
+          let data = encoder.encode(message);
+          return await window.crypto.subtle.digest('SHA-384', data);
+        }
+
+        dataset = await $.dataset( this.data );
+        if ( ! dataset ) dataset = {};
+        if ( typeof dataset === 'string' ) dataset = { key: dataset };
+        if ( ! dataset.key ) dataset.key = self.data.key;
+        if ( ! dataset.components ) dataset.components = {};
+
+        // given default values? => integrate them as defaults into initial values
+        if ( this.ignore ) dataset = $.integrate( this.ignore.defaults, dataset, true );
+
+        /**
          * Index of instances of SvgForeignObject
          * with access to both SVG elements and ccm instances  //TODO use for restart
          * @type {Object.<String, SvgForeignObject>}
@@ -775,11 +773,14 @@
         const foreignObjects = {};
 
         // logging of 'start' event
-        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+        self.logger && self.logger.log( 'start', { user: user, dataset: $.clone( dataset ) } );
 
         const editor_div = $.html( self.html.editor );
         // ToDo check editor_div.contentEditable = "true";
-        if ( ! dataset.inner ) dataset = { inner: {
+        if ( ! dataset.inner ) dataset = {
+          key: self.data.key,
+          user: user,
+          inner: {
             "tag": "svg",
             "id": "svg",
             "width": "100%",
@@ -788,8 +789,13 @@
             "padding": 0,
             "inner": []}
         };
-        editor_div.appendChild( $.html( dataset.inner ) );
-        if ( ! editor_div.querySelector('#svg') ){
+        if ( typeof dataset.inner === 'string' ){
+          editor_div.innerHTML = dataset.inner;
+        } else {
+          editor_div.appendChild( $.html( dataset.inner ) );
+        }
+
+        if ( ! editor_div.querySelector('svg') ){
           editor_div.appendChild( $.html( {
             "tag": "svg",
             "id": "svg",
@@ -797,9 +803,10 @@
             "height": "100%",
             "margin": 0,
             "padding": 0,
-            "inner": []
+            "inner": []  // TODO dataset empty ???
           } ) );
         }
+
 
         // collect <source> tags from inner
         const sources = [...editor_div.querySelectorAll( 'source' )];
@@ -820,8 +827,9 @@
          * refresh dataset after editing
          */
         function updateData( inner ){
-          if ( inner ) dataset.inner = inner; else dataset.inner = editor_div.innerHTML;
-          self.onchange && self.onchange();
+          dataset.inner = self.html2json_module( inner ? inner : editor_div.innerHTML );
+          save();
+          self.onchange && self.onchange(dataset);
         }
 
         // filter enabled tools
@@ -931,7 +939,7 @@
                 //   data.items.add(self.currentObject.outerHTML , 'image/svg+xml' );
                 //   data.items.add(self.currentObject.outerHTML , 'application/xml, text/xml' );
                 //   // data.items.add(self.currentObject.outerHTML , 'application/xhtml+xml' );
-                //   // data.items.add(self.html2json_module.html2json( self.currentObject.outerHTML ), 'application/json' );
+                //   // data.items.add(self.html2json_module( self.currentObject.outerHTML ), 'application/json' );
                 //   // data.items.add( self.currentObject.outerHTML, "text/html" );
                 //   navigator.clipboard.write(data).then(function() {
                 //     console.log( data );
@@ -1287,7 +1295,7 @@
               // make this object active
               self.currentObject = this;
             });
-            if ( this.node.firstChild
+            if ( this.node.firstChild && this.node.firstChild.tagName
               && this.node.firstChild.tagName.startsWith('CCM-') ){
                 this.node.addEventListener('dblclick', openBuilder( this.instance ) );
             }
@@ -1537,6 +1545,7 @@
                 'id' : 'path'+(svg_div.children.length+1),
               });
               svg_div.appendChild( path );
+              // updateData();
               const undoAction = {
                 undo: _ => {
                   if ( path.parentNode === svg_div ){
@@ -1562,6 +1571,7 @@
                 const curvX=(draw_obj.prevX+positionX)/2;
                 const curvY=(draw_obj.prevY+positionY)/2;
                 lastchildPath.setAttribute('d',get_d_attr+" C"+curvX+","+curvY+" "+curvX+","+curvY+" "+positionX+","+positionY);
+                updateData();
               }
               draw_obj.prevX=positionX;
               draw_obj.prevY=positionY;
@@ -1759,7 +1769,7 @@
               break;
 
             case "view_editor":
-              $.setContent( editor_div, dataset.inner );
+              $.setContent( editor_div, $.html( dataset.inner ) );
               init_editor();
               init_svg_div();
               startAllComponents( draw_div );
@@ -1775,7 +1785,7 @@
               break;
 
             case "view_json":
-              const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module.html2json( editor_div.innerHTML ) } ) );
+              const value_as_json = $.clone( Object.assign( {}, self.getValue(),{ inner: self.html2json_module( editor_div.innerHTML ) } ) );
               delete value_as_json.parent;
               delete value_as_json.root;
               let view_json_instance = null;
@@ -2192,6 +2202,23 @@
               builder_div.focus();
             }
           }
+        }
+
+        /**
+         * updates app state data and restarts app
+         * @returns {Promise<void>}
+         */
+        async function save() {
+
+          // no datastore? => abort
+          if ( !$.isDatastore( self.data.store ) ) return;
+
+          dataset.user = user;      // protocol who has written finally to store
+          dataset.key = self.data.key;   // same store
+
+          await self.data.store.set( dataset );  // update app state data
+          // await self.start();     // restart app
+
         }
 
       };

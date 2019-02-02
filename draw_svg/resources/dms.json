@@ -3,10 +3,10 @@
     "_id": "draw_svg",
     "title": "SVG Editor",
     "icon": "https://ccmjs.github.io/mkaul-components/draw_svg/resources/icon.svg",
-    "abstract": "SVG Editor for graphics and ccm components",
-    "description": "Simply choose an object from the toolbar menu. Insert the object into the editor. Use the shift key to insert multiple objects. With this SVG Editor you can edit SVG graphics and include interactive ccm components, even recursively. Use single click to make an object active. Use double click to restart setup precedure for the clicked object ( i.e. move and resize ).",
-    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-3.1.0.js",
-    "version": "3.0.0",
+    "abstract": "Collaborative SVG Editor for graphics and active ccm components",
+    "description": "Simply choose an object from the toolbar menu. Insert the object into the editor. Use the shift key to insert multiple objects. With this SVG Editor you can edit SVG graphics and include interactive ccm components, even recursively. Use single click to make an object active. Use double click to restart setup procedure for the clicked object ( i.e. move and resize ).",
+    "url": "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-4.0.0.js",
+    "version": "4.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -51,50 +51,73 @@
                     "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
                     "full"
                 ]
+            },
+            {
+                "title": "Dataset via HTTP",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "dataset"
+                ]
+            },
+            {
+                "title": "Collaborative via WebSockets",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js",
+                    "websocket"
+                ]
             }
         ],
         "builder": [
           {
                 "title": "Input Mask",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.2.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.2.1.js",
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
                         {
-                            "defaults": {
+                            "ignore.defaults": {
                                 "data": {
-                                    "inner": {
-                                        "tag": "svg",
-                                        "id": "svg",
-                                        "width": "100%",
-                                        "height": "100%",
-                                        "margin": 0,
-                                        "padding": 0,
-                                        "inner": [
-                                            {
-                                                "tag": "rect",
-                                                "x": 50,
-                                                "y": 50,
-                                                "width": 50,
-                                                "height": 50,
-                                                "fill": "lightgreen",
-                                                "stroke": "green",
-                                                "stroke-width": 4
-                                            },
-                                            {
-                                                "tag": "text",
-                                                "inner": "Press Mouse to draw",
-                                                "x": 70,
-                                                "y": 80
+                                    "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+                                    "key": "collab"
+                                },
+                                "data.key": "collab",
+                                "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css" ],
+                                "css.2": "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css",
+                                "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
+                                    "logging": {
+                                        "data": true,
+                                        "browser": true,
+                                        "parent": true,
+                                        "root": true,
+                                        "user": true,
+                                        "website": true
+                                    },
+                                    "onfinish": {
+                                        "store": {
+                                            "settings": { "store": "HBRS_log_my_unique_key", "url": "https://ccm2.inf.h-brs.de" },
+                                            "permissions": {
+                                                "creator": "mkaul2m",
+                                                "group": {
+                                                    "mkaul2m": true,
+                                                    "akless2m": true
+                                                },
+                                                "access": {
+                                                    "get": "group",
+                                                    "set": "creator",
+                                                    "del": "creator"
+                                                }
                                             }
-                                        ]
+                                        }
                                     }
-                                }
+                                } ],
+                                "logger.3.onfinish.store.settings.store": "HBRS_log_my_unique_key"
                             },
                             "json_builder": [
                                 "ccm.component",
-                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js",
+                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
                                 {
                                     "html.inner.1": "",
                                     "directly": true
@@ -258,10 +281,34 @@
                                     ]
                                 },
                                 {
-                                    "label": "Initial SVG graphics",
+                                    "name": "css",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "CSS Style Sheet",
+                                    "name": "css.2",
+                                    "type": "url",
+                                    "info": "CSS Style Sheet"
+                                },
+                                {
+                                    "name": "logger",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Logger",
+                                    "name": "logger.3.onfinish.store.settings.store",
+                                    "type": "text",
+                                    "info": "Name of the logging store"
+                                },
+                                {
                                     "name": "data",
-                                    "type": "json_builder",
-                                    "info": "Initial SVG graphics"
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Collaboration Key",
+                                    "name": "data.key",
+                                    "type": "text",
+                                    "info": "Key for Collaboration"
                                 }
                             ]
                         }
@@ -270,11 +317,11 @@
             },
             {
                 "title": "JSON Builder",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.1.2.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.2.1.js",
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.2.0.js",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
                         {
                             "html.inner.1": "",
                             "directly": true
@@ -284,6 +331,6 @@
             }
         ]
     },
-    "updated_at": "2019-01-09T18:00:00+02:00",
+    "updated_at": "2019-01-18T15:00:00+02:00",
     "created_at": "2018-12-26T14:41:22+02:00"
 }

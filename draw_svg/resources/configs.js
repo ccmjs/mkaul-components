@@ -68,5 +68,21 @@ ccm.files[ 'configs.js' ] = {
 
     enabled: [ 'color', 'undo', 'redo', 'free', 'line', 'rect', 'circle', 'text', 'html', 'html_page', 'ccm-clock', 'ccm-content_editor', 'ccm-draw_svg', 'ccm-quiz', 'save_image', 'load_image', 'clear_image', 'embed', 'dms', 'select', 'view_editor', 'view_html', 'view_json', 'view_html2json', 'stop', "hide_toolbar", "remove_editor", 'plus' ]
 
+  },
+
+  "dataset": {
+    key: "dataset",
+    data: {
+      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/draw_svg/resources/datasets.js' ],
+      "key": "small"
+    },
+  },
+
+  "websocket": {
+    key: "websocket",
+    data: {
+      "store": [ "ccm.store", { "name": "draw_svg", "url": "wss://ccm2.inf.h-brs.de" } ],
+      "key": "small"
+    }
   }
 };
