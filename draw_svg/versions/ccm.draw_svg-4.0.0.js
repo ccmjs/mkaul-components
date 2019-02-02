@@ -1469,7 +1469,7 @@
         }
 
         const mouseMoveToolbarListener = (evt)=> {
-          if ( self.currentObject && self.currentObject.position ){
+          if ( self.currentObject && self.currentObject.position && typeof self.currentObject.position === 'function' ){
             [ mouse_x.value, mouse_y.value ] = self.currentObject.position(evt).map( x => parseInt(x) || 100 );
           } else {
             mouse_x.value =  evt.pageX - getPositionX(svg_div)-getPositionX(draw_div);
