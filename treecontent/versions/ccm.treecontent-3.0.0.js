@@ -2,8 +2,9 @@
  * @overview ccm component for treecontent
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (2.2.0)
+ * @version latest (3.0.0)
  * @changes
+ * version 3.0.0 03.02.2019 incremental update
  * version 2.2.0 02.02.2019 add user, pseudonym, remove listeners, stopImmediatePropagation
  * version 2.1.0 01.02.2019 add login, logger, sorting
  * version 2.0.0 31.01.2019 add save via WebSocket get und set
@@ -24,7 +25,7 @@
      * @type {string}
      */
     name: 'treecontent',
-    version: [2,2,0],
+    version: [3,0,0],
     
     /**
      * recommended used framework version
@@ -65,7 +66,7 @@
 
       data: {
         "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-        "key": "leitbild1"
+        "key": "test"
       },
 
       empty_row: {
@@ -142,11 +143,6 @@
         // listen to datastore changes => restart
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
-        // Use LightDOM with higher priority than data from config
-        if ( this.inner && this.inner.trim() ){
-          dataset.inner = this.inner;
-        }
-
       };
       
       /**
@@ -220,9 +216,87 @@
             rootLabel ) // start all id-s with this prefix
         } ) );
 
+
+        // self.update = async ( data ) => {
+        //   if ( self.element.parentElement.contains( document.activeElement ) ){
+        //     await incrementalUpdate( data );  // has focus
+        //   } else {
+        //     await self.start();         // has no focus
+        //   }
+        // };
+
+        async function incrementalUpdate( data ){
+          const jsondiffs = jsondiff( data );
+          console.log( jsondiffs );
+          jsondiffs.forEach( ({type, id, diff}) => {
+            switch( type ){
+              case 'label': self.element.querySelector('#' + id + ' > .label').innerText = diff.label;
+                rowIndex[ id ].label = diff.label;
+                break;
+              case 'likes': self.element.querySelector('#' + id + ' > .likes').innerText = diff.likes;
+                rowIndex[ id ].likes = diff.likes;
+                break;
+              case 'dislikes': self.element.querySelector('#' + id + ' > .dislikes').innerText = diff.dislikes;
+                rowIndex[ id ].dislikes = diff.dislikes;
+                break;
+              case 'insert':
+                rowIndex[ id ] = diff;
+                const item = $.format(self.html.item, diff);
+                item.id = id;
+                self.element.querySelector('#' + id).appendChild( $.html( item ) );
+                break;
+              default:
+                debugger;
+            }
+          });
+        }
+
+        // listen to datastore changes => restart
+        if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = incrementalUpdate;
+
+        function jsondiff( data ){
+          const result = [];
+          const newRowIndex = makeRowIndex( data );
+          for ( const key of Object.keys( newRowIndex ) ) {
+            const oldValue = rowIndex[ key ];
+            if ( oldValue ){
+              const diff = objectDiff( oldValue, newRowIndex[key] );
+              if ( diff ) {
+                diff.id = key;
+                result.push( diff );
+              }
+            } else {
+              result.push({type: 'insert', id: key, diff: newRowIndex[key]});
+            }
+          }
+          return result;
+        }
+
+        function makeRowIndex( data ){
+          const index = {};
+          traverse(data);
+          function traverse(data){
+            if ( data.id ) index[ data.id ] = data;
+            if (data.inner){
+              for ( const next of data.inner ){
+                traverse( next );
+              }
+            }
+          }
+          return index;
+        }
+
+        function objectDiff(a,b){
+          for ( const key of Object.keys(a)){
+            if ( key === 'inner' ) continue;
+            if ( a[key] !== b[key] ) return { type: key, diff: {[key]: b[key]} };
+          }
+          return null;
+        }
+
         addListeners( self.element );
 
-        // console.log( 1, dataset );
+        console.log( 1, dataset );
 
         /**
          * transform dataset into JSON format as intermediate datastructure for rendering HTML
@@ -260,7 +334,7 @@
 
           append_empty_row();
 
-          // console.log( 2, parentRow );
+          console.log( 2, parentRow );
 
           return result;
 
@@ -362,7 +436,7 @@
               // https://stackoverflow.com/questions/20726174/placeholder-for-contenteditable-div
               // label.innerText = e.data; // TODO move cursor forward
               makeNextChild( row, item );
-              // console.log( 3, dataset );
+              console.log( 3, dataset );
             }
             item.classList.remove('empty' );
             item.querySelector('button').innerText = '+';
@@ -391,7 +465,7 @@
                 makeFirstChild( row, item );
                 updateDataset( item );
                 save();
-                // console.log( 4, dataset );
+                console.log( 4, dataset );
               }
             } else if ( this.innerText === '-' ){
               this.innerText = '+';
@@ -466,7 +540,7 @@
         }
 
         function level( row ){
-          return row.id.length - (dataset.id || "a").length - 2;
+          return row.id.length - (dataset.id || "a").length;
         }
 
         /**
