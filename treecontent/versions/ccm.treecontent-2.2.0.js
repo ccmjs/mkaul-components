@@ -461,7 +461,7 @@
         }
 
         function level( row ){
-          return row.id.length - (dataset.id || "a").length;
+          return row.id.length - (dataset.id || "a").length - 2;
         }
 
         /**
