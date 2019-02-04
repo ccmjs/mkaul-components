@@ -51,6 +51,7 @@ li > .label {
 }
 
 .likes, .dislikes {
+  cursor: pointer;
   text-align: center;
   font-size: 0.6em;
   align-self: flex-end;

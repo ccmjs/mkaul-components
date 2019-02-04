@@ -226,7 +226,6 @@
         // };
 
         async function incrementalUpdate( data ){
-          const activeElement = self.element.parentNode.activeElement;
           const jsondiffs = jsondiff( data );
           console.log( jsondiffs );
           jsondiffs.forEach( ({type, id, diff}) => {
@@ -262,7 +261,6 @@
                 debugger;
             }
           });
-          activeElement && activeElement.focus();
         }
 
         function append( row ){
