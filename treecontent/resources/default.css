@@ -11,9 +11,30 @@
 }
 
 h1 {
+  display: inline;
+  min-width: 10em;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: x-large;
   text-align: center;
+  margin-left: 3em;
+  margin-right: 3em;
+}
+
+#sort {
+  display: inline;
+  width: auto;
+  min-width: 6em;
+  height: 1.4em;
+  text-align: center;
+  color: black;
+  background-color: grey;
+  box-shadow: 4px 5px lightgrey;
+  margin: 0.4em;
+}
+
+.tree {
+  border: thin dashed blue;
+  background-color: #efefff;
 }
 
 .tree > ul { /* top level ul */
@@ -33,6 +54,7 @@ ul {
 li {
   display: flex;
   flex-wrap: wrap;
+  min-width: 10em;
 }
 
 li > button, .likes, .dislikes {
@@ -42,12 +64,43 @@ li > button, .likes, .dislikes {
 
 button {
   width: 34px;
+  height: 1em;
+  text-align: center;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  margin-left: 0.1em;
+  margin-right: 0.2em;
+  font-size: 0.7em;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #c3c3f3;
+  border: none;
+  border-radius: 0.2em;
+  box-shadow: 4px 5px #8080ff;
+}
+
+button:hover {
+  border: thin solid black;
+  color: white;
+  background-color: blue;
+  box-shadow: 2px 2px #666;
+}
+
+button:active {
+  background-color: #00f;
+  box-shadow: 2px 5px #666;
+  transform: translateY(4px);
 }
 
 li > .label {
   flex-grow: 1; /* max space */
-  flex-basis: calc(100% - 100px); /* sum of button + thumbs */
+  flex-basis: calc(100% - 200px); /* sum of button + thumbs */
   border-bottom: thin dashed black;
+}
+
+li > .label:hover {
+  background-color: white;
 }
 
 .likes, .dislikes {
@@ -91,4 +144,5 @@ li > .label {
 .empty button {
   text-align: center;
   padding-left: 0.15em;
+  content: "&Omicron;"
 }

@@ -4,7 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (3.1.0)
  * @changes
- * version 3.1.0 06.02.2019 position cursor
+ * version 3.1.0 06.02.2019 position cursor at the end of input
  * version 3.0.0 03.02.2019 incremental update
  * version 2.2.0 02.02.2019 add user, pseudonym, remove listeners, stopImmediatePropagation
  * version 2.1.0 01.02.2019 add login, logger, sorting
@@ -26,14 +26,14 @@
      * @type {string}
      */
     name: 'treecontent',
-    // version: [1,0,0],
+    version: [3,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -90,7 +90,7 @@
 
     // onchange: function(){ console.log( this.getValue() ); },
       
-      css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.3.1.js", [ "ccm.get", "https://ccmjs.github.io/akless-components/user/resources/configs.js", "guest" ] ],
       "logger": [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.1.js", {
