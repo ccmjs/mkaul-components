@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/treecontent/resources/icon.svg",
     "abstract": "Collaborative Hierarchical List of editable content. Just type into the fields and open subtrees via the + button. Like or dislike the different items.",
     "description": "A collaborative tree content editor is a hierarchical list of editable items. Just type into the labels and open subtrees via the \"+\" button. Close with \"-\" button. Add new items via the grey fields. Like or dislike the different items. Use for collaborative editing via WebSockets.",
-    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-3.1.0.js",
-    "version": "3.1.0",
+    "url": "https://ccmjs.github.io/mkaul-components/treecontent/versions/ccm.treecontent-4.0.0.js",
+    "version": "4.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -45,7 +45,7 @@
                 ]
             },
             {
-                "title": "Kollaborativ",
+                "title": "Collaborative",
                 "config": [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/treecontent/resources/configs.js",
@@ -72,7 +72,6 @@
                                 "font_max_size": 36,
                                 "font_min_size": 8,
                                 "font_decrease_factor": 2,
-                                "sorted": true,
                                 "one_click_per_thumb": true,
                                 "css": [ "ccm.load", "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css" ],
                                 "css.2": "https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css",
@@ -135,12 +134,6 @@
                                     "max": 14
                                 },
                                 {
-                                    "label": "Sorting",
-                                    "name": "sorted",
-                                    "type": "checkbox",
-                                    "info": "sorting lines by thumb rating"
-                                },
-                                {
                                     "label": "One click per thumb",
                                     "name": "one_click_per_thumb",
                                     "type": "checkbox",
@@ -197,10 +190,10 @@
             }
         ]
     },
-    "updated_at": "2019-02-03T18:00:00+02:00",
+    "updated_at": "2019-02-07T11:24:00+02:00",
     "created_at": "2019-01-30T12:41:22+02:00",
     "_": {
-        "creator": "akless2m",
+        "creator": "mkaul2m",
         "realm": "hbrsinfkaul",
         "access": {
             "get": "all",

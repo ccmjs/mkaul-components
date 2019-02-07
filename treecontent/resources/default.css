@@ -10,26 +10,37 @@
   font-size: xx-large;
 }
 
-h1 {
-  display: inline;
+.top {
+  display: flex;
+  flex-wrap: wrap;
   min-width: 10em;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: x-large;
-  text-align: center;
-  margin-left: 3em;
-  margin-right: 3em;
 }
 
-#sort {
-  display: inline;
+h1 {
+  text-align: center;
+  flex-grow: 1; /* max space */
+  min-width: 8em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: x-large;
+  margin-left: 0.1em;
+}
+
+.headerbuttons {
+  flex-basis: auto; /* min space */
+}
+
+.headerline {
+  font-size: large;
+  display: inline-block;
   width: auto;
-  min-width: 6em;
-  height: 1.4em;
+  min-width: 4em;
+  height: 1.1em;
   text-align: center;
   color: black;
-  background-color: grey;
-  box-shadow: 4px 5px lightgrey;
+  background-color: #efefff;
+  box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.2);
   margin: 0.4em;
+  padding-bottom: 0.2em;
 }
 
 .tree {
@@ -83,13 +94,13 @@ button {
 button:hover {
   border: thin solid black;
   color: white;
-  background-color: blue;
+  background-color: #8282ff;
   box-shadow: 2px 2px #666;
 }
 
 button:active {
   background-color: #00f;
-  box-shadow: 2px 5px #666;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   transform: translateY(4px);
 }
 
@@ -124,7 +135,7 @@ li > .label:hover {
   background-size: 32px;
 }
 
-:empty::before {
+.label:empty::before {
   content: "Add new text here ...";
   color: grey;
   font-style: italic;
