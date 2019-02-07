@@ -239,7 +239,7 @@
 
 
         async function incrementalUpdate( data ){
-          if ( data && self.data && data.key !== self.data.key ) return; // same store, but different document
+          if ( ! data || ! self.data || data.key !== self.data.key ) return; // same store, but different document
           const activeElement = self.element.querySelector('li > .label:hover');
           const jsondiffs = jsondiff( data );
           // console.log( jsondiffs );
