@@ -42,7 +42,7 @@ ccm.files[ 'configs.js' ] = {
     key: "collab",
     header: "Leitbild Lehre 1",
     data: {
-      "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+      "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de", "dataset": "leitbild1" } ],
       "key": "leitbild1"
     }
   }

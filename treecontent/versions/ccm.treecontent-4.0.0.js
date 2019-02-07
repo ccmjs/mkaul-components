@@ -77,7 +77,7 @@
       // },
 
       data: {
-        "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
+        "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de", "dataset": "test" } ],
         "key": "test"
       },
 
