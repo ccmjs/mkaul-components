@@ -408,8 +408,13 @@
           if ( ! row[ 'users' ] ) row[ 'users' ] = {};
           const users = row[ 'users' ];
           if ( ! users[ classList ] && classList ) users[ classList ] = {};
-          if ( self.one_click_per_thumb && classList && ! users[ classList ][ user ] ) {
-            users[ classList ][ user ] = true;
+          if ( self.one_click_per_thumb ){
+            if( classList && ! users[ classList ][ user ] ) {
+              users[ classList ][ user ] = true;
+              row[ classList ] += 1;
+              this.innerText = parseInt( this.innerText ) + 1;
+            }
+          } else {
             row[ classList ] += 1;
             this.innerText = parseInt( this.innerText ) + 1;
           }
@@ -497,8 +502,9 @@
               delete row.class;
               item.classList.remove( 'empty' );
               e.target.classList.remove('empty');
-              label.innerText = e.data;
-              row.label = e.data;
+              const value = e.data || e.target.innerText;
+              label.innerText = value;
+              row.label = value;
               makeNextChild( item.id );
               // console.log( 3, dataset );
             } else if ( ! nextChild( item.id  ) ){
