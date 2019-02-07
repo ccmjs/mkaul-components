@@ -11,21 +11,19 @@
     </g>
   </g>
   <g id="Layer_2"/>
-  <rect x="7.44" y="13.35" width="11.17" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
+  <rect x="7.85" y="14.26" width="11.17" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
   <rect x="18.79" y="25.01" width="11.72" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
-  <rect x="7.36" y="36.34" width="11.17" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
-  <rect x="18.76" y="13.36" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
+  <rect x="7.8" y="35.58" width="11.17" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
+  <rect x="18.61" y="14.25" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
   <rect x="30.55" y="24.96" width="25.37" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
-  <rect x="18.69" y="36.26" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
-  <text style="fill: rgb(38, 0, 254); font-size: 9px; font-weight: 700; white-space: pre;" x="21.17" y="21.79">Tree</text>
-  <text style="fill: rgb(38, 0, 254); font-family: &quot;Open Sans&quot;; font-size: 9px; font-weight: 700; letter-spacing: -0.5px; white-space: pre;" x="20.51" y="44.92">Content</text>
-  <g>
-    <rect x="12.31" y="14.56" width="0.95" height="7.83" style=""/>
-    <rect x="12.31" y="14.56" width="0.95" height="7.83" style="" transform="matrix(0, 1, -1, 0, 31.26, 5.69)"/>
-  </g>
+  <rect x="18.74" y="35.6" width="37.26" height="10.75" style="fill: rgb(216, 216, 216); stroke-miterlimit: 8; stroke-dashoffset: 1px; stroke-linejoin: round; stroke: rgb(0, 0, 0);"/>
+  <text style="fill: rgb(38, 0, 254); font-size: 7px; font-weight: 700; white-space: pre;" x="31.87" y="32.89" transform="matrix(0.97894, 0, 0, 1, 4.18772, -0.28072)">Tree</text>
   <rect x="12.31" y="14.56" width="0.95" height="7.83" style="" transform="matrix(0, 1, -1, 0, 43.18917, 17.54673)"/>
-  <g transform="matrix(1, 0, 0, 1, -0.12225, 23.18338)">
+  <g transform="matrix(1, 0, 0, 1, 0.44858, 22.78881)">
     <rect x="12.31" y="14.56" width="0.95" height="7.83" style=""/>
     <rect x="12.31" y="14.56" width="0.95" height="7.83" style="" transform="matrix(0, 1, -1, 0, 31.26, 5.69)"/>
   </g>
+  <text style="fill: rgb(38, 0, 254); font-size: 7px; font-weight: 700; white-space: pre;" x="27.48" y="43.84" transform="matrix(1.24578, 0, 0, 1, -13.70815, -0.3024)">Content</text>
+  <text style="fill: rgb(38, 0, 254); font-size: 7px; font-weight: 700; white-space: pre;" x="20.92" y="21.16" transform="matrix(0.77465, 0, 0, 1, 4.03657, 0.94664)">Collaborative</text>
+  <rect x="12.31" y="14.56" width="0.95" height="7.83" style="" transform="matrix(0, 1, -1, 0, 31.85347, 6.7977)"/>
 </svg>
