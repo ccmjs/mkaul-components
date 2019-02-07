@@ -239,6 +239,7 @@
 
 
         async function incrementalUpdate( data ){
+          if ( data.key !== self.data.key ) return; // same store, but different document
           const activeElement = self.element.querySelector('li > .label:hover');
           const jsondiffs = jsondiff( data );
           // console.log( jsondiffs );
@@ -402,12 +403,12 @@
 
         function likesClickListener(e){
           const id = this.parentNode.id;
-          const classList = this.classList[0];
+          const classList = this.classList[0].trim();
           const row = rowIndex[ id ];
           if ( ! row[ 'users' ] ) row[ 'users' ] = {};
           const users = row[ 'users' ];
-          if ( ! users[ classList ] ) users[ classList ] = {};
-          if ( self.one_click_per_thumb && ! users[ classList ][ user ] ) {
+          if ( ! users[ classList ] && classList ) users[ classList ] = {};
+          if ( self.one_click_per_thumb && classList && ! users[ classList ][ user ] ) {
             users[ classList ][ user ] = true;
             row[ classList ] += 1;
             this.innerText = parseInt( this.innerText ) + 1;
