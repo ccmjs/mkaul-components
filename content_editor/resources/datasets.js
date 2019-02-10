@@ -1,6 +1,6 @@
 
 /**
- * @overview datasets for ccm component draw_svg
+ * @overview datasets for ccm component content_editor
  * @version 0.0.1
  * @author mkaul2m Manfred.Kaul@h-brs.de
  * @copyright The MIT License (MIT) mkaul2m on 29.01.2019.
