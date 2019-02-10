@@ -97,7 +97,8 @@
       SALT: 'anjcsp8r48763hkb',
 
 
-    // onchange: function(){ console.log( this.getValue() ); },
+      // onchange: function( dataset ){ console.log( dataset ); },
+      // onhover: function( id ){ console.log( id ); },
       
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/treecontent/resources/default.css' ],
@@ -225,12 +226,12 @@
         } ) );
 
         const sort_button = self.element.querySelector('#sort');
-        sort_button.addEventListener('click', e => {
+        sort_button && sort_button.addEventListener('click', e => {
           sort( this.element.querySelector('.tree li button') );
         });
 
         const refresh_button = self.element.querySelector('#refresh');
-        refresh_button.addEventListener('click', e => {
+        refresh_button && refresh_button.addEventListener('click', e => {
           self.start();
         });
 
@@ -385,7 +386,7 @@
 
           function append_empty_row(){
             const last = list[ list.length - 1 ];
-            if ( list.length > 0 && (last.class === 'empty' || last.label.trim().length === 0) ) return;
+            if ( list.length > 0 && (last.class === 'empty' || last.label && last.label.trim().length === 0) ) return;
             const empty_row = $.clone( self.empty_row );
             list.push( empty_row );
             empty_row.id = next_id();
@@ -480,6 +481,8 @@
             const label = item.querySelector('.label');
             label.removeEventListener('input', inputListener ); // if any
             label.addEventListener('input', inputListener );
+            label.removeEventListener('mouseover', hoverListener ); // if any
+            label.addEventListener('mouseover', hoverListener  );
             const button = item.querySelector('button');
             button.removeEventListener('click', buttonClickListener );
             button.addEventListener('click', buttonClickListener );
@@ -582,6 +585,10 @@
 
         }
 
+        function hoverListener(e){
+          self.onhover && self.onhover( this.parentNode.id );
+        }
+
         function makeFirstChild( parentRow, parentElem ){
           if ( isEmpty( parentRow, parentElem ) ) return;
           const empty_row = $.clone( self.empty_row );
@@ -672,6 +679,8 @@
          */
         async function save() {
 
+          self.onchange && self.onchange( dataset );
+
           // no datastore? => abort
           if ( !$.isDatastore( self.data.store ) ) return;
 
@@ -692,6 +701,8 @@
       this.getValue = () => {
         return $.clone( dataset );
       };
+
+
 
     }
 

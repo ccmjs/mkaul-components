@@ -69,6 +69,7 @@
                                     "key": "collab"
                                 },
                                 "data.key": "collab",
+                                "data.store.1.dataset": "collab",
                                 "font_max_size": 36,
                                 "font_min_size": 8,
                                 "font_decrease_factor": 2,
@@ -168,6 +169,12 @@
                                     "name": "data.key",
                                     "type": "text",
                                     "info": "Key for Collaboration"
+                                },
+                                {
+                                    "label": "Collaboration Key",
+                                    "name": "data.store.1.dataset",
+                                    "type": "text",
+                                    "info": "Confirm Key for Collaboration (Same Key)"
                                 }
                             ]
                         }
