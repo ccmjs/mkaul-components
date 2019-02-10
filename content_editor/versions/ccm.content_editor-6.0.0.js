@@ -51,6 +51,8 @@
      */
     config: {
 
+      header: "", // title above the toolbar
+
       // data: {
       //    "store": [ "ccm.store", './resources/datasets.js' ],
       //    "key": "small"
@@ -60,11 +62,6 @@
         "store": [ "ccm.store", { "name": "content_editor", "url": "wss://ccm2.inf.h-brs.de" } ],
         "key": "test"
       },
-
-      // data: {
-      //   "store": [ "ccm.store", { local: 'resources/dataset.json' } ],
-      //   "key": "demo"
-      // },
 
       // onchange: function( dataset ){ console.log( this.getValue() ); },
 
@@ -912,6 +909,7 @@
         "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
       ],
 
+      // https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
 
       inline_block: true,
@@ -994,15 +992,7 @@
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
         // Use LightDOM with higher priority than data from config
-        if (this.inner) {
-
-          // Light DOM is given as ccm JSON data? => convert to HTML DOM Elements
-          if ($.isObject(this.inner) && !$.isElementNode(this.inner))
-            this.inner = $.html(this.inner);
-
-          // dynamic replacement of placeholders
-          if (this.placeholder) [...this.inner.children].forEach(child => child.innerHTML = $.format(child.innerHTML, this.placeholder));
-
+        if ( this.inner && this.inner.trim() ){
           dataset.inner = this.inner;
         }
 
@@ -1067,11 +1057,11 @@
 
         async function pseudonym(){
           const buf = await digestMessage(`${navigator.appVersion};${navigator.hardwareConcurrency};${navigator.deviceMemory};${JSON.stringify(navigator.languages)};${navigator.product};${navigator.productSub};${navigator.userAgent};${navigator.vendor};` + self.SALT);
-          return String.fromCharCode.apply(null, new Uint8Array(buf));
+          return String.fromCharCode.apply(null, new Uint16Array(buf));
         }
 
-        async function digestMessage(message) {
-          let encoder = new TextEncoder();
+        async function digestMessage(message, encoding = 'utf-16') {
+          let encoder = new TextEncoder(encoding);
           let data = encoder.encode(message);
           return await window.crypto.subtle.digest('SHA-384', data);
         }
@@ -1313,6 +1303,7 @@
           tool.addEventListener('change', toolbarChangeListener.bind(tool));
         });
 
+
         const builder_div = $.html(self.html.builder || {});
         const html_div = $.html(self.html.html || {});
         const json_div = $.html(self.html.json || {});
@@ -1320,7 +1311,7 @@
         const bottom_div = $.html(self.html.bottom || {class: 'bottom'});
 
         // render main HTML structure
-        $.setContent(this.element, $.html([toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div, bottom_div]));
+        $.setContent(this.element, $.html([{ id: 'header', inner: self.header }, toolbar_div, builder_div, editor_div, html_div, json_div, html2json_div, bottom_div]));
 
         // SVG hack: paint all svg icons which are inside the DOM but not painted
         [...this.element.querySelectorAll('svg')].forEach(svg => {
