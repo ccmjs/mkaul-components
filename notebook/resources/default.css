@@ -1,0 +1,87 @@
+/**
+ * @overview default layout of ccm component notebook
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+:host {
+  margin: 0;
+  padding: 0;
+}
+
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+}
+
+.header > h1 {
+  flex-grow: 1;
+  text-align: center;
+  display: inline-block;
+}
+
+.headerline {
+  font-size: large;
+  display: inline-block;
+  width: auto;
+  height: 1.4em;
+  min-width: 4em;
+  text-align: center;
+  color: black;
+  background-color: #efefff;
+  box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.2);
+  margin: 0.4em;
+  padding-bottom: 0.2em;
+}
+
+#notebook {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: thin solid black;
+}
+
+#tree {
+  flex-grow: 1;
+  max-width: 45%;
+  overflow: hidden;
+  border-right: thin dashed black;
+}
+
+#editor {
+  flex-grow: 4;
+}
+
+button {
+  width: 34px;
+  text-align: center;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  margin-left: 0.1em;
+  margin-right: 0.2em;
+  font-size: 0.7em;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #c3c3f3;
+  border: none;
+  border-radius: 0.2em;
+  box-shadow: 4px 5px #ccf;
+}
+
+button:hover {
+  border: thin solid black;
+  color: white;
+  background-color: #aaf;
+  box-shadow: 2px 2px #666;
+}
+
+button:active {
+  background-color: #66f;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  transform: translateY(4px);
+}
