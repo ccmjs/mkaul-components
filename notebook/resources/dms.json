@@ -1,10 +1,10 @@
 
 {
     "_id": "notebook",
-    "title": "notebook",
+    "title": "Notebook",
     "icon": "https://ccmjs.github.io/mkaul-components/notebook/resources/icon.svg",
-    "abstract": "",
-    "description": "",
+    "abstract": "Collaborative Notebook",
+    "description": "This Collaborative Notebook is a combination of TreeContent and ContentEditor. Users can collaboratively edit a hierarchy of topics and write descriptions for every topic. Collaboration is done via WebSockets in near Realtime. Using the https protocol instead leads to an Online Book editor storing contents on the server in a database. Using no URL, all data are stored locally client-side only in the browser IndexedDB. This last configuration yields an offline book editor. On every reload, book data are fetched from the browser database. No server needed.",
     "url": "https://ccmjs.github.io/mkaul-components/notebook/versions/ccm.notebook-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
@@ -42,6 +42,14 @@
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/notebook/resources/configs.js",
                     "wss_store"
+                ]
+            },
+            {
+                "title": "Leitbild Lehre",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/notebook/resources/configs.js",
+                    "leitbild_lehre"
                 ]
             }
         ],
@@ -278,5 +286,14 @@
         ]
     },
     "updated_at": "2019-02-10T14:24:22+02:00",
-    "created_at": "2019-02-10T14:24:22+02:00"
+    "created_at": "2019-02-10T14:24:22+02:00",
+    "_": {
+        "creator": "mkaul2m",
+        "realm": "hbrsinfkaul",
+        "access": {
+            "get": "all",
+            "set": "creator",
+            "del": "creator"
+        }
+    }
 }

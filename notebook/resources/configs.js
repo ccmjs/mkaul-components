@@ -14,14 +14,6 @@ ccm.files[ 'configs.js' ] = {
       "key": "small"
     },
   },
-  "leitbild_lehre": {
-    key: "leitbild_lehre",
-    title: "Leitbild Lehre",
-    data: {
-      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/notebook/resources/datasets.js' ],
-      "key": "leitbild_lehre"
-    },
-  },
   "browser_store": {
     key: "browser_store",
     title: "Browser Store: Client-only App with IndexedDB.",
@@ -45,5 +37,13 @@ ccm.files[ 'configs.js' ] = {
       "store": [ "ccm.store", { name: "notebook", url: "wss://ccm2.inf.h-brs.de", dataset: "test" } ],
       "key": "test"
     }
-  }
+  },
+  "leitbild_lehre": {
+    key: "leitbild_lehre",
+    title: "Leitbild Lehre",
+    data: {
+      "store": [ "ccm.store", { name: "notebook", url: "wss://ccm2.inf.h-brs.de", dataset: "leitbild_lehre" } ],
+      "key": "leitbild_lehre"
+    },
+  },
 };
