@@ -70,12 +70,20 @@
         "key": "small"
       },
 
+      log_load_save: true,
+
       // data: {
       //   "store": [ "ccm.store", { "name": "notebook", "url": "wss://ccm2.inf.h-brs.de", "dataset": "test" } ],
       //   "key": "test"
       // },
 
       // onchange: function( dataset ){ console.log( dataset ); },
+
+      // htmldiff: [ "ccm.load", {
+      //   "url": "../notebook/resources/htmldiff.mjs",
+      //   "type": "module",
+      //   "import": "diff"
+      // } ],
       
       css: [ 'ccm.load',  '../notebook/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/notebook/resources/default.css' ],
@@ -143,6 +151,12 @@
          */
         let rowIndex = null;
         let state = null;  // state is the ID currently selected
+        let lastContent = null; // avoid thrashing by remebering old value
+
+        // caches
+        const editor_cache = {};  // reuse cc instances of editors
+        const root_cache = {};    // reuse divs, in which editors are rendered
+        let content_instance;     // different instances of content_editor
       
         dataset = await $.dataset( this.data );
         init_dataset();
@@ -160,6 +174,14 @@
           if ( self.ignore ) dataset = $.integrate( self.ignore.defaults, dataset, true );
 
           rowIndex = makeRowIndex( dataset );
+
+          // store own edits into dataset
+          if ( state && content_instance && rowIndex[ state ].content !== content_instance.getValue().inner && rowIndex[ state ].content !== lastContent ){
+            lastContent = rowIndex[ state ].content; // avoid thrashing
+            rowIndex[ state ].content = content_instance.getValue().inner;
+            $.wait( 200, save );  // Caution: Two different values compete
+                                  // and yield infinite loop of writes and re-writes
+          }
         }
 
         // logging of 'start' event
@@ -202,11 +224,6 @@
         // render main HTML structure
         $.setContent( self.element, main );
 
-        // caches
-        const editor_cache = {};  // reuse cc instances of editors
-        const root_cache = {};    // reuse divs, in which editors are rendered
-        let content_instance;     // different instances of content_editor
-
         // editor configs
         const editor_config = ( id, row ) => {
           if ( ! root_cache[ id ] ){  // root with this id does not exist yet
@@ -216,7 +233,7 @@
           $.replace( self.element.querySelector('#editor'), root_cache[ id ] );
           return { root: root_cache[ id ],
             // header: row ? row.label : "",
-            data: { key: self.data.key, inner: row ? row.content : "" },
+            data: { key: self.data.key, inner: row && row.content ? row.content : `<b>${row ? row.label : "Edit here"}</b>` },
             onchange: editor_dataset => {
               const id_row = find( id, dataset );
               if ( id_row ){
@@ -257,7 +274,7 @@
          */
         function merge( dataset, new_dataset ){
           for ( const [ key, value ] of Object.entries( new_dataset ) ){
-            if ( key === 'inner' ) continue;
+            if ( ['inner','content'].includes( key ) ) continue;
             dataset[ key ] = value;
           }
           if ( new_dataset.inner ){
@@ -297,10 +314,11 @@
           });
         }
 
-        // listen to datastore changes => restart
+        // listen to datastore changes
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = incrementalUpdate;
-
+        let loadCounter = 0;
         function incrementalUpdate( data ){
+          if ( self.log_load_save ){ loadCounter += 1; console.log( 'loadCounter = ' + loadCounter ) }
           if ( ! data || ! self.data || data.key !== self.data.key ) return; // same store, but different document
           dataset = data;
           init_dataset();
@@ -320,13 +338,17 @@
           }
           return index;
         }
+
+        let saveCounter = 0;
         
         /**
-         * updates app state data and restarts app
-         * @param {boolean} [no_restart] - prevent implicit app restart
+         * updates app state data
          * @returns {Promise<void>}
          */
         async function save() {
+          if ( self.log_load_save ){
+            saveCounter += 1; console.log( 'saveCounter = ' + saveCounter );
+          }
 
           self.onchange && self.onchange( dataset );
 
@@ -334,7 +356,6 @@
           if ( !$.isDatastore( self.data.store ) ) return;
 
           await self.data.store.set( dataset );  // update app state data
-          // await self.start();     // restart app
 
         }
 
