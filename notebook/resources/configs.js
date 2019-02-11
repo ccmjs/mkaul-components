@@ -46,4 +46,20 @@ ccm.files[ 'configs.js' ] = {
       "key": "leitbild_lehre"
     },
   },
+  "kaul": {
+    key: "kaul",
+    title: "Leitbild Lehre",
+    data: {
+      "store": [ "ccm.store", { name: "notebook", url: "wss://ccm2.inf.h-brs.de", dataset: "kaul" } ],
+      "key": "kaul"
+    },
+  },
+  "test": {
+    key: "test",
+    title: "Test",
+    data: {
+      "store": [ "ccm.store", { name: "notebook", url: "wss://ccm2.inf.h-brs.de", dataset: "test" } ],
+      "key": "test"
+    },
+  },
 };

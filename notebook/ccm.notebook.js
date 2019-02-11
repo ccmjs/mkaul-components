@@ -136,6 +136,13 @@
        * starts the instance
        */
       this.start = async () => {
+
+        /**
+         * index ID => row
+         * @type {{Object<ID, Object>}}
+         */
+        let rowIndex = null;
+        let state = null;  // state is the ID currently selected
       
         dataset = await $.dataset( this.data );
         init_dataset();
@@ -151,6 +158,8 @@
 
           // given default values? => integrate them as defaults into initial values
           if ( self.ignore ) dataset = $.integrate( self.ignore.defaults, dataset, true );
+
+          rowIndex = makeRowIndex( dataset );
         }
 
         // logging of 'start' event
@@ -196,6 +205,7 @@
         // caches
         const editor_cache = {};  // reuse cc instances of editors
         const root_cache = {};    // reuse divs, in which editors are rendered
+        let content_instance;     // different instances of content_editor
 
         // editor configs
         const editor_config = ( id, row ) => {
@@ -219,16 +229,19 @@
             } };
         };
 
-        self.tree.start({root: tree,
+        const tree_instance = await self.tree.start({
+          root: tree,
           data: dataset,
           onhover: async id => {
             const row = find( id, dataset );
             if ( editor_cache[ id ] ){
               Object.assign( editor_cache[ id ], editor_config( id, row ) );
-              editor_cache[ id ].start();
+              await editor_cache[ id ].start();
             } else {
               editor_cache[ id ] = await self.editor.start( editor_config( id, row ) );
             }
+            state = id;
+            content_instance = editor_cache[ id ];
           },
           onchange: ( tree_dataset ) => {
             merge( dataset, tree_dataset );
@@ -282,6 +295,30 @@
             id: id,
             content: content
           });
+        }
+
+        // listen to datastore changes => restart
+        if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = incrementalUpdate;
+
+        function incrementalUpdate( data ){
+          if ( ! data || ! self.data || data.key !== self.data.key ) return; // same store, but different document
+          dataset = data;
+          init_dataset();
+          tree_instance.incrementalUpdate( data );
+        }
+
+        function makeRowIndex( data ){
+          const index = {};
+          traverse(data);
+          function traverse(data){
+            if ( data.id ) index[ data.id ] = data;
+            if (data.inner){
+              for ( const next of data.inner ){
+                traverse( next );
+              }
+            }
+          }
+          return index;
         }
         
         /**

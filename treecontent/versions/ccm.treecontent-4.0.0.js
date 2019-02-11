@@ -238,7 +238,7 @@
         const thumbsup = self.element.querySelector('#thumbsup');
         const thumbsdown = self.element.querySelector('#thumbsdown');
 
-
+        this.incrementalUpdate = incrementalUpdate;
         async function incrementalUpdate( data ){
           if ( ! data || ! self.data || data.key !== self.data.key ) return; // same store, but different document
           const activeElement = self.element.querySelector('li > .label:hover');
