@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+<svg version="1.1" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
   <defs>
     <pattern id="pattern-0" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse" viewBox="0 0 100 100">
       <rect x="0" y="0" width="50" height="100" style="fill: black;"/>
@@ -19,4 +19,16 @@
   </g>
   <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
   <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <g transform="matrix(5.48446, -0.55379, 1.05014, 5.1843, -41.83686, -42.9549)" style="" bx:origin="5 1">
+    <path d="M 55 22 L 48 15 C 47 14 45 14 44 15 L 40 18 L 40 19 L 23 35 L 21 45 L 20 49 L 25 48 L 35 47 L 51 30 L 52 30 L 55 26 C 56 25 56 23 55 22 Z" fill="#231F20" opacity="0.2"/>
+    <path d="M 51 28 C 50 30 48 30 47 28 L 40 21 C 38 20 38 18 40 17 L 44 13 C 45 12 47 12 48 13 L 55 20 C 56 21 56 23 55 24 L 51 28 Z" fill="#C75C5C"/>
+    <rect height="4" transform="matrix(0.70711, -0.70711, 0.70711, 0.70711, -8.8823, 31.1838)" width="24" x="21" y="24" style="fill: rgb(79, 93, 115);"/>
+    <rect fill="#F5CF87" height="9" transform="matrix(0.70711, -0.70711, 0.70711, 0.70711, -16.03371, 30.44649)" width="26" x="24" y="33"/>
+    <rect height="4" transform="matrix(0.70711, -0.70711, 0.70711, 0.70711, -12.397, 39.669)" width="24" x="30" y="33" style="fill: rgb(79, 93, 115);"/>
+    <polygon fill="#4F5D73" points="20 48 25 47 21 43"/>
+    <polygon fill="#FFFFFF" points="23 33 21 43 25 47 35 45 33 43 33 40 28 40 28 35 25 35"/>
+    <path d="M 11.74 36.92 C 12.33 35.84 13.73 34.67 13.97 33.44 C 14.16 32.41 12.46 37.03 13.39 36.54 C 16.39 34.99 13.4 37.27 14.92 37.33 C 16.12 37.37 19.3 38.47 18.18 38.89" style="stroke: rgb(0, 0, 0); stroke-width: 0.371198px; fill: none;"/>
+    <path d="M 10.85 41.58 C 11.43 40.51 12.83 39.34 13.07 38.11 C 13.27 37.08 11.56 41.69 12.5 41.21 C 15.49 39.66 12.51 41.94 14.02 41.99 C 15.23 42.04 18.41 43.13 17.28 43.56" style="stroke: rgb(0, 0, 0); stroke-width: 0.371198px; fill: none;"/>
+    <path d="M 12.71 31.9 C 13.29 30.83 14.69 29.66 14.93 28.43 C 15.13 27.4 13.42 32.01 14.36 31.53 C 17.35 29.98 14.37 32.26 15.88 32.31 C 17.09 32.36 20.27 33.45 19.14 33.88" style="stroke: rgb(0, 0, 0); stroke-width: 0.371198px; fill: none;"/>
+  </g>
 </svg>
