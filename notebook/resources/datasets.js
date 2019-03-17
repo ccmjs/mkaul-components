@@ -82,6 +82,64 @@ ccm.files[ "datasets.js" ] = {
             "content": "Rolle des Lehrenden"
           }
         ]
+      },
+      {
+        "id": "a_3",
+        "label": "Voraussetzungen und Wünsche",
+        "likes": 0,
+        "dislikes": 0,
+        "content": "Voraussetzungen und Wünsche",
+        "inner": [
+          {
+            "id": "a_3_1",
+            "label": "Austausch mit Kollegen und Studierenden",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Austausch mit Kollegen und Studierenden"
+          },
+          {
+            "id": "a_3_2",
+            "label": "Fehler erlaubt",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Fehler erlaubt"
+          },
+          {
+            "id": "a_3_3",
+            "label": "Freiräume",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Freiräume"
+          },
+          {
+            "id": "a_3_4",
+            "label": "Gute Betreuungsrelation",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Gute Betreuungsrelation"
+          },
+          {
+            "id": "a_3_5",
+            "label": "Gute räumliche und personelle Ausstattung",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Gute räumliche und personelle Ausstattung"
+          },
+          {
+            "id": "a_3_6",
+            "label": "Respektvoller Umgang",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Respektvoller Umgang"
+          },
+          {
+            "id": "a_3_7",
+            "label": "Wert der Lehre",
+            "likes": 0,
+            "dislikes": 0,
+            "content": "Wert der Lehre"
+          }
+        ]
       }
     ]
   }
