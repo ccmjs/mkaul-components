@@ -1,9 +1,9 @@
 
 {
     "_id": "greta_thunberg_counter",
-    "title": "greta_thunberg_counter",
+    "title": "Greta Thunberg Counter",
     "icon": "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/resources/icon.png",
-    "abstract": "Greta Thunberg Counter",
+    "abstract": "Greta Thunberg Counter counts down time left until 2030.",
     "description": "Greta Thunberg started climate activism (Fridays for Future) strongly emphasizing the urgency of human action: There are not more than 11 years from now that human mankind has a chance to stabilize climate. Picture from <a target=_blank href='https://de.wikipedia.org/wiki/Greta_Thunberg#/media/File:Greta_Thunberg_4.jpg' rel='noopener'>Wikipedia</a> CC BY-SA 4.0.",
     "url": "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/versions/ccm.greta_thunberg_counter-1.0.0.js",
     "version": "1.0.0",
