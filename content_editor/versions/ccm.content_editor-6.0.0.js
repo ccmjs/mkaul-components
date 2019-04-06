@@ -2019,7 +2019,9 @@
                     const instance_config = JSON.parse( instance.config );
 
                     // store configs into dataset.components
-                    dataset.components[ dataset.indexMap && dataset.indexMap[ instance.index ] || instance.index ][2] = json_builder_value;
+                    if ( Object.keys( dataset.components ).includes( instance.index ) ) {
+                      dataset.components[ dataset.indexMap && dataset.indexMap[ instance.index ] || instance.index ][2] = json_builder_value;
+                    }
 
                     // Alternative: store different config values in attributes
                     // const all_diffs = compareJSON(instance_config, json_builder_value);
@@ -2173,6 +2175,12 @@
         function isMobile() {
           return 'ontouchstart' in window && window.screen.availWidth < 768;
         }
+
+
+        // this.incrementalUpdate = incrementalUpdate;
+        // async function incrementalUpdate( data ){
+        //   dataset = data;
+        // }
 
         /**
          * updates app state data and restarts app
