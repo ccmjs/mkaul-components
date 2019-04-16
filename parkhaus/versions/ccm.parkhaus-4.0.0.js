@@ -9,10 +9,10 @@
   var component  = {
 
     name: 'parkhaus',
-    // version: [4,0,0],
+    version: [4,0,0],
   
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     
     config: {
       server_url: "http://localhost:8080/DemoServlet",

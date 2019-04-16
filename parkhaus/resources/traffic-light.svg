@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect style="fill: rgb(100, 86, 86);" width="200" height="500" rx="30" ry="30"/>
+  <circle style="fill: rgb(251, 3, 3);" cx="99.55" cy="81.53" r="70.2"/>
+  <circle style="fill: rgb(239, 251, 3);" cx="98.78" cy="247.42" r="70.2"/>
+  <circle style="fill: rgb(77, 251, 3);" cx="98.65" cy="407.68" r="70.2"/>
+</svg>
