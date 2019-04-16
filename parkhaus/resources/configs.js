@@ -6,7 +6,6 @@
 
 ccm.files[ 'configs.js' ] = {
   "demo": {
-    server_url: "http://localhost:8080/DemoServlet",
     delay: 400,
     html: {
       main: {

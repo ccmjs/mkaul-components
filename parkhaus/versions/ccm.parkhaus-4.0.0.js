@@ -15,7 +15,7 @@
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     
     config: {
-      server_url: "http://localhost:8080/DemoServlet",
+      // server_url: "http://localhost:8080/DemoServlet",
       delay: 400,
       html: {
         main: {
@@ -44,6 +44,13 @@
           { tag: 'span', class: '%extra_class%' }
         ] }
       },
+      // extra_buttons: [
+      //   {
+      //     extra_class: 'sum',
+      //     extra_inner: 'Sum',
+      //     extra_popup_title: 'Sum of all parking fees'
+      //   }
+      // ],
       traffic_light: {
         tag: 'svg', viewBox: '0 0 200 500', xmlns: 'http://www.w3.org/2000/svg', width: '40', height: '100', inner: [
           {
