@@ -44,13 +44,6 @@
           { tag: 'span', class: '%extra_class%' }
         ] }
       },
-      extra_buttons: [
-        {
-          extra_class: 'sum',
-          extra_inner: 'Sum',
-          extra_popup_title: 'Sum of all parking fees'
-        }
-      ],
       traffic_light: {
         tag: 'svg', viewBox: '0 0 200 500', xmlns: 'http://www.w3.org/2000/svg', width: '40', height: '100', inner: [
           {
@@ -178,6 +171,7 @@
             extra_div.appendChild( extra_sub_div );
             const extra_button = extra_sub_div.querySelector('button');
             const extra_span = extra_sub_div.querySelector('span');
+            if ( ! self.server_url ) return;
             extra_button.addEventListener('click', async function( e ){
               const response = await fetch( new Request( self.server_url + '?fun=' + extra_params.extra_class ), {
                 method: 'GET',
