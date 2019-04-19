@@ -42,7 +42,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -160,6 +160,31 @@
               "inner": {
                 "tag": "i",
                 "class": "fa fa-download"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "red_ink",
+              "data-fontsize": 5,
+              "title": "write with red ink",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-font",
+                "style": "color:#F00;"
+              }
+            },
+            {
+              "tag": "a",
+              "href": "#",
+              "class": "click",
+              "data-command": "special_save",
+              "title": "save all changes",
+              "inner": {
+                "tag": "i",
+                "class": "fa fa-save",
+                "style": "color:#F00;"
               }
             },
             {
@@ -918,6 +943,8 @@
       ccm_save: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',  // for saving content
       content_url: 'https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.0.js',
 
+      // special_save_helper: a function to be executed, when the button "special_save" is clicked
+
       json_builder: [ "ccm.component", "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js", {
         "html.inner.1": "",
         "directly": true
@@ -1471,6 +1498,31 @@
               }
               break;
 
+            case 'special_save':
+              self.special_save_helper( editor_div.innerHTML );
+              // For example:
+              // self.editor.start({
+              //   root: edit_div,
+              //   "data.inner": value ?
+              //     ( typeof value === 'string' ? value.split("\n").join("\n<br>") : $.html( value ) ) : ' ',
+              //   special_save_helper: async function( value ){
+              //     solution[ key ] = value; // editor content
+              //     const result = await ccm.set({
+              //         url: self.server.url,
+              //         name: self.server.solutions,
+              //         user: self.user,
+              //         method: 'POST' },
+              //       solution
+              //     );
+              //     if ( result ){
+              //       alert('Gesichert!');
+              //     } else {
+              //       alert('Fehlgeschlagen! ' + result );
+              //     }
+              //   }
+              // });
+              break;
+
             case "plus":
               const buttonName = prompt('Enter button name: ', 'my_special_listener');
               const actionAddress = prompt('Enter HTTPS address of Button Action: ', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/extensions.js');
@@ -1533,6 +1585,10 @@
             case 'backcolor':
             case 'hilitecolor':
               execCommand(command, false, this.dataset["value"]);
+              break;
+            case 'red_ink':
+              execCommand('forecolor', false, '#F00');
+              execCommand('fontsize', false, this.dataset["fontsize"] );
               break;
             case 'createlink':
             case 'insertimage':
@@ -1641,10 +1697,11 @@
               break;
             case "view_html":
               html_div.innerText = editor_div.innerHTML;
-              html_div.addEventListener('input', (e) => {
-                updateData(html_div.innerText);
-                save();
-              });
+              // editing ???
+              // html_div.addEventListener('input', (e) => {
+              //   updateData(html_div.innerText);
+              //   save();
+              // });
               html_div.style['background-color'] = 'lightblue';
               editor_div.style.display = 'none';
               json_div.style.display = 'none';
@@ -1660,7 +1717,10 @@
               if (!view_json_instance) {
                 view_json_instance = await self.json_builder.start({
                   root: json_div,
-                  onchange: function () { dataset.inner = $.html(view_json_instance.getValue().inner) },
+                  onchange: function () {
+                    // editing ???
+                    // dataset.inner = $.html(view_json_instance.getValue().inner)
+                  },
                   data: { // avoid solveDependency by storing in ccm.store
                     store: ['ccm.store', {local: {app: value_as_json}}],
                     key: 'app'
@@ -1678,7 +1738,10 @@
               if (!html2json_instance) {
                 html2json_instance = await self.html2json.start({
                   root: html2json_div,
-                  onchange: function () { dataset.inner = $.html(html2json_instance.getValue().inner) },
+                  onchange: function () {
+                    // editing ???
+                    // dataset.inner = $.html(html2json_instance.getValue().inner)
+                  },
                   data: self.getValue()
                 });
               }
@@ -1739,6 +1802,7 @@
               }
           }
           updateData();
+          e.preventDefault();
         }
 
         /**
@@ -1845,8 +1909,8 @@
               self.extensions[command](event)
             } else if (self[command] && typeof self[command] === 'function') {
               self[command](event)
-            } else if (window[name] && typeof window[name] === 'function') {
-              window[name](event)
+            } else if (window[command] && typeof window[command] === 'function') {
+              window[command](event)
             } else {
               debugger;
             }
@@ -2018,9 +2082,10 @@
                     const json_builder_value = instance.json_builder.getValue();
                     const instance_config = JSON.parse( instance.config );
 
+                    const index = dataset.indexMap && dataset.indexMap[ instance.index ] || instance.index;
                     // store configs into dataset.components
-                    if ( Object.keys( dataset.components ).includes( instance.index ) ) {
-                      dataset.components[ dataset.indexMap && dataset.indexMap[ instance.index ] || instance.index ][2] = json_builder_value;
+                    if ( Object.keys( dataset.components ).includes( index ) ) {
+                      dataset.components[ index ][2] = json_builder_value;
                     }
 
                     // Alternative: store different config values in attributes
