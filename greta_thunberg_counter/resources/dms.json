@@ -4,9 +4,9 @@
     "title": "Greta Thunberg Counter",
     "icon": "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/resources/icon.png",
     "abstract": "Greta Thunberg Counter counts down time left until 2030.",
-    "description": "Greta Thunberg started climate activism (Fridays for Future) strongly emphasizing the urgency of human action: There are not more than 11 years from now that human mankind has a chance to stabilize climate. Picture from <a target=_blank href='https://de.wikipedia.org/wiki/Greta_Thunberg#/media/File:Greta_Thunberg_4.jpg' rel='noopener'>Wikipedia</a> CC BY-SA 4.0.",
-    "url": "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/versions/ccm.greta_thunberg_counter-1.0.0.js",
-    "version": "1.0.0",
+    "description": "<p>Greta Thunberg started climate activism (Fridays for Future) strongly emphasizing the urgency of human action: There are not more than 11 years from now that human mankind has a chance to stabilize climate.</p><p>She demands to reduce carbon emissions in accordance with the <a target=_blank href='https://en.wikipedia.org/wiki/Paris_Agreement' rel='noopener'>Paris Agreement</a>.</p><p>Picture from <a target=_blank href='https://de.wikipedia.org/wiki/Greta_Thunberg#/media/File:Greta_Thunberg_4.jpg' rel='noopener'>Wikipedia</a> CC BY-SA 4.0.</p> ",
+    "url": "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/versions/ccm.greta_thunberg_counter-2.0.0.js",
+    "version": "2.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -30,9 +30,18 @@
                         "ccm.component",
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
                         {
+                            "json_builder": [
+                                "ccm.component",
+                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
+                                {
+                                    "html.inner.1": "",
+                                    "directly": true
+                                }
+                            ],
+
                             "ignore.defaults": {
                                 "html": {
-                                    "main": {
+                                    "timer": {
                                         "class": "timer",
                                         "inner": "Noch %years% Jahre, %months% Monate, %days% Tage, %hours% Stunden, %min% Minuten, %sec% Sekunden und %msec% Millisekunden, bis sich das Klima unumkehrbar wandelt."
                                     },
@@ -49,13 +58,38 @@
 
                                 "frames_per_second": 25,
 
-                                "css": [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/resources/default.css" ]
+                                "host": {
+                                    "font-family": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                                    "border": "outset 1rem cyan"
+                                },
+
+                                "style": {
+                                    "timer": {
+                                        "padding": "3px",
+                                        "text-align": "center",
+                                        "color": "red",
+                                        "font-size": "x-large",
+                                        "font-weight": "bold"
+                                    },
+                                    "message": {
+                                        "padding": "3rem",
+                                        "text-align": "center",
+                                        "background-color": "black",
+                                        "color": "white",
+                                        "font-size": "xx-large",
+                                        "font-weight": "bolder"
+                                    }
+                                }
                             },
                             "entries": [
                                 {
+                                    "type": "hidden",
+                                    "name": "html"
+                                },
+                                {
                                     "label": "Timer",
                                     "name": "html.main.inner",
-                                    "type": "text",
+                                    "type": "textarea",
                                     "info": "Timer text with placeholders"
                                 },
                                 {
@@ -65,6 +99,10 @@
                                     "info": "Message text with placeholders"
                                 },
                                 {
+                                    "type": "hidden",
+                                    "name": "message"
+                                },
+                                {
                                     "label": "Message Interval",
                                     "name": "message.interval",
                                     "type": "number",
@@ -72,7 +110,7 @@
                                 },
                                 {
                                     "label": "Message Duration",
-                                    "name": "message.Duration",
+                                    "name": "message.duration",
                                     "type": "number",
                                     "info": "Message Duration in Milliseconds"
                                 },
@@ -83,11 +121,39 @@
                                     "info": "Number of Frames per Second"
                                 },
                                 {
-                                    "label": "CSS",
-                                    "name": "css.1",
-                                    "type": "url",
-                                    "info": "URL of CSS file"
+                                    "type": "hidden",
+                                    "name": "host"
+                                },
+                                {
+                                    "label": "Font Family",
+                                    "name": "host.font-family",
+                                    "type": "text",
+                                    "info": "Font Family Style"
+                                },
+                                {
+                                    "label": "Border",
+                                    "name": "host.border",
+                                    "type": "text",
+                                    "info": "Border Style"
+                                },
+
+                                {
+                                    "type": "hidden",
+                                    "name": "style"
+                                },
+                                {
+                                    "label": "Timer Style",
+                                    "name": "style.timer",
+                                    "type": "object",
+                                    "info": "json_builder"
+                                },
+                                {
+                                    "label": "Message Style",
+                                    "name": "style.message",
+                                    "type": "object",
+                                    "info": "json_builder"
                                 }
+
                             ]
                         }
                     ]

@@ -20,14 +20,14 @@
      * @type {string}
      */
     name: 'greta_thunberg_counter',
-    // version: [1,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -52,6 +52,11 @@
 
       frames_per_second: 25,
 
+      host: {
+        "font-family": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "border": "outset 1rem cyan"
+      },
+
       style: {
         timer: {
           "padding": "3px",
@@ -68,11 +73,6 @@
           "font-size": "xx-large",
           "font-weight": "bolder"
         }
-      },
-
-      host: {
-        "font-family": "'Helvetica Neue', Helvetica, Arial, sans-serif",
-        "border": "outset 1rem cyan"
       }
 
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/resources/default.css' ],
