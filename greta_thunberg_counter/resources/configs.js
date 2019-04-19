@@ -9,7 +9,7 @@ ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
     html: {
-      main: {
+      timer: {
         class: "timer",
         inner: "Noch %years% Jahre, %months% Monate, %days% Tage, %hours% Stunden, %min% Minuten, %sec% Sekunden und %msec% Millisekunden, bis sich das Klima unumkehrbar wandelt."
       },
@@ -26,6 +26,28 @@ ccm.files[ 'configs.js' ] = {
 
     frames_per_second: 25,
 
-    css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/greta_thunberg_counter/resources/default.css" ]
+    host: {
+      "font-family": "Helvetica, Arial, sans-serif",
+      "border": "outset 1rem cyan"
+    },
+
+    style: {
+      timer: {
+        "padding": "3px",
+        "text-align": "center",
+        "color": "red",
+        "background-color": "white",
+        "font-size": "x-large",
+        "font-weight": "bold"
+      },
+      message: {
+        "padding": "3rem",
+        "text-align": "center",
+        "background-color": "black",
+        "color": "white",
+        "font-size": "xx-large",
+        "font-weight": "bolder"
+      }
+    }
   }
 };

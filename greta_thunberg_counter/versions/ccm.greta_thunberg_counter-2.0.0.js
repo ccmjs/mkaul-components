@@ -53,7 +53,7 @@
       frames_per_second: 25,
 
       host: {
-        "font-family": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "font-family": "Helvetica, Arial, sans-serif",
         "border": "outset 1rem cyan"
       },
 
