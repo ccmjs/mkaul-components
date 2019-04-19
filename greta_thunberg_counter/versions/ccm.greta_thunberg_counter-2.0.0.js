@@ -108,7 +108,8 @@
 
         if ( self.style ){
           Object.keys( self.style ).forEach( selector => {
-            this.html[selector].style =  Object.entries( self.style[selector] ).map(([key,value]) => key+':'+value).join(';');
+            const fragment = self.html[selector] ? self.html[selector] : self.html.main;
+            fragment.style =  Object.entries( self.style[selector] ).map(([key,value]) => key+':'+value).join(';');
           });
         }
 
