@@ -193,7 +193,7 @@
           timediff( now );
 
           // render timer HTML structure
-          $.setContent( self.element, $.html( self.html.timer,
+          $.setContent( self.element, $.html( self.html.timer || self.html.main,
             Object.keys( data ).reduce( ( result, key ) => {
                 // convert nums to strings
                 result[key] = ('' + data[key]).padStart(key === 'msec' ? 3 : 2 , '0');
