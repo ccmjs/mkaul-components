@@ -62,6 +62,7 @@
           "padding": "3px",
           "text-align": "center",
           "color": "red",
+          "background-color": "white",
           "font-size": "x-large",
           "font-weight": "bold"
         },
