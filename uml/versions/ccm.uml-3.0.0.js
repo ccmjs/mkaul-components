@@ -15,7 +15,7 @@
     version: [3,0,0],
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.1.min.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
@@ -180,7 +180,7 @@
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
 
         // prepare main HTML structure
-        const main_elem = self.ccm.helper.html( self.html.main,
+        const main_elem = $.html( self.html.main,
           { plantUML: self.plantUML,
             default: self.value? self.value.uml : self.default,
             compressed_default: compress_uml( self.value? self.value.uml : self.default )
@@ -188,7 +188,7 @@
         
         // select inner containers
         const uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
-        self.ccm.helper.setContent( uml_helper_text, self.ccm.helper.html( self.html.help[self.language] ) );
+        $.setContent( uml_helper_text, $.html( self.html.help[self.language] ) );
         const img = main_elem.querySelector( 'img' );
         if ( self.width ){
           img.style.width = self.width;
@@ -252,7 +252,7 @@
         sync_button.addEventListener('click', self.sync, false);
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
 
         // styling
         if ( self.style ) Object.keys(self.style).map(selector=>{
