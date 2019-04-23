@@ -2,9 +2,8 @@
  * @overview ccm component for UML
  * @see PlantUML
  * @url http://plantuml.com/demo-javascript-synchronous
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017 - 2019
  * @license The MIT License (MIT)
- * @ToDo PlantUML-Kommentare führen zu ungültiger Syntax: ' (single quote) wird zu " (double quote) umgewandelt, auch im Eingabefeld nach neu Laden der Seite.
  */
 
 ( function () {
@@ -12,26 +11,23 @@
   var component = {
     
     name: 'uml',
+    version: [4,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', 'https://ccmjs.github.io/mkaul-components/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
-      onchange: function ( instance, results, name ) { console.log( name, results ); },
-      data: {
-        store: ["ccm.store"/*,{store:"uml",url:"https://ccm.inf.h-brs.de"}*/],
-        key: "demo"
-      },
       html: {
         main: {
           inner: [
             { tag: 'img', src: '%plantUML%%compressed_default%' },
             { tag: 'textarea', inner: '%default%' },
-            { tag: 'button', class: 'sync', inner: 'Sync' },
-            { tag: 'button', class: 'help', inner: 'Help' },
+            { tag: 'br' },
+            { tag: 'button', class: 'sync', inner: 'Sync', onclick: '%sync%' },
+            { tag: 'button', class: 'help', inner: 'Help', onclick: '%help%' },
             { class: 'uml_helper_text', inner: '%uml_helper_text%', style: 'display:none' }
           ]
         },
@@ -55,6 +51,8 @@
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/timing-diagram', target: '_blank', inner: 'UML timing diagram' } },
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/salt', target: '_blank', inner: 'Wireframes' } },
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/gantt-diagram', target: '_blank', inner: 'Gantt Charts' } },
+                  { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/de/mindmap-diagram', target: '_blank', inner: 'MindMap' } },
+                  { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/de/wbs-diagram', target: '_blank', inner: 'Work Breakdown Structure' } }
               ] } ]
           },
           de: { // in German
@@ -77,6 +75,8 @@
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/timing-diagram', target: '_blank', inner: 'UML Timing Diagram' } },
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/salt', target: '_blank', inner: 'Wireframes' } },
                 { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/gantt-diagram', target: '_blank', inner: 'Gantt Chart' } },
+                  { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/de/mindmap-diagram', target: '_blank', inner: 'MindMap' } },
+                  { tag: 'li', inner: { tag: 'a', href: 'http://plantuml.com/de/wbs-diagram', target: '_blank', inner: 'Work Breakdown Structure' } }
               ] } ]
           }
         }
@@ -88,8 +88,8 @@
           "border-width": '2px'
         },
         textarea: {
-          width: '35em',
-          height: '18em'
+          width: '35rem',
+          height: '12rem'
         }
       },
 
@@ -131,6 +131,12 @@
       let $;
 
       /**
+       * data from database
+       * @type {Object.<string,function>}
+       */
+      let dataset;
+
+      /**
        * init is called once after all dependencies are solved and is then deleted
        */
       this.init = async () => {
@@ -147,13 +153,6 @@
 
         }
 
-        // inherit context parameter
-        if ( ! self.fkey ) self.fkey = self.ccm.context.find(self,'fkey');
-        self.keys = {
-          semester: self.semester || self.ccm.context.find(self,'semester'),
-          fach: self.fach || self.ccm.context.find(self,'fach')
-        };
-
       };
 
       /**
@@ -166,7 +165,7 @@
 
       };
 
-      this.getValue = function() {
+      this.getValue = function (  ) {
         return this.element.querySelector( 'textarea' ).value;
       };
 
@@ -176,26 +175,39 @@
       this.start = async () => {
       
         // has logger instance? => log 'start' event
-        if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
+        if ( self.logger ) self.logger.log( 'start' );
+
+        dataset = await $.dataset( self.data );
+
+        function data_value(){
+          return typeof dataset === 'string' ? dataset : self.default;
+        }
+
+        function text_value(){
+          return data_value().replace(/\n/g, "\\n");  // store newline as two characters
+        }
 
         // prepare main HTML structure
-        const main_elem = self.ccm.helper.html( self.html.main,
+        const main_elem = $.html( self.html.main,
           { plantUML: self.plantUML,
-            default: self.value? self.value.uml : self.default,
-            compressed_default: compress_uml( self.value? self.value.uml : self.default )
+            default: text_value(),
+            compressed_default: compress_uml(  data_value() ),
+            sync: sync,
+            help: help
           } );
         
         // select inner containers
         const uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
-        self.ccm.helper.setContent( uml_helper_text, self.ccm.helper.html( self.html.help[self.language] ) );
-        const img = main_elem.querySelector( 'img' );
-        if ( self.width ){
-          img.style.width = self.width;
-        }
-        if ( self.format ){
-          img.format = self.format;
-        }
+        const sync_button = main_elem.querySelector( 'button.sync' );
+        const help_button = main_elem.querySelector( 'button.help' );
         const textarea = main_elem.querySelector( 'textarea' );
+
+        sync_button.title = self.messages[self.language].sync;
+        $.setContent( uml_helper_text, $.html( self.html.help[self.language] ) );
+
+        const img = main_elem.querySelector( 'img' );
+        if ( self.width )  img.style.width = self.width;
+        if ( self.format ) img.format = self.format;
 
         // use tab key for indent, not for jumping to the next input field
         textarea.onkeydown = function(e){
@@ -206,32 +218,16 @@
             this.selectionEnd = s+1;
           }
         };
-  
-        self.sync = function ( event_or_value ) {
-          if ( event_or_value && event_or_value !== 'undefined' && ! ( event_or_value instanceof Event ) ){
-            // write value into textarea
-            if ( event_or_value.startsWith('{') ){
-              textarea.value = JSON.parse( event_or_value ).uml.split("'").join('"');
-            } else {
-              textarea.value = event_or_value;
-            }
-          }
-          // sync value and textarea
-          self.value = { uml: textarea.value.split("'").join('"') };
-          if ( self.logger ) self.logger.log( 'sync', { fkey: self.fkey, keys: self.keys, value: self.value } );
-          if ( self.value ) compress( img, self.value.uml ); // write into src attribute of img tag
-          if( event_or_value instanceof Event ){
-            event_or_value.preventDefault();
-            event_or_value.stopPropagation();
-            return false;
-          }
-        };
 
-        const help_button = main_elem.querySelector( 'button.help' );
+        function sync( e ){
+          e.preventDefault();
+          dataset = textarea.value.split("'").join('"');
+          compress( img, dataset ); // write into src attribute of img tag
+          if ( self.logger ) self.logger.log( 'sync', { dataset: dataset } );
+        }
 
-        help_button.addEventListener('click', help, false);
-
-        function help(e) { // toggle visibility of helper text
+        function help( e ) { // toggle visibility of helper text
+          e.preventDefault();
           if ( uml_helper_text.style.display === 'none' ){
             uml_helper_text.style.display = 'block';
             help_button.title = self.messages[self.language].hide;
@@ -239,19 +235,11 @@
             uml_helper_text.style.display = 'none';
             help_button.title = self.messages[self.language].show;
           }
-          if ( self.logger ) self.logger.log( 'help', { fkey: self.fkey, keys: self.keys, id: self.id } );
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
+          if ( self.logger ) self.logger.log( 'help' );
         }
         
-        const sync_button = main_elem.querySelector( 'button.sync' );
-        sync_button.title = self.messages[self.language].sync;
-
-        sync_button.addEventListener('click', self.sync, false);
-        
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
 
         // styling
         if ( self.style ) Object.keys(self.style).map(selector=>{
@@ -259,9 +247,6 @@
             self.element.querySelector(selector).style.setProperty(key, self.style[selector][key]);
           });
         });
-  
-        // create a back link from HTML root element <ccm-uml> to ccm component instance
-        self.root.ccm_instance = self;
   
         // helper functions for PlantUML
         function encode64(data) {
