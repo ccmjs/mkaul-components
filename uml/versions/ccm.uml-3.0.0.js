@@ -15,7 +15,7 @@
     version: [3,0,0],
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.1.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.1.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
@@ -179,11 +179,13 @@
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys, id: self.id } );
 
+        let dataset = await $.dataset( self.data );
+
         // prepare main HTML structure
         const main_elem = $.html( self.html.main,
           { plantUML: self.plantUML,
-            default: self.value? self.value.uml : self.default,
-            compressed_default: compress_uml( self.value? self.value.uml : self.default )
+            default: ( typeof dataset === 'string' )? dataset : self.default,
+            compressed_default: compress_uml( typeof dataset === 'string' ? dataset : self.default )
           } );
         
         // select inner containers
@@ -212,15 +214,15 @@
           if ( event_or_value && event_or_value !== 'undefined' && ! ( event_or_value instanceof Event ) ){
             // write value into textarea
             if ( event_or_value.startsWith('{') ){
-              textarea.value = JSON.parse( event_or_value ).uml.split("'").join('"');
+              textarea.value = JSON.parse( event_or_value ).split("'").join('"');
             } else {
               textarea.value = event_or_value;
             }
           }
           // sync value and textarea
-          self.value = { uml: textarea.value.split("'").join('"') };
-          if ( self.logger ) self.logger.log( 'sync', { fkey: self.fkey, keys: self.keys, value: self.value } );
-          if ( self.value ) compress( img, self.value.uml ); // write into src attribute of img tag
+          dataset = { uml: textarea.value.split("'").join('"') };
+          if ( self.logger ) self.logger.log( 'sync', { fkey: self.fkey, keys: self.keys, value: dataset } );
+          if ( dataset ) compress( img, dataset ); // write into src attribute of img tag
           if( event_or_value instanceof Event ){
             event_or_value.preventDefault();
             event_or_value.stopPropagation();
