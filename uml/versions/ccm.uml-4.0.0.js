@@ -24,6 +24,7 @@
         main: {
           inner: [
             { tag: 'img', src: '%plantUML%%compressed_default%' },
+            { tag: 'br' },
             { tag: 'textarea', inner: '%default%' },
             { tag: 'br' },
             { tag: 'button', class: 'sync', inner: 'Sync', onclick: '%sync%' },
@@ -85,11 +86,13 @@
       style: {
         img: {
           border: 'solid',
-          "border-width": '2px'
+          "border-width": '2px',
+          "max-width": "98%"
         },
         textarea: {
-          width: '35rem',
-          height: '12rem'
+          width: '25rem',
+          height: '12rem',
+          "max-width": "98%"
         }
       },
 
@@ -165,8 +168,19 @@
 
       };
 
-      this.getValue = function (  ) {
-        return this.element.querySelector( 'textarea' ).value;
+      this.getValue = function() {
+        // replace every apostrophe with no leading backslash  /(?<!\\)"/ yields problems in Firefox and Edge
+        return this.element.querySelector( 'textarea' ).value.split('"').join('&#34;').replace(/\\n/g, "&#13;&#10;");
+      };
+
+      this.replace = function() {
+        const elem = self.element.querySelector( 'textarea' );
+        const lines = elem.value.replace(new RegExp('(.*--.*)' + String.fromCharCode(10), 'g'), '$1\\n');
+          // const lines2 = lines.replace(new RegExp('(.*[(].*)' + String.fromCharCode(10), 'g'), '$1\\n');
+          // elem.value.split(String.fromCharCode(10));
+          // elem.value.replace(/\n(\w)/,"\\n\n$1");
+          // elem.value.replace(/\\n(\w)/,"\\\n$1");
+        elem.value = lines; // .join('\\n');
       };
 
       /**
@@ -180,11 +194,16 @@
         dataset = await $.dataset( self.data );
 
         function data_value(){
-          return typeof dataset === 'string' ? dataset : self.default;
+          return ( typeof dataset === 'string' ? dataset : self.default ).split('&#34;').join('"').split("&#13;&#10;").join('\\n');
         }
 
         function text_value(){
-          return data_value().replace(/\n/g, "\\n");  // store newline as two characters
+          const data_value = typeof dataset === 'string' ? dataset : self.default;
+          const replacements = data_value.replace( /\n/g, "\\n" ).split("&#13;&#10;").join('\\\\n');
+          return replacements;  // store newline as two characters
+          // return ( typeof dataset === 'string' ? dataset : self.default ).replace(/\n/g, "&#13;&#10;");
+          // return ( typeof dataset === 'string' ? dataset : self.default ).replace(/\n/g, "\\n");
+          // return data_value().replace(/\n/g, "\\n");  // store newline as two characters
         }
 
         // prepare main HTML structure
@@ -221,7 +240,7 @@
 
         function sync( e ){
           e.preventDefault();
-          dataset = textarea.value.split("'").join('"');
+          dataset = textarea.value; // .split("'").join('"');
           compress( img, dataset ); // write into src attribute of img tag
           if ( self.logger ) self.logger.log( 'sync', { dataset: dataset } );
         }
