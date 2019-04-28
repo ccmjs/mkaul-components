@@ -1088,9 +1088,13 @@
         }
 
         async function digestMessage(message, encoding = 'utf-16') {
-          let encoder = new TextEncoder(encoding);
-          let data = encoder.encode(message);
-          return await window.crypto.subtle.digest('SHA-384', data);
+          if ( window.TextEncoder ){  // not supported in Edge
+            let encoder = new TextEncoder(encoding);
+            let data = encoder.encode(message);
+            return await window.crypto.subtle.digest('SHA-384', data);
+          } else {
+            return message;
+          }
         }
 
         dataset = await $.dataset( this.data );
@@ -1573,7 +1577,7 @@
               if (toc_range) {
                 try {
                   toc_range.commonAncestorContainer.appendChild($.html(structure));
-                } catch {
+                } catch (e) {
                   toc_range.commonAncestorContainer.parentNode.appendChild($.html(structure));
                 }
               } else {
