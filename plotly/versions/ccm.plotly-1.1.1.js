@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.5.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
@@ -103,7 +103,7 @@
         const main_div = $.html( this.html.main );
         const plot = main_div.querySelector('#plot');
 
-        const plotter = () => {
+        const plotter = ( event ) => {
           // https://plot.ly/javascript/plotlyjs-function-reference/#plotlyreact
           Plotly.react(
             plot,
@@ -111,6 +111,7 @@
             this.layout,
             this.plot_config
           );
+          event && event.preventDefault();
         };
 
         plotter();
