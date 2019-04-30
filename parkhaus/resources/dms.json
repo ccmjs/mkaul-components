@@ -41,6 +41,13 @@
 
                                 "name": "CarHome",
                                 "server_url": "http://localhost:8080/DemoServlet6",
+
+                                 "Max":  20,
+                                 "open_from":  6,
+                                 "open_to":  24,
+                                 "delay":  100,
+                                 "simulation_speed":  10,
+
                                 "html": {
                                     "main": {
                                         "inner": [
@@ -219,6 +226,28 @@
                                     "info": "Delay between traffic light switches"
                                 },
                                 {
+                                    "label": "Begin Time",
+                                    "name": "open_from",
+                                    "type": "number",
+                                    "min": 0,
+                                    "max": 24,
+                                    "info": "Parkhaus is open from this hour"
+                                },
+                                {
+                                    "label": "End Time",
+                                    "name": "open_to",
+                                    "type": "number",
+                                    "min": 0,
+                                    "max": 24,
+                                    "info": "Parkhaus is open until this hour"
+                                },
+                                {
+                                    "label": "Simulation Speed",
+                                    "name": "simulation_speed",
+                                    "type": "number",
+                                    "info": "Ratio of Simulation Time versus Real Time"
+                                },
+                                {
                                     "label": "Extra Buttons",
                                     "type": "several",
                                     "info": "Configure List of extra buttons for your Parkhaus Client",
@@ -243,20 +272,28 @@
                                     "type": "hidden"
                                 },
                                 {
+                                    "name": "html.main",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "name": "images",
+                                    "type": "hidden"
+                                },
+                                {
                                     "label": "URL of car image",
-                                    "name": "html.main.inner.1.src",
+                                    "name": "images.car",
                                     "type": "url",
                                     "info": "URL of image file (png,jpeg,svg, ...) for car"
                                 },
                                 {
                                     "label": "URL of garage image",
-                                    "name": "html.main.inner.3.src",
+                                    "name": "images.parking_garage",
                                     "type": "url",
                                     "info": "URL of image file (png,jpeg,svg, ...) for Garage symbol"
                                 },
                                 {
                                     "label": "URL of empty image",
-                                    "name": "html.main.inner.4.src",
+                                    "name": "images.empty",
                                     "type": "url",
                                     "info": "URL of image file (png,jpeg,svg, ...) for empty symbol"
                                 },
@@ -271,7 +308,7 @@
                                     "info": "URL of CSS file for layouting the Parkhaus Client"
                                 },
                                 {
-                                    "label": "HTML structure",
+                                    "label": "HTML main structure",
                                     "name": "html.main",
                                     "type": "json_builder"
                                 },

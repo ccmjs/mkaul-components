@@ -523,9 +523,9 @@
             return command_interpreter( response_string, extra_span );
           } catch (err) {
             console.log(request, err);
-            show_error( "<h1>"
+            show_error( "<p>"
               + request.url + " failed.<br>"
-              + err.message + "<br>" + err.stack + "</h1>" );
+              + err.message + "<br>" + err.stack + "</p>" );
           }
         }
 
