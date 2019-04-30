@@ -4,8 +4,8 @@
     "abstract": "Simple Simulation of a Parking Garage",
     "description": "This simple simulation of a parking garage is used in a software engineering course as a starting point. The tasks and exercises are for further development.",
     "icon": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/icon.svg",
-    "url": "https://ccmjs.github.io/mkaul-components/parkhaus/versions/ccm.parkhaus-4.0.0.js",
-    "version": "4.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/parkhaus/versions/ccm.parkhaus-6.0.0.js",
+    "version": "6.0.0",
     "developer": "Manfred Kaul",
     "license": "MIT License",
     "website": "https://github.com/ccmjs/mkaul-components/",
@@ -38,35 +38,66 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
                         {
                             "ignore.defaults": {
-                                "server_url": "http://localhost:8080/DemoServlet",
-                                "delay": 400,
+
+                                "name": "CarHome",
+                                "server_url": "http://localhost:8080/DemoServlet6",
                                 "html": {
                                     "main": {
                                         "inner": [
                                             { "tag": "h2", "inner": [
                                                 "Autos im Parkhaus: &nbsp; ",
-                                                { "tag": "span", "class": "counter", "inner": "0" }
+                                                { "tag": "span", "class": "counter", "inner": "0" },
+                                                ", &nbsp; Max: &nbsp; ",
+                                                { "tag": "input", "class": "counter", "type": "number", "min": 0, "value": 20, "oninput": "%oninput%" },
+                                                " &nbsp; Öffnungszeiten von : &nbsp; ",
+                                                { "tag": "input", "class": "open_from", "type": "number", "min": 0, "max": 24, "value": 6, "oninput": "%oninput%" },
+                                                " &nbsp; bis: &nbsp; ",
+                                                { "tag": "input", "class": "open_to", "type": "number", "min": 0, "max": 24, "value": 24, "oninput": "%oninput%" },
+                                                " &nbsp; ",
+                                                { "tag": "span", "class": "date" },
+
                                             ] },
-                                            { "tag": "img", "class": "entry", "src": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png", "width": "202", "height": "74" },
-                                            { "tag": "span", "class": "traffic_light" },
-                                            { "tag": "img", "class": "garage", "src": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png", "width": "250", "height": "235" },
-                                            { "tag": "img", "class": "exit", "src": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png", "width": "202", "height": "74" },
-                                            { "tag": "hr" },
                                             { "tag": "button", "class": "enter", "onclick": "%enter%", "inner": "Enter", "title": "Drive your car into the garage!" },
-                                            { "tag": "button", "class": "leave", "onclick": "%leave%", "inner": "Leave", "title": "Leave the garage!" },
-                                            { "class": "extra_buttons" },
+                                            " &nbsp; Ticket: ",
+                                            { "tag": "span", "class": "ticket_hash" },
+                                            { "tag": "span", "class": "extra_buttons" },
+                                            { "tag": "span", "class": "extra_charts" },
+                                            { "tag": "img", "class": "entry", "src": "%car%", "width": "202", "height": "74" },
+                                            { "tag": "span", "class": "traffic_light" },
+                                            { "tag": "img", "src": "%parking_garage%", "width": "250", "height": "235" },
+                                            { "tag": "div", "inner": "Click car to exit:" },
+                                            { "class": "garage" },
+                                            { "tag": "img", "class": "exit", "src": "%empty%", "width": "202", "height": "74" },
                                             { "tag": "hr" },
                                             { "tag": "table", "inner": [
-                                                { "tag": "tr", "inner": [ { "tag": "th", "inner": "Nr", "title": "Nr des Autos" }, { "tag": "th", "inner": "Von", "title": "Startzeit des Parkens" }, { "tag": "th", "inner": "Bis", "title": "Endzeit des Parkens" }, { "tag": "th", "inner": "Dauer", "title": "Wie lange war das Auto im Parkhaus?" }, { "tag": "th", "inner": "Preis", "title": "Parkgebühren" } ] }
-                                            ] }
+                                                { "tag": "tr", "inner": [ { "tag": "th", "inner": "Nr", "title": "Nr des Autos" }, { "tag": "th", "inner": "Von", "title": "Startzeit des Parkens" }, { "tag": "th", "inner": "Bis", "title": "Endzeit des Parkens" }, { "tag": "th", "inner": "Dauer", "title": "Wie lange war das Auto im Parkhaus?" }, { "tag": "th", "inner": "Ticket", "title": "Ticket Hash" }, { "tag": "th", "inner": "Preis", "title": "Parkgebühren" } ] }
+                                            ] },
+                                            { "tag": "div", "class": "errors", "style": "display: none;" }
                                         ]
                                     },
-                                    "row": { "tag": "tr", "inner": [ { "tag": "td", "inner": "%nr%" }, { "tag": "td", "inner": "%von%" }, { "tag": "td", "inner": "%bis%" }, { "tag": "td", "inner": "%dauer%" }, { "tag": "td", "inner": "%preis%" } ] },
+                                    "row": { "tag": "tr", "inner": [ { "tag": "td", "inner": "%nr%" }, { "tag": "td", "inner": "%von%" }, { "tag": "td", "inner": "%bis%" }, { "tag": "td", "inner": "%dauer%" }, { "tag": "td", "inner": "%ticket%" }, { "tag": "td", "inner": "%preis%" } ] },
                                     "extra_button_div": { "inner": [
                                         { "tag": "button", "class": "%extra_class%", "inner": "%extra_inner%", "title": "%extra_popup_title%" },
                                         { "tag": "span", "class": "%extra_class%" }
+                                    ] },
+                                    "extra_chart_div": { "inner": [
+                                        { "tag": "button", "class": "%extra_class%", "inner": "%extra_inner%", "title": "%extra_popup_title%" },
+                                        { "tag": "input", "class": "%extra_class%", "type": "checkbox" },
+                                        { "tag": "div", "class": "%extra_class%" }
                                     ] }
                                 },
+
+                                "images": {
+                                    "car": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png",
+                                    "parking_garage": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png",
+                                    "empty": "https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png"
+                                },
+
+                                "messages": {
+                                    "parkhaus_full": "Sorry, Parkhaus is full.",
+                                    "parkhaus_closed": "Sorry, Parkhaus is closed."
+                                },
+
                                 "extra_buttons": [
                                     {
                                         "extra_class": "sum",
@@ -74,6 +105,15 @@
                                         "extra_popup_title": "Sum of all parking fees"
                                     }
                                 ],
+
+                                "extra_charts": [
+                                    {
+                                        "extra_class": "chart",
+                                        "extra_inner": "Chart",
+                                        "extra_popup_title": "Chart of all parking fees"
+                                    }
+                                ],
+
                                 "traffic_light": {
                                     "tag": "svg", "viewBox": "0 0 200 500", "xmlns": "http://www.w3.org/2000/svg", "width": "40", "height": "100", "inner": [
                                         {
@@ -110,14 +150,66 @@
                                         }
                                     ]
                                 },
-                                "css": [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css" ]
+                                "car": {
+                                    "tag": "svg", "id": "%id%", "class": "car", "viewBox": "0 0 310 255", "xmlns": "http://www.w3.org/2000/svg", "inner": [
+                                        {
+                                            "tag": "g",
+                                            "transform": "translate(2.441785,-204.56609)",
+                                            "style": "fill:#000000;fill-opacity:1;stroke:none",
+                                            "inner": [
+                                                {
+                                                    "tag": "path",
+                                                    "style": "fill-opacity: 0.85; fill-rule: evenodd; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 8px; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; fill: %color%;",
+                                                    "d": "m -53.582954,-415.35856 c -13.726061,-0.48561 -25.554278,3.95581 -32.848561,19.90697 l -26.336555,65.94442 c -19.18907,5.29042 -27.54259,19.22853 -27.98516,30.66415 l 0,86.34597 25.30617,0 0,29.05676 c -1.22633,27.69243 44.157018,28.76272 45.171926,-0.28851 l 0.535799,-28.52096 164.160378,0 0.535798,28.52096 c 1.014898,29.05121 46.439469,27.98094 45.213139,0.28851 l 0,-29.05676 25.26495,0 0,-86.34597 c -0.44257,-11.43562 -8.79607,-25.37375 -27.98516,-30.66415 l -26.33655,-65.94442 c -7.29428,-15.95113 -19.122506,-20.39255 -32.848559,-19.90697 l -131.847615,0 z m 3.008714,22.87447 c 1.148077,-0.006 2.358386,0.0326 3.585728,0.0824 l 119.070884,0.37094 c 10.897921,-0.25425 15.519886,3.3e-4 20.154262,10.30382 l 18.959016,51.10692 -197.50352,-0.24729 18.752943,-49.74682 c 2.924271,-9.95822 8.944151,-11.82604 16.980687,-11.87 l 0,3e-5 z m -41.462551,87.45878 c 11.803644,2e-5 21.39072,9.54587 21.39072,21.34951 0,11.80363 -9.587076,21.39072 -21.39072,21.39072 -11.803639,0 -21.390719,-9.58708 -21.390719,-21.39072 0,-11.80366 9.58708,-21.34951 21.390719,-21.34951 z m 209.950531,0 c 11.80364,-2e-5 21.3495,9.54587 21.3495,21.34951 0,11.80364 -9.54586,21.39072 -21.3495,21.39072 -11.80364,10e-6 -21.390719,-9.58708 -21.390719,-21.39072 0,-11.80364 9.587079,-21.34951 21.390719,-21.34951 z m -14.69214,-28.11863 0,0 z",
+                                                    "transform": "matrix(0.9797897,0,0,0.9877946,140.46678,619.88975)",
+                                                    "inner": {
+                                                        "tag": "title",
+                                                        "inner": "%tooltip%",
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "tag": "rect",
+                                            "style": "fill: rgb(216, 216, 216); paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 8px;",
+                                            "x": "100",
+                                            "y": "134.69",
+                                            "width": "111.26",
+                                            "height": "44.79",
+                                            "rx": "15",
+                                            "ry": "15"
+                                        },
+                                        {
+                                            "tag": "text",
+                                            "text-anchor": "middle",
+                                            "x": "150",
+                                            "y": "170",
+                                            "style": "white-space: pre; fill: rgb(51, 51, 51); font-size: 38px; text-align: center;",
+                                            "inner": "%nr%"
+                                        }
+                                    ]
+                                },
+
+                                "hash": [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ],
+                                "SALT": "123",
+
+                                "chart": [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
+                                "css": [ "ccm.load",  "https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/parkhaus/resources/default.css" ]
                             },
+                            "json_builder": [
+                                "ccm.component",
+                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
+                                {
+                                    "html.inner.1": "",
+                                    "directly": true
+                                }
+                            ],
                             "entries": [
                                 {
-                                    "label": "Server URL",
+                                    "label": "Servlet URL",
                                     "name": "server_url",
                                     "type": "url",
-                                    "info": "Enter URL of your server to process all click events on the server side"
+                                    "info": "Enter URL of your Servlet to process all click events on the server side"
                                 },
                                 {
                                     "label": "Delay",
@@ -131,10 +223,42 @@
                                     "type": "several",
                                     "info": "Configure List of extra buttons for your Parkhaus Client",
                                     "item": {
-                                        "label": "object %nr%",
+                                        "label": "Button %nr%",
                                         "name": "extra_buttons",
                                         "type": "json_builder"
                                     }
+                                },
+                                {
+                                    "label": "Extra Charts",
+                                    "type": "several",
+                                    "info": "Configure List of extra charts for your Parkhaus Client",
+                                    "item": {
+                                        "label": "Button %nr%",
+                                        "name": "extra_charts",
+                                        "type": "json_builder"
+                                    }
+                                },
+                                {
+                                    "name": "html",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "URL of car image",
+                                    "name": "html.main.inner.1.src",
+                                    "type": "url",
+                                    "info": "URL of image file (png,jpeg,svg, ...) for car"
+                                },
+                                {
+                                    "label": "URL of garage image",
+                                    "name": "html.main.inner.3.src",
+                                    "type": "url",
+                                    "info": "URL of image file (png,jpeg,svg, ...) for Garage symbol"
+                                },
+                                {
+                                    "label": "URL of empty image",
+                                    "name": "html.main.inner.4.src",
+                                    "type": "url",
+                                    "info": "URL of image file (png,jpeg,svg, ...) for empty symbol"
                                 },
                                 {
                                     "name": "css",
@@ -145,6 +269,36 @@
                                     "name": "css.1",
                                     "type": "url",
                                     "info": "URL of CSS file for layouting the Parkhaus Client"
+                                },
+                                {
+                                    "label": "HTML structure",
+                                    "name": "html.main",
+                                    "type": "json_builder"
+                                },
+                                {
+                                    "label": "Row in Table",
+                                    "name": "html.row",
+                                    "type": "json_builder"
+                                },
+                                {
+                                    "label": "Traffic light",
+                                    "name": "traffic_light",
+                                    "type": "json_builder"
+                                },
+                                {
+                                    "label": "Car",
+                                    "name": "car",
+                                    "type": "json_builder"
+                                },
+                                {
+                                    "name": "chart",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "URL of Chart component",
+                                    "name": "chart.1",
+                                    "type": "url",
+                                    "info": "URL of JavaScript file for the Chart component"
                                 }
                             ]
                         }
@@ -167,7 +321,7 @@
             }
         ]
     },
-    "updated_at": "2019-04-16T10:29:02+01:00",
+    "updated_at": "2019-04-30T17:11:02+01:00",
     "created_at": "2018-10-12T11:38:29+02:00",
     "_": {
         "creator": "mkaul2m",

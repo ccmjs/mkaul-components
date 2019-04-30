@@ -51,3 +51,30 @@ button:active {
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     transform: translateY(4px);
 }
+
+.garage {
+    border: thick solid black;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    max-width: calc(80vw);
+    min-height: 5rem;
+    background-color: #DDD;
+}
+
+.car {
+    width: auto;
+    height: 5rem;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.counter {
+    width: 3rem;
+}
+
+.errors {
+    margin: 1rem;
+    padding: 1rem;
+    border: thick solid red;
+    color: red;
+}
