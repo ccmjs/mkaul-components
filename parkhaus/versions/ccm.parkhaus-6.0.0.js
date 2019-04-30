@@ -11,8 +11,8 @@
     name: 'parkhaus',
     version: [6,0,0],
   
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     
     config: {
       name: "CarHome",
@@ -485,7 +485,7 @@
               bis: car.end(),
               dauer: time( car.duration() ),
               ticket: car.hash(),
-              preis: ' € ' + car.price() / 100 }
+              preis: ' € ' + ( car.price() || 0 ) / 100 }
             )
           );
         }
@@ -590,7 +590,7 @@
         }
 
         function show_error( message ){
-          error_div.innerHTML = message;
+          error_div.innerHTML += message;
           error_div.style.display = 'block';
         }
 

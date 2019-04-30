@@ -9,26 +9,40 @@ ccm.files[ 'configs.js' ] = {
     delay: 400,
     html: {
       main: {
+
         inner: [
           { tag: 'h2', inner: [
               'Autos im Parkhaus: &nbsp; ',
-              { tag: 'span', class: 'counter', inner: '0' }
+              { tag: 'span', class: 'counter', inner: '0' },
+              ', &nbsp; Max: &nbsp; ',
+              { tag: 'input', class: 'counter', type: 'number', min: 0, value: 20, oninput: '%oninput%' },
+              ' &nbsp; Öffnungszeiten von : &nbsp; ',
+              { tag: 'input', class: 'open_from', type: 'number', min: 0, max: 24, value: 6, oninput: '%oninput%' },
+              ' &nbsp; bis: &nbsp; ',
+              { tag: 'input', class: 'open_to', type: 'number', min: 0, max: 24, value: 24, oninput: '%oninput%' },
+              ' &nbsp; ',
+              { tag: 'span', class: 'date' },
+
             ] },
-          { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '202', height: '74' },
-          { tag: 'span', class: 'traffic_light' },
-          { tag: 'img', class: 'garage', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png', width: '250', height: '235' },
-          { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '202', height: '74' },
-          { tag: 'hr' },
           { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
-          { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
-          { class: 'extra_buttons' },
+          ' &nbsp; Ticket: ',
+          { tag: 'span', class: 'ticket_hash' },
+          { tag: 'span', class: 'extra_buttons' },
+          { tag: 'span', class: 'extra_charts' },
+          { tag: 'img', class: 'entry', src: '%car%', width: '202', height: '74' },
+          { tag: 'span', class: 'traffic_light' },
+          { tag: 'img', src: '%parking_garage%', width: '250', height: '235' },
+          { tag: 'div', inner: 'Click car to exit:' },
+          { class: 'garage' },
+          { tag: 'img', class: 'exit', src: '%empty%', width: '202', height: '74' },
           { tag: 'hr' },
           { tag: 'table', inner: [
-              { tag: 'tr', inner: [ { tag: 'th', inner: 'Nr', title: 'Nr des Autos' }, { tag: 'th', inner: 'Von', title: 'Startzeit des Parkens' }, { tag: 'th', inner: 'Bis', title: 'Endzeit des Parkens' }, { tag: 'th', inner: 'Dauer', title: 'Wie lange war das Auto im Parkhaus?' }, { tag: 'th', inner: 'Preis', title: 'Parkgebühren' } ] }
-            ] }
+              { tag: 'tr', inner: [ { tag: 'th', inner: 'Nr', title: 'Nr des Autos' }, { tag: 'th', inner: 'Von', title: 'Startzeit des Parkens' }, { tag: 'th', inner: 'Bis', title: 'Endzeit des Parkens' }, { tag: 'th', inner: 'Dauer', title: 'Wie lange war das Auto im Parkhaus?' }, { tag: 'th', inner: 'Ticket', title: 'Ticket Hash' }, { tag: 'th', inner: 'Preis', title: 'Parkgebühren' } ] }
+            ] },
+          { tag: 'div', class: 'errors', style: 'display: none;' }
         ]
       },
-      row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%preis%' } ] },
+      row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%ticket%' }, { tag: 'td', inner: '%preis%' } ] },
       extra_button_div: { inner: [
           { tag: 'button', class: '%extra_class%', inner: '%extra_inner%', title: '%extra_popup_title%' },
           { tag: 'span', class: '%extra_class%' }

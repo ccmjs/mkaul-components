@@ -54,7 +54,7 @@
                                                 " &nbsp; bis: &nbsp; ",
                                                 { "tag": "input", "class": "open_to", "type": "number", "min": 0, "max": 24, "value": 24, "oninput": "%oninput%" },
                                                 " &nbsp; ",
-                                                { "tag": "span", "class": "date" },
+                                                { "tag": "span", "class": "date" }
 
                                             ] },
                                             { "tag": "button", "class": "enter", "onclick": "%enter%", "inner": "Enter", "title": "Drive your car into the garage!" },
@@ -164,7 +164,7 @@
                                                     "transform": "matrix(0.9797897,0,0,0.9877946,140.46678,619.88975)",
                                                     "inner": {
                                                         "tag": "title",
-                                                        "inner": "%tooltip%",
+                                                        "inner": "%tooltip%"
                                                     }
                                                 }
                                             ]
