@@ -17,6 +17,11 @@
     config: {
       name: "CarHome",
       server_url: "http://localhost:8080/DemoServlet6",
+      Max: 20, // maximum number of parking slots
+      open_from: 6,
+      open_to: 24,
+      delay: 100,
+      simulation_speed: 10,
       html: {
         main: {
           inner: [
@@ -485,7 +490,7 @@
               bis: car.end(),
               dauer: time( car.duration() ),
               ticket: car.hash(),
-              preis: ' € ' + ( car.price() || 0 ) / 100 }
+              preis: ' € ' + car.price() / 100 }
             )
           );
         }
@@ -523,9 +528,7 @@
             return command_interpreter( response_string, extra_span );
           } catch (err) {
             console.log(request, err);
-            show_error( "<p>"
-              + request.url + " failed.<br>"
-              + err.message + "<br>" + err.stack + "</p>" );
+            show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
           }
         }
 

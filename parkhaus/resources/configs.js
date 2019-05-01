@@ -7,6 +7,10 @@
 ccm.files[ 'configs.js' ] = {
   "demo": {
     delay: 400,
+    Max: 20, // maximum number of parking slots
+    open_from: 6,
+    open_to: 24,
+    simulation_speed: 10,
     html: {
       main: {
 
@@ -95,6 +99,11 @@ ccm.files[ 'configs.js' ] = {
   },
   "server": {
     name: "CarHome",
+    Max: 20, // maximum number of parking slots
+    open_from: 6,
+    open_to: 24,
+    delay: 100,
+    simulation_speed: 10,
     server_url: "http://localhost:8080/DemoServlet6",
     html: {
       main: {

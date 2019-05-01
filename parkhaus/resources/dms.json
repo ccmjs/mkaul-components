@@ -219,6 +219,13 @@
                                     "info": "Enter URL of your Servlet to process all click events on the server side"
                                 },
                                 {
+                                    "label": "Max",
+                                    "name": "Max",
+                                    "type": "number",
+                                    "min": 1,
+                                    "info": "Maximum number of cars in garage"
+                                },
+                                {
                                     "label": "Delay",
                                     "name": "delay",
                                     "type": "number",
@@ -254,7 +261,8 @@
                                     "item": {
                                         "label": "Button %nr%",
                                         "name": "extra_buttons",
-                                        "type": "json_builder"
+                                        "type": "json_builder",
+                                        "info": "Structure of this extra button HTML space"
                                     }
                                 },
                                 {
@@ -264,7 +272,8 @@
                                     "item": {
                                         "label": "Button %nr%",
                                         "name": "extra_charts",
-                                        "type": "json_builder"
+                                        "type": "json_builder",
+                                        "info": "Structure of this extra chart HTML space"
                                     }
                                 },
                                 {
@@ -310,22 +319,38 @@
                                 {
                                     "label": "HTML main structure",
                                     "name": "html.main",
-                                    "type": "json_builder"
+                                    "type": "json_builder",
+                                    "info": "Structure of main HTML"
                                 },
                                 {
                                     "label": "Row in Table",
                                     "name": "html.row",
-                                    "type": "json_builder"
+                                    "type": "json_builder",
+                                    "info": "Structure of Row in Table HTML"
+                                },
+                                {
+                                    "label": "Extra Button HTML",
+                                    "name": "html.extra_button_div",
+                                    "type": "json_builder",
+                                    "info": "Structure of Extra Button HTML document space"
+                                },
+                                {
+                                    "label": "Extra Chart HTML",
+                                    "name": "html.extra_chart_div",
+                                    "type": "json_builder",
+                                    "info": "Structure of Extra Chart HTML document space"
                                 },
                                 {
                                     "label": "Traffic light",
                                     "name": "traffic_light",
-                                    "type": "json_builder"
+                                    "type": "json_builder",
+                                    "info": "Structure of Traffic light SVG document space"
                                 },
                                 {
                                     "label": "Car",
                                     "name": "car",
-                                    "type": "json_builder"
+                                    "type": "json_builder",
+                                    "info": "Structure of Car SVG document space"
                                 },
                                 {
                                     "name": "chart",
