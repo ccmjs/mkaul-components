@@ -511,9 +511,8 @@
             + '?cmd=' + command
             + Object.entries( params ).map(([key, value])=>'&'+key+'='+value).join()
           );
-          let response;
           try {
-            response = await fetch( request, {
+            const response = await fetch( request, {
               method: 'GET',
               mode: 'cors',
               cache: 'no-store',
@@ -572,7 +571,7 @@
           if ( response_string.indexOf('HTTP Status') >= 0 ){ // error
             show_error( response_string );
           } else { // generic interpreter for server responses: Where? What? Params...
-            const [ selector, command, content ] = response_string.split(',', 2);
+            const [ selector, command, content ] = response_string.split(',', 3);
             if ( main_elem && /^[a-zA-Z]/.test(selector) && main_elem.querySelector( selector ) ){
               if ( "insertHTML" === command  ){
                 main_elem.querySelector( selector ).innerHTML = content;
