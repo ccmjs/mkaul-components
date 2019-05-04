@@ -37,7 +37,7 @@
      */
     name: 'content_editor',
     version: [6,0,0],
-    
+
     /**
      * recommended used framework version
      * @type {string}
@@ -97,7 +97,7 @@
           "style": "width: auto; margin-right: 5px; border-radius: 3px;",
           "class": "click",
           "inner": {
-          "class": "fa",
+            "class": "fa",
             "tag": "i",
             "inner": "%buttonName%"
           }
@@ -1032,33 +1032,33 @@
 
         // fill select menu with DMS components
 
-          DMS_component_index = {};
+        DMS_component_index = {};
 
-          const data = await self.dms_index.get({});
+        const data = await self.dms_index.get({});
 
-          const all_buttons = self.html.toolbar.inner;
-          let select_array;
-          if (all_buttons) for (const button of all_buttons) {
-            if (button["data-command"] === "select") { // "data-command": "select"
-              if (button.inner) {
-                select_array = button.inner.inner;
-              }
-              break;
+        const all_buttons = self.html.toolbar.inner;
+        let select_array;
+        if (all_buttons) for (const button of all_buttons) {
+          if (button["data-command"] === "select") { // "data-command": "select"
+            if (button.inner) {
+              select_array = button.inner.inner;
             }
+            break;
+          }
+        }
+
+        if ( select_array ){
+          select_array.push({ tag: 'option', value: '_', inner: '_' });
+          for (const record of data) {
+            select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
+            // with version number
+            DMS_component_index[ $.getIndex( record.url )] = record.url;
+            // without version number
+            DMS_component_index[ record.key ] = record.url;
           }
 
-          if ( select_array ){
-            select_array.push({ tag: 'option', value: '_', inner: '_' });
-            for (const record of data) {
-              select_array && select_array.push({ tag: 'option', value: record.key, inner: record.key });
-              // with version number
-              DMS_component_index[ $.getIndex( record.url )] = record.url;
-              // without version number
-              DMS_component_index[ record.key ] = record.url;
-            }
-
-            select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
-          }
+          select_array && select_array.sort( (a, b) => ( '' + a.value).localeCompare(b.value) );
+        }
 
       };
 
@@ -1166,7 +1166,7 @@
         // render main HTML structure
         const editor_div = $.html(this.html.editor);
         if (!dataset.inner) dataset.inner = 'Edit here';
-        $.setContent(editor_div, $.html( dataset.inner ));
+        $.setContent(editor_div, typeof dataset.inner === 'object' ? $.html( dataset.inner ) : dataset.inner );
 
         /**
          * add keyup listener if
@@ -1690,7 +1690,7 @@
               break;
 
             case "view_editor":
-              $.setContent(editor_div, $.html( dataset.inner ));
+              $.setContent( editor_div, typeof dataset.inner === 'object' ? $.html( dataset.inner ) : dataset.inner );
               // TODO restore all event listeners
               updateInPageAnchors();
               startAllComponents(editor_div);
@@ -1891,8 +1891,8 @@
         /**
          * refresh dataset after editing
          */
-        function updateData(inner) {
-          dataset.inner = self.html2json_module( inner ? inner : editor_div.innerHTML );
+        function updateData() {
+          dataset.inner = editor_div.innerHTML;
           dataset.position = getCaretPosition();
           self.onchange && self.onchange(dataset);
         }
@@ -2272,30 +2272,30 @@
 
       };
 
-        /**
-         * current state of this editor
-         * @returns {Object} state of editor
-         */
-        this.getValue = () => {
-          // clone dataset
-          const result = $.clone(dataset);
+      /**
+       * current state of this editor
+       * @returns {Object} state of editor
+       */
+      this.getValue = () => {
+        // clone dataset
+        const result = $.clone(dataset);
 
-          for (const [index, dep] of Object.entries(dataset.components)) {
-            if (!Array.isArray(dep)) {
-              // transform dep into action data
-              result.components[index] = ['ccm.component',
-                dep.url,
-                dep.config ? $.clone(dep.config) : {}
-              ];
-            }
-            // add second index without version number
-            // if (index.includes('-')) {
-            //   const name = index.slice(0, index.indexOf('-'));
-            //   result.components[name] = result.components[index];
-            // }
+        for (const [index, dep] of Object.entries(dataset.components)) {
+          if (!Array.isArray(dep)) {
+            // transform dep into action data
+            result.components[index] = ['ccm.component',
+              dep.url,
+              dep.config ? $.clone(dep.config) : {}
+            ];
           }
-          return result;
-        };
+          // add second index without version number
+          // if (index.includes('-')) {
+          //   const name = index.slice(0, index.indexOf('-'));
+          //   result.components[name] = result.components[index];
+          // }
+        }
+        return result;
+      };
 
     }
 
