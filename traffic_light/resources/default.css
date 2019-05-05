@@ -1,0 +1,26 @@
+/**
+ * @overview default layout of ccm component traffic_light
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+:host * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+button {
+  margin: 0.4rem;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+button:hover {
+  border: thin solid black;
+  box-shadow: 2px 2px #666;
+}
+
+button:active {
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  transform: translateY(4px);
+}
+
