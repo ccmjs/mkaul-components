@@ -1,0 +1,98 @@
+{
+    "_id": "code_lock",
+    "title": "code_lock",
+    "icon": "https://ccmjs.github.io/mkaul-components/code_lock/resources/icon.png",
+    "abstract": "Code Lock",
+    "description": "Any combination of buttons are allowed. By pressing buttons a code is entered. If the hash value is verified, the lock is opened and turns into green.",
+    "url": "https://ccmjs.github.io/mkaul-components/code_lock/versions/ccm.code_lock-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",    
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/code_lock/resources/configs.js",
+                    "demo"
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-2.0.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
+                        {
+                            "ignore.defaults": {
+
+                                "length": 4,
+                                "code": "e2fc714c4727ee9395f324cd2e7f331f",
+                                "html": {
+                                    "main": {
+                                        "inner": [
+                                            { "class": "open" },
+                                            { "class": "code" },
+                                            { "class": "buttons", "inner": [
+                                                { "tag": "button", "id": "a", "inner": "A", "onclick": "%onclick%" },
+                                                { "tag": "button", "id": "b", "inner": "B", "onclick": "%onclick%" },
+                                                { "tag": "button", "id": "c", "inner": "C", "onclick": "%onclick%" },
+                                                { "tag": "button", "id": "d", "inner": "D", "onclick": "%onclick%" }
+                                            ]
+                                            }
+                                        ]
+                                    }
+                                },
+
+
+                                "css": [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/code_lock/resources/default.css" ],
+
+                                "hash": [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ]
+
+                                
+                            },
+                            "entries": [
+                                {
+                                    "label": "Hash Code",
+                                    "name": "code",
+                                    "type": "text",
+                                    "info": "Hash Code for verification"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-2.0.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
+                        {
+                            "html.inner.1": "",
+                            "directly": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "updated_at": "2019-02-07T14:41:22+02:00",
+    "created_at": "2019-02-07T14:41:22+02:00",
+    "_": {
+        "creator": "mkaul2m",
+        "realm": "hbrsinfkaul",
+        "access": {
+            "get": "all",
+            "set": "creator",
+            "del": "creator"
+        }
+    }
+}
