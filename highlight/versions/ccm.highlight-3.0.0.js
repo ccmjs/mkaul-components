@@ -41,7 +41,7 @@
       },
       hljs:  [ 'ccm.load',
         // 'https://ccmjs.github.io/mkaul-components/highlight/resources/highlight.min.js'
-        '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js'
+        'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js'
       ],
       css:   [ 'ccm.load', 'https://ccmjs.github.io/mkaul-components/highlight/resources/monokai-sublime.min.css' ],
       css_alternatives: [ 'https://ccmjs.github.io/mkaul-components/highlight/resources/monokai-sublime.min.css',
