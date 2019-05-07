@@ -571,9 +571,9 @@
           if ( response_string.indexOf('HTTP Status') >= 0 ){ // error
             show_error( response_string );
           } else { // generic interpreter for server responses: Where? What? Params...
-            const [ selector, command, content ] = response_string.split(',', 3);
+            const [ selector, command, ...content ] = response_string.split(',');
             if ( main_elem && /^[a-zA-Z]/.test(selector) && main_elem.querySelector( selector ) ){
-              if ( "insertHTML" === command  ){
+              if ( command === "insertHTML"  ){
                 main_elem.querySelector( selector ).innerHTML = content;
               } else {
                 main_elem.querySelector( selector ).innerText = content;
