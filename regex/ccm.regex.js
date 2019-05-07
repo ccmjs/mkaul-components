@@ -65,7 +65,7 @@
           { tag: 'span', class: 'result' }
         ] }
       },
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/regex/resources/default.css' ]
+      css: [ 'ccm.load',  './resources/default.css' ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
