@@ -86,8 +86,8 @@ ccm.files[ 'configs.js' ] = {
     }
   },
 
-  "e-mail": {
-    key: "e-mail",
+  "email": {
+    key: "email",
     data: {
       regex: "^[\\w\\d-.]+@[-A-Za-z0-9]+\\.[A-Za-z]{2,5}$",
       options: 'i',
