@@ -2,7 +2,7 @@
     "_id": "regex",
     "title": "Regex",
     "icon": "https://ccmjs.github.io/mkaul-components/regex/resources/icon.svg",
-    "abstract": "<a href=https://en.wikipedia.org/wiki/Regular_expression>Regular Expression</a>",
+    "abstract": "Regular Expressions",
     "description": "A <a href=https://en.wikipedia.org/wiki/Regular_expression>Regular Expression</a>, regex or regexp (sometimes called a rational expression) is, in theoretical computer science and formal language theory, a sequence of characters that define a search pattern. Usually this pattern is then used by string searching algorithms for \"find\" or \"find and replace\" operations on strings, or for input validation, see <a href=https://en.wikipedia.org/wiki/Regular_expression>Wikipedia</a>",
     "url": "https://ccmjs.github.io/mkaul-components/regex/versions/ccm.regex-1.0.0.js",
     "version": "1.0.0",
@@ -11,6 +11,14 @@
     "license": "MIT License",    
     "ignore": {
         "demos": [
+            {
+                "title": "Demo",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/regex/resources/configs.js",
+                    "demo"
+                ]
+            },
             {
                 "title": "a*b",
                 "config": [
@@ -62,12 +70,99 @@
         ],
         "builder": [
             {
-                "title": "JSON Builder",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.0.js",
+                "title": "Input Mask",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-2.0.0.js",
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.1.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
+                        {
+                            "json_builder": [
+                                "ccm.component",
+                                "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
+                                {
+                                    "html.inner.1": "",
+                                    "directly": true
+                                }
+                            ],
+                            "ignore.defaults": {
+                                "data": {
+                                    "regex": "a.*b",
+                                    "options": "i",
+                                    "matching": "abcdefb",
+                                    "non_matching": "bacdef"
+                                },
+                                "html": {
+                                    "main": {
+                                        "inner": [
+                                            { "tag": "input", "type": "text", "class": "regex", "size": 40, "value": "%regex%", "title": "Regulärer Ausdruck" },
+                                            { "tag": "input", "type": "text", "class": "options", "size": 5, "value": "%options%", "title": "Options, e.g. ignoreCase" },
+                                            { "tag": "ul", "class": "feedback_list", "inner": [
+                                                { "tag": "li", "class": "feedback_list", "inner": [
+                                                    { "tag": "span", "class": "feedback" },
+                                                    { "tag": "input", "type": "text", "class": "matching", "size": 40, "value": "%matching%", "title": "Text zum Testen des regulären Ausdrucks" },
+                                                    { "tag": "span", "class": "result" }
+                                                ] },
+                                                { "tag": "li", "class": "feedback_list", "inner": [
+                                                    { "tag": "span", "class": "feedback" },
+                                                    { "tag": "input", "type": "text", "class": "matching", "size": 40, "value": "%non_matching%", "title": "Text zum Testen des regulären Ausdrucks" },
+                                                    { "tag": "span", "class": "result" }
+                                                ] }
+                                            ] },
+                                            { "tag": "button", "class": "plus", "inner": "+", "title": "Weiteren Test hinzu fügen" },
+                                            { "tag": "button", "class": "regex", "inner": "Eval", "title": "Neu auswerten!" },
+                                            { "class": "result" }
+                                        ]
+                                    },
+                                    "new_li": { "tag": "li", "class": "feedback_list", "inner": [
+                                        { "tag": "span", "class": "feedback" },
+                                        { "tag": "input", "type": "text", "class": "matching", "size": 40, "placeholder": "type new matching string here ..." },
+                                        { "tag": "span", "class": "result" }
+                                    ] }
+                                },
+                                "css": [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/regex/resources/default.css" ]
+                            },
+                            "entries": [
+                                {
+                                    "name": "data",
+                                    "type": "hidden"
+                                },
+                                {
+                                    "label": "Regex",
+                                    "name": "data.regex",
+                                    "type": "text",
+                                    "info": "Regular Expression"
+                                },
+                                {
+                                    "label": "Options",
+                                    "name": "data.options",
+                                    "type": "text",
+                                    "info": "Options for regular expression"
+                                },
+                                {
+                                    "label": "Matching",
+                                    "name": "data.matching",
+                                    "type": "text",
+                                    "info": "Example of matching string for regular expression"
+                                },
+                                {
+                                    "label": "Non Matching",
+                                    "name": "data.non_matching",
+                                    "type": "text",
+                                    "info": "Example of non matching string for regular expression"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "JSON Builder",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-2.0.0.js",
+                "config": {
+                    "builder": [
+                        "ccm.component",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
                         {
                             "html.inner.1": "",
                             "directly": true
@@ -77,6 +172,15 @@
             }
         ]
     },
-  "updated_at": "2018-10-12T14:41:22+02:00",
-  "created_at": "2018-10-12T14:41:22+02:00"
+    "updated_at": "2019-05-07T12:00:22+02:00",
+    "created_at": "2018-10-12T14:41:22+02:00",
+    "_": {
+        "creator": "mkaul2m",
+        "realm": "hbrsinfkaul",
+        "access": {
+            "get": "all",
+            "set": "creator",
+            "del": "creator"
+        }
+    }
 }

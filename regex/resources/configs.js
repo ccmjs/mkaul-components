@@ -6,6 +6,46 @@
 
 ccm.files[ 'configs.js' ] = {
 
+  "demo": {
+    key: "demo",
+    data: {
+      regex: "a.*b", // (/a.*b/i).source,
+      options: 'i',
+      matching: "abcdefb",
+      non_matching: "bacdef"
+    },
+    html: {
+      main: {
+        inner: [
+          { tag: 'input', type: 'text', class: 'regex', size: 40, value: '%regex%', title: 'Regulärer Ausdruck' },
+          { tag: 'input', type: 'text', class: 'options', size: 5, value: '%options%', title: 'Options, e.g. ignoreCase' },
+          { tag: 'ul', class: 'feedback_list', inner: [
+              { tag: 'li', class: 'feedback_list', inner: [
+                  { tag: 'span', class: 'feedback' },
+                  { tag: 'input', type: 'text', class: 'matching', size: 40, value: '%matching%', title: 'Text zum Testen des regulären Ausdrucks' },
+                  { tag: 'span', class: 'result' }
+                ] },
+              { tag: 'li', class: 'feedback_list', inner: [
+                  { tag: 'span', class: 'feedback' },
+                  { tag: 'input', type: 'text', class: 'matching', size: 40, value: '%non_matching%', title: 'Text zum Testen des regulären Ausdrucks' },
+                  { tag: 'span', class: 'result' }
+                ] }
+            ] },
+          { tag: 'button', class: 'plus', inner: '+', title: 'Weiteren Test hinzu fügen' },
+          { tag: 'button', class: 'regex', inner: 'Eval', title: 'Neu auswerten!' },
+          { class: 'result' }  // ToDo where used?
+        ]
+      },
+      new_li: { tag: 'li', class: 'feedback_list', inner: [
+          { tag: 'span', class: 'feedback' },
+          { tag: 'input', type: 'text', class: 'matching', size: 40, placeholder: 'type new matching string here ...' },
+          { tag: 'span', class: 'result' }
+        ] }
+    },
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/regex/resources/default.css' ]
+
+  },
+
   "ab": {
     key: "ab",
     data: {
