@@ -11,7 +11,7 @@
     name: 'highlight',
     version: [3,0,1],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     config: {

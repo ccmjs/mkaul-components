@@ -1,10 +1,10 @@
 {
   "title": "Input Mask",
-  "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.0.1.js",
+  "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-2.0.0.js",
   "config": {
     "builder": [
       "ccm.component",
-      "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-6.7.0.js",
+      "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
       {
         "inner": "<fieldset><legend>Code Language:</legend> <select name=\"clazz\"><option value=\"plaintext\">Plaintext</option><option value=\"html\">HTML</option><option value=\"css\">CSS</option><option value=\"js\">JavaScript</option><option value=\"java\">Java</option><option value=\"php\">PHP</option><option value=\"ruby\">Ruby</option> </select></fieldset><fieldset><legend>Code</legend><textarea name=\"content\"></textarea></fieldset><input type=\"submit\">"
       }
