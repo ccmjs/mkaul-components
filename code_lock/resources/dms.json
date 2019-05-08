@@ -1,6 +1,6 @@
 {
     "_id": "code_lock",
-    "title": "code_lock",
+    "title": "Code Lock",
     "icon": "https://ccmjs.github.io/mkaul-components/code_lock/resources/icon.png",
     "abstract": "Code Lock",
     "description": "Any combination of buttons are allowed. By pressing buttons a code is entered. If the hash value is verified, the lock is opened and turns into green.",
@@ -84,8 +84,8 @@
             }
         ]
     },
-    "updated_at": "2019-02-07T14:41:22+02:00",
-    "created_at": "2019-02-07T14:41:22+02:00",
+    "updated_at": "2019-05-06T10:41:22+02:00",
+    "created_at": "2019-05-06T10:41:22+02:00",
     "_": {
         "creator": "mkaul2m",
         "realm": "hbrsinfkaul",
