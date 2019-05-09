@@ -338,7 +338,7 @@
           Object.assign(self, config);
           // update header
           Object.keys( header ).forEach( className => {
-            header[ className ].value = config[ className ];
+            if ( header[ className ] ) header[ className ].value = config[ className ];
           });
           // has logger instance? => log 'render' event
           if ( self.logger ) self.logger.log( 'render', config );
