@@ -538,8 +538,8 @@
             const response_string = (await response.text()).trim();
             return command_interpreter( response_string, extra_span );
           } catch (err) {
-            console.log(request, err);
-            show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
+            console.log(err, request);
+            // show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
           }
         }
 
@@ -566,7 +566,6 @@
 
         async function csv_post_event( event, ...values ){
           const request = [ event, ...values ].join(",");
-          console.log( request );
           const response = await fetch( new Request( self.server_url ), {
             method: 'POST',
             mode: 'cors',
@@ -577,7 +576,7 @@
             }
           });
           const response_string = (await response.text()).trim();
-          console.log( command_interpreter( response_string ) );
+          console.log( request, " => ", command_interpreter( response_string ) );
         }
 
         function command_interpreter( response_string, extra_span ){
