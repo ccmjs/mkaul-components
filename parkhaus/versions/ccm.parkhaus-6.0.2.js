@@ -420,7 +420,10 @@
               let config, response;
               try {
                 response = await csv_get_request( extra_params.extra_class, {} );
-                config = JSON.parse( response );
+                try { config = JSON.parse( response );
+                } catch (err){
+                  console.log( err, " in HTTP Response: ", response );
+                }
                 config.root = extra_div;
                 self.chart.start( config );
                 checkbox.style.display = 'inline';
