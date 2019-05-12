@@ -711,6 +711,11 @@
         // listen to datastore changes => restart
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
+        // Use LightDOM with higher priority than data from config
+        if ( this.inner && this.inner.trim() ){
+          dataset.inner = this.inner;
+        }
+
       };
 
       /**
@@ -747,11 +752,11 @@
 
         async function pseudonym(){
           const buf = await digestMessage(`${navigator.appVersion};${navigator.hardwareConcurrency};${navigator.deviceMemory};${JSON.stringify(navigator.languages)};${navigator.product};${navigator.productSub};${navigator.userAgent};${navigator.vendor};` + self.SALT);
-          return String.fromCharCode.apply(null, new Uint8Array(buf));
+          return String.fromCharCode.apply(null, new Uint16Array(buf));
         }
 
-        async function digestMessage(message) {
-          let encoder = new TextEncoder();
+        async function digestMessage(message, encoding = 'utf-16') {
+          let encoder = new TextEncoder(encoding);
           let data = encoder.encode(message);
           return await window.crypto.subtle.digest('SHA-384', data);
         }
@@ -827,7 +832,7 @@
          * refresh dataset after editing
          */
         function updateData( inner ){
-          dataset.inner = self.html2json_module( inner ? inner : editor_div.innerHTML );
+          dataset.inner = inner ? inner : editor_div.innerHTML;
           save();
           self.onchange && self.onchange(dataset);
         }
@@ -1749,6 +1754,7 @@
               redoStack.length = 0;
               // removeUnfinishedObject(); is done on every click in toolbar
               clear_current();
+              save();
               break;
 
             case "embed":
