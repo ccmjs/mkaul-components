@@ -1,0 +1,41 @@
+/**
+ * @overview default layout of ccm component sophist
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+input[type=text], select {
+  padding: 10px 20px;
+  display: inline-block;
+  border: 5px solid #ccc;
+  box-sizing: content-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a000;
+}
+#h1 {
+  width: 50px;
+  height: 5px;
+  background-color: black;
+  color: black;
+
+}
+#h2{
+
+  padding-left: 15%;
+}
