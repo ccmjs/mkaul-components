@@ -18,7 +18,7 @@
      */
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     
     config: {
       fkey:           'test',  // ToDo Use fkey instead of key
@@ -72,7 +72,7 @@
       
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/upload/resources/default.css' ],
 
-      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: "hbrsinfkaul" } ]
+      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js', { realm: "hbrsinfkaul" } ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
