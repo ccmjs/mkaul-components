@@ -78,11 +78,22 @@
                                     "realm": "guest" } ]
                             },
                             "entries": [
+                                {   "type":  "hidden", "name":  "data" },
+                                {   "type":  "hidden", "name":  "data.store" },
                                 {
-                                    "label": "Title",
-                                    "name": "title",
+                                    "label": "Source",
+                                    "name": "data.store.1",
                                     "type": "text",
-                                    "info": "Title of the paper"
+                                    "info": "Database of collected question / answer pairs"
+                                },
+                                {   "type":  "hidden", "name":  "quiz.data" },
+                                {   "type":  "hidden", "name":  "quiz.data.store" },
+                                {   "type":  "hidden", "name":  "quiz.data.store.1" },
+                                {
+                                    "label": "Target",
+                                    "name": "quiz.data.store.1.name",
+                                    "type": "text",
+                                    "info": "where to store quiz results"
                                 }
                             ]
                         }
@@ -105,8 +116,8 @@
             }
         ]
     },
-    "updated_at": "2019-02-07T14:41:22+02:00",
-    "created_at": "2019-02-07T14:41:22+02:00",
+    "updated_at": "2019-06-22T11:05:47+02:00",
+    "created_at": "2019-06-22T11:05:47+02:00",
     "_": {
         "creator": "mkaul2m",
         "realm": "hbrsinfkaul",

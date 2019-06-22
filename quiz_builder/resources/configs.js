@@ -22,7 +22,7 @@ ccm.files[ 'configs.js' ] = {
       ]
     },
 
-    description: "Wählen Sie die korrekte Antwort aus: ",
+    description: "Choose from following options: ",
     min_length: 10,
     selection_type: "radio",
     log_small: true,
@@ -41,15 +41,15 @@ ccm.files[ 'configs.js' ] = {
         "store": [ "ccm.store", { "name": "demo-quiz_builder" } ],
       },
       placeholder: {
-        "start": "Quiz starten",
-        "question": "Frage",
-        "correct": "Korrekte Lösung: ",
-        "prev": "Zurück",
-        "submit": "Auflösung",
-        "next": "Nächste Frage",
-        "finish": "Beenden"
+        "start": "Start Quiz",
+        "question": "Question",
+        "correct": "Correct Solution: ",
+        "prev": "Back",
+        "submit": "Solution",
+        "next": "Next",
+        "finish": "Finish"
       },
-      "html.question.inner.0.inner.0.inner": "Frage"
+      "html.question.inner.0.inner.0.inner": "Question"
     } ],
 
     "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js", {
