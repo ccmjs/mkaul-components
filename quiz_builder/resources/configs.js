@@ -9,7 +9,7 @@ ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
     data: {
-      "store": [ "ccm.store", '../resources/datasets.js' ],
+      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/quiz_builder/resources/datasets.js' ],
       "key": "small"
     },
     // Mapping of names in the form, in which questions and answers have been collected, to the names in this component
@@ -38,8 +38,7 @@ ccm.files[ 'configs.js' ] = {
       onfinish: { "restart": false, "store": true },
       css: [ "ccm.load", "https://ccmjs.github.io/akless-components/quiz/resources/weblysleek.css", { "context": "head", "url": "https://ccmjs.github.io/akless-components/libs/weblysleekui/font.css" } ],
       data: {
-        "store": [ "ccm.store", { "name": "se_ss19_solutions", "url": "https://ccm2.inf.h-brs.de" } ],
-        "key": "le11_a1"
+        "store": [ "ccm.store", { "name": "demo-quiz_builder" } ],
       },
       placeholder: {
         "start": "Quiz starten",
@@ -53,7 +52,7 @@ ccm.files[ 'configs.js' ] = {
       "html.question.inner.0.inner.0.inner": "Frage"
     } ],
 
-    user: [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js", {
-      "realm": "hbrsinfpseudo", "logged_in": true } ]
+    "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js", {
+      "realm": "guest" } ]
   }
 };

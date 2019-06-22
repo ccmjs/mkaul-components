@@ -71,7 +71,7 @@
             "key": "le11_a1"
           },
           logger: [ "ccm.instance", "https://mnutze.github.io/bsc.log/ccm.log.js",
-            ["ccm.get", "https://mnutze.github.io/bsc.log/resources/configs.js", "monitoring.user" ] ],
+            ["ccm.get", "https://mnutze.github.io/bsc.log/resources/configs.js", "monitoring.quiz" ] ],
           placeholder: {
             "start": "Quiz starten",
             "question": "Frage",
@@ -149,6 +149,7 @@
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
 
         const questions = [];
+        if ( ! Array.isArray( dataset ) && dataset.questions ) dataset = dataset.questions;
         dataset.forEach( record => {
           if ( record[self.mapping.question] && record[self.mapping.question].length > self.min_length ){
             const question = {

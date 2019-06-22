@@ -2,8 +2,25 @@
 <svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <g id="Layer_1">
     <g>
-      <circle cx="32" cy="32" fill="#E0995E" r="32"/>
+      <circle cx="32" cy="32" r="32" style="fill: rgb(72, 153, 173);"/>
     </g>
   </g>
   <g id="Layer_2"/>
+  <path d="M 46.71 -1.68 L 68.08 7.52 L 25.34 7.52 L 46.71 -1.68 Z" style="fill: rgb(216, 216, 216);" transform="matrix(1, -0.00057, 0.00057, 1, -14.78657, 7.64611)" />
+  <rect x="15.12" width="2.32" height="28.8" style="fill: rgb(216, 216, 216);" y="16.72"/>
+  <rect x="24.85" y="16.74" width="2.32" height="28.8" style="fill: rgb(216, 216, 216);"/>
+  <rect x="34.97" y="16.84" width="2.32" height="28.8" style="fill: rgb(216, 216, 216);"/>
+  <rect x="45.4" y="16.81" width="2.32" height="28.8" style="fill: rgb(216, 216, 216);"/>
+  <rect x="10.92" y="47.53" width="42.82" height="4.03" style="fill: rgb(216, 216, 216);"/>
+  <circle style="fill: rgb(213, 75, 75);" cx="23.04" cy="30.07" r="12.67" transform="matrix(1.50782, 0, 0, 1.34955, 10.03698, 6.20075)"/>
+  <rect x="32.08" y="36.19" width="26.27" height="3.59" style="fill: rgb(255, 255, 255);"/>
+  <rect x="32.06" y="40.68" width="26.27" height="3.59" style="fill: rgb(255, 255, 255);"/>
+  <rect x="32" y="45.22" width="26.27" height="3.59" style="fill: rgb(255, 255, 255);"/>
+  <rect x="31.94" y="49.8" width="26.27" height="3.59" style="fill: rgb(255, 255, 255);"/>
+  <rect x="31.91" y="54.24" width="26.27" height="3.59" style="fill: rgb(255, 255, 255);"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Lato; font-size: 3px; font-weight: 700; white-space: pre;" x="32.99" y="38.74">Quiz. A: </text>
+  <text style="fill: rgb(51, 51, 51); font-family: Lato; font-size: 3px; font-weight: 700; white-space: pre;" x="33" y="43.5">Quiz. B: </text>
+  <text style="fill: rgb(51, 51, 51); font-family: Lato; font-size: 3px; font-weight: 700; white-space: pre;" x="33.03" y="48.11">Quiz. C: </text>
+  <text style="fill: rgb(51, 51, 51); font-family: Lato; font-size: 3px; font-weight: 700; white-space: pre;" x="33.2" y="52.51">Quiz. D: </text>
+  <text style="fill: rgb(51, 51, 51); font-family: Lato; font-size: 3px; font-weight: 700; white-space: pre;" x="33.04" y="56.98">Quiz. E: </text>
 </svg>

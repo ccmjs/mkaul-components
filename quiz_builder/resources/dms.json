@@ -1,10 +1,10 @@
 
 {
     "_id": "quiz_builder",
-    "title": "quiz_builder",
+    "title": "Quiz Factory",
     "icon": "https://ccmjs.github.io/mkaul-components/quiz_builder/resources/icon.svg",
-    "abstract": "",
-    "description": "",
+    "abstract": "Factory for building quiz from collected question / answer pairs",
+    "description": "Collect question / answer pairs in a database. From this database of question / answer pairs a quiz is generated via this factory. The generation is completely dynamic: During the collection phase, the quiz might already be started. ",
     "url": "https://ccmjs.github.io/mkaul-components/quiz_builder/versions/ccm.quiz_builder-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
@@ -31,12 +31,51 @@
                         "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
                         {
                             "ignore.defaults": {
-                                "header": "Hello World",
                                 "data": {
-                                    "store": [ "ccm.store", { "name": "treecontent", "url": "wss://ccm2.inf.h-brs.de" } ],
-                                    "key": "collab"
+                                    "store": [ "ccm.store", "https://ccmjs.github.io/mkaul-components/quiz_builder/resources/datasets.js" ],
+                                    "key": "small"
                                 },
-                                "data.key": "collab"
+                                "mapping": {
+                                    "question": "Frage",
+                                    "answer1": "Antwort1",
+                                    "answers": [
+                                        { "text": "Antwort2", "comment": "Fehler2" },
+                                        { "text": "Antwort3", "comment": "Fehler3" }
+                                    ]
+                                },
+
+                                "description": "Choose from following options: ",
+                                "min_length": 10,
+                                "selection_type": "radio",
+                                "log_small": true,
+
+                                "quiz": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.0.0.js", {
+                                    "shuffle": true,
+                                    "random": true,
+                                    "skippable": true,
+                                    "show_results": false,
+                                    "start_button": true,
+                                    "feedback": true,
+                                    "navigation": true,
+                                    "onfinish": { "restart": false, "store": true },
+                                    "css": [ "ccm.load", "https://ccmjs.github.io/akless-components/quiz/resources/weblysleek.css", { "context": "head", "url": "https://ccmjs.github.io/akless-components/libs/weblysleekui/font.css" } ],
+                                    "data": {
+                                        "store": [ "ccm.store", { "name": "demo-quiz_builder" } ]
+                                    },
+                                    "placeholder": {
+                                        "start": "Start Quiz",
+                                        "question": "Question",
+                                        "correct": "Correct Solution: ",
+                                        "prev": "Back",
+                                        "submit": "Solution",
+                                        "next": "Next",
+                                        "finish": "Finish"
+                                    },
+                                    "html.question.inner.0.inner.0.inner": "Question"
+                                } ],
+
+                                "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js", {
+                                    "realm": "guest" } ]
                             },
                             "entries": [
                                 {
