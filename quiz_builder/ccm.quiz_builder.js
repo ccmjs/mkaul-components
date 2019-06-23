@@ -154,7 +154,7 @@
           if ( record[self.mapping.question] && record[self.mapping.question].length > self.min_length ){
             const question = {
               text: norm( record[self.mapping.question] ),
-              description: self.description,
+              description: `<small>[${i}.${record.key?record.key[1].slice(0,4):''}]</small> ${self.description}`,
               answers: [
                 { text: norm( record[self.mapping.answer1] ), correct: true }
               ],
