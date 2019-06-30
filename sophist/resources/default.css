@@ -6,6 +6,7 @@
 
 * {
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  box-sizing: content-box;
 }
 
 h2 {
@@ -38,17 +39,15 @@ tr:nth-child(even) {
 }
 
 
-.btn {
+button {
+  font-size: large;
   border: 1px;
   outline: 1px;
   cursor: pointer;
-  width: 30%;
-  height: 30px;
   background-color: #4CAF50;
   color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  float: left;
+  padding: 0.3rem 1rem;
+  border-radius: 0.3rem;
   margin-top: 4px;
   margin-left: 1px;
 }
@@ -58,26 +57,12 @@ tr:nth-child(even) {
 }
 
 input[type=text], select {
-  padding: 5px 5px;
+  padding: 0.5rem;
   display: inline-block;
   border: 3px solid #ccb6d1;
-  box-sizing: content-box;
-  float: left;
+  font-size: large;
 }
 
-#wrapper {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-
-#wrapper tr:hover {
+tr:hover {
   background-color: #ddd;
-}
-
-#myInput {
-  border-color: #4CAF50;
-  width: 60%;
-  border-radius: 5px;
-  margin-top: 3px;
-  float: left;
-  margin-left: 2px;
 }
