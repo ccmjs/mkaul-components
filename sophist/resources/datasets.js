@@ -8,10 +8,24 @@
 
 ccm.files[ 'datasets.js' ] = {
 
-  "small": {
-    "key": "small",
-    "tags": [
-      {"key": "Cat", "value": 26}, {"key": "fish", "value": 19}
+  "demo": {
+    "key": "demo",
+    "rows": [
+      {
+        system: "Das System",
+        modal: "MUSS",
+        func: "die Möglichkeit bieten",
+        object: "die Bezahlung",
+        process: "zu berechnen"
+      },
+      {
+        system: "Das Kassensystem",
+        modal: "SOLLTE",
+        func: "fähig sein",
+        object: "die Daten",
+        process: "zu speichern"
+      }
     ]
+
   }
 };

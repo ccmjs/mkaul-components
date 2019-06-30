@@ -2,8 +2,9 @@
  * @overview ccm component for sophist
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.0.0)
  * @changes
+ * version 2.0.0 30.06.2019 add forms
  * version 1.0.0 13.06.2019 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -26,91 +27,99 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.3.0.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
+
+      columns: ["system","modal","func","object","process"],
+
+      initial_values: {
+        system: "Das System",
+        object: "Objekt",
+        process: "Prozesswort"
+      },
+
+      data: {
+        "store": [ "ccm.store", './resources/datasets.js' ],
+        "key": "demo"
+      },
+
       html: {
         main: {
-            "inner": [
-            {
-              "tag": "h2",
-              "id": "h2",
-              "inner": "Funktionsmaster ohne Bedingung"
-            },
-            {
-              id: "div1",
-              inner: [
-                {
-                  "tag": "input",
-                  "type": "text",
-                  "id": "aname",
-                  "name": "firstname",
-                  "placeholder": "<System>"
-                },
-                {
-                  "tag": "select",
-                  "id": "status",
-                  "name": "country",
-                  "inner": [
-                    {
-                      "tag": "option",
-                      "inner": "MUSS"
-                    },
-                    {
-                      "tag": "option",
-                      "inner": "SOLL"
-                    },
-                    {
-                      "tag": "option",
-                      "inner": "KANN"
-                    }
-                  ]
-                },
-                {
-                  "tag": "input",
-                  "type": "text",
-                  "id": "bname",
-                  "name": "lastname",
-                  "placeholder": "<Objekt>",
-                  "comment": "<div id=\"h1\">-------</div>"
-                },
-                {
-                  "tag": "input",
-                  "type": "text",
-                  "id": "cname",
-                  "name": "lastname",
-                  "placeholder": "<Prozesswort>"
-                },
-                {
-                  "tag": "button",
-                  "onclick": "%getDisplay%",
-                  "inner": [
-                    {
-                      "tag": "input",
-                      "type": "submit",
-                      "value": "Submit"
-                    },
-                    {
-                      "id": "natija"
-                    }
-                  ],
-                  "comment": "<div class=\"alert alert-warning\">  hallo 123  </div> "
-                }
-              ]
-            },
-            {
-              id: 'natija'
-            },
-            {
-              id: 'display'
-            }
+          inner: [
+              {
+                tag: "h2",
+                inner: "Sophist Schablonen"
+              },
+              {
+                tag: "table",
+                inner: [
+                  {
+                    tag: "tr",
+                    inner: [
+                      { tag: "th", inner: "Systemname" },
+                      { tag: "th", inner: "Verbindlichkeit" },
+                      { tag: "th", inner: "Funktionalität" },
+                      { tag: "th", inner: "Objekt" },
+                      { tag: "th", inner: "Prozesswort" },
+                      { tag: "th", inner: "Buttons" },
+                    ]
+                  }
+                ]
+              }
           ]
-        }
+        },
+        row: { tag: "tr",
+          inner: [
+            { tag: "td", class: "system", inner: "%system%" },
+            { tag: "td", class: "modal", inner: "%modal%" },
+            { tag: "td", class: "func", inner: "%func%" },
+            { tag: "td", class: "object", inner: "%object%" },
+            { tag: "td", class: "process", inner: "%process%" }
+          ]
+        },
+        buttons:
+          { tag: "td", inner: [
+              { tag: "button", inner: "edit", onclick: "%edit%" },
+              { tag: "button", inner: "delete", onclick: "%del%" },
+            ]
+          },
+        save_button: { tag: "button", inner: "save", onclick: "%save%" }
+      },
+
+      form: {
+        system: { tag: "input", type: "text", class: "system", value: "%system%" },
+        modal: { tag: "select", class: "modal", inner: [
+            {
+              "tag": "option",
+              "inner": "MUSS"
+            },
+            {
+              "tag": "option",
+              "inner": "SOLL"
+            },
+            {
+              "tag": "option",
+              "inner": "KANN"
+            }
+          ] },
+        func: { tag: "select", class: "func", inner: [
+            {
+              "tag": "option",
+              "inner": "die Möglichkeit bieten"
+            },
+            {
+              "tag": "option",
+              "inner": "fähig sein"
+            }
+          ] },
+        object: { tag: "input", type: "text", class: "object", value: "%object%" },
+        process: { tag: "input", type: "text", class: "process", value: "%process%" }
       },
       
       css: [ 'ccm.load',  'resources/default.css' ],
@@ -176,53 +185,74 @@
        */
       this.start = async () => {
 
+        dataset = await $.dataset( this.data );
+
+        // logging of 'start' event
+        this.logger && this.logger.log( 'start', $.clone( dataset ) );
+
+        const html_main = $.clone( self.html.main );
+        const table_rows = html_main.inner[1].inner;
+
+        // add all rows from dataset
+        dataset.rows.forEach( row => {
+          table_rows.push( $.format( add_buttons( $.clone( self.html.row ) ), row ) );
+        });
+
+        // add last row, the edit row
+        table_rows.push( $.format( add_save_button( $.clone( self.html.row ) ), $.format( self.form, self.initial_values ) ) );
+
         // render main HTML structure
-        $.setContent( this.element, $.html( this.html.main, { getDisplay: getDisplay } ) );
+        $.setContent( this.element, $.html( html_main, { edit, del, save } ) );
 
-        function getDisplay(){
-          let li = document.createElement("li");
-          let today = new Date();
-          let use1 = self.element.querySelector("#aname").value +" " +
-            self.element.querySelector("#status").value+" "+
-            self.element.querySelector("#bname").value+" "+
-            self.element.querySelector("#cname").value+"..... "+
-            today.getDay()+":"+today.getHours()+":"+today.getSeconds();
-
-          let text = document.createTextNode(use1);
-          li.appendChild(text);
-
-          <!-- zeit:"+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds()); -->
-
-          self.element.querySelector("#natija").appendChild(li);
-
-          self.element.querySelector("#aname").value = "";
-          self.element.querySelector("#bname").value = "";
-          self.element.querySelector("#cname").value = "";
-          //alert();
-          //confirm();
-        }
-        
         /**
-         * refresh dataset after editing
+         * edit row
          */
-        function updateData(){
-          dataset.inner = editor_div.innerHTML;
-          self.onchange && self.onchange( dataset );
+        function edit() {
+          this.parentNode.parentNode.parentNode.replaceChild(
+            $.html( add_save_button( $.clone( self.html.row ) ), $.integrate ( {save}, $.format( self.form, html_values( this.parentNode.parentNode ) ) ) ),
+            this.parentNode.parentNode
+          );
         }
-        
+
+        /**
+         * delete row
+         */
+        function del() {
+          this.parentNode.parentNode.parentNode.removeChild( this.parentNode.parentNode );
+        }
+
         /**
          * updates app state data and restarts app
-         * @param {boolean} [no_restart] - prevent implicit app restart
          * @returns {Promise<void>}
          */
         async function save() {
+
+          dataset.rows.push( form_values( this.parentNode ) );
 
           // no datastore? => abort
           if ( !$.isDatastore( self.data.store ) ) return;
 
           await self.data.store.set( dataset );  // update app state data
-          // await self.start();     // restart app
+          await self.start();     // restart app
 
+        }
+
+        function add_buttons( row ){
+          row.inner.push( $.clone( self.html.buttons ) );
+          return row;
+        }
+
+        function add_save_button( row ){
+          row.inner.push( $.clone( self.html.save_button ) );
+          return row;
+        }
+
+        function html_values( row ){
+          return self.columns.reduce((a,b)=>{a[b]=row.querySelector("."+b).innerHTML; return a;},{});
+        }
+
+        function form_values( row ){
+          return self.columns.reduce((a,b)=>{a[b]=row.querySelector("."+b).firstElementChild.value; return a;},{save});
         }
 
       };

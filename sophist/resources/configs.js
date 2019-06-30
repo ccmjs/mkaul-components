@@ -6,11 +6,11 @@
  */
 
 ccm.files[ 'configs.js' ] = {
-  "small": {
-    key: "small",
+  "demo": {
+    key: "demo",
     data: {
       "store": [ "ccm.store", '../resources/datasets.js' ],
-      "key": "small"
+      "key": "demo"
     }
   }
 };
