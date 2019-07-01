@@ -9,7 +9,7 @@ ccm.files[ 'configs.js' ] = {
   "demo": {
     key: "demo",
     data: {
-      "store": [ "ccm.store", '../resources/datasets.js' ],
+      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js' ],
       "key": "demo"
     }
   }
