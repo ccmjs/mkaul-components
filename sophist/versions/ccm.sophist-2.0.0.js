@@ -21,7 +21,7 @@
      * @type {string}
      */
     name: 'sophist',
-    // version: [2,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
@@ -45,7 +45,7 @@
       },
 
       data: {
-        "store": [ "ccm.store", './resources/datasets.js' ],
+        "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js' ],
         "key": "demo"
       },
 
@@ -122,8 +122,8 @@
         process: { tag: "input", type: "text", class: "process", value: "%process%" }
       },
       
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
