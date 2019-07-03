@@ -2,7 +2,7 @@
  * @overview ccm component for sophist
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version latest (2.1.0)
  * @changes
  * version 2.1.0 03.07.2019 refactor config
  * version 2.0.0 30.06.2019 add forms
@@ -94,8 +94,8 @@
         process: { tag: "input", type: "text", class: "process", value: "%process%" }
       },
       
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
