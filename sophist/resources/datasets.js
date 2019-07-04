@@ -27,5 +27,27 @@ ccm.files[ 'datasets.js' ] = {
       }
     ]
 
+  },
+
+  "mit_Bedingung": {
+    "key": "mit_Bedingung",
+    "rows": [
+      {
+        condition: "Falls Fehler auftritt",
+        system: "Das System",
+        modal: "MUSS",
+        func: "die Möglichkeit bieten",
+        object: "die Bezahlung",
+        process: "zu berechnen"
+      },
+      {
+        condition: "Falls es regnet",
+        system: "Das Kassensystem",
+        modal: "SOLLTE",
+        func: "fähig sein",
+        object: "die Daten",
+        process: "zu speichern"
+      }
+    ]
   }
 };

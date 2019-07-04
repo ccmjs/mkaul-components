@@ -4,6 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (2.0.0)
  * @changes
+ * version 2.2.0 03.07.2019 add condition
  * version 2.1.0 03.07.2019 refactor config
  * version 2.0.0 30.06.2019 add forms
  * version 1.0.0 13.06.2019 initial build
@@ -22,7 +23,7 @@
      * @type {string}
      */
     name: 'sophist',
-    // version: [2,0,0],
+    version: [2,2,0],
     
     /**
      * recommended used framework version
@@ -95,8 +96,8 @@
         condition: { tag: "input", type: "text", class: "condition", value: "%condition%" }
       },
       
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
