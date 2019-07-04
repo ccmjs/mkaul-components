@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
   <g id="Layer_1">
     <g>
-      <circle cx="32" cy="32" fill="#E0995E" r="32"/>
+      <circle cx="32" cy="32" r="32" style="fill: rgb(224, 122, 94);"/>
     </g>
   </g>
   <g id="Layer_2"/>
+  <text style="fill: rgb(255, 255, 255); font-family: Lato; font-size: 7px; font-weight: 700; white-space: pre;" x="11.9" y="16.56">SOPHISTen</text>
 </svg>
