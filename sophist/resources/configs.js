@@ -31,7 +31,7 @@ ccm.files[ 'configs.js' ] = {
       process: "Prozesswort"
     },
     data: {
-      "store": [ "ccm.store", 'resources/datasets.js' ],
+      "store": [ "ccm.store", 'https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js' ],
       "key": "mit_Bedingung"
     }
   },
