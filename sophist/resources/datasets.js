@@ -33,17 +33,17 @@ ccm.files[ 'datasets.js' ] = {
     "key": "mit_Bedingung",
     "rows": [
       {
-        condition: "Falls Fehler auftritt",
-        system: "Das System",
+        condition: "Falls ein Fehler auftritt",
         modal: "MUSS",
+        system: "das System",
         func: "die Möglichkeit bieten",
         object: "die Bezahlung",
         process: "zu berechnen"
       },
       {
         condition: "Falls es regnet",
-        system: "Das Kassensystem",
         modal: "SOLLTE",
+        system: "das Kassensystem",
         func: "fähig sein",
         object: "die Daten",
         process: "zu speichern"
