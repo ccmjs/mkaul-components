@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect y="8.58" width="13" height="4.3" style="fill: rgb(197, 177, 177);"/>
+  <rect y="52.07" width="13" height="4.3" style="fill: rgb(197, 177, 177);" x="50.95"/>
   <g id="Layer_1">
     <g>
       <circle cx="32" cy="32" r="32" style="fill: rgb(224, 122, 94);"/>
     </g>
   </g>
   <g id="Layer_2"/>
-  <text style="fill: rgb(255, 255, 255); font-family: Lato; font-size: 7px; font-weight: 700; white-space: pre;" x="11.9" y="16.56">SOPHISTen</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Lato; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, -7.09184, 11.97513)"><tspan x="11.9" y="16.56">Require</tspan><tspan x="11.899999618530273" dy="1em">​</tspan><tspan>   mentor</tspan></text>
+  <rect y="9.72" width="29.63" height="1.98" style="fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 0px;" x="1.26"/>
+  <rect y="53.21" width="29.63" height="1.98" style="fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 0px;" x="33.61"/>
 </svg>

@@ -38,39 +38,39 @@
      */
     config: {
 
-      headers: ["Systemname","Verbindlichkeit","Funktionalität","Objekt","Prozesswort", "Buttons"],
-      columns: ["system","modal","func","object","process"],
+      "headers": ["Systemname","Verbindlichkeit","Funktionalität","Objekt","Prozesswort", "Buttons"],
+      "columns": ["system","modal","func","object","process"],
 
-      initial_values: {
-        system: "Das System",
-        object: "Objekt",
-        process: "Prozesswort"
+      "initial_values": {
+        "system": "Das System",
+        "object": "Objekt",
+        "process": "Prozesswort"
       },
 
-      data: {
+      "data": {
         "store": [ "ccm.store", './resources/datasets.js' ],
         "key": "demo"
       },
 
-      html: {
-        main: {
-          inner: [ { tag: "h2", inner: "Sophist Schablonen" } ]
+      "html": {
+        "main": {
+          "inner": [ { "tag": "h2", "inner": "Sophist Schablonen" } ]
         },
-        buttons:
-          { tag: "td", inner: [
-              { tag: "button", inner: "edit", onclick: "%edit%" },
-              { tag: "button", inner: "delete", onclick: "%del%" },
+        "buttons":
+          { "tag": "td", "inner": [
+              { "tag": "button", "inner": "edit", "onclick": "%edit%" },
+              { "tag": "button", "inner": "delete", "onclick": "%del%" },
             ]
           },
-        save_button: { tag: "button", inner: "save", onclick: "%save%" }
+        "save_button": { "tag": "button", "inner": "save", "onclick": "%save%" }
       },
 
       // ignore functions when saving data
-      ignore_button_functions: ["save","edit","del"],
+      "ignore_button_functions": ["save","edit","del"],
 
-      form: {
-        system: { tag: "input", type: "text", class: "system", value: "%system%" },
-        modal: { tag: "select", class: "modal", inner: [
+      "form": {
+        "system": { "tag": "input", "type": "text", "class": "system", "value": "%system%" },
+        "modal": { "tag": "select", "class": "modal", "inner": [
             {
               "tag": "option",
               "inner": "MUSS"
@@ -84,7 +84,7 @@
               "inner": "KANN"
             }
           ] },
-        func: { tag: "select", class: "func", inner: [
+        "func": { "tag": "select", "class": "func", "inner": [
             {
               "tag": "option",
               "inner": "die Möglichkeit bieten"
@@ -94,16 +94,16 @@
               "inner": "fähig sein"
             }
           ] },
-        object: { tag: "input", type: "text", class: "object", value: "%object%" },
-        process: { tag: "input", type: "text", class: "process", value: "%process%" },
-        condition: { tag: "input", type: "text", class: "condition", value: "%condition%" }
+        "object": { "tag": "input", "type": "text", "class": "object", "value": "%object%" },
+        "process": { "tag": "input", "type": "text", "class": "process", "value": "%process%" },
+        "condition": { "tag": "input", "type": "text", "class": "condition", "value": "%condition%" }
       },
       
-      css: [ 'ccm.load',  'resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
-      // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
-      // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
-      // onfinish: function( instance, results ){ console.log( results ); }
+      "css": [ 'ccm.load',  'resources/default.css' ],
+      // "css": [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
+      // "user":   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
+      // "logger": [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
+      // "onfinish": function( instance, results ){ console.log( results ); }
     },
 
     /**
