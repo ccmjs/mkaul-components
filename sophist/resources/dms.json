@@ -84,7 +84,7 @@
                                     "buttons":
                                     { "tag": "td", "inner": [
                                         { "tag": "button", "inner": "edit", "onclick": "%edit%" },
-                                        { "tag": "button", "inner": "delete", "onclick": "%del%" },
+                                        { "tag": "button", "inner": "delete", "onclick": "%del%" }
                                     ]
                                     },
                                     "save_button": { "tag": "button", "inner": "save", "onclick": "%save%" }
