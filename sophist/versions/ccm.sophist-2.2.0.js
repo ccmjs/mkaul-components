@@ -2,7 +2,7 @@
  * @overview ccm component for sophist
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version latest (2.2.0)
  * @changes
  * version 2.2.0 03.07.2019 add condition
  * version 2.1.0 03.07.2019 refactor config
