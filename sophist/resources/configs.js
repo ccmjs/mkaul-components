@@ -132,7 +132,7 @@ ccm.files[ 'configs.js' ] = {
 
     // sophist as nested content
     // "content": [ "ccm.component", "https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.1.js", {
-    //   "sophist": ["ccm.component","https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.1.0.js", {
+    //   "sophist": ["ccm.component","https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.1.1.js", {
     //     "html.main.inner.0.inner": "Demo",
     //     "data": {
     //       "store": [ "ccm.store", "https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js" ],
