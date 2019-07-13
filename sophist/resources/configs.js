@@ -16,6 +16,33 @@ ccm.files[ 'configs.js' ] = {
     }
   },
 
+  "user_story": {
+    "key": "user_story",
+    "html.main.inner.0.inner": "User Story",
+    "headers": ["Als","Rolle","möchte ich","Ziel/Wunsch","um","Nutzen", "Buttons"],
+    "columns": ["as","role","verb","goal_objective","to","benefit"],
+    "initial_values": {
+      "as": "Als",
+      "role": "Rolle",
+      "verb": "möchte ich",
+      "goal_objective": "Ziel, Wunsch",
+      "to": "um",
+      "benefit": "Nutzen",
+    },
+    "data": {
+      "store": [ "ccm.store", "./resources/datasets.js" ],
+      "key": "user_story"
+    },
+    "form": {
+      "as": { "tag": "span", "inner": "Als" },
+      "role": { "tag": "input", "type": "text", "class": "role", "value": "%role%" },
+      "verb": { "tag": "span", "inner": "möchte ich" },
+      "goal_objective": { "tag": "input", "type": "text", "class": "goal_objective", "value": "%goal_objective%" },
+      "to": { "tag": "span", "inner": "um" },
+      "benefit": { "tag": "input", "type": "text", "class": "benefit", "value": "%benefit%" }
+    }
+  },
+
   "ohne_Bedingung": {
     "key": "ohne_Bedingung",
     "html.main.inner.0.inner": "Ohne Bedingung",

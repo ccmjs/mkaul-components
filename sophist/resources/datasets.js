@@ -29,6 +29,23 @@ ccm.files[ 'datasets.js' ] = {
 
   },
 
+  "user_story": {
+    key: "user_story",
+    "rows": [
+      {
+        "role": "User",
+        "goal_objective": "einen Begriff in das Suchfeld eingeben",
+        "benefit": "meine Dokumente finden zu können."
+      },
+      {
+        "role": "Admin",
+        "goal_objective": "einen Usernamen in das Suchfeld eingeben",
+        "benefit": "dessen Profil finden zu können."
+      }
+    ]
+
+  },
+
   "mit_Bedingung": {
     "key": "mit_Bedingung",
     "rows": [
