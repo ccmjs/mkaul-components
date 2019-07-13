@@ -30,7 +30,7 @@ ccm.files[ 'configs.js' ] = {
       "benefit": "Nutzen",
     },
     "data": {
-      "store": [ "ccm.store", "./resources/datasets.js" ],
+      "store": [ "ccm.store", "https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js" ],
       "key": "user_story"
     },
     "form": {
@@ -93,6 +93,85 @@ ccm.files[ 'configs.js' ] = {
     "data": {
       "store": [ "ccm.store", { "url": "wss://ccm2.inf.h-brs.de", "name": "sophist_db", "dataset": "sophist_demo" } ],
       "key": "sophist_demo"
+    }
+  },
+
+  "submit": {
+
+    "css": [ "ccm.load",
+      { "context": "head", "url": "https://ccmjs.github.io/akless-components/libs/bootstrap/css/font-face.css" },
+      "https://ccmjs.github.io/akless-components/libs/bootstrap/css/bootstrap.css"
+    ],
+
+    "user": [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.2.0.js", {
+      "realm": "hbrsinfpseudo", "logged_in": true } ],
+
+
+    // sophist as special input type
+    "sophist": ["ccm.component","https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.1.1.js", {
+      "html.main.inner.0.inner": "User Story",
+      "headers": ["Als","Rolle","möchte ich","Ziel/Wunsch","um","Nutzen", "Buttons"],
+      "columns": ["as","role","verb","goal_objective","to","benefit"],
+      "initial_values": {
+        "as": "Als",
+        "role": "Rolle",
+        "verb": "möchte ich",
+        "goal_objective": "Ziel, Wunsch",
+        "to": "um",
+        "benefit": "Nutzen",
+      },
+      "form": {
+        "as": { "tag": "span", "inner": "Als" },
+        "role": { "tag": "input", "type": "text", "class": "role", "value": "%role%" },
+        "verb": { "tag": "span", "inner": "möchte ich" },
+        "goal_objective": { "tag": "input", "type": "text", "class": "goal_objective", "value": "%goal_objective%" },
+        "to": { "tag": "span", "inner": "um" },
+        "benefit": { "tag": "input", "type": "text", "class": "benefit", "value": "%benefit%" }
+      }
+    }],
+
+    // sophist as nested content
+    // "content": [ "ccm.component", "https://ccmjs.github.io/akless-components/content/versions/ccm.content-5.2.1.js", {
+    //   "sophist": ["ccm.component","https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.1.0.js", {
+    //     "html.main.inner.0.inner": "Demo",
+    //     "data": {
+    //       "store": [ "ccm.store", "https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js" ],
+    //       "key": "demo"
+    //     }
+    //   }],
+    // } ],
+
+
+    "data": {
+      "login": true,
+      "store": [ "ccm.store", {
+        "url": "https://ccm2.inf.h-brs.de",
+        "name": "sophist",
+        "method": "POST"
+      } ],
+      "user": true
+    },
+    "onfinish": {
+      "login": true,
+      "store": {
+        "settings": {
+          "url": "https://ccm2.inf.h-brs.de",
+          "name": "sophist",
+          "method": "POST"
+        },
+        "user": true,
+        "permissions": {
+          "creator": "4c9d704dfcb512873c39ddeefdd559e1",
+          "realm": "hbrsinfpseudo",
+          "group": {
+            "studi": [ "%user%" ],
+            "admingroup": [ "479e5f8396cec7afccd68b097eabe5f9", "4c9d704dfcb512873c39ddeefdd559e1" ],
+            "studigroup": [ "479e5f8396cec7afccd68b097eabe5f9", "4c9d704dfcb512873c39ddeefdd559e1", "%user%" ]
+          },
+          "access": { "get": "studigroup", "set": "studigroup", "del": "admingroup" }
+        }
+      },
+      "alert": "Gesichert!"
     }
   }
 
