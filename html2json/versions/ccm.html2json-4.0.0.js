@@ -20,14 +20,14 @@
      * @type {string}
      */
     name: 'html2json',
-    // version: [4,0,0],
+    version: [4,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-22.0.0.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -66,8 +66,8 @@
         ]
       },
 
-      css: [ 'ccm.load',  '../html2json/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
+      // css: [ 'ccm.load',  '../html2json/resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/html2json/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/html2json/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
