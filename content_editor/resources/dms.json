@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/content_editor/resources/icon.svg",
     "abstract": "Collaborative Content Editor for rich texts and active ccm components. Double-click on component to open builder.",
     "description": "<p>Collaborative Content Editor for rich texts using contentEditable. With this tiny editor rich text editing can be embedded in any web page or any ccm component. Double-click on component to open individual builder for each component. On mobile devices use shift-click instead.</p><p>For more information see <a target=_blank href='https://www.stifterverband.org/file/5203/download?token=lay3iM9c' rel='noopener'>Paper Digital Maker Space (DMS)</a>.</p><p>To publish your content use the Digital Maker Space (DMS) as follows:</p>  <img src='https://ccmjs.github.io/mkaul-components/content_editor/resources/cycle.svg'>",
-    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-6.0.0.js",
-    "version": "6.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/content_editor/versions/ccm.content_editor-6.0.3.js",
+    "version": "6.0.3",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -88,11 +88,11 @@
         "builder": [
           {
                 "title": "Input Mask",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.3.0.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-3.0.0.js",
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.0.0.js",
+                        "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.1.3.js",
                         {
                             "ignore.defaults": {
                                 "key": "small",
@@ -332,6 +332,18 @@
                                             "value": "ccm-quiz"
                                         },
                                         {
+                                            "label": "ccm-slidecast",
+                                            "value": "ccm-slidecast"
+                                        },
+                                        {
+                                            "label": "ccm-pdf_viewer",
+                                            "value": "ccm-pdf_viewer"
+                                        },
+                                        {
+                                            "label": "ccm-cloze",
+                                            "value": "ccm-cloze"
+                                        },
+                                        {
                                             "label": "Font Name",
                                             "value": "fontname"
                                         },
@@ -444,11 +456,11 @@
             },
             {
                 "title": "JSON Builder",
-                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-1.3.0.js",
+                "url": "https://ccmjs.github.io/akless-components/app_builder/versions/ccm.app_builder-3.0.0.js",
                 "config": {
                     "builder": [
                         "ccm.component",
-                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.3.0.js",
+                        "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.4.1.js",
                         {
                             "html.inner.1": "",
                             "directly": true
@@ -458,10 +470,10 @@
             }
         ]
     },
-    "updated_at": "2019-01-20T19:00:00+02:00",
+    "updated_at": "2019-07-17T19:00:00+02:00",
     "created_at": "2018-12-01T14:41:22+02:00",
     "_": {
-        "creator": "akless2m",
+        "creator": "mkaul2m",
         "realm": "hbrsinfkaul",
         "access": {
             "get": "all",

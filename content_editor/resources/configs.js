@@ -25,6 +25,25 @@ ccm.files[ 'configs.js' ] = {
     }
   },
 
+  "teacher": {
+    key: "teacher",
+
+    data: {
+      inner: '<h1>Teacher Editor</h1>for entering red marks into the students´ text',
+      position: 6 // cursor position
+    },
+
+    enabled: ['special_save', 'red_ink', 'undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p'],
+
+    "css_awesome": ["ccm.load",
+      {"context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"},
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
+    ],
+
+    css: ['ccm.load', 'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css']
+
+  },
+
   "small": {
     key: "small",
 
@@ -33,7 +52,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled: ['undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p' ],
+    enabled: ['undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p', 'indent', 'outdent', 'createlink', 'unlink' ],
 
     "css_awesome": [ "ccm.load",
       { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
@@ -67,7 +86,7 @@ ccm.files[ 'configs.js' ] = {
       "type": "module"
     } ],
 
-    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "view_editor", "view_html", "view_json", "view_html2json", "ccm-content_editor", "ccm-draw_svg" ], // which toolbar buttons should be on the toolbar
+    enabled: ['undo', 'redo', 'bold', 'italic', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'createlink', 'unlink', 'p', 'fontSize', "ccm-draw_svg" ], // which toolbar buttons should be on the toolbar
 
     colorPalette: ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF'],
 
@@ -106,9 +125,11 @@ ccm.files[ 'configs.js' ] = {
     key: "ccm",
 
     data: {
-      inner: '<h1>Editor for <i>ccm</i> components</h1><ccm-clock></ccm-clock><p>Demo Text</p> ',
+      inner: '<h1>Editor for <i>interactive</i> content</h1><p>In this editor you can insert an interactive clock <ccm-clock width="80px"></ccm-clock> in the middle of a text. This is not an image of a clock, but a live working clock.</p><p>Another example is a working interactive quiz:</p><ccm-quiz key="demo"></ccm-quiz><p>which you can insert into your text. Thereby teachers can write their interactive exercise sheets simply by editing a text.</p>',
       position: 6, // cursor position
-      components: { "clock": ["ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js"]}
+      components: { "clock": ["ccm.component", "https://ccmjs.github.io/mkaul-components/clock/versions/ccm.clock-3.0.1.js"],
+        "quiz": ["ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-3.0.2.js"]
+      }
     },
 
     enabled:["toggle", 'undo', 'redo', 'save_file', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json", "stop" ],
@@ -225,6 +246,24 @@ ccm.files[ 'configs.js' ] = {
       "store": [ "ccm.store", { "name": "content_editor", "url": "wss://ccm2.inf.h-brs.de" } ],
       "key": "small"
     }
-  }
+  },
+
+  "use_case": {
+    key: "use_case",
+
+    data: {
+      inner: '<h1>Use Case Template</h1><h2>Name</h2><p></p><h2>Akteure</h2><p></p><h2>Vorbedingung</h2><p></p><h2>Standardschritte</h2><p></p><h2>Ausnahmefälle</h2><p></p><h2>Nachbedingung</h2><p></p><h2>Qualitätsanforderungen</h2><p></p>',
+    },
+
+    enabled: ['undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p', 'indent', 'outdent', 'createlink', 'unlink' ],
+
+    "css_awesome": [ "ccm.load",
+      { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
+      "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
+    ],
+
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+
+  },
 
 };
