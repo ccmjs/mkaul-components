@@ -6,7 +6,7 @@
  * @license The MIT License (MIT)
  * @version latest (6.0.3)
  * @changes
- * version 6.0.3  use ccm-own $.htmlToJson()
+ * version 6.0.3  use ccm-own $.html2json()
  * version 6.0.2  add saveFile function
  * version 6.0.0  add collaboration support
  * version 5.1.0  major refactorings: use dataset.components
@@ -1709,7 +1709,7 @@
               break;
 
             case "view_json":
-              const value_as_json = $.clone(Object.assign({}, self.getValue(), {inner: $.htmlToJson(editor_div.innerHTML)}));
+              const value_as_json = $.clone(Object.assign({}, self.getValue(), {inner: $.html2json(editor_div.innerHTML)}));
               delete value_as_json.parent;
               delete value_as_json.root;
               let view_json_instance = null;

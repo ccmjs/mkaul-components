@@ -3,7 +3,7 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
  * @version latest
- * version 4.0.0 uses ccm-own $.htmlToJson()
+ * version 4.0.0 uses ccm-own $.html2json()
  * TODO: unit tests
  * TODO: builder component
  * TODO: i18n
@@ -208,7 +208,7 @@
 
         function reparse(){
           const json_data = $.integrate( {
-              inner: $.htmlToJson( typeof dataset.inner === 'string' ? dataset.inner : dataset.inner.innerHTML ),
+              inner: $.html2json( typeof dataset.inner === 'string' ? dataset.inner : dataset.inner.innerHTML ),
               components: Object.keys(self.data.components).reduce((deps,comp)=>{
                   const dep = dataset.components[comp];
                   deps[comp]=[ "ccm.component", dep.url, $.clone( dep.config ) ]; return deps },
