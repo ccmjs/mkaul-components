@@ -113,8 +113,8 @@
       //   condition: { tag: "input", type: "text", class: "condition", value: "%condition%" }
       // },
       
-      css: [ 'ccm.load',  './resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
+      // css: [ 'ccm.load',  './resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js', 'log' ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
