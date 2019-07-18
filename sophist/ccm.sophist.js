@@ -81,7 +81,7 @@
       },
 
       // ignore functions when saving data
-      // ignore_button_functions: ["save","edit","del"],
+      ignore_button_functions: ["save","edit","del"],
 
       form: {
         system: { tag: "input", type: "text", class: "system", value: "%system%" },
@@ -347,9 +347,10 @@
         // do not store the save function of the save button in a row
         if ( dataset.rows ){
           dataset.rows.forEach( row => {
-            self.ignore_button_functions.forEach( fun => {
-              if ( row[ fun ] ) delete row[ fun ];
-            });
+            if ( self.ignore_button_functions )
+              self.ignore_button_functions.forEach( fun => {
+                if ( row[ fun ] ) delete row[ fun ];
+              });
           });
         }
 
