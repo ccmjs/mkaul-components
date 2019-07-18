@@ -5,8 +5,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/sophist/resources/icon.svg",
     "abstract": "Collect your requirements",
     "description": "Collect formally structured sentences (e.g. requirements) in a list. Store persistently or work on the list collaboratively via WebSockets.",
-    "url": "https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.0.0.js",
-    "version": "3.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/sophist/versions/ccm.sophist-3.1.1.js",
+    "version": "3.1.1",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "developer": "Manfred Kaul",
     "license": "MIT License",    
@@ -50,6 +50,14 @@
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js",
                     "websockets"
+                ]
+            },
+            {
+                "title": "User Stories",
+                "config": [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/sophist/resources/configs.js",
+                    "user_story"
                 ]
             }
         ],
@@ -233,7 +241,7 @@
             }
         ]
     },
-    "updated_at": "2019-07-07T10:41:22+02:00",
+    "updated_at": "2019-07-18T10:41:22+02:00",
     "created_at": "2019-07-07T10:41:22+02:00",
     "_": {
         "creator": "mkaul2m",

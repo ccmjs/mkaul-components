@@ -13,7 +13,8 @@ ccm.files[ 'configs.js' ] = {
     "data": {
       "store": [ "ccm.store", "https://ccmjs.github.io/mkaul-components/sophist/resources/datasets.js" ],
       "key": "demo"
-    }
+    },
+    // "form.process": { tag: "span", inner: "zu tun." }
   },
 
   "user_story": {
