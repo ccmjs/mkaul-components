@@ -43,15 +43,16 @@
     config: {
 
       // // optional headers and columns:
-      // headers: ["Systemname","Verbindlichkeit","Funktionalität","Objekt","Prozesswort", "Buttons"],
-      // columns: ["system","modal","func","object","process"],
-      //
-      // initial_values: {
-      //   system: "Das System",
-      //   object: "Objekt",
-      //   process: "Prozesswort"
-      // },
-      //
+      headers: ["Systemname","Verbindlichkeit","Funktionalität","Objekt","Prozesswort", "Buttons"],
+      columns: ["system","modal","func","object","process"],
+
+      initial_values: {
+        system: "Das System",
+        object: "Objekt",
+        process: "Prozesswort"
+      },
+
+      //  // optional data
       // data: {
       //   "store": [ "ccm.store", './resources/datasets.js' ],
       //   "key": "demo"
@@ -60,7 +61,7 @@
       html: {
         main: {
           inner: [ { tag: "h2", inner: "Minimum" } ]
-        }
+        },
         // row: { tag: "tr",  // use row instead of headers and colums for defining your own HTML structure.
         //   inner: [         // If you use headers and columns, you do not need row.
         //     { tag: "td", class: "system", inner: "%system%" },
@@ -70,48 +71,48 @@
         //     { tag: "td", class: "process", inner: "%process%" }
         //   ]
         // },
-        // buttons:
-        //   { tag: "td", inner: [
-        //       { tag: "button", inner: "edit", onclick: "%edit%" },
-        //       { tag: "button", inner: "delete", onclick: "%del%" },
-        //     ]
-        //   },
-        // save_button: { tag: "button", inner: "save", onclick: "%save%" }
+        buttons:
+          { tag: "td", inner: [
+              { tag: "button", inner: "edit", onclick: "%edit%" },
+              { tag: "button", inner: "delete", onclick: "%del%" },
+            ]
+          },
+        save_button: { tag: "button", inner: "save", onclick: "%save%" }
       },
 
       // ignore functions when saving data
       // ignore_button_functions: ["save","edit","del"],
 
-      // form: {
-      //   system: { tag: "input", type: "text", class: "system", value: "%system%" },
-      //   modal: { tag: "select", class: "modal", inner: [
-      //       {
-      //         "tag": "option",
-      //         "inner": "MUSS"
-      //       },
-      //       {
-      //         "tag": "option",
-      //         "inner": "SOLL"
-      //       },
-      //       {
-      //         "tag": "option",
-      //         "inner": "KANN"
-      //       }
-      //     ] },
-      //   func: { tag: "select", class: "func", inner: [
-      //       {
-      //         "tag": "option",
-      //         "inner": "die Möglichkeit bieten"
-      //       },
-      //       {
-      //         "tag": "option",
-      //         "inner": "fähig sein"
-      //       }
-      //     ] },
-      //   object: { tag: "input", type: "text", class: "object", value: "%object%" },
-      //   process: { tag: "input", type: "text", class: "process", value: "%process%" },
-      //   condition: { tag: "input", type: "text", class: "condition", value: "%condition%" }
-      // },
+      form: {
+        system: { tag: "input", type: "text", class: "system", value: "%system%" },
+        modal: { tag: "select", class: "modal", inner: [
+            {
+              "tag": "option",
+              "inner": "MUSS"
+            },
+            {
+              "tag": "option",
+              "inner": "SOLL"
+            },
+            {
+              "tag": "option",
+              "inner": "KANN"
+            }
+          ] },
+        func: { tag: "select", class: "func", inner: [
+            {
+              "tag": "option",
+              "inner": "die Möglichkeit bieten"
+            },
+            {
+              "tag": "option",
+              "inner": "fähig sein"
+            }
+          ] },
+        object: { tag: "input", type: "text", class: "object", value: "%object%" },
+        process: { tag: "input", type: "text", class: "process", value: "%process%" },
+        condition: { tag: "input", type: "text", class: "condition", value: "%condition%" }
+      },
       
       // css: [ 'ccm.load',  './resources/default.css' ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/sophist/resources/default.css' ],
@@ -240,19 +241,20 @@
           self.html.main.inner.push( table );
         }
 
-        // auxiliary function for table constructor
-        function find( search, list ){
-          for ( const elem of list){
-            if ( $.isObject( elem ) && elem.tag && elem.tag === "table" ){
-              return true;
-            } else if ( Array.isArray( elem ) ){
-              if ( find( search, elem ) ) return true;
-            }
-          }
-          return false;
-        }
-
       };
+
+      // auxiliary function for table constructor
+      function find( search, list ){
+        for ( const elem of list){
+          if ( $.isObject( elem ) && elem.tag && elem.tag === "table" ){
+            return elem;
+          } else if ( Array.isArray( elem ) ){
+            const sub_elem = find( search, elem );
+            if ( sub_elem ) return sub_elem;
+          }
+        }
+        return false;
+      }
         
       /**
        * starts the instance
@@ -262,8 +264,14 @@
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
 
+        // clone main HTML structure
         const html_main = $.clone( self.html.main );
-        const table_rows = html_main.inner[1] ? html_main.inner[1].inner : html_main.inner[0].inner;
+
+        /**
+         * array of rows of the table
+         * @type {Array}
+         */
+        const table_rows = find( "table", html_main.inner ).inner || [];
 
         if ( dataset.lastRow ){
           row_count = dataset.lastRow;
@@ -296,7 +304,7 @@
         }
 
         // add last row: the edit row for entering new data
-        Array.isArray( table_rows ) && table_rows.push( $.format( add_save_button( $.clone( self.html.row ) ), $.format( self.form || {}, self.initial_values ) ) );
+        table_rows.push( $.format( add_save_button( $.clone( self.html.row ) ), $.format( self.form || {}, self.initial_values ) ) );
 
         // render main HTML structure
         $.setContent( this.element, $.html( html_main, { edit, del, save: add } ) );
