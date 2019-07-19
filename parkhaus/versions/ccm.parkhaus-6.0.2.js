@@ -181,7 +181,7 @@
         ]
       },
 
-      hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ],
+      hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
 
       chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
@@ -420,15 +420,16 @@
               let config, response;
               try {
                 response = await csv_get_request( extra_params.extra_class, {} );
-                try { config = JSON.parse( response );
-                } catch (err){
-                  console.log( err, " in HTTP Response: ", response );
+                try {
+                  config = JSON.parse( response );
+                  config.root = extra_div;
+                  self.chart.start( config );
+                  checkbox.style.display = 'inline';
+                } catch (err2){
+                  console.log( err2, " in HTTP Response: ", response );
                 }
-                config.root = extra_div;
-                self.chart.start( config );
-                checkbox.style.display = 'inline';
-              } catch( err ){
-                show_error( "" + err.toString() + "<br>" + response )
+              } catch( err1 ){
+                show_error( "GET " + extra_params.extra_class + ": " + err1.toString() + "<br>" + response )
               }
             });
           });

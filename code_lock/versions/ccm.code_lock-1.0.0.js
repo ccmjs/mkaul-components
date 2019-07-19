@@ -55,7 +55,7 @@
       // css: [ 'ccm.load',  'resources/default.css' ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/code_lock/resources/default.css' ],
 
-      hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ]
+      hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ]
 
       // user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-8.1.0.js', { realm: 'hbrsinfkaul' } ],
       // logger: [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js', [ 'ccm.get', 'https://ccmjs.github.io/mkaul-components/code_lock/resources/configs.js', 'log' ] ],

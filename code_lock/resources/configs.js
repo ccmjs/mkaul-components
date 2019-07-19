@@ -27,7 +27,7 @@ ccm.files[ 'configs.js' ] = {
     },
     css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/code_lock/resources/default.css' ],
 
-    hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ]
+    hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ]
 
   }
 };

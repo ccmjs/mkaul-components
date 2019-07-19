@@ -264,7 +264,7 @@ ccm.files[ 'configs.js' ] = {
       ]
     },
 
-    hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.js", "type": "module" } ],
+    hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
     SALT: "123",
 
     chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],

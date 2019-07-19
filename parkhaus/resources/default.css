@@ -4,6 +4,19 @@
  * @license The MIT License (MIT)
  */
 
+:host * {
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+input {
+    padding: 0.1rem;
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+    border: thin solid black;
+    box-shadow: 0.1rem 0.1rem #666;
+}
+
 table,
 th,
 td {
@@ -35,7 +48,13 @@ caption {
     font-weight:  200;
 }
 
+.button_container {
+    min-height: 2rem;
+}
+
 button {
+    display: inline-block;
+    font-size: large;
     margin: 0.4rem;
     padding: 0.4rem;
     border-radius: 0.2rem;
@@ -44,7 +63,7 @@ button {
 
 button:hover {
     border: thin solid black;
-    box-shadow: 2px 2px #666;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 button:active {
@@ -61,11 +80,22 @@ button:active {
     background-color: #DDD;
 }
 
-.car {
+.exit_car_container {
+    display: inline-block;
+}
+
+.car, .space {
     width: auto;
     height: 5rem;
     display: inline-block;
+}
+
+.car {
     cursor: pointer;
+}
+
+.Max {
+    width: 4rem;
 }
 
 .counter {
