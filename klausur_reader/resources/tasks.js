@@ -13,6 +13,17 @@ ccm.files[ 'tasks.js' ] = {
     "url": "https://ccm2.inf.h-brs.de",
     "tasks": [
       {
+        "title": 'Demo Quiz',
+        "points": 2,
+        "type": "quiz",
+        "store": "quiz",
+        "appid": "1544549104545X7414930366886783",
+        "config": {
+          "feedback": false,
+          "random": true
+        }
+      },
+      {
         "title": 'Present Progressive',
         "points": 5,
         "type": "cloze",

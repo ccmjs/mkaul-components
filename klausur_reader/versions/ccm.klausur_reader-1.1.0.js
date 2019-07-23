@@ -22,14 +22,14 @@
      * @type {string}
      */
     name: "klausur_reader",
-    // version: [1,0,0],
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-22.2.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-22.2.0.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -43,7 +43,7 @@
         main: {
           class: 'bordered',
           inner: [
-            { tag: "img", src: "./resources/hbrs-logo.svg", width: "300rem", height: "auto" },
+            { tag: "img", src: "https://ccmjs.github.io/mkaul-components/klausur_reader/resources/hbrs-logo.svg", width: "300rem", height: "auto" },
             { tag: "h1", inner: "Klausur<br>Software Engineering 1", class: "center" },
             { tag: "p", inner: " %name% for %user% at %date% ", class: "center small" },
             { tag: 'p', inner: "Signature: %signature% ", class: "higher center small italic bordered" }
@@ -59,7 +59,7 @@
       },
 
       tasks: {
-        store: [ "ccm.store", "./resources/tasks.js" ],
+        store: [ "ccm.store", "https://ccmjs.github.io/mkaul-components/klausur_reader/resources/tasks.js" ],
         key: "se1_SoSe19"
       },
 
@@ -108,8 +108,8 @@
       hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
       
-      css: [ "ccm.load",  "./resources/default.css" ],
-      // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/klausur_reader/resources/default.css" ],
+      // css: [ "ccm.load",  "./resources/default.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/klausur_reader/resources/default.css" ],
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-3.1.0.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/klausur_reader/resources/configs.js", "log" ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
