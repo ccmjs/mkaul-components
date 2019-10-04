@@ -1,10 +1,10 @@
 /**
  * @overview ccm component for paper_generator based on a survey / opinion poll
- * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018, 2019
  * @license The MIT License (MIT)
- * @version latest (3.2.0)
+ * @version latest (3.3.0)
  * @changes
- * version 3.2.0 28.11.2018
+ * version 3.3.0 28.11.2018 prevent interference with location hash
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,13 +22,14 @@
      * @type {string}
      */
     name: 'paper_generator',
+    version: [3,3,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-22.7.2.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -201,13 +202,14 @@
         }
       },
 
-      survey: [ "ccm.component", "../fast_poll/ccm.fast_poll.js" ],
+      survey: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/fast_poll/versions/ccm.fast_poll-5.0.1.js" ],
 
-      plotter: [ "ccm.component", "../plotly/ccm.plotly.js" ],
+      plotter: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
 
       microservice: 'https://kaul.inf.h-brs.de/data/2018/prosem/server.php',
 
-      css: [ 'ccm.load',  '../paper_generator/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/paper_generator/resources/default.css' ],
 
       // process_this_result: console.log, // callback for processing single poll result
@@ -338,9 +340,9 @@
         // Use Location API for hash changes
         // https://developer.mozilla.org/en-US/docs/Web/API/Location
         window.onhashchange = function( e ) {
-          // in-page anchor
-          if ( ! location.hash.startsWith('#dms') ){
-            const anchor = main_div.querySelector( 'li' + location.hash );
+          // use in-page anchor only, avoid interference with DMS
+          if ( ! location.hash.startsWith('#dms') && ! location.hash.match(/\d+X\d+/).index === 1 ){
+            const anchor = main_div.querySelector( 'li' + location.hash.slice(0,location.hash.indexOf('&')) );
             if ( anchor ){
               anchor.style.backgroundColor = "rgb(255, 237, 186)";
               anchor.style.transition = "all 3s linear";
