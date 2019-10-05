@@ -821,7 +821,7 @@
         function questions_html(){
           let html = "<ol>";
           let nr = 0;
-          if ( Object.keys( self.questions ).length > 0 ) for (const answers of self.questions){
+          if ( Object.keys( self.questions ).length > 0 ) for (const answers of Object.values( self.questions )){
             nr += 1;
             html += "<li>";
             if ( self.headers && self.headers[ nr ] ) html += "<b>"+ self.headers[ nr ] +"</b>";
