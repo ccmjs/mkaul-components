@@ -811,7 +811,7 @@
               div("paper_frame").style.animation = 'fadeIn 3s';
               div("paper_frame").style.display = 'block';
               generate_paper();
-              div("paper").style.display = 'block';
+              div("paper") && ( div("paper").style.display = 'block' );
               break;
             default: debugger;
           }
@@ -821,7 +821,7 @@
         function questions_html(){
           let html = "<ol>";
           let nr = 0;
-          for (const answers of self.questions){
+          if ( Object.keys( self.questions ).length > 0 ) for (const answers of self.questions){
             nr += 1;
             html += "<li>";
             if ( self.headers && self.headers[ nr ] ) html += "<b>"+ self.headers[ nr ] +"</b>";
