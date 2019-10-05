@@ -339,19 +339,6 @@
 
         change_state( 'welcome' );
 
-        // Use Location API for hash changes
-        // https://developer.mozilla.org/en-US/docs/Web/API/Location
-        window.onhashchange = function( e ) {
-          // use in-page anchor only, avoid interference with DMS
-          if ( ! location.hash.startsWith('#dms') && ! location.hash.match(/\d+X\d+/).index === 1 ){
-            const anchor = main_div.querySelector( 'li' + location.hash.slice(0,location.hash.indexOf('&')) );
-            if ( anchor ){
-              anchor.style.backgroundColor = "rgb(255, 237, 186)";
-              anchor.style.transition = "all 3s linear";
-            }
-          }
-        };
-
         function start_survey(){
           self.survey.start( {
             root: div("ccm_poll"),
