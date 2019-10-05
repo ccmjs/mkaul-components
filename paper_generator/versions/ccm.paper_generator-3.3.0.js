@@ -273,6 +273,8 @@
        */
       this.start = async () => {
 
+        const null_div = document.createElement('div'); // Null Object Pattern
+
         window.addEventListener('resize',( event ) => { event.preventDefault() } );
 
         self.process_this_result = find_mapping( self.process_this_result );
@@ -760,18 +762,18 @@
 
         // universal functions for getting div and span elements from HTML
         function div( id ){
-          return main_div.querySelector('div#' + id);
+          return main_div.querySelector('div#' + id) || null_div;  // prevent null Exception
         }
 
         function span( class_name ){
-          return main_div.querySelectorAll('span.' + class_name);
+          return main_div.querySelectorAll('span.' + class_name) || null_div;
         }
 
         function button( id ){
-          return main_div.querySelector('button#' + id);
+          return main_div.querySelector('button#' + id) || null_div;
         }
 
-        // make it public methods
+        // make functions public methods
         self.div = div;
         self.span = span;
         self.button = button;
