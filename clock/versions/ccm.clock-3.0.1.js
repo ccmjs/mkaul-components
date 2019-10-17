@@ -13,7 +13,7 @@
     name: 'clock',
     version: [3,0,1],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-24.0.1.js',
     // ccm: '//ccmjs.github.io/ccm/ccm.js',
 
     config: {
@@ -70,11 +70,11 @@
 
       this.start = async () => {
 
-        const main_div = $.html( self.html.main, {
+        const main_div = $.html( self.html.main || { id: 'main', inner: [ { id: 'clock' } ] }, {
           date: this.getValue().toLocaleDateString(),
           time: this.getValue().toLocaleTimeString(),
           title: self.title,
-          width: self.width
+          width: self.width || "200px"
         } );
 
         const clock_div = main_div.querySelector('#clock');
