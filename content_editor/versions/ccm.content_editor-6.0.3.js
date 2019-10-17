@@ -1095,8 +1095,8 @@
 
         dataset = await $.dataset( this.data );
         if ( ! dataset ) dataset = {};
-        if ( typeof dataset === 'string' ) dataset = { key: dataset };
-        if ( ! dataset.key ) dataset.key = self.data.key;
+        // if ( typeof dataset === 'string' ) dataset = { key: dataset };
+        if ( ! dataset.key &&  self.data.key ) dataset.key = self.data.key;
         if ( ! dataset.components ) dataset.components = {};
         if ( ! dataset.indexMap ) dataset.indexMap = {};
 
