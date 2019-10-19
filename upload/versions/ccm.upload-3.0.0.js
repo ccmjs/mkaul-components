@@ -361,9 +361,6 @@
         function file_url( server, params ) {
           let url = server;
           
-          // Whitelist of legal parameters
-          const whitelist = [ 'key', 'id', 'user', 'token' ].concat( Object.keys( self.keys ) );
-          
           // add user parameters
           Object.assign( params, {
             user: self.user.data().user,
@@ -373,10 +370,10 @@
             semester: self.keys.semester,
             fach: self.keys.fach
           } );
-          Object.keys(params).map(function (key, i) {
-            if ( whitelist.indexOf( key ) > -1 ) {
-              url += (i===0?'?':'&') + key + '=' + encodeURIComponent( params[ key ] );
-            }
+
+          // construct URL
+          Object.keys(params).forEach(function (key, i) {
+            url += (i===0?'?':'&') + key + '=' + encodeURIComponent( params[ key ] );
           });
           return url;
         }
