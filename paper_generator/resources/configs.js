@@ -72,6 +72,7 @@ ccm.files[ 'configs.js' ] = {
             id: 'result',
             inner: [
               { tag: 'h1', inner: 'Vielen Dank für Ihre Teilnahme.' },
+              { id: 'poll_result' },
               { tag: 'button', id: 'start_paper', inner: 'Weiter zum Artikel über die bisherigen Ergebnisse der Umfrage', onclick: '%start_paper%' },
             ]
           },
@@ -229,6 +230,7 @@ ccm.files[ 'configs.js' ] = {
             id: 'result',
             inner: [
               { tag: 'h1', inner: 'Vielen Dank für Ihre Teilnahme.' },
+              { id: 'poll_result' },
               { tag: 'button', id: 'start_paper', inner: 'Weiter zum Artikel über die bisherigen Ergebnisse der Umfrage', onclick: '%start_paper%' },
             ]
           },
