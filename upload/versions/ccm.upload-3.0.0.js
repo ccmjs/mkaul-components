@@ -18,7 +18,7 @@
      */
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.3.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-24.1.1.js',
     
     config: {
       fkey:           'test',  // ToDo Use fkey instead of key
@@ -366,7 +366,7 @@
             user: self.user.data().user,
             token: self.user.data().token,
             key: self.fkey,
-            id: self.keys.id,
+            id: self.name || self.keys.id,
             semester: self.keys.semester,
             fach: self.keys.fach
           } );
