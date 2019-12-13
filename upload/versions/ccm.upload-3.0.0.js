@@ -152,6 +152,7 @@
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
 
         dataset = await $.dataset( self.data );
+        if ( typeof dataset === 'string' ) dataset = JSON.parse( dataset.replace(/'/gm, '"') );
 
         // prepare main HTML structure
         const main_elem = self.ccm.helper.html( self.html.main, {
