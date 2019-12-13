@@ -269,6 +269,9 @@
           const formData = new FormData();
           formData.append('key', self.fkey);
           formData.append("file", file);
+          formData.append("semester", self.keys.semester );
+          formData.append("fach", self.keys.fach );
+
   
           // prepare AJAX POST request
           xhr.open('POST', self.upload_server ? self.upload_server : self.server, true); // true === async
