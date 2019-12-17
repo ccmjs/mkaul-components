@@ -24,8 +24,8 @@
       fkey:           'test',  // ToDo Use fkey instead of key
       keys: {        // additional DB keys if necessary (optional)
         semester: 172, // year + semester count, e.g. 2017 in 2nd semester
-        fach: 'se',    // subject
-        id: 'portrait' // default, overwritten by self.root.id == id of HTML element
+        fach: 'se'     // subject
+        // id: 'portrait' // default, overwritten by self.root.id == id of HTML element
       },
       server: 'https://kaul.inf.h-brs.de/data/form.php', // uniform server access
 
@@ -277,7 +277,7 @@
           formData.append("file", file);
           formData.append("semester", self.keys.semester );
           formData.append("fach", self.keys.fach );
-          formData.append("id", self.keys.id );
+          formData.append("id", self.name || self.keys.id );
 
   
           // prepare AJAX POST request
