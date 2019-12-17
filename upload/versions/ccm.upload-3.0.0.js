@@ -59,20 +59,22 @@
           success: 'Upload successful: ',
           file_too_large: 'File too large',
           wrong_file_type: 'Wrong file type',
-          wrong_suffix: 'Wrong file suffix'
+          wrong_suffix: 'Wrong file suffix',
+          failure: 'Upload failed.'
         },
         'de': {
           abort: 'Upload abgebrochen: ',
           success: 'Fertig hochgeladen: ',
           file_too_large: 'Datei zu groß',
           wrong_file_type: 'Falscher Datei-Typ',
-          wrong_suffix: 'Falsche Datei-Endung'
+          wrong_suffix: 'Falsche Datei-Endung',
+          failure: 'Upload fehlgeschlagen.'
         }
       },
       
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/upload/resources/default.css' ],
 
-      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.0.1.js', { realm: "hbrsinfkaul" } ]
+      user:   [ 'ccm.instance', 'https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.0.js', { realm: "hbrsinfkaul" } ]
 
       // onfinish: function( instance, results ){ console.log( results ); }
     },
@@ -147,6 +149,9 @@
        * starts the instance
        */
       this.start = async () => {
+
+        // login user, if not logged in
+        self.user && await self.user.login();
   
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start', { component: self.index, fkey: self.fkey, keys: self.keys } );
@@ -272,6 +277,7 @@
           formData.append("file", file);
           formData.append("semester", self.keys.semester );
           formData.append("fach", self.keys.fach );
+          formData.append("id", self.keys.id );
 
   
           // prepare AJAX POST request
@@ -309,10 +315,12 @@
           };
   
           xhr.onload = function () {
-            if (this.status == 200) {
+            if (this.status === 200) {
               report_file_link();
               // has logger instance? => log 'success' event
               if ( self.logger ) self.logger.log( 'success', dataset );
+            } else {
+              failure.textContent = self.messages[self.language].failure + ': ' + this.statusText;
             }
           };
   
