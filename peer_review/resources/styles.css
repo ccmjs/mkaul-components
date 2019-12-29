@@ -1,0 +1,50 @@
+/**
+ * @overview default layout of ccm component peer_review
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2019
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.nothing {
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0.5rem;
+  border: thin solid;
+}
+
+.field {
+  width: 98%;
+  border: thin solid;
+  border-radius: 0.5rem;
+}
+
+.container {
+  height: 20rem;
+  resize: both;
+  overflow: auto;
+}
+
+.peer {
+  border-color: blue;
+  box-shadow: 7px 7px 8px -2px rgba(0,0,255,0.62);
+}
+
+.review {
+  height: 10rem;
+  border-color: red;
+  box-shadow: 7px 7px 8px -2px rgba(255,0,0,0.62);
+}
+
+pre.peer > code {
+  padding-left: 40px;
+  position: relative;
+}
+
+pre.peer > code .line {
+  position: absolute;
+  left: 10px;
+  width: 30px;
+  display: inline-block;
+}

@@ -1,0 +1,110 @@
+{
+    "_id": "peer_builder",
+    "title": "peer_builder",
+    "icon": "https://ccmjs.github.io/mkaul-components/peer_builder/resources/icon.svg",
+    "abstract": "Builder for Peer Review Component",
+    "description": "Peer lists are generated ",
+    "url": "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
+    "version": "1.0.0",
+    "website": "https://ccmjs.github.io/mkaul-components/",
+    "developer": "Manfred Kaul",
+    "license": "MIT License",
+    "tags": ["Digital Teaching", "Peer Review"],
+    "subject": "Create web forms for submission of data.",
+    "metaFormat": "ccm-meta",
+    "metaVersion": "2.0.0",
+    "format": "application/js",
+    "ignore": {
+        "demos": [
+            {
+                "title": "demo",
+                "app": [
+                  "ccm.instance",
+                  "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
+                  [
+                    "ccm.get",
+                    "https://ccmjs.github.io/mkaul-components/peer_builder/resources/configs.js",
+                    "demo"
+                  ]
+                ]
+            }
+        ],
+        "builder": [
+          {
+                "title": "Input Mask",
+                "app": [
+                    "ccm.component",
+                    "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-7.3.2.js",
+                    {
+                        "ignore.defaults": {
+                            "taskgroup": "le05_a1",
+                            "number_peers": 3,
+                            "above_min_percent": 10,
+                            "peers_key_prefix": "review",
+                            "data": {
+                                "login": true,
+                                "store": [ "ccm.store", {
+                                    "url": "https://ccm2.inf.h-brs.de",
+                                    "name": "we_ws19_solutions",
+                                    "method": "POST"
+                                } ],
+                                "user": true
+                            }
+                        },
+                        "entries": [
+                            {
+                                "label": "Taskgroup",
+                                "name": "taskgroup",
+                                "type": "text",
+                                "info": "Which learning unit, which task group"
+                            },
+                            {
+                                "label": "Number of Peers",
+                                "name": "number_peers",
+                                "type": "number",
+                                "info": "How many peers?"
+                            },
+                            {
+                                "label": "Percent above Minimum Filter",
+                                "name": "above_min_percent",
+                                "type": "number",
+                                "info": "Filter solutions that are too small"
+                            },
+                            {
+                                "name": "data",
+                                "type": "hidden"
+                            },
+                            {
+                                "name": "data.store",
+                                "type": "hidden"
+                            },
+                            {
+                                "label": "Data Store URL",
+                                "name": "data.store.url",
+                                "type": "url",
+                                "info": "URL of data store"
+                            },
+                            {
+                                "label": "Data Store Name",
+                                "name": "data.store.name",
+                                "type": "text",
+                                "info": "URL of data store"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "updated_at": "2019-12-29T10:41:22+02:00",
+    "created_at": "2019-12-29T10:41:22+02:00",
+    "_": {
+        "creator": "mkaul2m",
+        "realm": "hbrsinfkaul",
+        "access": {
+            "get": "all",
+            "set": "creator",
+            "del": "creator"
+        }
+    }
+}
