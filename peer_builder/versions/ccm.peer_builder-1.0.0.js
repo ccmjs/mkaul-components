@@ -172,10 +172,10 @@
       this.start = async () => {
 
         // read config into dataset and add some fields
-        Object.assign( dataset, this, {
+        Object.assign( dataset, {
           solutions_url:  this.data.store.source().url,
           solutions_name: this.data.store.source().name
-        } );
+        }, this );
 
         // Do not propagate the following props into target component
         ['data', 'user', 'css'].forEach( prop => { delete dataset[ prop ] });
