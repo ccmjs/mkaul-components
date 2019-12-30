@@ -1,16 +1,17 @@
 {
-    "_id": "peer_builder",
-    "title": "peer_builder",
+    "_id": "peer_builder-1-0-0",
+    "title": "Peer Builder",
     "icon": "https://ccmjs.github.io/mkaul-components/peer_builder/resources/icon.svg",
-    "abstract": "Builder for Peer Review Component",
-    "description": "Peer lists are generated ",
+    "subject": "Builder for Peer Review Component",
+    "description": "In order to organize peer reviews, a list of peers has to be generated, i.e. who reviews whom solution? ",
     "url": "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
+    "path": "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
-    "developer": "Manfred Kaul",
+    "creator": "Manfred Kaul",
     "license": "MIT License",
     "tags": ["Digital Teaching", "Peer Review"],
-    "subject": "Create web forms for submission of data.",
+    "category": "Builder",
     "metaFormat": "ccm-meta",
     "metaVersion": "2.0.0",
     "format": "application/js",
@@ -29,7 +30,7 @@
                 ]
             }
         ],
-        "builder": [
+        "builders": [
           {
                 "title": "Input Mask",
                 "app": [
@@ -49,7 +50,9 @@
                                     "method": "POST"
                                 } ],
                                 "user": true
-                            }
+                            },
+                            "solutions_url": "https://ccm2.inf.h-brs.de",
+                            "solutions_name": "we_ws19_solutions"
                         },
                         "entries": [
                             {
@@ -80,13 +83,13 @@
                             },
                             {
                                 "label": "Data Store URL",
-                                "name": "data.store.url",
+                                "name": "solutions_url",
                                 "type": "url",
                                 "info": "URL of data store"
                             },
                             {
                                 "label": "Data Store Name",
-                                "name": "data.store.name",
+                                "name": "solutions_name",
                                 "type": "text",
                                 "info": "URL of data store"
                             }

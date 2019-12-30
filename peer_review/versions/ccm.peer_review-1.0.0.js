@@ -184,6 +184,7 @@
 
             const regex = '^' + this.taskgroup + ',(' + dataset.peers.join('|') + ')$';
             const peer_texts = await this.peer_texts.store.get({ _id: { $regex: regex }});
+            // const peer_texts = await $.dataset( this.peer_texts.store, { _id: { $regex: regex } } );
 
             // given default values? => integrate them as defaults into initial values
             // if ( this.ignore ) dataset = $.integrate( this.ignore.defaults, dataset, true );

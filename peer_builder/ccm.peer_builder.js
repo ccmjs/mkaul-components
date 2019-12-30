@@ -77,9 +77,9 @@
             { class: "config", inner: [
                 "Save peer list persistently to the following ccm store: ",
                 { tag: "div", class: "store_config result", inner: "%store_config%" },
-                { tag: "button", onclick: "%save%", inner: "Save !" },
                 { tag: "button", onclick: "%show%", inner: "Peer List" },
-                { tag: "button", onclick: "%configuration%", inner: "Config" }
+                { tag: "button", onclick: "%configuration%", inner: "Config" },
+                { tag: "button", onclick: "%save%", inner: "Save !" }
               ] },
 
             { class: "show_area" }
@@ -171,6 +171,12 @@
        */
       this.start = async () => {
 
+        // login user (if not already logged in)
+        if ( ! this.user ) return;
+        await this.user.login();
+
+        if ( ! this.data ) return;
+
         // read config into dataset and add some fields
         Object.assign( dataset, {
           solutions_url:  this.data.store.source().url,
@@ -180,14 +186,10 @@
         // Do not propagate the following props into target component
         ['data', 'user', 'css'].forEach( prop => { delete dataset[ prop ] });
 
-        // login user (if not already logged in)
-        await this.user.login();
-
-        // fetch solutions
+        // fetch solutions from data store
         let solutions;
-        if ( this.data ){
-          solutions = await this.data.store.get({ _id: { $regex: `^${this.taskgroup},` } });
-        }
+        // solutions = await $.dataset( this.data.store, { _id: { $regex: `^${this.taskgroup},` } } );
+        solutions = await this.data.store.get({ _id: { $regex: `^${this.taskgroup},` } });
 
         // skip all user ids to be ignored, e.g. teacher, admin, etc
         const allSolutions = solutions.filter( rec => this.ignore ? ! this.ignore.includes( rec.key[1] ) : true );

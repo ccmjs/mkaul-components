@@ -1,16 +1,17 @@
 {
-    "_id": "peer_review",
-    "title": "peer_review",
+    "_id": "peer_review-1-0-0",
+    "title": "Peer Review",
     "icon": "https://ccmjs.github.io/mkaul-components/peer_review/resources/icon.svg",
-    "abstract": "",
-    "description": "",
+    "subject": "Input Type Peer Review in web forms",
+    "description": "New Input Type Peer Review allows students to review peer solutions and submit their review within ccm web forms using e.g. ccm.submit.js",
     "url": "https://ccmjs.github.io/mkaul-components/peer_review/versions/ccm.peer_review-1.0.0.js",
+    "path": "https://ccmjs.github.io/mkaul-components/peer_review/versions/ccm.peer_review-1.0.0.js",
     "version": "1.0.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
-    "developer": "Manfred Kaul",
+    "creator": "Manfred Kaul",
     "license": "MIT License",
-    "tags": ["Digital Teaching"],
-    "subject": "What the component does.",
+    "tags": ["Digital Teaching", "Peer Review"],
+    "category": "App Creation",
     "metaFormat": "ccm-meta",
     "metaVersion": "2.0.0",
     "format": "application/js",
@@ -21,15 +22,29 @@
                 "app": [
                   "ccm.instance",
                   "https://ccmjs.github.io/mkaul-components/peer_review/versions/ccm.peer_review-1.0.0.js",
-                  [
-                    "ccm.get",
-                    "https://ccmjs.github.io/mkaul-components/peer_review/resources/configs.js",
-                    "demo"
-                  ]
+                    {
+                        "taskgroup": "le05_a1",
+                        "task_formats": {
+                            "Einkaufsliste": "html",
+                            "script": "js"
+                        },
+
+                        "peers": {
+                            "store": [ "ccm.store", { "url": "https://ccm2.inf.h-brs.de", "name": "we_ws19_solutions" } ],
+                            "key": [ "review", "le05_a1" ]
+                        },
+
+                        "peer_texts": {
+                            "store": [ "ccm.store", { "name": "we_ws19_solutions", "url": "https://ccm2.inf.h-brs.de" } ],
+                            "user": true,
+                            "login": true
+                        },
+                        "user":   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.0.js", { "realm": "hbrsinfpseudo" } ]
+                    }
                 ]
             }
         ],
-        "builder": [
+        "builders": [
            {
               "title": "Input Mask",
               "app": [
@@ -49,6 +64,8 @@
                           } ],
                           "user": true
                       },
+                      "solutions_url": "https://ccm2.inf.h-brs.de",
+                      "solutions_name": "we_ws19_solutions",
                       "user":   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.0.js", { "realm": "hbrsinfpseudo" } ]
                   }
               ]
