@@ -32,5 +32,23 @@ ccm.files[ 'configs.js' ] = {
       "key": "demo"
     },
     user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.0.js", { realm: "hbrsinfpseudo" } ]
-  }
+  },
+  "seminar": {
+    key: "seminar",
+    taskgroup: "zwischenstand",
+    number_peers: 2,
+    above_min_percent: 10,
+    peers_key_prefix: "review",
+    // ignore: [ "admin", "lecturer" ],  // user ids to be ignored in review process
+    data: {
+      "login": true,
+      "store": [ "ccm.store", {
+        "url": "https://ccm2.inf.h-brs.de",
+        "name": "seminar_ws19",
+        "method": "POST"
+      } ],
+      "user": true
+    },
+    user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.0.js", { realm: "hbrsinfkaul" } ]
+  },
 };

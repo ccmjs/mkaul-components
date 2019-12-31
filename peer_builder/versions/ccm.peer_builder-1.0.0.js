@@ -99,6 +99,7 @@
                 { tag: "option", value: "java", inner: "Java" },
                 { tag: "option", value: "json", inner: "JSON" },
                 { tag: "option", value: "css", inner: "CSS" },
+                { tag: "option", value: "quill", inner: "Quill Editor" },
                 { tag: "option", value: "nothing", inner: "Do not use !" }
                 // further options see https://highlightjs.org/usage/
               ] }

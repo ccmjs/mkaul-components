@@ -3,7 +3,7 @@
     "title": "Peer Builder",
     "icon": "https://ccmjs.github.io/mkaul-components/peer_builder/resources/icon.svg",
     "subject": "Builder for Peer Review Component",
-    "description": "In order to organize peer reviews, a list of peers has to be generated, i.e. who reviews whom solution? ",
+    "description": "In order to organize peer reviews, a list of peers has to be generated, i.e. who reviews whose solution? ",
     "url": "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
     "path": "https://ccmjs.github.io/mkaul-components/peer_builder/versions/ccm.peer_builder-1.0.0.js",
     "version": "1.0.0",
