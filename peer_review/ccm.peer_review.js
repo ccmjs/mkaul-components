@@ -225,35 +225,38 @@
                   const single = $.html( this.html.single, { task, format, taskgroup: this.taskgroup } );
                   const peerText = peerObject[ task ];
 
-                  if ( peerText ) switch ( format ) {
-                    case 'nothing':
-                      $.append( this.element, $.html( this.html.no_review, { task, format } ) );
-                      break;
-                    case 'quill':
-                      $.append( this.element, single );
-                      this.quill.start({
-                        root: single.querySelector('.container'),
-                        data: peerText
-                      });
-                      break;
-                    default:
-                      // use highlight.js
-                      $.append( this.element, single );
+                  if ( peerText ){
+                    switch ( format ) {
+                      case 'nothing':
+                        $.append( this.element, $.html( this.html.no_review, { task, format } ) );
+                        break;
+                      case 'quill':
+                        $.append( this.element, single );
+                        this.quill.start({
+                          root: single.querySelector('.container'),
+                          data: peerText
+                        });
+                        break;
+                      default:
+                        // use highlight.js
+                        $.append( this.element, single );
 
-                      // fill peer code into single
-                      single.querySelector('.peer code').textContent = peerText;
+                        // fill peer code into single
+                        single.querySelector('.peer code').textContent = peerText;
+                    }
 
-                      // manage review texts
-                      const review = single.querySelector('.review');
+                    // manage review texts
+                    const review = single.querySelector('.review');
 
-                      // init: copy old state of review into textarea
-                      if ( dataset.reviews[ other ] && dataset.reviews[ other ][ task ] ) review.value = dataset.reviews[ other ][ task ];
+                    // init: copy old state of review into textarea
+                    if ( dataset.reviews[ other ] && dataset.reviews[ other ][ task ] ) review.value = dataset.reviews[ other ][ task ];
 
-                      // update: copy new version of review into dataset
-                      review.addEventListener('input', e => {
-                        if ( ! dataset.reviews[ other ] ) dataset.reviews[ other ] = {};
-                        dataset.reviews[ other ][ task ] = review.value;
-                      });
+                    // update: copy new version of review into dataset
+                    review.addEventListener('input', e => {
+                      if ( ! dataset.reviews[ other ] ) dataset.reviews[ other ] = {};
+                      dataset.reviews[ other ][ task ] = review.value;
+                    });
+
                   } else {
                     $.append( this.element, $.html( this.html.no_review, { task, format } ) );
                   }
