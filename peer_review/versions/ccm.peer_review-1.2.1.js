@@ -4,12 +4,11 @@
  * @license The MIT License (MIT)
  * @version latest (1.2.1)
  * @changes
- * version 1.2.1 01.01.2020 one grading per task
+ * version 1.2.1 01.01.2020 one grading per task, quill editing saved
  * version 1.2.0 01.01.2020 add grading
  * version 1.1.0 31.12.2019 add quill editor support
  * version 1.0.0 22.12.2019 initial build
  * TODO: unit tests
- * TODO: builder component
  */
 
 ( () => {
@@ -21,14 +20,14 @@
      * @type {string}
      */
     name: "peer_review",
-    // version: [1,2,1],
+    version: [1,2,1],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-24.2.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-24.2.0.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
