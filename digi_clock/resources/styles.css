@@ -3,6 +3,9 @@
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
  * @license The MIT License (MIT)
  */
+
 #element * {
-  font-family: monospace;
+  font-family: monospace, system-ui, sans-serif;
+  width: 1rem;            /* Set width across all characters */
+  text-align: center;    /* Even out spacing */
 }
