@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <g id="Layer_1">
+    <g>
+      <circle cx="32" cy="32" fill="#111111" r="32"/>
+    </g>
+  </g>
+  <g id="Layer_2"/>
+  <text style="fill: rgb(13, 255, 5); font-size: 28px; white-space: pre;" transform="matrix(0.84875, 0, 0, 0.81493, -3.90913, 17.15194)"><tspan x="5.79" y="27.34">10:23</tspan><tspan x="5.79" dy="1em">​</tspan></text>
+  <line style="stroke: rgb(13, 255, 5);" x1="6.572306238185256" y1="43.30954631379963" x2="58.402173913043484" y2="43.22920604914934"/>
+</svg>
