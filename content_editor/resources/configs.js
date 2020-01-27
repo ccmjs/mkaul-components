@@ -132,14 +132,16 @@ ccm.files[ 'configs.js' ] = {
       }
     },
 
-    enabled:["toggle", 'undo', 'redo', 'save_file', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-quiz", "view_editor", "view_html", "view_json", "view_html2json", "stop" ],
+    enabled:["toggle", 'undo', 'redo', 'save_file', "bold", "h1", "h2", "indent", "outdent", "embed", "dms", "select", "ccm-clock", "ccm-content_editor", "ccm-draw_svg", "view_editor", "view_html", "view_json", "remove_editor", "stop" ],
 
     css_awesome: [ "ccm.load",
       { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
       "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css"
     ],
 
-    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ]
+    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/content_editor/resources/default.css' ],
+
+    draw_svg: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/draw_svg/versions/ccm.draw_svg-4.0.0.js", { key: ["ccm.get", "https://ccmjs.github.io/mkaul-components/draw_svg/resources/configs.js", "small"] } ],
 
   },
 
