@@ -657,7 +657,7 @@
               "class": "click",
               "data-command": "ccm-clock",
               "data-config": '["width"]',
-              "data-width": "40px",
+              "data-width": "120px",
               "title": "insert live Clock",
               "inner": {
                 "tag": "i",
