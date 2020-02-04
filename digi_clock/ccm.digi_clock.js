@@ -25,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://ccmjs.github.io/ccm/versions/ccm-24.2.0.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -106,7 +106,7 @@
         this.logger && this.logger.log( 'start' );
 
         // render main HTML structure
-        $.setContent( this.element, $.html( this.html.main ) );
+        this.element.appendChild( $.html( this.html.main ) );
 
         if ( this.color ) this.element.style.color = this.color;
         if ( this.backgroundcolor ) this.element.style.backgroundColor = this.backgroundcolor;
