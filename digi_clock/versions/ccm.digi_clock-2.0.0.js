@@ -19,13 +19,13 @@
      * @type {string}
      */
     name: "digi_clock",
-    // version: [1,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://ccmjs.github.io/ccm/versions/ccm-24.2.0.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -60,8 +60,8 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
       
-      css: [ "ccm.load",  "./resources/styles.css" ],
-      // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/digi_clock/resources/styles.css" ],
+      // css: [ "ccm.load",  "./resources/styles.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/digi_clock/resources/styles.css" ],
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.2.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/digi_clock/resources/configs.js", "log" ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
