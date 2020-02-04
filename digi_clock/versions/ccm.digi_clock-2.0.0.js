@@ -37,23 +37,23 @@
         main: {
           inner: [
             { tag: "span", id: "year" },
-            { tag: "span", class: 'sep', inner: '.' },
+            { tag: "span", class: "sep", inner: "." },
             { tag: "span", id: "month" },
-            { tag: "span", class: 'sep', inner: '.' },
+            { tag: "span", class: "sep", inner: "." },
             { tag: "span", id: "day" },
-            { tag: "span", class: 'sep', inner: '.' },
+            { tag: "span", class: "sep", inner: "." },
             { tag: "span", id: "hours" },
-            { tag: "span", class: 'sep', inner: ':' },
+            { tag: "span", class: "sep", inner: ":" },
             { tag: "span", id: "min" },
-            { tag: "span", class: 'sep', inner: ':' },
+            { tag: "span", class: "sep", inner: ":" },
             { tag: "span", id: "sec" }
           ]
         }
       },
 
       fontsize: 4,
-      color: '#d0ff05',
-      backgroundcolor: '#000000',
+      color: "#d0ff05",
+      backgroundcolor: "#000000",
       blink: true,
 
       timeout: 490,
@@ -109,7 +109,7 @@
         this.element.appendChild( $.html( this.html.main ) );
 
         if ( this.color ) this.element.style.color = this.color;
-        if ( this.backgroundcolor ) this.element.style.backgroundColor = this.backgroundcolor;
+        if ( this.backgroundcolor ) this.element.style.background = this.backgroundcolor;
         if ( this.fontsize ) this.element.style.fontSize = this.fontsize + 'rem';
 
         const hours = this.element.querySelector('#hours');

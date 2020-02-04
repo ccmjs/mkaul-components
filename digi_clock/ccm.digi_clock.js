@@ -109,7 +109,7 @@
         this.element.appendChild( $.html( this.html.main ) );
 
         if ( this.color ) this.element.style.color = this.color;
-        if ( this.backgroundcolor ) this.element.style.backgroundColor = this.backgroundcolor;
+        if ( this.backgroundcolor ) this.element.style.background = this.backgroundcolor;
         if ( this.fontsize ) this.element.style.fontSize = this.fontsize + 'rem';
 
         const hours = this.element.querySelector('#hours');

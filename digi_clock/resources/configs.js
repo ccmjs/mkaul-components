@@ -56,6 +56,25 @@ ccm.files[ 'configs.js' ] = {
         "name": "blink",
         "type": "checkbox",
         "info": "Should delimiters blink? true / false"
+      },
+      "<legend>Structure</legend>",
+      {
+        "name": "html",
+        "type": "hidden"
+      },
+      {
+        "label": "HTML Structure",
+        "name": "html.main",
+        "type": "json_builder",
+        "info": "Structure of display"
+      },
+    ],
+    "json_builder": [
+      "ccm.component",
+      "https://ccmjs.github.io/akless-components/json_builder/versions/ccm.json_builder-1.4.2.js",
+      {
+        "html.inner.1": "",
+        "directly": true
       }
     ],
     "helper": [
