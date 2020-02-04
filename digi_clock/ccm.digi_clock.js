@@ -35,14 +35,25 @@
       html: {
         main: {
           inner: [
+            { tag: "span", id: "year" },
+            { tag: "span", class: 'sep', inner: '.' },
+            { tag: "span", id: "month" },
+            { tag: "span", class: 'sep', inner: '.' },
+            { tag: "span", id: "day" },
+            { tag: "span", class: 'sep', inner: '.' },
             { tag: "span", id: "hours" },
-            ":",
+            { tag: "span", class: 'sep', inner: ':' },
             { tag: "span", id: "min" },
-            ":",
+            { tag: "span", class: 'sep', inner: ':' },
             { tag: "span", id: "sec" }
           ]
         }
       },
+
+      fontsize: 4,
+      color: '#d0ff05',
+      backgroundcolor: '#000000',
+      blink: true,
 
       timeout: 490,
 
@@ -96,19 +107,39 @@
         // render main HTML structure
         $.setContent( this.element, $.html( this.html.main ) );
 
+        if ( this.color ) this.element.style.color = this.color;
+        if ( this.backgroundcolor ) this.element.style.backgroundColor = this.backgroundcolor;
+        if ( this.fontsize ) this.element.style.fontSize = this.fontsize + 'rem';
+
         const hours = this.element.querySelector('#hours');
         const min = this.element.querySelector('#min');
         const sec = this.element.querySelector('#sec');
 
+        const year = this.element.querySelector('#year');
+        const month = this.element.querySelector('#month');
+        const day = this.element.querySelector('#day');
+
+        const separators = [...this.element.querySelectorAll('.sep')];
+
         const timer = setInterval(()=>{
+          if ( this.blink ) separators.forEach( sep => { sep.classList.toggle('hide') } );
+
           time = new Date();
+
           this.onchange && this.onchange( this );
+
           const h = time.getHours();
           const m = time.getMinutes();
           const s = time.getSeconds();
-          hours.textContent = h < 10 ? "0" + h : h;
-          min.textContent = m < 10 ? "0" + m : m;
-          sec.textContent = s < 10 ? "0" + s : s;
+
+          if ( hours ) hours.textContent = h < 10 ? "0" + h : h;
+          if ( min ) min.textContent = m < 10 ? "0" + m : m;
+          if ( sec ) sec.textContent = s < 10 ? "0" + s : s;
+
+          if ( year ) year.textContent = time.getFullYear();
+          if ( month ) month.textContent = time.getMonth() + 1;
+          if ( day ) day.textContent = time.getDate();
+
         }, this.timeout );
 
       };

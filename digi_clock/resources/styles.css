@@ -9,3 +9,7 @@
   width: 1rem;            /* Set width across all characters */
   text-align: center;    /* Even out spacing */
 }
+
+.hide {
+  visibility: hidden;
+}
