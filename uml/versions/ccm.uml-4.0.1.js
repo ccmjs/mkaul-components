@@ -11,10 +11,10 @@
   var component = {
     
     name: 'uml',
-    version: [4,0,0],
+    version: [4,0,1],
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
     
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
@@ -82,6 +82,8 @@
           }
         }
       },
+
+      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.0.1.mjs" ],
 
       style: {
         img: {
@@ -166,7 +168,7 @@
       this.ready = async () => {
 
         // set shortcut to help functions
-        $ = self.ccm.helper;
+        $ = Object.assign( {}, this.ccm.helper, this.helper );
 
       };
 
