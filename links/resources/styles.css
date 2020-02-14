@@ -1,0 +1,22 @@
+/**
+ * @overview default layout of ccm component links
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element input,textarea,button {
+  display: block;
+  padding: 0.3rem;
+  margin: 0.5rem;
+  width: 50%;
+  border-radius: 0.3rem;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+span {
+  padding-left:0.3rem;
+}
+
+button:hover {
+  cursor: pointer;
+}

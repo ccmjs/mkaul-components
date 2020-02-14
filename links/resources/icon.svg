@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <g id="Layer_1">
+    <g>
+      <circle cx="32" cy="32" r="32" fill="rgb(168, 242, 255)" />
+    </g>
+  </g>
+  <g id="Layer_2"/>
+  <circle style="fill: rgb(76, 76, 76);" cx="16.6" cy="17.44" r="6.19"/>
+  <circle style="fill: rgb(76, 76, 76);" cx="16.33" cy="31.82" r="6.19"/>
+  <circle style="fill: rgb(76, 76, 76);" cx="16.08" cy="46.76" r="6.19"/>
+  <text style="fill: rgb(51, 51, 51); font-family: &quot;Open Sans&quot;; font-size: 9px; white-space: pre;" transform="matrix(1, 0, 0, 1, 1.55364, -2.04584)"><tspan x="23.47" y="22.24">&lt;link&gt;</tspan><tspan x="23.469999313354492" dy="1em">​</tspan></text>
+  <text style="fill: rgb(51, 51, 51); font-family: &quot;Open Sans&quot;; font-size: 9px; white-space: pre;" transform="matrix(1, 0, 0, 1, 1.09074, 12.74291)"><tspan x="23.47" y="22.24">&lt;link&gt;</tspan><tspan x="23.469999313354492" dy="1em">​</tspan></text>
+  <path d="M 32.66 37.14 H 36.65 V 45.12 H 44.63 V 49.11 H 36.65 V 57.09 H 32.66 V 49.11 H 24.68 V 45.12 H 32.66 Z" style="fill: rgb(0, 102, 255);" transform="matrix(0.99998, -0.00598, 0.00598, 0.99998, 1.65003, -0.02746)" bx:shape="cross 24.68 37.14 19.95 19.95 3.99 3.99 0.5 1@1987f1cc"/>
+</svg>
