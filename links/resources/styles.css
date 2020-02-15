@@ -7,16 +7,38 @@
   display: block;
   padding: 0.3rem;
   margin: 0.5rem;
-  width: 50%;
+  width: 80%;
   border-radius: 0.3rem;
   font-family: inherit;
   font-size: inherit;
+}
+
+input:valid {
+  background-color: #ddffdd;
+}
+
+input:invalid {
+  background-color: #ffdddd;
 }
 
 span {
   padding-left:0.3rem;
 }
 
+button {
+  display: inline-block;
+  border: thin solid black;
+  box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
+  width: 15rem;
+  margin: 2px 5% 4px 5%;
+}
+
 button:hover {
   cursor: pointer;
 }
+
+button:active {
+  transform: translateY(4px);
+}
+
+

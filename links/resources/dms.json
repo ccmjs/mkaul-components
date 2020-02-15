@@ -4,8 +4,8 @@
     "icon": "https://ccmjs.github.io/mkaul-components/links/resources/icon.svg",
     "abstract": "add links to a link list",
     "description": "Readers participate in collecting usefull links.",
-    "url": "https://ccmjs.github.io/mkaul-components/links/versions/ccm.links-1.0.0.js",
-    "version": "1.0.0",
+    "url": "https://ccmjs.github.io/mkaul-components/links/versions/ccm.links-1.1.0.js",
+    "version": "1.1.0",
     "website": "https://ccmjs.github.io/mkaul-components/",
     "creator": "Manfred Kaul",
     "license": "MIT License", 
@@ -21,7 +21,7 @@
                 "title": "demo",
                 "app": [
                   "ccm.instance",
-                  "https://ccmjs.github.io/mkaul-components/links/versions/ccm.links-1.0.0.js",
+                  "https://ccmjs.github.io/mkaul-components/links/versions/ccm.links-1.1.0.js",
                   [
                     "ccm.get",
                     "https://ccmjs.github.io/mkaul-components/links/resources/configs.js",
@@ -59,7 +59,7 @@
            }
         ]
     },
-    "updated_at": "2020-02-14T08:41:22+02:00",
+    "updated_at": "2020-02-15T08:41:22+02:00",
     "created_at": "2020-02-14T08:41:22+02:00",
     "_": {
         "creator": "mkaul2m",

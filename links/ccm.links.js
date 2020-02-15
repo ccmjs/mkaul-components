@@ -2,8 +2,9 @@
  * @overview ccm component for links
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (1.1.0)
  * @changes
+ * version 1.1.0 14.02.2020 reduce initial layout
  * version 1.0.0 13.02.2020 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -33,14 +34,18 @@
      */
     config: {
       html: {
+        initial: {
+          tag: "button", class: "enter", inner: "Add your own links here:"
+        },
         main: {
           inner: [
             { id: "top" },
             { tag: "h3", inner: "Add your own links here:" },
-            { tag: "input", type: "url", placeholder: "https://..." },
+            { tag: "input", type: "url", placeholder: "https://...", required: true, pattern: "[Hh][Tt][Tt][Pp][Ss]?:\\/\\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\\d{2,5})?(?:\\/[^\\s]*)?" },
             { tag: "input", type: "text", placeholder: "title" },
             { tag: "textarea", rows: 6, placeholder: "description" },
-            { tag: "button", class: "submit", inner: "add" },
+            { tag: "button", class: "add", inner: "add" },
+            { tag: "button", class: "close", inner: "close" }
           ]
         },
         link: {
@@ -102,8 +107,14 @@
        * @type {Object}
        */
       let dataset;
-     
-      
+
+      /**
+       * open status of this instance:
+       * Use single init button (closed) or show input form (open)
+       * @type {Boolean}
+       */
+      let stateOpen = false;
+
       /**
        * init is called once after all dependencies are solved and is then deleted
        * @type {Function}
@@ -134,6 +145,18 @@
        */
       this.start = async () => {
 
+        const initButton = $.html( this.html.initial );
+        const inputForm = $.html( this.html.main );
+
+        initButton.addEventListener( 'click', e => {
+          stateOpen = true;
+          // render input form inside shadow DOM
+          $.setContent( this.element, inputForm );
+        });
+
+        // render initial Button inside shadow DOM
+        if ( ! stateOpen ) $.setContent( this.element, initButton );
+
         // start from fresh: delete old linkList items from last rendering
         const parentNode = this.root.parentNode.parentNode;
         Array.from( parentNode.querySelectorAll( '.' + this.marker ) ).forEach( item => {
@@ -160,26 +183,35 @@
           parentNode.insertBefore( $.html( html_link, linkData ), this.root.parentNode );
         });
 
-        // render input form inside shadow DOM
-        $.setContent( this.element, $.html( this.html.main ) );
-
         // add Event Listener
-        const button = this.element.querySelector('button');
-        button.addEventListener( 'click', e => {
-          const item = {
-            url: $.protect( this.element.querySelector('input[type=url]').value ),
-            title: $.protect( this.element.querySelector('input[type=text]').value ),
-            description: $.protect( this.element.querySelector('textarea').value ),
-            author: this.user.data().user
-          };
+        const addButton = inputForm.querySelector('button.add');
+        addButton.addEventListener( 'click', e => {
+          if ( this.user.isLoggedIn() ){
+            const url = $.protect( this.element.querySelector('input[type=url]').value );
+            const title = $.protect( this.element.querySelector('input[type=text]').value ) || url;
+            const description = $.protect( this.element.querySelector('textarea').value );
 
-          // add new link data to dataset
-          dataset.links.push( item );
+            if ( url && url.length > 3 ){
+              const item = { url, title, description, author: this.user.data().user };
 
-          // add new list item to parent DOM
-          parentNode.insertBefore( $.html( html_link, item ), this.root.parentNode );
+              // add new link data to dataset
+              dataset.links.push( item );
 
-          save();
+              // add new list item to parent DOM
+              parentNode.insertBefore( $.html( html_link, item ), this.root.parentNode );
+
+              this.element.querySelector('input[type=url]').value = "";
+              this.element.querySelector('input[type=text]').value = "";
+
+              save();
+            }
+          }
+        });
+        const closeButton = inputForm.querySelector('button.close');
+        closeButton.addEventListener( 'click', e => {
+          stateOpen = false;
+          // render input form inside shadow DOM
+          $.setContent( this.element, initButton );
         });
  
         // render login/logout area
