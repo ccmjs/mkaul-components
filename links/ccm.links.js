@@ -197,11 +197,12 @@
               // add new link data to dataset
               dataset.links.push( item );
 
-              // add new list item to parent DOM
-              parentNode.insertBefore( $.html( html_link, item ), this.root.parentNode );
+              // add new list item to parent DOM not necessary because of restart entire app
+              // parentNode.insertBefore( $.html( html_link, item ), this.root.parentNode );
 
               this.element.querySelector('input[type=url]').value = "";
               this.element.querySelector('input[type=text]').value = "";
+              this.element.querySelector('textarea').value = "";
 
               save();
             }
