@@ -33,6 +33,10 @@ button {
   margin: 2px 5% 4px 5%;
 }
 
+.add,.close {
+  width: 15rem;
+}
+
 button:hover {
   cursor: pointer;
 }
