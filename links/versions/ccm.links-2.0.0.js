@@ -20,14 +20,14 @@
      * @type {string}
      */
     name: "links",
-    // version: [2,0,0],
+    version: [2,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -71,8 +71,8 @@
       
       helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.0.1.mjs" ],
       
-      css: [ "ccm.load",  "./resources/styles.css" ],
-      // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/links/resources/styles.css" ],
+      // css: [ "ccm.load",  "./resources/styles.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/links/resources/styles.css" ],
       user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.1.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.2.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/links/resources/configs.js", "log" ] ],
       // onfinish: function( instance, results ){ console.log( results ); }
