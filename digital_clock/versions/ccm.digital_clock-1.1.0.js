@@ -22,14 +22,14 @@
      * @type {string}
      */
     name: 'digital_clock',
+    version: [1,1,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-19.0.0.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.0.4.min.js',
+    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
     /**
      * default instance configuration
      * @type {object}

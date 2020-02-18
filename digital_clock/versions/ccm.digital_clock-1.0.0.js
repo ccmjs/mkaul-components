@@ -2,9 +2,9 @@
  * @overview ccm component for digital_clock
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2017
  * @license The MIT License (MIT)
- * @version latest (1.1.0)
+ * @version latest (1.0.0)
  * @changes
- * version 1.1.0 18.02.2020 ccm v25
+ * version 1.0.0
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -20,14 +20,14 @@
      * @type {string}
      */
     name: 'digital_clock',
-    version: [1,1,0],
+    version: [1,0,0],
     
     /**
      * recommended used framework version
      * @type {string}
      */
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
     /**
      * default instance configuration
      * @type {object}
