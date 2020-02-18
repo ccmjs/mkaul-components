@@ -236,9 +236,9 @@
         async function save() {
 
           // no datastore? => abort
-          if ( !$.isDatastore( store ) ) return;
+          if ( !$.isDatastore( self.data.store ) ) return;
 
-          await store.set( dataset );  // update app state data
+          await self.data.store.set( dataset );  // update app state data
           await self.start();     // restart app
 
         }

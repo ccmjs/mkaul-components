@@ -13,11 +13,11 @@
   font-size: inherit;
 }
 
-input:valid {
+:valid {
   background-color: #ddffdd;
 }
 
-input:invalid {
+:invalid {
   background-color: #ffdddd;
 }
 
