@@ -24,14 +24,14 @@
      * @type {string}
      */
     name: "links",
-    // version: [5,0,0],
-
+    version: [5,0,0],
+    
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -81,9 +81,9 @@
       retrieve_on_start: false,
 
       // onchange: function(){ console.log( this.getValue() ); },
-
+      
       helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.0.2.mjs" ],
-
+      
       // css: [ "ccm.load",  "./resources/styles.css" ],
       css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/links/resources/styles.css" ],
       user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.1.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
@@ -102,19 +102,19 @@
      * @constructor
      */
     Instance: function () {
-
+    
       /**
        * shortcut to helper functions
        * @type {Object.<string,function>}
        */
       let $;
-
+    
       /**
        * own reference for inner functions
        * @type {Instance}
        */
       const self = this;
-
+      
       /**
        * dataset is the single source of truth, the Web is the UI
        * The value of dataset starts with a clone of this.data,
@@ -145,12 +145,12 @@
 
         // set shortcut to helper functions
         $ = Object.assign( {}, this.ccm.helper, this.helper );
-
+        
         // listen to datastore changes => restart
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
 
       };
-
+      
       /**
        * is called once after the initialization and is then deleted
        * @type {Function}
@@ -161,7 +161,7 @@
         this.logger && this.logger.log( 'ready' );
 
       };
-
+        
       /**
        * starts the instance
        */
@@ -267,7 +267,7 @@
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
 
       };
-
+      
       /**
        * current state of this editor
        * @returns {Object} state of editor
@@ -276,10 +276,10 @@
 
       function allLinks( dataset ){
         return Object.keys( dataset )
-        .filter( key => new RegExp('^'+LINK_PREFIX+'\\d+', 'i').test( key ) )
-        .map( key => dataset[ key ] );
+          .filter( key => new RegExp('^'+LINK_PREFIX+'\\d+', 'i').test( key ) )
+          .map( key => dataset[ key ] );
       }
-
+      
     }
 
   };
