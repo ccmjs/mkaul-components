@@ -1,0 +1,51 @@
+/**
+ * @overview default layout of ccm component checkin
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+
+#element * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#element {
+  text-align: center;
+  padding: 3rem auto;
+  margin: 3rem auto;
+}
+
+input,button {
+  font-size: xx-large;
+  display: inline-block;
+  text-align: center;
+  width: 80%;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: auto;
+}
+
+:valid {
+  background-color: #ddffdd;
+}
+
+:invalid {
+  background-color: #ffdddd;
+}
+
+button {
+  border: thin solid black;
+  box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
+  margin: 2rem 5% 4px 5%;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
+.small {
+  font-size: small;
+}
