@@ -1,0 +1,22 @@
+/**
+ * @overview default layout of ccm component show_demos
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+table{
+  width: 100%;
+  border-collapse:collapse;
+}
+
+table th,td{
+  border:1px solid;
+  text-align: center;
+  padding: 0.1rem auto;
+}
+
+tr:nth-child(even) {background: #f7f7f7}
+tr:nth-child(odd) {background: #FFF}
