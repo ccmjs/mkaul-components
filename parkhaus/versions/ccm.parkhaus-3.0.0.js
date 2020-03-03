@@ -11,7 +11,7 @@
     name: 'parkhaus',
     version: [3,0,0],
   
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     
     config: {
@@ -23,10 +23,10 @@
               'Autos im Parkhaus: &nbsp; ',
               { tag: 'span', class: 'counter', inner: '0' }
             ] },
-            { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '202', height: '74' },
-            { tag: 'img', class: 'ampel', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/traffic-light-red.png', width: '55', height: '155' },
-            { tag: 'img', class: 'garage', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png', width: '250', height: '235', style: "border: none; background-color: transparent;" },
-            { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '202', height: '74' },
+            { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '101', height: '37' },
+            { tag: 'img', class: 'ampel', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/traffic-light-red.png', width: '27', height: '77' },
+            { tag: 'img', class: 'garage', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png', width: '125', height: '117', style: "border: none; background-color: transparent;" },
+            { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '101', height: '37' },
             { tag: 'hr' },
             { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
             { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
@@ -38,6 +38,7 @@
         },
         row: { tag: 'tr', inner: [ { tag: 'td', inner: '%nr%' }, { tag: 'td', inner: '%von%' }, { tag: 'td', inner: '%bis%' }, { tag: 'td', inner: '%dauer%' }, { tag: 'td', inner: '%preis%' } ] }
       },
+      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.0.2.mjs" ],
       css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
     },
 
@@ -86,7 +87,7 @@
       this.ready = async () => {
 
         // set shortcut to help functions
-        $ = self.ccm.helper;
+        $ = Object.assign( {}, this.ccm.helper, this.helper );
 
       };
 
@@ -122,7 +123,7 @@
         const table = main_elem.querySelector( 'table' );
         
         // set content of own website area
-        self.ccm.helper.setContent( self.element, main_elem );
+        $.setContent( self.element, main_elem );
   
         function enter() {
           setTimeout(function () {
