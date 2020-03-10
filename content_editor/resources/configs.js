@@ -52,7 +52,7 @@ ccm.files[ 'configs.js' ] = {
       position: 6 // cursor position
     },
 
-    enabled: ['undo', 'redo', 'bold', 'italic', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'p', 'indent', 'outdent', 'createlink', 'unlink' ],
+    enabled: ['undo', 'redo', 'bold', 'italic', 'strikeThrough', 'insertUnorderedList', 'insertOrderedList', 'h1', 'h2', 'h3', 'p', 'indent', 'outdent', 'createlink', 'unlink', 'table' ],
 
     "css_awesome": [ "ccm.load",
       { "context": "head", "url": "https://ccmjs.github.io/mkaul-components/lib/fontawesome/css/font-awesome.min.css" },
