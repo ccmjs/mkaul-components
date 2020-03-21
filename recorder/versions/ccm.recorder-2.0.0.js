@@ -19,14 +19,14 @@
      * @type {string}
      */
     name: "recorder",
-    // version: [1,0,0],
+    version: [2,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.1.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.1.0.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -60,7 +60,7 @@
 
       // https://unpkg.com/browse/mp3-mediarecorder@4.0.1/dist/
       webaudiorecorder: [ "ccm.load", { url: "https://unpkg.com/mp3-mediarecorder@4.0.1/dist/index.es.js", type: "module" } ],
-      worker: "resources/worker.js",
+      worker: "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/recorder/resources/worker.js",
 
       interval: 480,
 
