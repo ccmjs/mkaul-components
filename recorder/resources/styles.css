@@ -1,0 +1,55 @@
+/**
+ * @overview default layout of ccm component recorder
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+button {
+  color: black;
+  background-color: white;
+  padding: 0.5rem;
+  margin: 0.4rem 1rem 1rem 1rem;
+  font-size: large;
+  font-weight: bold;
+  border-radius: 0.7rem;
+  box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  color: grey;
+  background-color: lightgrey;
+}
+
+.item {
+  background-color: #f1f1f1;
+  border-bottom: thin solid;
+}
+
+.audio {
+  display: inline-block;
+}
+
+.save {
+  display: inline-block;
+  margin-left: 2rem;
+}
+
+.filename {
+
+}
+
+.recording {
+  background-color: #ffbec4;
+}
