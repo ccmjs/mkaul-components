@@ -10,10 +10,10 @@
 
     name: 'parkhaus',
     version: [3,0,0],
-  
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
+
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.1.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    
+
     config: {
       delay: 500,
       html: {
@@ -23,10 +23,10 @@
               'Autos im Parkhaus: &nbsp; ',
               { tag: 'span', class: 'counter', inner: '0' }
             ] },
-            { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '101', height: '37' },
+            { tag: 'img', class: 'entry', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png', width: '80', height: '30' },
             { tag: 'img', class: 'ampel', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/traffic-light-red.png', width: '27', height: '77' },
             { tag: 'img', class: 'garage', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png', width: '125', height: '117', style: "border: none; background-color: transparent;" },
-            { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '101', height: '37' },
+            { tag: 'img', class: 'exit', src: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png', width: '80', height: '30' },
             { tag: 'hr' },
             { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
             { tag: 'button', class: 'leave', onclick: '%leave%', inner: 'Leave', title: 'Leave the garage!' },
@@ -104,27 +104,27 @@
           decrement() { this._value -= 1; };
           toString() { return this._value.toString(); }
         }
-        
+
         const counter = new Counter(0);
         let total = 0;
         const cars = [];
         const begin = (new Date()).getTime();
         const price_factor = 0.001;
-      
+
         // has logger instance? => log 'render' event
         if ( self.logger ) self.logger.log( 'render' );
-        
+
         // prepare main HTML structure
         const main_elem = self.ccm.helper.html( self.html.main, { enter: enter, leave: leave } );
-        
+
         // select inner containers (mostly for buttons)
         const enter_button = main_elem.querySelector( 'button.enter' );
         const leave_button = main_elem.querySelector( 'button.leave' );
         const table = main_elem.querySelector( 'table' );
-        
+
         // set content of own website area
         $.setContent( self.element, main_elem );
-  
+
         function enter() {
           setTimeout(function () {
             main_elem.querySelector("img.ampel").src = "//kaul.inf.h-brs.de/data/ccm/parkhaus/resources/traffic-light-yellow.png";
@@ -141,7 +141,7 @@
             }, self.delay);
           }, self.delay);
         }
-  
+
         function leave() {
           const last_car = cars.pop();
           if ( last_car ){
@@ -192,7 +192,7 @@
             return table;
           }
         }
-        
+
         class Car {
           constructor(){
             total += 1;

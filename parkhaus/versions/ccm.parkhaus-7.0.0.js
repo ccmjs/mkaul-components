@@ -10,13 +10,15 @@
 
     name: 'parkhaus',
     version: [7,0,0],
-  
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.js',
+
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.1.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
-    
+
+    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.1.1.mjs" ],
+
     config: {
       name: "CarHome",
-      server_url: "http://localhost:8080/DemoServlet7",
+      // server_url: "http://localhost:8080/DemoServlet7",
       Max: 10, // maximum number of parking slots
       open_from: 6,
       open_to: 24,
@@ -91,21 +93,21 @@
         invalid_slot: { tag: 'li', inner: '%id% ungültig.' },
       },
 
-      extra_buttons: [
-        {
-          extra_class: 'sum',
-          extra_inner: 'Sum',
-          extra_popup_title: 'Sum of all parking fees'
-        }
-      ],
-
-      extra_charts: [
-        {
-          extra_class: 'chart',
-          extra_inner: 'Chart',
-          extra_popup_title: 'Chart of all parking fees'
-        }
-      ],
+      // extra_buttons: [
+      //   {
+      //     extra_class: 'sum',
+      //     extra_inner: 'Sum',
+      //     extra_popup_title: 'Sum of all parking fees'
+      //   }
+      // ],
+      //
+      // extra_charts: [
+      //   {
+      //     extra_class: 'chart',
+      //     extra_inner: 'Chart',
+      //     extra_popup_title: 'Chart of all parking fees'
+      //   }
+      // ],
 
       traffic_light: {
         tag: 'svg', viewBox: '0 0 200 500', xmlns: 'http://www.w3.org/2000/svg', width: '40', height: '100', inner: [
@@ -262,8 +264,8 @@
        */
       this.ready = async () => {
 
-        // set shortcut to help functions
-        $ = self.ccm.helper;
+        // set shortcut to helper functions
+        $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
 
       };
 
@@ -272,7 +274,7 @@
        */
       this.start = async () => {
 
-        const main_elem = $.html( self.html.main, $.integrate({
+        const main_elem = $.html( self.html.main, Object.assign({
           start: start,
           stop: stop,
           enter: enter,
@@ -343,10 +345,11 @@
               csv_post_event( 'closed', (new Date()).getTime() );
             }
             const reply = await csv_post_event( 'enter', ...car.toArray() );
-            if ( reply === '0' ) debugger;
-            const next = parseInt( reply.trim() );
-            if ( next === 0 ) debugger;
-            car.space = next;
+            if ( reply ){
+              car.space = parseInt( reply.trim() );
+            } else {
+              car.space = this.randomSpace();
+            }
             this.driveCarIntoSpace( car );
           }
           driveCarIntoSpace(car ){  // synchronous car moving
@@ -519,8 +522,8 @@
         }
 
         // render content to website
-        $.setContent( self.element, main_elem );
-
+        // $.setContent( self.element, main_elem );
+        self.element.appendChild( main_elem );
 
         // load config from server
         // =======================
@@ -640,7 +643,7 @@
             });
           });
         }
-  
+
         async function enter( e ) {
           if ( garage.countCars() >= garage.max ){
             alert( self.messages.parkhaus_full );
@@ -651,7 +654,7 @@
             garage.addCar( new Car() );
          }
         }
-  
+
         async function leave( e ) {
           const chosen_car = garage.getCarBySpace( this.id );
           if ( chosen_car ){
@@ -685,68 +688,80 @@
         }
 
         async function csv_get_request( command, params, extra_span ){
-          const request = new Request( self.server_url
-            + '?cmd=' + command
-            + Object.entries( params ).map(([key, value])=>'&'+key+'='+value).join()
-          );
-          console.log( request );
-          try {
-            const response = await fetch( request, {
-              method: 'GET',
-              mode: 'cors',
-              cache: 'no-store',
-              headers:{
-                'Content-Type': 'text/html'
-              }
-            });
-            if (!response.ok) // or check for response.status
-              throw new Error(response.statusText);
-            // process body
-            const response_string = (await response.text()).trim();
-            return command_interpreter( response_string, extra_span );
-          } catch (err) {
-            console.log(err, request);
-            // show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
+          if ( self.server_url ){
+            const request = new Request( self.server_url
+              + '?cmd=' + command
+              + Object.entries( params ).map(([key, value])=>'&'+key+'='+value).join()
+            );
+            console.log( request );
+            try {
+              const response = await fetch( request, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-store',
+                headers:{
+                  'Content-Type': 'text/html'
+                }
+              });
+              if (!response.ok) // or check for response.status
+                throw new Error(response.statusText);
+              // process body
+              const response_string = (await response.text()).trim();
+              return command_interpreter( response_string, extra_span );
+            } catch (err) {
+              console.log(err, request);
+              // show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
+            }
+          } else {
+            // console.log( "No server_url" );
           }
         }
 
         async function csv_post_request( command, params, extra_span ){
-          const headers = new Headers();
-          const formData = new FormData();
-          formData.append( 'cmd', command );
-          Object.entries( params ).forEach( ([key, value])=> {
-            formData.append( key, value );
-          });
-          // headers.append("Content-Type", "multipart/form-data");
-          headers.append("Content-Type", "application/x-www-form-urlencoded");
-          // headers.append("Content-Length", formData.length.toString());
-          const response = await fetch( new Request( self.server_url ), {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-store',
-            body: formData,
-            headers: headers
-          });
-          const response_string = (await response.text()).trim();
-          return command_interpreter( response_string, extra_span );
+          if ( self.server_url ){
+            const headers = new Headers();
+            const formData = new FormData();
+            formData.append( 'cmd', command );
+            Object.entries( params ).forEach( ([key, value])=> {
+              formData.append( key, value );
+            });
+            // headers.append("Content-Type", "multipart/form-data");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            // headers.append("Content-Length", formData.length.toString());
+            const response = await fetch( new Request( self.server_url ), {
+              method: 'POST',
+              mode: 'cors',
+              cache: 'no-store',
+              body: formData,
+              headers: headers
+            });
+            const response_string = (await response.text()).trim();
+            return command_interpreter( response_string, extra_span );
+          } else {
+            console.log( "No server_url" );
+          }
         }
 
         async function csv_post_event( event, ...values ){
-          const request = [ event, ...values ].join(",");
-          const response = await fetch( new Request( self.server_url ), {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-store',
-            body: request,
-            headers:{
-              'Content-Type': 'text/plain'
-            }
-          });
-          const response_string = (await response.text()).trim();
-          const result = command_interpreter( response_string );
-          console.log( request, " => ", result );
-          if ( result === 0 || result === "0" ) debugger;
-          return result;
+          if ( self.server_url ){
+            const request = [ event, ...values ].join(",");
+            const response = await fetch( new Request( self.server_url ), {
+              method: 'POST',
+              mode: 'cors',
+              cache: 'no-store',
+              body: request,
+              headers:{
+                'Content-Type': 'text/plain'
+              }
+            });
+            const response_string = (await response.text()).trim();
+            const result = command_interpreter( response_string );
+            console.log( request, " => ", result );
+            if ( result === 0 || result === "0" ) debugger;
+            return result;
+          } else {
+            // console.log( "No server_url" );
+          }
         }
 
         function command_interpreter( response_string, extra_span ){

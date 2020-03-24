@@ -75,8 +75,8 @@ button:active {
     border: thick solid black;
     margin: 0.5rem;
     padding: 0.5rem;
-    max-width: calc(80vw);
-    min-height: 5rem;
+    max-width: 80%;
+    min-height: 2rem;
     background-color: #DDD;
 }
 
@@ -86,7 +86,7 @@ button:active {
 
 .car, .space {
     width: auto;
-    height: 5rem;
+    height: 2rem;
     display: inline-block;
 }
 
@@ -95,11 +95,11 @@ button:active {
 }
 
 .Max {
-    width: 4rem;
+    width: 2rem;
 }
 
 .counter {
-    width: 3rem;
+    width: 1.5rem;
 }
 
 .errors {
