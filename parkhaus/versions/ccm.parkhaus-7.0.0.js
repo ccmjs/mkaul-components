@@ -36,7 +36,7 @@
                   'Autos im Parkhaus "%name%": &nbsp; ',
                 { tag: 'span', class: 'counter', inner: '0' },
                   ', &nbsp; Max: &nbsp; ',
-                { tag: 'input', class: 'Max', type: 'number', min: 0, value: 20, oninput: '%oninput%' },
+                { tag: 'input', class: 'Max', type: 'number', min: 0, value: 10, oninput: '%oninput%' },
                   ' &nbsp; Frei: &nbsp; ',
                 { tag: 'span', class: 'free', inner: ' &nbsp; &nbsp; ' },
                   ' &nbsp; Öffnungszeiten von : &nbsp; ',
