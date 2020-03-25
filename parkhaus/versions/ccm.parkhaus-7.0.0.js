@@ -11,10 +11,10 @@
     name: 'parkhaus',
     version: [7,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.1.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.2.0.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
-    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.1.1.mjs" ],
+    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/helper.mjs" ],
 
     config: {
       name: "CarHome",
@@ -36,17 +36,17 @@
                   'Autos im Parkhaus "%name%": &nbsp; ',
                 { tag: 'span', class: 'counter', inner: '0' },
                   ', &nbsp; Max: &nbsp; ',
-                { tag: 'input', class: 'Max', type: 'number', min: 0, value: 10, oninput: '%oninput%' },
+                { tag: 'input', class: 'Max', type: 'number', min: 0, value: "%Max%", oninput: '%oninput%' },
                   ' &nbsp; Frei: &nbsp; ',
                 { tag: 'span', class: 'free', inner: ' &nbsp; &nbsp; ' },
                   ' &nbsp; Öffnungszeiten von : &nbsp; ',
-                { tag: 'input', class: 'open_from', type: 'number', min: 0, max: 24, value: 6, oninput: '%oninput%' },
+                { tag: 'input', class: 'open_from', type: 'number', min: 0, max: 24, value: "%open_from%", oninput: '%oninput%' },
                   ' &nbsp; bis: &nbsp; ',
-                { tag: 'input', class: 'open_to', type: 'number', min: 0, max: 24, value: 24, oninput: '%oninput%' },
+                { tag: 'input', class: 'open_to', type: 'number', min: 0, max: 24, value: "%open_to%", oninput: '%oninput%' },
                   ' &nbsp; ',
                 { tag: 'div', class: 'date', inner: '%date%' },
                  'Simulation: &nbsp; ',
-                { tag: 'button', class: 'start', onclick: '%start%', inner: 'Start', title: 'Start simulation!' },
+                { tag: 'button', class: 'start', onclick: '%start_simulation%', inner: 'Start', title: 'Start simulation!' },
                 { tag: 'button', class: 'stop', onclick: '%stop%', inner: 'Stop', title: 'Stop simulation!' }
             ] },
             { class: 'button_container', inner: [
@@ -275,13 +275,12 @@
       this.start = async () => {
 
         const main_elem = $.html( self.html.main, Object.assign({
-          start: start,
-          stop: stop,
-          enter: enter,
-          oninput: oninput,
-          name: self.name,
+          start_simulation,
+          stop,
+          enter,
+          oninput,
           date: new Date().toLocaleString()
-        }, self.images ) );
+        }, self.images, (({ name, Max, open_from, open_to, delay, simulation_speed }) => ({ name, Max, open_from, open_to, delay, simulation_speed }))(self) ) );
 
         const ticket_hash = main_elem.querySelector('.ticket_hash');
         const table = main_elem.querySelector( 'table' );
@@ -785,7 +784,7 @@
 
         let interval;
 
-        function start( e ){
+        function start_simulation( e ){
           interval = setInterval(
             () => {
               const enterOrLeave = getRandomInt( self.simulation.max );
