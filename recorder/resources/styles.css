@@ -53,3 +53,16 @@ button:disabled {
 .recording {
   background-color: #ffbec4;
 }
+
+.saved {
+  background-color: rgba(0, 185, 255, 0.21);
+}
+
+#peakmeter {
+  display: inline-block;
+  border: thin solid;
+  width: 5em;
+  height: 14em;
+  margin-bottom: -1.8rem;
+  background-color: black;
+}
