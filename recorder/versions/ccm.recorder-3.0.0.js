@@ -72,7 +72,7 @@
         autoGainControl: true
       },
 
-      worker: "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/recorder/resources/worker.js",
+      worker: "https://ccmjs.github.io/mkaul-components/recorder/resources/worker.js",
 
       interval: 480,
 
@@ -84,9 +84,9 @@
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/recorder/resources/styles.css" ],
-      css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/recorder/resources/styles.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/recorder/resources/styles.css" ],
 
-      peakmeter: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/recorder/resources/peakmeter.mjs" ],
+      peakmeter: [ "ccm.load", "https://ccmjs.github.io/mkaul-components/recorder/resources/peakmeter.mjs" ],
 
       peakmeter_options: {
         borderSize: 2,
