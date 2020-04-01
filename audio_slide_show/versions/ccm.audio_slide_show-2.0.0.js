@@ -77,17 +77,17 @@
         }
       },
 
-      extensions: {  // include additional components below slide viewer, e.g. quiz under slide 2:
-        "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
-      },
+      // extensions: {  // include additional components below slide viewer, e.g. quiz under slide 2:
+      //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
+      // },
 
       pdf_viewer: [ "ccm.component", "https://kaul.inf.h-brs.de/se/lib/ccm.pdf_viewer-5.0.1.js", {
         scale: 1,
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js',
         helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
-        exceptions: {  // use different components instead of slide view, e.g. quiz instead of slide 2:
-          "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
-        },
+        // exceptions: {  // use different components instead of slide view, e.g. quiz instead of slide 2:
+        //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
+        // },
         html: {
           "main": {
             "id": "pdf-viewer",
@@ -222,7 +222,7 @@
 
       /**
        * collection of already opened extensions
-       * @type {Object<HTMLElement>}
+       * @type {Object<Number,HTMLElement>}
        */
       const extensionCollection = {};
 
