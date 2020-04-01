@@ -1,0 +1,56 @@
+/**
+ * @overview default layout of ccm component links
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element input,textarea,button {
+  display: block;
+  padding: 0.3rem;
+  margin: 0.5rem;
+  width: 80%;
+  border-radius: 0.3rem;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+:valid {
+  background-color: #ddffdd;
+}
+
+:invalid {
+  background-color: #ffdddd;
+}
+
+span {
+  padding-left:0.3rem;
+}
+
+button:valid {
+  background-color: #d8efff;
+}
+
+button {
+  display: inline-block;
+  border: thin solid black;
+  box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
+  width: 20rem;
+  margin: 2px 5% 4px 5%;
+}
+
+.add,.close {
+  width: 15rem;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
+.small {
+
+}
+
+
