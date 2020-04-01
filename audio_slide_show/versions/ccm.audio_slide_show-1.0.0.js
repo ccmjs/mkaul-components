@@ -262,22 +262,23 @@
         const audio_div = self.element.querySelector('#audio');
         const recorder_div = self.element.querySelector('#recorder');
         const collector_div = self.element.querySelector('#collector');
-        const collector = await self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) + "-" + zero(self.week_nr), });
+        const collector = await self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) });
 
         const pdf_viewer_div = self.element.querySelector('#pdf_viewer');
         self.pdf_viewer.start({ root: pdf_viewer_div, pdf: self.pdf, onchange: async ( pdf_viewer, num ) => {
             slide_num = num;
             audio_div.textContent = '';
-            audio_div.appendChild( ccm.helper.html( self.html.audio, { audio: `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` }));
 
             collector && collector.setNum( num );
 
             if ( self.user && self.user.isLoggedIn() && isLecturer( self.user.data().key ) ){
-              self.recorder.start({
+              await self.recorder.start({
                 root: recorder_div,
                 filename: "slide" + zero(num) + ".mp3"
               });
             }
+
+            audio_div.appendChild( ccm.helper.html( self.html.audio, { audio: `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` }));
           } });
 
         const button = self.element.querySelector("button");
