@@ -168,21 +168,12 @@
 
         initButton.addEventListener( 'click', initButtonListener );
 
-        if ( this.retrieve_on_start ){
-          // fetch data from database and display them
-          await this.update( self.num );
-        }
-
         await render();
 
         async function render(){
           // render inside shadow DOM
-          if ( stateOpen ){ // render items from database and input fields
-
-            await self.update( self.num );
-
-          } else { // render initial Button inside shadow DOM
-
+          if ( ! stateOpen ){
+            // render initial Button inside shadow DOM
             $.setContent( self.element, initButton );
           }
         }
@@ -197,19 +188,14 @@
 
             if ( totalLength > self.min_input_length ){
 
-              // store input values into a record
-              const record = namedInputs.reduce( ( rec, input ) => {
+              // store input values into dataset
+              dataset = namedInputs.reduce( ( rec, input ) => {
                   rec[ input.name ]= input.value;
                   return rec },
                 {
-                  author: self.user.data().user,
                   location: window.location.href
                 }
               );
-
-              // add new link data to dataset
-              // dataset.links.push( record );
-              dataset[ Date.now() ] = record;
 
               // clear input fields
               namedInputs.forEach( input => { input.value = "" });
@@ -217,8 +203,8 @@
               if ( self.retrieve_on_start ) stateOpen = false;
 
               // save and restart app according to params given in this.onfinish
-              dataset.key = [ self.name, self.num, self.user.data().user.slice(0,5) ];
-              this.onfinish.store.key = [ self.name, self.num, self.user.data().user.slice(0,5) ];
+              dataset.key = [ self.name, self.num, self.user.data().user, Date.now() ];
+              this.onfinish.store.key = dataset.key;
               this.onfinish && $.onFinish( this );  // calls getValue()
             } else {
 
@@ -309,30 +295,20 @@
         });
 
         // fetch dataset
-        self.data.key = { _id: { $regex: `^${self.name},${self.num},` } }; // [ self.name, self.num, * ]
+        self.data.key = { _id: { $regex: `^${self.name},${self.num}` } }; // [ self.name, self.num, * ]
         dataset = await $.dataset( self.data ); // empty object with key { key: $.generateKey() }
 
         // add marker to link template
         const html_link = $.clone( self.html.link );
         html_link.class = self.marker;
 
-        // process all links
-        allLinks( dataset ).forEach( linkData => {
+        // process all data
+        dataset.forEach( record => {
           // fill HTML template with data from dataset
           // add link to parent node outside the shadow DOM
-          parentNode.insertBefore( $.html( html_link, linkData ), self.root.parentNode );
+          parentNode.insertBefore( $.html( html_link, record ), self.root.parentNode );
         });
       };
-
-      /**
-       * get all links from dataset
-       * @param {Object} dataset - dataset with links
-       */
-      function allLinks( dataset ){
-        return Object.keys( dataset )
-        .filter( key => new RegExp('^'+LINK_PREFIX+'\\d+', 'i').test( key ) )
-        .map( key => dataset[ key ] );
-      }
 
     }
 
