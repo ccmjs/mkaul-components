@@ -193,6 +193,8 @@
 
       user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo" } ],
 
+      "routing": [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js" ],
+
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.3.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/audio_slide_show/resources/configs.js", "log" ] ],
 
       onfinish: {
@@ -248,6 +250,10 @@
        */
       this.start = async () => {
 
+        if ( this.routing && this.routing.get() ){
+          slide_num = parseInt( this.routing.get().split('-')[1] );
+        }
+
         // logging of 'start' event
         this.logger && this.logger.log( 'start',  );
 
@@ -265,7 +271,14 @@
         const collector = await self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) });
 
         const pdf_viewer_div = self.element.querySelector('#pdf_viewer');
-        self.pdf_viewer.start({ root: pdf_viewer_div, pdf: self.pdf, onchange: async ( pdf_viewer, num ) => {
+        self.pdf_viewer.start({
+          root: pdf_viewer_div,
+          pdf: self.pdf,
+          slide_nr: slide_num,
+          onchange: async ( pdf_viewer, num ) => {
+            // update route
+            self.routing && self.routing.set( `slide-${num}` );
+
             slide_num = num;
             audio_div.textContent = '';
 
