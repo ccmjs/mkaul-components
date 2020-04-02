@@ -62,6 +62,8 @@
         }
       },
 
+      hide_disabled: true,  // hide disabled buttons
+
       // https://www.npmjs.com/package/mp3-mediarecorder
       // https://unpkg.com/browse/mp3-mediarecorder@4.0.1/dist/
       webaudiorecorder: [ "ccm.load", { url: "https://unpkg.com/mp3-mediarecorder@4.0.1/dist/index.es.js", type: "module" } ],
@@ -195,7 +197,12 @@
 
         const enable = (...selected) => {
           ['record', 'pause', 'resume', 'stop'].forEach(button => {
-            self.element.querySelector('#' + button).disabled = !selected.includes(button);
+            const buttonElement = self.element.querySelector('#' + button);
+            buttonElement.disabled = ! selected.includes(button);
+            if ( self.hide_disabled ) buttonElement.style.display = 'inline';
+            if ( buttonElement.disabled && self.hide_disabled ){
+              buttonElement.style.display = 'none';
+            }
           });
         };
 
@@ -239,6 +246,7 @@
           }
           async record() {
             if ( ! this.recorder || this.recorder.state === 'inactive' || this.recorder.state === 'closed') { // TODO
+              this.clearPeakMeter();
               await this.newRecorder();
               this.recorder.start();
               this.startPeakMeterOnRecorder();
@@ -388,7 +396,11 @@
         mediator = new Mediator();
         timer = new Timer();
 
-      }
+      };
+
+      this.setFilename = ( filename ) => {
+        self.filename = filename;
+      };
 
     }
 
