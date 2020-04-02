@@ -81,7 +81,7 @@
       helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
-      css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/collector/resources/styles.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/collector/resources/styles.css" ],
       user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
 
       onfinish: {
