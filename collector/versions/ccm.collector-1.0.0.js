@@ -82,7 +82,7 @@
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/collector/resources/styles.css" ],
-      user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
+      // user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
 
       onfinish: {
         store: true,
@@ -181,7 +181,7 @@
         // add Event Listener
         const addButton = inputForm.querySelector('button.add');
         const addButtonListener = e => {
-          if ( self.user.isLoggedIn() ){
+          if ( self.user && self.user.isLoggedIn() ){
 
             const namedInputs = Array.from( this.element.querySelectorAll('[name]') );
             const totalLength = ( namedInputs.map( input => input.value.length ) ).reduce((prev, curr) => prev + curr, 0);
