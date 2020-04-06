@@ -41,7 +41,7 @@
           inner: [
             {
               tag: "audio",
-              autoplay: true,
+              autoplay: true, // html.main.inner[0].autoplay
               hidden: true,
               controls: true,
               onended: "%onended%",
@@ -172,14 +172,6 @@
        */
       let onfinish;
 
-      this.setFilename = ( filename ) => {
-        audio = filename;
-        self.start();
-      };
-
-      this.setFinish = ( fun ) => {
-        onfinish = fun;
-      };
 
       /**
        * init is called once after all dependencies are solved and is then deleted
@@ -206,6 +198,32 @@
 
         const play = $.html( this.html.play );
         const pause = $.html( this.html.pause );
+
+        const isAutoPlay = () => {
+          return self.html.main.inner[0].autoplay;
+        };
+
+        const switchToPlayButton = ( play ) => {
+          if ( play ){
+            play.style.display = 'inline';
+            pause.style.display = 'none';
+          } else {
+            play.style.display = 'none';
+            pause.style.display = 'inline';
+          }
+        };
+
+        switchToPlayButton( ! isAutoPlay() );
+
+        this.setFilename = async ( filename ) => {
+          audio = filename;
+          await self.start();
+          switchToPlayButton( ! isAutoPlay() );
+        };
+
+        this.setFinish = ( fun ) => {
+          onfinish = fun;
+        };
 
         const main = $.html( this.html.main, { playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } );
         const playButton = main.querySelector( '#playButton' );
@@ -251,13 +269,11 @@
           if ( audioTag.paused ) {
             self.logger && self.logger.log( 'play', self.getValue() );
             audioTag.play();
-            play.style.display = 'none';
-            pause.style.display = 'inline';
+            switchToPlayButton( false );
           } else {
             self.logger && self.logger.log( 'pause', self.getValue() );
             audioTag.pause();
-            play.style.display = 'inline';
-            pause.style.display = 'none';
+            switchToPlayButton( true );
           }
         }
 
@@ -274,8 +290,7 @@
         function onended(){
           self.logger && self.logger.log( 'ended', self.getValue() );
 
-          play.style.display = 'inline';
-          pause.style.display = 'none';
+          switchToPlayButton( true );
 
           if ( onfinish ) onfinish( self );
 

@@ -30,6 +30,7 @@ button:active {
   display: none;
 }
 
-#ccm_pdf_viewer {
+#pdf_viewer {
   width: calc( 100% - 0.2rem );
+  margin-bottom: 1rem;
 }

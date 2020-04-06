@@ -327,7 +327,6 @@
               self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
 
               slide_num = num;
-              audio_div.textContent = '';
               Object.keys( extensionCollection ).forEach( slide => {
                 if ( slide !== '' + num ) extensionCollection[ slide ].style.display = 'none';
               });
