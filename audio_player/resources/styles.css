@@ -1,0 +1,110 @@
+/**
+ * @overview default layout of ccm component audio_player
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#audioplayer{
+  width: 100%;
+  text-align:center;
+  border-radius: 0.5rem;
+  box-shadow:
+     0 2px 9px  rgba(0, 158, 224,0.3),
+     0 -2px 6px rgba(0, 158, 224,0.4);
+}
+
+#playButton{
+  margin: 2px;
+  vertical-align: middle;
+  width: calc( 3.5rem - 2px );
+  height: auto;
+  border: none;
+  outline: none;
+  float:left;
+}
+
+#control {
+  width: calc( 80% - 4rem - 2px );
+  display: inline-block;
+  margin: 0 0.5rem 0 0;
+}
+
+#timeline{
+  display: inline-block;
+  margin-top: 0.2rem;
+  width: 100%;
+  height: 1rem;
+  float: left;
+  background-color: rgba(0, 158, 224, 0.6);
+}
+
+#current, #total {
+  display: inline-block;
+  width: 3rem;
+  font-size: 1.8rem;
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: bolder;
+  color: #009EE0;
+}
+
+#current {
+  float: left;
+}
+
+#total {
+  float: right;
+}
+
+#measure{
+  margin: 0 0 0 0.8rem;
+  padding: 0;
+  border-bottom: thin solid black;
+  display: inline-block;
+  width: calc( 100% - 0.8rem );
+  height: 0.8rem;
+  float: left;
+}
+
+#measure > span {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  height: 0.4rem;
+  width: calc( 100% / 100 );
+  border-right: 1px solid black;
+}
+
+#measure span.fifth {
+  border-right: 2px solid black;
+  height: 0.6rem;
+}
+
+#measure span.tenth {
+  border-right: 3px solid black;
+  height: 0.8rem;
+}
+
+#volume_control, #speed_control{
+  display: inline-block;
+  width:30%;
+  margin: 0 0.4rem 0 0.2rem;
+}
+
+#rngVolume_label, #rngSpeed_label{
+  vertical-align: middle;
+  color: #009EE0;
+}
+
+#rngVolume, #rngSpeed{
+  margin-top: 8px;
+  vertical-align: middle;
+}
