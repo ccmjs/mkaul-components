@@ -44,6 +44,8 @@
               autoplay: true, // html.main.inner[0].autoplay
               hidden: true,
               controls: true,
+              onplay: "%onplay%",
+              onpause: "%onpause%",
               onended: "%onended%",
               ontimeupdate: "%ontimeupdate%",
               onloadedmetadata: "%onloadedmetadata%",
@@ -203,8 +205,13 @@
           return self.html.main.inner[0].autoplay;
         };
 
-        const switchToPlayButton = ( playing ) => {
-          if ( playing ){
+        /**
+         * switch button from pause to play or vice versa
+         * @param {Boolean} showPlayButton - whether to show the play button
+         * @type {Function}
+         */
+        const switchToPlayButton = ( showPlayButton ) => {
+          if ( showPlayButton ){
             play.style.display = 'inline';
             pause.style.display = 'none';
           } else {
@@ -228,7 +235,7 @@
           onfinish = fun;
         };
 
-        const main = $.html( this.html.main, { playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } );
+        const main = $.html( this.html.main, { onplay, onpause, playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } );
         const playButton = main.querySelector( '#playButton' );
         const audioTag = main.querySelector( 'audio' );
         const total = main.querySelector( '#total');
@@ -239,9 +246,14 @@
         // render main HTML structure
         if ( $.isSafari() ){
           audioTag.hidden = false;
+          audioTag.style.width = "80%";
+          audioTag.style['background-color'] = '#009EE0';
           // $.setContent( this.element, $.html( self.html.main.inner[0], { playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } ) );
+          if ( timeline ) timeline.style.display = 'none';
+          $.setContent( this.element, main );
+        } else {
+          $.setContent( this.element, main );
         }
-        $.setContent( this.element, main );
 
         playButton.appendChild( play );
         playButton.appendChild( pause );
@@ -260,6 +272,14 @@
 
         function onloadedmetadata(){
           if ( total ) total.textContent = timing( audioTag.duration === Infinity ? 0 : audioTag.duration  );
+        }
+
+        function onplay(){
+          switchToPauseButton();
+        }
+
+        function onpause(){
+          switchToPlayButton( true );
         }
 
         function timing( seconds ){
