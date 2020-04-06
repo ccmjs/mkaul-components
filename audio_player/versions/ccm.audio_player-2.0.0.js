@@ -203,14 +203,17 @@
           return self.html.main.inner[0].autoplay;
         };
 
-        const switchToPlayButton = ( play ) => {
-          if ( play ){
+        const switchToPlayButton = ( playing ) => {
+          if ( playing ){
             play.style.display = 'inline';
             pause.style.display = 'none';
           } else {
             play.style.display = 'none';
             pause.style.display = 'inline';
           }
+        };
+        const switchToPauseButton = () => {
+          switchToPlayButton( false );
         };
 
         switchToPlayButton( ! isAutoPlay() );
@@ -269,7 +272,7 @@
           if ( audioTag.paused ) {
             self.logger && self.logger.log( 'play', self.getValue() );
             audioTag.play();
-            switchToPlayButton( false );
+            switchToPauseButton();
           } else {
             self.logger && self.logger.log( 'pause', self.getValue() );
             audioTag.pause();

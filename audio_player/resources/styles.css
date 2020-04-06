@@ -25,7 +25,7 @@
 #playButton{
   margin: 2px;
   vertical-align: middle;
-  width: calc( 3.5rem - 2px );
+  width: calc( 3.8rem - 2px );
   height: auto;
   border: none;
   outline: none;
@@ -33,7 +33,7 @@
 }
 
 #control {
-  width: calc( 80% - 4rem - 2px );
+  width: calc( 90% - 4.3rem - 2px );
   display: inline-block;
   margin: 0 0.5rem 0 0;
 }
