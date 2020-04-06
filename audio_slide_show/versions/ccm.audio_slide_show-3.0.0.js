@@ -304,19 +304,19 @@
 
         PDFObject.embed( self.pdf, self.element.querySelector("#embed_viewer_pdf") );
 
-        let collector, recorder, audio_player;
+        let collector, audio_player, recorder;
 
-        [ collector, recorder, audio_player ] = await Promise.all([
+        [ collector, audio_player, recorder ] = await Promise.all([
 
            self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) }),
+
+          self.audio_player.start({ root: audio_div, src: `audio/week${zero(self.week_nr)}/slide01.mp3` }),
 
           ( self.user && self.user.isLoggedIn() && isLecturer( self.user.data().key ) ) ?
              self.recorder.start({
               root: recorder_div,
               filename: "slide" + zero( slide_num ) + ".mp3"
           }) : Promise.resolve( null ),
-
-          self.audio_player.start({ root: audio_div, src: `audio/week${zero(self.week_nr)}/slide01.mp3` }),
 
           self.pdf_viewer.start({
             root: pdf_viewer_div,
@@ -333,16 +333,17 @@
               });
 
               collector && collector.setNum( num );
-              recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
 
-              audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
-              audio_player.setFinish(() => {
+              audio_player && audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
+              audio_player && audio_player.setFinish(() => {
                 if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
                   setTimeout( () => {
                     pdf_viewer.nextPage()
                   }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
                 }
               });
+
+              recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
 
               if ( extensions ){
                 if ( extensionCollection[ '' + num ] ){
