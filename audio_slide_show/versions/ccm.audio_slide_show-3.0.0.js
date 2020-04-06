@@ -2,8 +2,9 @@
  * @overview ccm component for audio_slide_show
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
  * @license The MIT License (MIT)
- * @version latest (2.0.0)
+ * @version latest (3.0.0)
  * @changes
+ * version 3.0.0 06.04.2020 use ccm audio player instead of HTML5 Audio tag
  * version 2.0.0 01.04.2020 add extensions (quiz below a slide etc)
  * version 1.0.0 31.03.2020 initial build
  * TODO: unit tests
@@ -19,7 +20,7 @@
      * @type {string}
      */
     name: "audio_slide_show",
-    version: [2,0,0],
+    version: [3,0,0],
 
     /**
      * recommended used framework version
@@ -77,6 +78,8 @@
           ]
         }
       },
+
+      audio_player: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/audio_player/versions/audio_player-2.0.0.js" ],
 
       // extensions: {  // include additional components below slide viewer, e.g. quiz under slide 2:
       //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
@@ -301,9 +304,9 @@
 
         PDFObject.embed( self.pdf, self.element.querySelector("#embed_viewer_pdf") );
 
-        let collector, recorder;
+        let collector, recorder, audio_player;
 
-        [ collector, recorder ] = await Promise.all([
+        [ collector, recorder, audio_player ] = await Promise.all([
 
            self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) }),
 
@@ -312,6 +315,8 @@
               root: recorder_div,
               filename: "slide" + zero( slide_num ) + ".mp3"
           }) : Promise.resolve( null ),
+
+          self.audio_player.start({ root: audio_div, src: `audio/week${zero(self.week_nr)}/slide01.mp3` }),
 
           self.pdf_viewer.start({
             root: pdf_viewer_div,
@@ -330,16 +335,14 @@
               collector && collector.setNum( num );
               recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
 
-              audio_div.appendChild( ccm.helper.html( self.html.audio, {
-                audio: `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3`,
-                onended: () => {
-                  if ( ccm.app_global_settings.auto_slide_proceed ){
-                    setTimeout( () => {
-                      pdf_viewer.nextPage()
-                    }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
-                  }
+              audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
+              audio_player.setFinish(() => {
+                if ( ccm.app_global_settings.auto_slide_proceed ){
+                  setTimeout( () => {
+                    pdf_viewer.nextPage()
+                  }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
                 }
-              }));
+              });
 
               if ( extensions ){
                 if ( extensionCollection[ '' + num ] ){
