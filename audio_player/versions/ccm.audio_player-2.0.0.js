@@ -80,12 +80,13 @@
         },
         play: {
           "tag": "svg",
+          "id": "play",
           "xmlns": "http://www.w3.org/2000/svg",
           "viewBox": "0 0 60 60",
           "inner": [
             {
               "tag": "circle",
-              "style": "fill: none; stroke-width: 5px; stroke: rgb(0, 158, 224);",
+              "style": "fill: #fff; stroke-width: 5px; stroke: rgb(0, 158, 224);",
               "cx": "30",
               "cy": "30",
               "r": "25"
@@ -99,13 +100,13 @@
         },
         pause: {
           "tag": "svg",
+          "id": "pause",
           "xmlns": "http://www.w3.org/2000/svg",
           "viewBox": "0 0 60 60",
-          "style": "display: none;",
           "inner": [
             {
               "tag": "circle",
-              "style": "fill: none; stroke-width: 5px; stroke: rgb(0, 158, 224);",
+              "style": "fill: #fff; stroke-width: 5px; stroke: rgb(0, 158, 224);",
               "cx": "30",
               "cy": "30",
               "r": "25"
@@ -257,6 +258,11 @@
 
         playButton.appendChild( play );
         playButton.appendChild( pause );
+
+        if ( isAutoPlay() ){
+          audioTag.play();
+          switchToPauseButton();
+        }
 
         // construct measure line above timeline ruler, if in config
         const measure = main.querySelector( '#measure' );

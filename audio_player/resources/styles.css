@@ -32,6 +32,13 @@
   float:left;
 }
 
+#play, #pause {
+  background-color: #fff;
+  border: none;
+  outline: none;
+  line-height: 1rem;
+}
+
 #control {
   width: calc( 90% - 4.3rem - 2px );
   display: inline-block;
