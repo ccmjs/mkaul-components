@@ -44,7 +44,8 @@
           inner: [
             {
               tag: "button",
-              inner: "switch viewer"
+              title: "switch PDF viewer",
+              inner: "PDF"
             },
             {
               id: "embed_viewer",

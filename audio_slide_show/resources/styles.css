@@ -8,13 +8,12 @@
 }
 
 button {
-  color: black;
-  background-color: white;
+  color: #fff;
+  background-color: #009EE0;
   padding: 0.5rem;
   margin: 0.4rem 1rem 1rem 1rem;
-  font-size: large;
   font-weight: bold;
-  border-radius: 0.7rem;
+  border-radius: 0.3rem;
   box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
 }
 
