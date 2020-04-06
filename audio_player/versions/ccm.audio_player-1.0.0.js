@@ -189,7 +189,7 @@
         const total = main.querySelector( '#total');
         const current = main.querySelector( '#current');
         const timeline = main.querySelector( '#timeline');
-        const audioContext = $.isSafari() ? new webkitAudioContext() : new AudioContext();
+        // const audioContext = $.isSafari() ? new webkitAudioContext() : new AudioContext();
 
         // render main HTML structure
         if ( $.isSafari() ){

@@ -4,6 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
+ * version 2.0.0 06.04.2020 add setter methods for adaptablility to audio slide show
  * version 1.0.0 05.04.2020 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -18,21 +19,21 @@
      * @type {string}
      */
     name: "audio_player",
-    // version: [1,0,0],
+    version: [2,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
      * @type {object}
      */
     config: {
-      src: "../../mkaul-components/audio_player/resources/audio.mp3",
+      src: "https://ccmjs.github.io/mkaul-components/audio_player/resources/audio.mp3",
 
       html: {
         main: {
@@ -131,7 +132,7 @@
 
       helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
 
-      css: [ "ccm.load",  "../../mkaul-components/audio_player/resources/styles.css" ],
+      css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/audio_player/resources/styles.css" ],
       // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/audio_player/resources/styles.css" ],
       // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/audio_player/resources/styles.css" ],
 
@@ -159,6 +160,26 @@
        */
       const self = this;
 
+      /**
+       * filename of audio file
+       * @type {String}
+       */
+      let audio;
+
+      /**
+       * onfinish callback
+       * @type {Function}
+       */
+      let onfinish;
+
+      this.setFilename = ( filename ) => {
+        audio = filename;
+        self.start();
+      };
+
+      this.setFinish = ( fun ) => {
+        onfinish = fun;
+      };
 
       /**
        * init is called once after all dependencies are solved and is then deleted
@@ -168,6 +189,10 @@
 
         // set shortcut to helper functions
         $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
+
+        audio = self.src;
+
+        onfinish = self.onfinish;
 
       };
 
@@ -181,7 +206,6 @@
 
         const play = $.html( this.html.play );
         const pause = $.html( this.html.pause );
-        const audio = self.src;
 
         const main = $.html( this.html.main, { playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } );
         const playButton = main.querySelector( '#playButton' );
@@ -253,7 +277,7 @@
           play.style.display = 'inline';
           pause.style.display = 'none';
 
-          if ( self.onfinish ) self.onfinish( self );
+          if ( onfinish ) onfinish( self );
 
           // e.g. automatic proceeding to next slide:
           // if ( window.ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed && self.pdf_viewer ){
