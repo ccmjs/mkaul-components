@@ -79,7 +79,7 @@
         }
       },
 
-      audio_player: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/audio_player/versions/audio_player-2.0.0.js" ],
+      audio_player: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/audio_player/versions/ccm.audio_player-2.0.0.js" ],
 
       // extensions: {  // include additional components below slide viewer, e.g. quiz under slide 2:
       //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
@@ -337,7 +337,7 @@
 
               audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
               audio_player.setFinish(() => {
-                if ( ccm.app_global_settings.auto_slide_proceed ){
+                if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
                   setTimeout( () => {
                     pdf_viewer.nextPage()
                   }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );

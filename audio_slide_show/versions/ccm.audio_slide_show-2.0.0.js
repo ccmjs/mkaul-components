@@ -333,7 +333,7 @@
               audio_div.appendChild( ccm.helper.html( self.html.audio, {
                 audio: `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3`,
                 onended: () => {
-                  if ( ccm.app_global_settings.auto_slide_proceed ){
+                  if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
                     setTimeout( () => {
                       pdf_viewer.nextPage()
                     }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
