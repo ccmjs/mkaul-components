@@ -25,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.3.0.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -33,7 +33,7 @@
      * @type {object}
      */
     config: {
-      src: "https://ccmjs.github.io/mkaul-components/audio_player/resources/audio.mp3",
+      // src: "https://ccmjs.github.io/mkaul-components/audio_player/resources/audio.mp3",
 
       html: {
         main: {
@@ -50,7 +50,7 @@
               ontimeupdate: "%ontimeupdate%",
               onloadedmetadata: "%onloadedmetadata%",
               inner: [
-                { tag: "source", src: "%audio%", type: "audio/mpeg"},
+                { tag: "source", type: "audio/mpeg"},
                 "Your browser does not support the audio element."
               ]
             },
@@ -63,12 +63,18 @@
                 { id: "current", inner: "00:00" },
 
                 { id: "volume_control", inner: [
-                    { tag: "label", id: "rngVolume_label", for: "rngVolume", inner: "Volume:" },
+                    { tag: "label", id: "rngVolume_label", for: "rngVolume", inner: [
+                        "Volume: ",
+                        { tag: "span", id: "volume", inner: "100%" }
+                      ] },
                     { tag: "input", id: "rngVolume", type: "range", min: 0, max: 100, value: 100, onchange: "%setVolume%" }
                   ]
                 },
                 { id: "speed_control", inner: [
-                    { tag: "label", id: "rngSpeed_label", for: "rngSpeed", inner: "Speed:" },
+                    { tag: "label", id: "rngSpeed_label", for: "rngSpeed", inner: [
+                        "Speed: ",
+                        { tag: "span", id: "speed", inner: "1" }
+                      ] },
                     { tag: "input", id: "rngSpeed", type: "range", min: 0, max: 30, value: 10, onchange: "%setSpeed%" }
                   ]
                 },
@@ -164,12 +170,6 @@
       const self = this;
 
       /**
-       * filename of audio file
-       * @type {String}
-       */
-      let audio;
-
-      /**
        * onfinish callback
        * @type {Function}
        */
@@ -185,10 +185,6 @@
         // set shortcut to helper functions
         $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
 
-        audio = self.src;
-
-        onfinish = self.onfinish;
-
       };
 
       /**
@@ -199,6 +195,8 @@
         // logging of 'start' event
         this.logger && this.logger.log( 'start', $.clone( dataset ) );
 
+        if ( self.onfinish ) onfinish = self.onfinish;
+
         const play = $.html( this.html.play );
         const pause = $.html( this.html.pause );
 
@@ -208,11 +206,11 @@
 
         /**
          * switch button from pause to play or vice versa
-         * @param {Boolean} showPlayButton - whether to show the play button
+         * @param {Boolean} ifPlay - whether to show the play button
          * @type {Function}
          */
-        const switchToPlayButton = ( showPlayButton ) => {
-          if ( showPlayButton ){
+        const switchButton = ( ifPlay ) => {
+          if ( ifPlay ){
             play.style.display = 'inline';
             pause.style.display = 'none';
           } else {
@@ -220,36 +218,63 @@
             pause.style.display = 'inline';
           }
         };
+
+        const switchToPlayButton = () => {
+          switchButton( true );
+        };
+
         const switchToPauseButton = () => {
-          switchToPlayButton( false );
+          switchButton( false );
         };
 
-        switchToPlayButton( ! isAutoPlay() );
-
-        this.setFilename = async ( filename ) => {
-          audio = filename;
-          await self.start();
-          switchToPlayButton( ! isAutoPlay() );
-        };
+        switchButton( ! isAutoPlay() );
 
         this.setFinish = ( fun ) => {
           onfinish = fun;
         };
 
-        const main = $.html( this.html.main, { onplay, onpause, playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } );
+        const main = $.html( this.html.main, { audio: self.src, onplay, onpause, playAudio, setVolume, setSpeed, onended, ontimeupdate, onTimelineChange, onloadedmetadata } );
         const playButton = main.querySelector( '#playButton' );
+
         const audioTag = main.querySelector( 'audio' );
+        const isPlaying = () => {
+          // https://stackoverflow.com/questions/9437228/html5-check-if-audio-is-playing
+          return audioTag
+            && audioTag.currentTime > 0
+            && !audioTag.paused
+            && !audioTag.ended
+            && audioTag.readyState >= 2;
+        };
+        audioTag.addEventListener('error', (e) => {
+          console.log( e );
+          console.log( 'audioTag.readyState = ' + audioTag.readyState );
+          switchToPlayButton();
+        });
+        audioTag.addEventListener('loadedmetadata', (e) => {
+          switchButton( ! isPlaying() );
+        });
+
         const total = main.querySelector( '#total');
         const current = main.querySelector( '#current');
         const timeline = main.querySelector( '#timeline');
-        // const audioContext = $.isSafari() ? new webkitAudioContext() : new AudioContext();
+        const volume = main.querySelector( '#volume');
+        const speed = main.querySelector( '#speed');
+        const rngSpeed = main.querySelector( '#rngSpeed' );
+        const rngVolume = main.querySelector( '#rngVolume' );
+
+        this.setFilename = async ( filename ) => {
+          self.src = filename;
+          audioTag.src = self.src;
+          audioTag.volume = rngVolume.value / 100;
+          audioTag.playbackRate = rngSpeed.value / 10;
+        };
 
         // render main HTML structure
         if ( $.isSafari() ){
           audioTag.hidden = false;
           audioTag.style.width = "80%";
           audioTag.style['background-color'] = '#009EE0';
-          // $.setContent( this.element, $.html( self.html.main.inner[0], { playAudio, setVolume, setSpeed, onended, ontimeupdate, audio, onTimelineChange, onloadedmetadata } ) );
+          // $.setContent( this.element, $.html( self.html.main.inner[0], { playAudio, setVolume, setSpeed, onended, ontimeupdate, self.src, onTimelineChange, onloadedmetadata } ) );
           if ( timeline ) timeline.style.display = 'none';
           $.setContent( this.element, main );
         } else {
@@ -259,8 +284,7 @@
         playButton.appendChild( play );
         playButton.appendChild( pause );
 
-        if ( isAutoPlay() ){
-          audioTag.play();
+        if ( isAutoPlay() && ! audioTag.paused ){
           switchToPauseButton();
         }
 
@@ -285,7 +309,7 @@
         }
 
         function onpause(){
-          switchToPlayButton( true );
+          switchToPlayButton();
         }
 
         function timing( seconds ){
@@ -294,32 +318,40 @@
           return `${ zero( min ) }:${ zero( sec ) }`;
         }
 
+        this.play = playAudio;
         function playAudio(){
           if ( audioTag.paused ) {
             self.logger && self.logger.log( 'play', self.getValue() );
-            audioTag.play();
-            switchToPauseButton();
+            try {
+              audioTag.play();
+              switchToPauseButton();
+            } catch( e ){
+              // play() failed because the user didn't interact with the document first.
+              switchToPlayButton();
+            }
           } else {
             self.logger && self.logger.log( 'pause', self.getValue() );
             audioTag.pause();
-            switchToPlayButton( true );
+            switchToPlayButton();
           }
         }
 
         function setVolume(){
           self.logger && self.logger.log( 'setVolume', self.getValue() );
-          audioTag.volume = main.querySelector( '#rngVolume' ).value / 100;
+          audioTag.volume = rngVolume.value / 100;
+          volume.textContent = rngVolume.value + "%";
         }
 
         function setSpeed(){
           self.logger && self.logger.log( 'setSpeed', self.getValue() );
-          audioTag.playbackRate = main.querySelector( '#rngSpeed' ).value / 10;
+          audioTag.playbackRate = rngSpeed.value / 10;
+          speed.textContent = rngSpeed.value / 10;
         }
 
         function onended(){
           self.logger && self.logger.log( 'ended', self.getValue() );
 
-          switchToPlayButton( true );
+          switchToPlayButton();
 
           if ( onfinish ) onfinish( self );
 

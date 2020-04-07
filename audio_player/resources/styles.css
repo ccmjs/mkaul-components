@@ -4,7 +4,7 @@
  * @license The MIT License (MIT)
  */
 #element {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: Consolas, "Courier New", monospace;
 }
 
 * {
@@ -28,14 +28,14 @@
   width: calc( 3.8rem - 2px );
   height: auto;
   border: none;
-  outline: none;
+  outline: 0;
   float:left;
 }
 
 #play, #pause {
   background-color: #fff;
   border: none;
-  outline: none;
+  outline: 0;
   line-height: 1rem;
 }
 
@@ -60,6 +60,11 @@
   font-size: 1.8rem;
   font-family: Consolas, "Courier New", monospace;
   font-weight: bolder;
+  color: #009EE0;
+}
+
+#volume, #speed {
+  font-family: Consolas, "Courier New", monospace;
   color: #009EE0;
 }
 
@@ -102,7 +107,7 @@
 
 #volume_control, #speed_control{
   display: inline-block;
-  width:30%;
+  width: 30%;
   margin: 0 0.4rem 0 0.2rem;
 }
 
