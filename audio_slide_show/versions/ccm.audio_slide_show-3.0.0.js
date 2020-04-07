@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.3.0.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -35,7 +35,7 @@
      */
     config: {
 
-      pdf: "../slidesfree/01_Orga.pdf",
+      pdf: "https://ccmjs.github.io/mkaul-components/audio_player/resources/audio.mp3",
       week_nr: 1,
       lecturer: [ "uid", "account" ],
 
@@ -250,6 +250,12 @@
       let stateOfViewer = false;
 
       /**
+       * subcomponents
+       * @type {Instance}
+       */
+      let collector, audio_player, recorder;
+
+      /**
        * which slide in deck (first, second, ...)
        * @type {Number}
        */
@@ -273,9 +279,19 @@
 
         if ( ! self.user ) self.user = self.ccm.context.find(self,'user');
 
+        // start different via route if consistent with click in app collection
         if ( this.routing && this.routing.get() ){
-          slide_num = parseInt( this.routing.get().split('-')[2] );
-          self.week_nr = parseInt( this.routing.get().split('-')[1] );
+          const week = parseInt( this.routing.get().split('-')[1] );
+          const match = window.location.hash.match(/app-content-(\d+)-/i );
+
+          // use route only if consistent with click in app collection
+          const match_week = match && match[1] && parseInt( match[1] );
+          if ( ( match_week === 0 && week === 0 ) || ( match_week === week + 1 ) ){
+            slide_num = parseInt( this.routing.get().split('-')[2] );
+            self.week_nr = week;
+          } else {
+            slide_num = 1;
+          }
         }
 
         // logging of 'start' event
@@ -305,61 +321,66 @@
 
         PDFObject.embed( self.pdf, self.element.querySelector("#embed_viewer_pdf") );
 
-        let collector, audio_player, recorder;
+        // Parallel loading of all sub-components.
+        // start pdf_viewer, but do wait
+        self.pdf_viewer.start({
+          root: pdf_viewer_div,
+          pdf: self.pdf,
+          slide_nr: slide_num,
+          onchange: async ( pdf_viewer, num ) => {
+            // update route
+            self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
 
+            slide_num = num;
+            Object.keys( extensionCollection ).forEach( slide => {
+              if ( slide !== '' + num ) extensionCollection[ slide ].style.display = 'none';
+            });
+
+            collector && collector.setNum( num );
+
+            audio_player && audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
+            // TODO audio_player && audio_player.play();
+            audio_player && audio_player.setFinish(() => {
+              if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
+                setTimeout( () => {
+                  pdf_viewer.nextPage()
+                }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
+              }
+            });
+
+            recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
+
+            if ( extensions ){
+              if ( extensionCollection[ '' + num ] ){
+                extensionCollection[ '' + num ].style.display = 'block';
+              } else if ( self.extensions && self.extensions[ '' + num ] ){
+                const extensionChild = document.createElement('div');
+                extensionCollection[ '' + num ] = extensionChild;
+                extensions.appendChild( extensionChild );
+                self.extensions[ num ].start( { root: extensionChild } );
+              }
+            }
+          } });
+
+        // Parallel loading of all sub-components
+        // Promise.allSettled will never reject:
         [ collector, audio_player, recorder ] = await Promise.all([
 
            self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) }),
 
-          self.audio_player.start({ root: audio_div, src: `audio/week${zero(self.week_nr)}/slide01.mp3` }),
+          self.audio_player.start({ root: audio_div, src: `audio/week${zero(self.week_nr)}/slide${zero(slide_num)}.mp3` }),
 
           ( self.user && self.user.isLoggedIn() && isLecturer( self.user.data().key ) ) ?
              self.recorder.start({
               root: recorder_div,
               filename: "slide" + zero( slide_num ) + ".mp3"
-          }) : Promise.resolve( null ),
-
-          self.pdf_viewer.start({
-            root: pdf_viewer_div,
-            pdf: self.pdf,
-            slide_nr: slide_num,
-            onchange: async ( pdf_viewer, num ) => {
-              // update route
-              self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
-
-              slide_num = num;
-              Object.keys( extensionCollection ).forEach( slide => {
-                if ( slide !== '' + num ) extensionCollection[ slide ].style.display = 'none';
-              });
-
-              collector && collector.setNum( num );
-
-              audio_player && audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
-              audio_player && audio_player.setFinish(() => {
-                if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
-                  setTimeout( () => {
-                    pdf_viewer.nextPage()
-                  }, window.ccm.app_global_settings.slide_proceed_pause * 1000 );
-                }
-              });
-
-              recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
-
-              if ( extensions ){
-                if ( extensionCollection[ '' + num ] ){
-                  extensionCollection[ '' + num ].style.display = 'block';
-                } else if ( self.extensions && self.extensions[ '' + num ] ){
-                  const extensionChild = document.createElement('div');
-                  extensionCollection[ '' + num ] = extensionChild;
-                  extensions.appendChild( extensionChild );
-                  self.extensions[ num ].start( { root: extensionChild } );
-                }
-              }
-            } })
+          }) : Promise.resolve( null )
 
         ]);
 
       };
+
+
 
       /**
        * current state of this viewer
