@@ -2,8 +2,9 @@
  * @overview ccm component for audio_slide_show
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
  * @license The MIT License (MIT)
- * @version latest (3.0.0)
+ * @version latest (4.0.0)
  * @changes
+ * version 4.0.0 08.04.2020 use pdf_viewer v.6.0.0
  * version 3.0.0 06.04.2020 use ccm audio player instead of HTML5 Audio tag
  * version 2.0.0 01.04.2020 add extensions (quiz below a slide etc)
  * version 1.0.0 31.03.2020 initial build
@@ -20,7 +21,7 @@
      * @type {string}
      */
     name: "audio_slide_show",
-    version: [3,0,0],
+    version: [4,0,0],
 
     /**
      * recommended used framework version
@@ -86,64 +87,65 @@
       //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
       // },
 
-      pdf_viewer: [ "ccm.component", "./lib/ccm.pdf_viewer-5.0.1.js", {
+      // pdf_viewer: [ "ccm.component", "./lib/ccm.pdf_viewer-5.0.1.js", {
+      pdf_viewer: [ "ccm.component", "https://ccmjs.github.io/tkless-components/pdf_viewer/versions/ccm.pdf_viewer-6.0.0.js", {
         scale: 1,
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js',
-        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
+        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
         // exceptions: {  // use different components instead of slide view, e.g. quiz instead of slide 2:
         //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
         // },
         html: {
           "main": {
-            "id": "pdf-viewer",
-            "class": "container-fluid",
-            "inner": [
+            "id": "pdf-view",
+            "inner":[
               {
-                "id": "pdf-elem",
-                "inner": {
-                  "id": "pdf-view",
-                  "inner": {
-                    "id": "canvas",
-                    "tag": "canvas"
-                  }
-                }
+                "id": "canvas",
+                "tag": "canvas"
               },
-              { id: "exception" }, // area where to render exceptional view
               {
                 "id": "nav",
                 "inner": [
                   {
-                    "class": "input-group",
-                    "inner": [
-                      {
-                        "class": "input-group-btn",
-                        "inner": {
-                          "class": "btn btn-prev btn-info",
-                          "onclick": "%prev%",
-                          "inner": "Prev"
-                        }
-                      },
-                      {
-                        "id": "page-num",
-                        "style": "padding: 0 0 !important",
-                        "class": "form-control text-center",
-                        "tag": "input",
-                        "type": "number",
-                        "min": "1",
-                        "max": "%all%",
-                        "onchange": "%go_to%"
-                      },
-                      {
-                        "class": "input-group-btn",
-                        "inner": {
-                          "class": "btn btn-next btn-warning",
-                          "onclick": "%next%",
-                          "inner": "Next"
-                        }
-                      }
-                    ]
+                    "title": "Overview",
+                    "class": "all fa fa-th-list fa-lg",
+                    "onclick": "%all%"
+                  },
+                  {
+                    "title": "Previous Slide",
+                    "class": "prev disabled fa fa-chevron-left fa-lg",
+                    "onclick": "%prev%"
+                  },
+                  {
+                    "title": "First Slide",
+                    "class": "first disabled fa fa-step-backward fa-lg",
+                    "onclick": "%first%"
+                  },
+                  {
+                    "tag": "input",
+                    "type": "number",
+                    "id": "page-num",
+                    "onchange": "%go_to%"
+                  },
+                  {
+                    "title": "Last Slide",
+                    "class": "last fa fa-step-forward fa-lg",
+                    "onclick": "%last%"
+                  },
+                  {
+                    "title": "Next Slide",
+                    "class": "next fa fa-chevron-right fa-lg",
+                    "onclick": "%next%"
+                  },
+                  {
+                    "title": "Description",
+                    "class": "descr fa fa-file-text-o fa-lg",
+                    "onclick": "%description%"
                   }
                 ]
+              },
+              {
+                "id": "optional_content"
               }
             ]
           }
@@ -151,8 +153,8 @@
       }],
 
       collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.0.0.js", {
-        ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
-        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
+        ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
+        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
         "html.initial.inner.1.inner": "Fragen und Antworten zur Folie:",
         "html.main": {
           inner: [
@@ -200,7 +202,7 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
+      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/audio_slide_show/resources/styles.css" ],
@@ -208,7 +210,7 @@
 
       // user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo" } ],
 
-      routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js" ],
+      // routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js" ],
 
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.3.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/audio_slide_show/resources/configs.js", "log" ] ],
 
@@ -280,20 +282,20 @@
         if ( ! self.user ) self.user = self.ccm.context.find(self,'user');
 
         // start different via route if consistent with click in app collection
-        if ( this.routing && this.routing.get() ){
-          const week = parseInt( this.routing.get().split('-')[1] );
-          // const match = window.location.hash.match(/app-content-(\d+)-/i );
-          const match = this.ccm.context.root(this).routing.get().match(/app-content-(\d+)-/i );
-
-          // use route only if consistent with click in app collection
-          const match_week = match && match[1] && parseInt( match[1] );
-          if ( ( match_week === 0 && week === 0 ) || ( match_week === week + 1 ) ){
-            slide_num = parseInt( this.routing.get().split('-')[2] );
-            self.week_nr = week;
-          } else {
-            slide_num = 1;
-          }
-        }
+        // if ( this.routing && this.routing.get() ){
+        //   const week = parseInt( this.routing.get().split('-')[1] );
+        //   // const match = window.location.hash.match(/app-content-(\d+)-/i );
+        //   const match = this.ccm.context.root(this).routing.get().match(/app-content-(\d+)-/i );
+        //
+        //   // use route only if consistent with click in app collection
+        //   const match_week = match && match[1] && parseInt( match[1] );
+        //   if ( ( match_week === 0 && week === 0 ) || ( match_week === week + 1 ) ){
+        //     slide_num = parseInt( this.routing.get().split('-')[2] );
+        //     self.week_nr = week;
+        //   } else {
+        //     slide_num = 1;
+        //   }
+        // }
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start',  );
@@ -325,12 +327,19 @@
         // Parallel loading of all sub-components.
         // start pdf_viewer, but do wait
         self.pdf_viewer.start({
+          routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js", {
+            app: self.pdf.slice(self.pdf.lastIndexOf("/")+1,-4),  // use filename for routing without suffix .pdf
+            ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
+            helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
+          } ],
           root: pdf_viewer_div,
           pdf: self.pdf,
           slide_nr: slide_num,
           onchange: async ( pdf_viewer, num ) => {
+            pdf_viewer.element.querySelector('#canvas').style.display = 'inline-block';
+
             // update route
-            self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
+            // self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
 
             slide_num = num;
             Object.keys( extensionCollection ).forEach( slide => {
@@ -340,7 +349,7 @@
             collector && collector.setNum( num );
 
             audio_player && audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
-            // TODO audio_player && audio_player.play();
+
             audio_player && audio_player.setFinish(() => {
               if ( ccm.app_global_settings && ccm.app_global_settings.auto_slide_proceed ){
                 setTimeout( () => {
@@ -350,6 +359,18 @@
             });
 
             recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
+
+            if ( self.exceptions ){
+              if ( exceptionCollection[ '' + num ] ){
+                exceptionCollection[ '' + num ].style.display = 'block';
+              } else if ( self.exceptions && self.exceptions[ '' + num ] ){
+                const exceptionChild = document.createElement('div');
+                exceptionCollection[ '' + num ] = exceptionChild;
+                pdf_viewer.element.querySelector('#canvas').style.display = 'none';
+                pdf_viewer.element.querySelector('#optional_content').appendChild( exceptionChild );
+                self.exceptions[ num ].start( { root: exceptionChild } );
+              }
+            }
 
             if ( extensions ){
               if ( extensionCollection[ '' + num ] ){
