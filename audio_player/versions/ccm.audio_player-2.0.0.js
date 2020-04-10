@@ -41,7 +41,7 @@
           inner: [
             {
               tag: "audio",
-              autoplay: true, // html.main.inner[0].autoplay
+              autoplay: false, // html.main.inner[0].autoplay
               hidden: true,
               controls: true,
               onplay: "%onplay%",
@@ -149,6 +149,8 @@
 
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.3.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/audio_player/resources/configs.js", "log" ] ],
 
+      // global_settings: "$CCM$",
+
     },
 
     /**
@@ -199,6 +201,18 @@
 
         const play = $.html( this.html.play );
         const pause = $.html( this.html.pause );
+
+        // subscribe to changes in global settings
+        if ( self.global_settings && window[ self.global_settings ] ){
+          window[ self.global_settings ].subscribe( this );
+
+          if ( window[ self.global_settings ].getGlobal( 'audio_autoplay' ) === true ){
+            self.html.main.inner[0].autoplay = true;
+          } else {
+            self.html.main.inner[0].autoplay = false;
+          }
+
+        }
 
         const isAutoPlay = () => {
           return self.html.main.inner[0].autoplay;
@@ -264,7 +278,7 @@
 
         this.setFilename = async ( filename ) => {
           self.src = filename;
-          audioTag.src = self.src;
+          audioTag.src = self.src;  // start new audio
           audioTag.volume = rngVolume.value / 100;
           audioTag.playbackRate = rngSpeed.value / 10;
         };
