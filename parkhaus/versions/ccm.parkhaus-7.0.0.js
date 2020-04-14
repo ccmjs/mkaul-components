@@ -11,10 +11,10 @@
     name: 'parkhaus',
     version: [7,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.2.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
-    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/helper.mjs" ],
+    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
 
     config: {
       name: "CarHome",
@@ -233,10 +233,10 @@
       hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
 
-      chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
+      chart: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/plotly/versions/ccm.plotly-1.1.2.js" ],
 
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
-      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
     },
 
     /**
@@ -438,7 +438,7 @@
           }
         }
 
-        const garage = new Garage( self.Max );
+        let garage = new Garage( self.Max );
 
         class Car {
           constructor( spec ){
@@ -562,7 +562,8 @@
           self[ this.classList.toString() ] = newValue;
           switch( this.classList.toString() ){
             case "Max":
-              garage.max = this.value;
+              self.Max = this.value;
+              garage = new Garage( self.Max );
               break;
             case "open_from": case "open_to":
               break;
