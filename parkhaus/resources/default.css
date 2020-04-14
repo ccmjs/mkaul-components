@@ -95,8 +95,7 @@ button:active {
 }
 
 .Max {
-    width: 3rem;
-    min-width: fit-content;
+    width: 2rem;
 }
 
 .counter {
