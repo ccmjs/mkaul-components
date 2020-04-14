@@ -2,8 +2,9 @@
  * @overview ccm component for links
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
  * @license The MIT License (MIT)
- * @version latest (5.0.0)
+ * @version latest (6.0.0)
  * @changes
+ * version 6.0.0 reuse ccm component for different names
  * version 5.0.0 prevent concurrency artefacts (Lost Update etc) by incremental updates
  * version 4.1.0 use onfinish
  * version 4.0.0 use name of input
@@ -24,14 +25,14 @@
      * @type {string}
      */
     name: "links",
-    // version: [5,0,0],
+    version: [6,0,0],
 
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -79,6 +80,7 @@
       },
 
       retrieve_on_start: false,
+      min_input_length: 2,
 
       // onchange: function(){ console.log( this.getValue() ); },
 
@@ -86,12 +88,12 @@
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/links/resources/styles.css" ],
-      user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.3.1.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
+      user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
 
       onfinish: {
         store: true,
-        restart: true,
-        alert: "Gesichert!"
+        restart: true
+        // alert: "Gesichert!"  // not necessary, because new data appear on page immediately
       }
 
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.2.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/links/resources/configs.js", "log" ] ],
@@ -144,7 +146,7 @@
       this.init = async () => {
 
         // set shortcut to helper functions
-        $ = Object.assign( {}, this.ccm.helper, this.helper );
+        $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
 
         // listen to datastore changes => restart
         if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
@@ -167,6 +169,8 @@
        */
       this.start = async () => {
 
+        if ( ! self.user ) self.user = self.ccm.context.find(self,'user');
+
         const initButton = $.html( this.html.initial );
         const inputForm = $.html( this.html.main );
         const initButtonListener = async e => {
@@ -180,30 +184,7 @@
 
         if ( this.retrieve_on_start ){
           // fetch data from database and display them
-          await fetchAndDisplay();
-        }
-
-        async function fetchAndDisplay(){
-          // start from fresh: delete old linkList items from last rendering
-          const parentNode = self.root.parentNode.parentNode;
-          Array.from( parentNode.querySelectorAll( '.' + self.marker ) ).forEach( item => {
-            parentNode.removeChild( item );
-          });
-
-          // fetch dataset
-          self.data.key = self.name;
-          dataset = await $.dataset( self.data ); // empty object with key { key: $.generateKey() }
-
-          // add marker to link template
-          const html_link = $.clone( self.html.link );
-          html_link.class = self.marker;
-
-          // process all links
-          allLinks( dataset ).forEach( linkData => {
-            // fill HTML template with data from dataset
-            // add link to parent node outside the shadow DOM
-            parentNode.insertBefore( $.html( html_link, linkData ), self.root.parentNode );
-          });
+          await this.update();
         }
 
         await render();
@@ -212,7 +193,7 @@
           // render inside shadow DOM
           if ( stateOpen ){ // render items from database and input fields
 
-            await fetchAndDisplay();
+            await self.update();
 
           } else { // render initial Button inside shadow DOM
 
@@ -228,13 +209,16 @@
             const namedInputs = Array.from( this.element.querySelectorAll('[name]') );
             const totalLength = ( namedInputs.map( input => input.value.length ) ).reduce((prev, curr) => prev + curr, 0);
 
-            if ( totalLength > 3 ){
+            if ( totalLength > self.min_input_length ){
 
               // store input values into a record
               const record = namedInputs.reduce( ( rec, input ) => {
                   rec[ input.name ]= input.value;
                   return rec },
-                { author: this.user.data().user }
+                {
+                  author: this.user.data().user,
+                  location: window.location.href
+                }
               );
 
               // add new link data to dataset
@@ -247,7 +231,23 @@
               if ( self.retrieve_on_start ) stateOpen = false;
 
               // save and restart app according to params given in this.onfinish
+              dataset.key = this.name;
+              this.onfinish.store.key = this.name;
               this.onfinish && $.onFinish( this );  // calls getValue()
+            } else {
+
+              // invalid input, mark input fields red
+              namedInputs.forEach( input => {
+                if ( input.value.length < self.min_input_length ) input.setCustomValidity("add more information");
+              });
+
+              // remove red color after a short period
+              setTimeout(()=>{
+                namedInputs.forEach( input => {
+                  input.setCustomValidity("");
+                });
+              },2000);
+
             }
           }
         };
@@ -272,8 +272,55 @@
        * current state of this editor
        * @returns {Object} state of editor
        */
-      this.getValue = () => dataset;
+      this.getValue = () => Object.assign( {
+          _: {
+            access: {
+              get: 'all',
+              set: 'creator',
+              del: 'creator'
+            }
+          }
+        }, dataset );
 
+      /**
+       * setName - change dataset key and update
+       * @param {string} name - dataset key
+       */
+      this.setName = async name => {
+        this.name = name;
+        await this.update();
+      };
+
+      /**
+       * fetch fresh data from database and update GUI
+       */
+      this.update = async () => {
+        // start from fresh: delete old linkList items from last rendering
+        const parentNode = self.parent_node || self.root.parentNode.parentNode;
+        Array.from( parentNode.querySelectorAll( '.' + self.marker ) ).forEach( item => {
+          parentNode.removeChild( item );
+        });
+
+        // fetch dataset
+        self.data.key = self.name;
+        dataset = await $.dataset( self.data ); // empty object with key { key: $.generateKey() }
+
+        // add marker to link template
+        const html_link = $.clone( self.html.link );
+        html_link.class = self.marker;
+
+        // process all links
+        allLinks( dataset ).forEach( linkData => {
+          // fill HTML template with data from dataset
+          // add link to parent node outside the shadow DOM
+          parentNode.insertBefore( $.html( html_link, linkData ), self.root.parentNode );
+        });
+      };
+
+      /**
+       * get all links from dataset
+       * @param {Object} dataset - dataset with links
+       */
       function allLinks( dataset ){
         return Object.keys( dataset )
         .filter( key => new RegExp('^'+LINK_PREFIX+'\\d+', 'i').test( key ) )
