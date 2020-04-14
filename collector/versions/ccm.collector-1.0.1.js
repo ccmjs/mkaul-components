@@ -4,7 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.1)
  * @changes
- * version 1.0.1 14.04.2020 support initial slide in pdf_viewer: retrieve question on start
+ * version 1.0.1 14.04.2020 support initial slide in pdf_viewer: retrieve question on start, get user from context, sort by date
  * version 1.0.0 31.03.2020 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -158,6 +158,8 @@
        */
       this.start = async () => {
 
+        if ( ! self.user ) self.user = self.ccm.context.find(self,'user');
+
         const initButton = $.html( this.html.initial );
         const inputForm = $.html( this.html.main );
         const initButtonListener = async e => {
@@ -203,8 +205,8 @@
 
               if ( self.retrieve_on_start ) stateOpen = false;
 
-              // save and restart app according to params given in this.onfinish
-              dataset.key = [ self.name, self.num, self.user.data().user, Date.now() ];
+              // save and restart app according to params given in this.onfinish, sort by date
+              dataset.key = [ self.name, self.num, Date.now(), self.user.data().user ];
               this.onfinish.store.key = dataset.key;
               this.onfinish && $.onFinish( this );  // calls getValue()
             } else {
