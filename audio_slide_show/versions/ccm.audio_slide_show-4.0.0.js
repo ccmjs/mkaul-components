@@ -393,10 +393,12 @@
           if ( self.global_settings && self.global_settings.store ) {
             const auto_slide_proceed_container = await self.global_settings.store.get('auto_slide_proceed');
             const period_container = await self.global_settings.store.get('period');
-            if (auto_slide_proceed_container && auto_slide_proceed_container.auto_slide_proceed && period_container && period_container.period >= 0) {
-
-              callback( period_container.period );
-
+            if (auto_slide_proceed_container && auto_slide_proceed_container.auto_slide_proceed ){
+              if ( period_container && period_container.period >= 0 ){
+                callback( period_container.period );
+              } else {
+                callback( 1 )
+              }
             }
           }
         }
