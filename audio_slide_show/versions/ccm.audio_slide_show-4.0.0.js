@@ -71,7 +71,6 @@
         },
         audio: {
           tag: "audio",
-          autoplay: true,
           controls: true,
           onended: "%onended%",
           inner: [
@@ -81,15 +80,16 @@
         }
       },
 
-      audio_player: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/audio_player/versions/ccm.audio_player-2.0.0.js" ],
+      audio_player: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/audio_player/versions/ccm.audio_player-3.0.0.js" ],
 
       // extensions: {  // include additional components below slide viewer, e.g. quiz under slide 2:
       //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
       // },
 
-      pdf_viewer: [ "ccm.component", "./lib/ccm.pdf_viewer-6.0.0.js", {
-      // pdf_viewer: [ "ccm.component", "https://ccmjs.github.io/tkless-components/pdf_viewer/versions/ccm.pdf_viewer-6.0.0.js", {
+      // pdf_viewer: [ "ccm.component", "./lib/ccm.pdf_viewer-6.0.0.js", {
+      pdf_viewer: [ "ccm.component", "https://ccmjs.github.io/tkless-components/pdf_viewer/versions/ccm.pdf_viewer-6.0.0.js", {
         scale: 1,
+        routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js" ],
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
         helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
         // exceptions: {  // use different components instead of slide view, e.g. quiz instead of slide 2:
@@ -106,11 +106,11 @@
               {
                 "id": "nav",
                 "inner": [
-                  {
-                    "title": "Overview",
-                    "class": "all fa fa-th-list fa-lg",
-                    "onclick": "%all%"
-                  },
+                  // {
+                  //   "title": "Overview",
+                  //   "class": "all fa fa-th-list fa-lg",
+                  //   "onclick": () => { debugger; }
+                  // },
                   {
                     "title": "Previous Slide",
                     "class": "prev disabled fa fa-chevron-left fa-lg",
@@ -137,11 +137,11 @@
                     "class": "next fa fa-chevron-right fa-lg",
                     "onclick": "%next%"
                   },
-                  {
-                    "title": "Description",
-                    "class": "descr fa fa-file-text-o fa-lg",
-                    "onclick": "%description%"
-                  }
+                  // {
+                  //   "title": "Description",
+                  //   "class": "descr fa fa-file-text-o fa-lg",
+                  //   "onclick": () => { debugger; }
+                  // }
                 ]
               },
               {
@@ -152,7 +152,7 @@
         }
       }],
 
-      collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.0.0.js", {
+      collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.0.1.js", {
         ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
         helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
         "html.initial.inner.1.inner": "Fragen und Antworten zur Folie:",
@@ -214,7 +214,9 @@
 
       // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.3.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/audio_slide_show/resources/configs.js", "log" ] ],
 
-      // global_settings: "$CCM$",
+      // global_settings: {
+      //               "store": [ "ccm.store", { name: "se-global-settings" } ] // Data Level 2 Store
+      //             },
 
       onfinish: {
         store: true,
@@ -257,7 +259,7 @@
        * subcomponents
        * @type {Instance}
        */
-      let collector, audio_player, recorder;
+      let pdf_viewer, collector, audio_player, recorder;
 
       /**
        * which slide in deck (first, second, ...)
@@ -274,6 +276,8 @@
         // set shortcut to helper functions
         $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
 
+        // self.global_settings.store.onchange = self.changed_global_settings;
+
       };
 
       /**
@@ -285,11 +289,6 @@
 
         // logging of 'start' event
         this.logger && this.logger.log( 'start',  );
-
-        // subscribe to changes in global settings
-        if ( self.global_settings && window[ self.global_settings ] ){
-          window[ self.global_settings ].subscribe( this );
-        }
 
         const isLecturer = uid => self.lecturer.includes( uid );
         const zero = ( nr ) => {
@@ -318,19 +317,17 @@
         // Parallel loading of all sub-components.
         // start pdf_viewer, but do wait
         self.pdf_viewer.start({
+          // "routing.2.app": self.pdf.slice(self.pdf.lastIndexOf("/")+1,-4),  // use filename for routing without suffix .pdf
           routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js", {
-            app: self.pdf.slice(self.pdf.lastIndexOf("/")+1,-4),  // use filename for routing without suffix .pdf
-            ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
-            helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
+            app: self.pdf.slice(self.pdf.lastIndexOf("/")+1,-4)  // use filename for routing without suffix .pdf
           } ],
           root: pdf_viewer_div,
           pdf: self.pdf,
           slide_nr: slide_num,
           onchange: async ( pdf_viewer, num ) => {
-            pdf_viewer.element.querySelector('#canvas').style.display = 'inline-block';
 
-            // update route
-            // self.routing && self.routing.set( `slide-${self.week_nr}-${num}` );
+            const canvas = pdf_viewer.element.querySelector('#canvas');
+            if ( canvas ){ canvas.style.display = 'inline-block' }
 
             slide_num = num;
             Object.keys( extensionCollection ).forEach( slide => {
@@ -340,17 +337,6 @@
             collector && collector.setNum( num );
 
             audio_player && audio_player.setFilename( `audio/week${zero(self.week_nr)}/slide${zero(num)}.mp3` );
-
-            audio_player && audio_player.setFinish(() => {
-              if ( self.global_settings
-                && window[ self.global_settings ]
-                && window[ self.global_settings ].getGlobal( 'auto_slide_proceed' ) === true
-              ){
-                setTimeout( () => {
-                  pdf_viewer.nextPage()
-                }, window[ self.global_settings ].getNumber( 'slide_proceed_pause', 1 ) * 1000 );
-              }
-            });
 
             recorder && recorder.setFilename( "slide" + zero(num) + ".mp3" );
 
@@ -376,10 +362,9 @@
                 self.extensions[ num ].start( { root: extensionChild } );
               }
             }
-          } });
+          } }).then( value => { pdf_viewer = value }, reason => console.error  );
 
-        // Parallel loading of all sub-components
-        // Promise.allSettled will never reject:
+        // Parallel loading of all sub-components:
         [ collector, audio_player, recorder ] = await Promise.all([
 
            self.collector.start({ root: collector_div, num: 1, parent_node: collector_div.parentElement, name: self.pdf.slice(self.pdf.lastIndexOf('/')+1,self.pdf.lastIndexOf('.')) }),
@@ -393,6 +378,28 @@
           }) : Promise.resolve( null )
 
         ]);
+
+        audio_player && audio_player.setFinish( () => {
+          test_auto_slide_proceed( ( period ) => {
+            setTimeout( async () => {
+              test_auto_slide_proceed( () => {
+                pdf_viewer.element.querySelector('.next').click();
+              } )
+            }, period * 1000 );
+          } );
+        });
+
+        async function test_auto_slide_proceed( callback ){
+          if ( self.global_settings && self.global_settings.store ) {
+            const auto_slide_proceed_container = await self.global_settings.store.get('auto_slide_proceed');
+            const period_container = await self.global_settings.store.get('period');
+            if (auto_slide_proceed_container && auto_slide_proceed_container.auto_slide_proceed && period_container && period_container.period >= 0) {
+
+              callback( period_container.period );
+
+            }
+          }
+        }
 
       };
 

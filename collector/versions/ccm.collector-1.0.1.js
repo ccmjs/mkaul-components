@@ -25,8 +25,8 @@
      * recommended used framework version
      * @type {string}
      */
-    // ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.2.1.min.js",
-    ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
+    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -79,11 +79,11 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-4.2.1.mjs" ],
+      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/collector/resources/styles.css" ],
-      // user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
+      // user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.1.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
 
       onfinish: {
         store: true,

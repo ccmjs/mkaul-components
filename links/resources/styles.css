@@ -25,6 +25,10 @@ span {
   padding-left:0.3rem;
 }
 
+button:valid {
+  background-color: #d8efff;
+}
+
 button {
   display: inline-block;
   border: thin solid black;
@@ -43,6 +47,10 @@ button:hover {
 
 button:active {
   transform: translateY(4px);
+}
+
+.small {
+
 }
 
 
