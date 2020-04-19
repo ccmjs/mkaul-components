@@ -152,7 +152,7 @@
         }
       }],
 
-      collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.0.1.js", {
+      collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.1.0.js", {
         ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
         helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
         "html.initial.inner.1.inner": "Fragen und Antworten zur Folie:",
@@ -170,6 +170,7 @@
           inner: "%message%"
         },
         retrieve_on_start: true,
+        replacer: function( name, value ){ return value.replace( /(https:\/\/[^\s])/ig, '<a href="$1">$1</a>' ); },
         data: {
           store: [ "ccm.store", { name: "se_ss20_slides_qa", url: "https://ccm2.inf.h-brs.de" } ]
         },
@@ -232,11 +233,16 @@
     Instance: function () {
 
       /**
+       * collection of already opened exceptions
+       * @type {Object<Number,HTMLElement>}
+       */
+      const exceptionCollection = {};
+
+      /**
        * collection of already opened extensions
        * @type {Object<Number,HTMLElement>}
        */
       const extensionCollection = {};
-
       /**
        * shortcut to helper functions
        * @type {Object.<string,function>}
@@ -333,6 +339,9 @@
             Object.keys( extensionCollection ).forEach( slide => {
               if ( slide !== '' + num ) extensionCollection[ slide ].style.display = 'none';
             });
+            Object.keys( exceptionCollection ).forEach( slide => {
+              if ( slide !== '' + num ) exceptionCollection[ slide ].style.display = 'none';
+            });
 
             collector && collector.setNum( num );
 
@@ -342,24 +351,39 @@
 
             if ( self.exceptions ){
               if ( exceptionCollection[ '' + num ] ){
-                exceptionCollection[ '' + num ].style.display = 'block';
-              } else if ( self.exceptions && self.exceptions[ '' + num ] ){
-                const exceptionChild = document.createElement('div');
-                exceptionCollection[ '' + num ] = exceptionChild;
+                exceptionCollection[ '' + num ].style.display = 'inline-block';
                 pdf_viewer.element.querySelector('#canvas').style.display = 'none';
-                pdf_viewer.element.querySelector('#optional_content').appendChild( exceptionChild );
-                self.exceptions[ num ].start( { root: exceptionChild } );
+              } else if ( self.exceptions && self.exceptions['week'+self.week_nr] && self.exceptions['week'+self.week_nr]['slide'+num] ){
+                const exceptionChild = document.createElement('div');
+                exceptionChild.id = 'exception-child';
+                exceptionCollection[ '' + num ] = exceptionChild;
+                const canvas = pdf_viewer.element.querySelector('#canvas');
+                const { width, height } = canvas.getBoundingClientRect();
+                canvas.style.display = 'none';
+                const pdf_view = pdf_viewer.element.querySelector('#pdf-view');
+                pdf_view.prepend( exceptionChild );
+                exceptionChild.style.width = "100%";
+                exceptionChild.style["margin-bottom"] = "1rem";
+                exceptionChild.style["text-align"] = "center";
+                // const clearDiv = document.createElement('div');
+                // clearDiv.style.clear = "both";
+                // pdf_view.insertBefore( clearDiv, exceptionChild.nextSibling );
+                // exceptionChild.style.height = height;
+                const exception = await $.solveDependency(self.exceptions['week'+self.week_nr ]['slide'+num],self);
+                const exceptionApp = await exception.start( { root: exceptionChild } );
+                exceptionApp.element.style.margin = '0 auto';
               }
             }
 
-            if ( extensions ){
+            if ( self.extensions ){
               if ( extensionCollection[ '' + num ] ){
-                extensionCollection[ '' + num ].style.display = 'block';
-              } else if ( self.extensions && self.extensions[ '' + num ] ){
+                extensionCollection[ '' + num ].style.display = 'inline-block';
+              } else if ( self.extensions && self.extensions['week' + self.week_nr] && self.extensions['week' + self.week_nr]['slide'+num] ){
                 const extensionChild = document.createElement('div');
                 extensionCollection[ '' + num ] = extensionChild;
                 extensions.appendChild( extensionChild );
-                self.extensions[ num ].start( { root: extensionChild } );
+                const extension = await $.solveDependency(self.extensions['week' + self.week_nr]['slide'+num],self);
+                extension.start( { root: extensionChild } );
               }
             }
           } }).then( value => { pdf_viewer = value }, reason => console.error  );
