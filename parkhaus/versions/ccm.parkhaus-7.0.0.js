@@ -11,10 +11,10 @@
     name: 'parkhaus',
     version: [7,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.2.0.js',
+    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
-    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/helper.mjs" ],
+    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.mjs" ],
 
     config: {
       name: "CarHome",
@@ -56,10 +56,10 @@
               ] },
             { class: 'button_container', inner: [ { tag: 'span', class: 'extra_buttons' } ] },
             { class: 'button_container', inner: [ { tag: 'span', class: 'extra_charts' } ] },
-            { tag: 'img', class: 'entry', src: '%car%', width: '202', height: '74' },
+            { tag: 'img', class: 'entry', src: '%car%', "width":"80", "height":"30" },
             { tag: 'span', class: 'traffic_light' },
-            { tag: 'img', src: '%parking_garage%', width: '250', height: '235' },
-            { class: 'exit_car_container', inner: { tag: 'img', class: 'exit', src: '%empty%', width: '202', height: '74' } },
+            { tag: 'img', src: '%parking_garage%', "width":"125", "height":"117" },
+            { class: 'exit_car_container', inner: { tag: 'img', class: 'exit', src: '%empty%', "width":"80", "height":"30" } },
             { class: 'garage' },
             { tag: 'hr' },
             { tag: 'table', inner: [
@@ -233,7 +233,7 @@
       hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
 
-      chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
+      chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.2.js" ],
 
       // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
       css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
@@ -522,6 +522,7 @@
 
         // render content to website
         // $.setContent( self.element, main_elem );
+        self.element.textContent = '';
         self.element.appendChild( main_elem );
 
         // load config from server
