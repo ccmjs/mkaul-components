@@ -32,7 +32,8 @@
       html: {
         main: {
           inner: [
-              { tag: 'h2', inner: [
+                { tag: 'p', class: 'alert', inner: '' },  // html.main.inner.0.inner
+                { tag: 'h2', inner: [
                   'Autos im Parkhaus "%name%": &nbsp; ',
                 { tag: 'span', class: 'counter', inner: '0' },
                   ', &nbsp; Max: &nbsp; ',
@@ -93,19 +94,19 @@
         invalid_slot: { tag: 'li', inner: '%id% ungültig.' },
       },
 
-      // extra_buttons: [
+      // "extra_buttons": [
       //   {
-      //     extra_class: 'sum',
-      //     extra_inner: 'Sum',
-      //     extra_popup_title: 'Sum of all parking fees'
+      //     "extra_class": "sum",
+      //     "extra_inner": "Sum",
+      //     "extra_popup_title": "Sum of all parking fees"
       //   }
       // ],
       //
-      // extra_charts: [
+      // "extra_charts": [
       //   {
-      //     extra_class: 'chart',
-      //     extra_inner: 'Chart',
-      //     extra_popup_title: 'Chart of all parking fees'
+      //     "extra_class": "chart",
+      //     "extra_inner": "Chart",
+      //     "extra_popup_title": "Chart of all parking fees"
       //   }
       // ],
 
