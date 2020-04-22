@@ -228,6 +228,12 @@
     Instance: function () {
 
       /**
+       * collection of already opened exceptions
+       * @type {Object<Number,HTMLElement>}
+       */
+      const exceptionCollection = {};
+
+      /**
        * collection of already opened extensions
        * @type {Object<Number,HTMLElement>}
        */
@@ -363,23 +369,23 @@
             if ( self.exceptions ){
               if ( exceptionCollection[ '' + num ] ){
                 exceptionCollection[ '' + num ].style.display = 'block';
-              } else if ( self.exceptions && self.exceptions[ '' + num ] ){
+              } else if ( self.exceptions && self.exceptions['week' + week_nr] && self.exceptions['week'+week_nr ]['slide'+num] ){
                 const exceptionChild = document.createElement('div');
                 exceptionCollection[ '' + num ] = exceptionChild;
                 pdf_viewer.element.querySelector('#canvas').style.display = 'none';
                 pdf_viewer.element.querySelector('#optional_content').appendChild( exceptionChild );
-                self.exceptions[ num ].start( { root: exceptionChild } );
+                self.exceptions['week'+week_nr ]['slide'+num].start( { root: exceptionChild } );
               }
             }
 
             if ( extensions ){
               if ( extensionCollection[ '' + num ] ){
                 extensionCollection[ '' + num ].style.display = 'block';
-              } else if ( self.extensions && self.extensions[ '' + num ] ){
+              } else if ( self.extensions && self.extensions['week' + week_nr] && self.extensions['week' + week_nr]['slide'+num] ){
                 const extensionChild = document.createElement('div');
                 extensionCollection[ '' + num ] = extensionChild;
                 extensions.appendChild( extensionChild );
-                self.extensions[ num ].start( { root: extensionChild } );
+                self.extensions['week' + week_nr]['slide'+num].start( { root: extensionChild } );
               }
             }
           } });

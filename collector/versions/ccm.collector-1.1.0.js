@@ -308,7 +308,7 @@
 
         // add marker to link template
         const html_link = $.clone( self.html.link );
-        html_link.class = self.marker;
+        html_link.classList.add( self.marker );
 
         // process all data
         dataset.forEach( record => {
