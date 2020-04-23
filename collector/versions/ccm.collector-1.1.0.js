@@ -311,7 +311,7 @@
         html_link.class = self.marker;
 
         // process all data
-        dataset.sort( (a,b) => parseInt( b.key[2] ) - parseInt( a.key[2] ) ).forEach( record => {
+        dataset.sort( (a,b) => parseInt( a.key[2] ) - parseInt( b.key[2] ) ).forEach( record => {
           // fill HTML template with data from dataset
           // add link to parent node outside the shadow DOM
           parentNode.insertBefore( $.html( html_link, record ), self.root.parentNode );
