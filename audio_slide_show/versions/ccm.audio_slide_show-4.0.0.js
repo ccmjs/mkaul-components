@@ -91,7 +91,7 @@
         scale: 1,
         routing: [ "ccm.instance", "https://ccmjs.github.io/akless-components/routing/versions/ccm.routing-2.0.5.js" ],
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
-        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
+        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.min.mjs" ],
         // exceptions: {  // use different components instead of slide view, e.g. quiz instead of slide 2:
         //   "2": [ "ccm.component", "https://ccmjs.github.io/akless-components/quiz/versions/ccm.quiz-4.1.0.js", ["ccm.get","https://ccmjs.github.io/akless-components/quiz/resources/resources.js","demo"] ]
         // },
@@ -152,9 +152,9 @@
         }
       }],
 
-      collector: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/collector/versions/ccm.collector-1.1.0.js", {
+      collector: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/collector/versions/ccm.collector-1.1.0.js", {
         ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
-        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
+        helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.min.mjs" ],
         "html.initial.inner.1.inner": "Fragen und Antworten zur Folie:",
         "html.main": {
           inner: [
@@ -170,7 +170,7 @@
           inner: "%message%"
         },
         retrieve_on_start: true,
-        replacer: function( name, value ){ return value.replace( /(https:\/\/[^\s])/ig, '<a href="$1">$1</a>' ); },
+        replacer: function( name, value ){ return value.replace( /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/ig, ' <a href="$1" target="_blank" rel="noopener">$1</a> ' ); },
         data: {
           store: [ "ccm.store", { name: "se_ss20_slides_qa", url: "https://ccm2.inf.h-brs.de" } ]
         },
@@ -203,7 +203,7 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.0.0.mjs" ],
+      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.min.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/audio_slide_show/resources/styles.css" ],
@@ -370,8 +370,9 @@
                 // pdf_view.insertBefore( clearDiv, exceptionChild.nextSibling );
                 // exceptionChild.style.height = height;
                 const exception = await $.solveDependency(self.exceptions['week'+self.week_nr ]['slide'+num],self);
-                const exceptionApp = await exception.start( { root: exceptionChild } );
-                exceptionApp.element.style.margin = '0 auto';
+                exception.start( { root: exceptionChild } );
+                // const exceptionApp = await ...
+                // exceptionApp.element.style.margin = '0 auto';
               }
             }
 

@@ -85,7 +85,7 @@
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
       css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/collector/resources/styles.css" ],
-      // user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.4.1.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
+      user:   [ "ccm.instance", "https://ccmjs.github.io/akless-components/user/versions/ccm.user-9.5.0.js", { realm: "hbrsinfpseudo", "logged_in": true } ],
 
       onfinish: {
         store: true,
@@ -161,6 +161,8 @@
       this.start = async () => {
 
         if ( ! self.user ) self.user = self.ccm.context.find(self,'user');
+
+        // force login here, otherwise database access will fail
 
         const initButton = $.html( this.html.initial );
         const inputForm = $.html( this.html.main );
@@ -303,7 +305,7 @@
         });
 
         // fetch dataset
-        self.data.key = { _id: { $regex: `^${self.name},${self.num}` } }; // [ self.name, self.num, * ]
+        self.data.key = { _id: { $regex: `^${self.name},${self.num},` } }; // [ self.name, self.num, * ]
         dataset = await $.dataset( self.data ); // empty object with key { key: $.generateKey() }
 
         // add marker to link template

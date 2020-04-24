@@ -299,7 +299,7 @@
           const autoplay = await self.global_settings.store.get('autoplay');
           if ( autoplay && autoplay.autoplay === true ){
             audioTag.autoplay = true;
-            switchToPauseButton();
+            switchToPlayButton();
           } else {
             delete audioTag.autoplay;
             audioTag.src = self.src;
@@ -425,11 +425,13 @@
         function ontimeupdate( e ){
           if ( timeline ){
             if ( $.isSafari() ){
-              const endBuf = audioTag.buffered.end(0);
-              const soFar = audioContext.currentTime / endBuf;
-              // parseInt(((endBuf / audioTag.duration) * 100));
-              // audioTag.duration is Infinity
-              timeline.value = 100 * soFar;
+              if ( audioTag.buffered && audioTag.buffered.end(0) ){
+                const endBuf = audioTag.buffered.end(0);
+                const soFar = audioContext.currentTime / endBuf;
+                // parseInt(((endBuf / audioTag.duration) * 100));
+                // audioTag.duration is Infinity
+                timeline.value = 100 * soFar;
+              }
             } else {
               timeline.value = 100 * audioTag.currentTime / audioTag.duration;
             }
