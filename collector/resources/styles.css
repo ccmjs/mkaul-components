@@ -50,7 +50,11 @@ button:active {
 }
 
 .small {
+  font-size: small;
+}
 
+.important {
+  background-color: #ffdddd;
 }
 
 
