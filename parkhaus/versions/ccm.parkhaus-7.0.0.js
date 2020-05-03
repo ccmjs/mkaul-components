@@ -14,7 +14,7 @@
     ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js',
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
 
-    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.mjs" ],
+    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-5.1.0.min.mjs" ],
 
     config: {
       name: "CarHome",
@@ -32,7 +32,7 @@
       html: {
         main: {
           inner: [
-                { tag: 'p', class: 'alert', inner: '' },  // html.main.inner.0.inner
+                { "tag": "p", "class": "alert", "inner": "" },  // html.main.inner.0.inner
                 { tag: 'h2', inner: [
                   'Autos im Parkhaus "%name%": &nbsp; ',
                 { tag: 'span', class: 'counter', inner: '0' },
@@ -97,8 +97,13 @@
       // "extra_buttons": [
       //   {
       //     "extra_class": "sum",
-      //     "extra_inner": "Sum",
+      //     "extra_inner": "SUM",
       //     "extra_popup_title": "Sum of all parking fees"
+      //   },
+      //   {
+      //     "extra_class": "avg",
+      //     "extra_inner": "AVG",
+      //     "extra_popup_title": "Average of all parking fees"
       //   }
       // ],
       //
@@ -598,6 +603,14 @@
         const extra_div = main_elem.querySelector( '.extra_buttons' );
         if ( self.extra_buttons ){
           self.extra_buttons.forEach( extra_params => {
+            if ( typeof extra_params === "string" ){
+              const extra_string = extra_params;
+              extra_params = {
+                "extra_class": extra_string,
+                "extra_inner": extra_string,
+                "extra_popup_title": extra_string
+              };
+            }
             const extra_sub_div = $.html( self.html.extra_button_div, extra_params );
             extra_div.appendChild( extra_sub_div );
             const extra_button = extra_sub_div.querySelector('button');
@@ -612,6 +625,14 @@
         const extra_charts = main_elem.querySelector( '.extra_charts' );
         if ( self.extra_charts ){
           self.extra_charts.forEach(extra_params => {
+            if ( typeof extra_params === "string" ){
+              const extra_string = extra_params;
+              extra_params = {
+                "extra_class": extra_string,
+                "extra_inner": extra_string,
+                "extra_popup_title": extra_string
+              };
+            }
             const extra_sub_div = $.html( self.html.extra_chart_div, extra_params );
             extra_charts.appendChild( extra_sub_div );
             const extra_chart = extra_sub_div.querySelector('button');
