@@ -339,6 +339,9 @@
           getCarById( id ){
             return this._car_index[ id ];
           }
+          getAllCarLicenses(){
+            return Object.values( this._car_index ).map( car => car.license );
+          }
           getCarBySpace( nr ){
             return this._space_index[ nr ];
           }
@@ -377,6 +380,8 @@
                 const newChild = car.image();
                 // in concurrent car replacements the oldChild might have been replaced in the meanwhile
                 garage_div.replaceChild( newChild, oldChild );
+                car._inGarage = true;
+                car.timer = (new Date()).getTime();
                 this.rerender();
               } else { // space is occupied
                 if ( ! car.space || car.space === "0" ) debugger;
@@ -449,19 +454,35 @@
         class Car {
           constructor( spec ){
             if ( spec ){
-              [ this.nr, this.timer, this._duration, this._price, this._hash, this._color, this.space, this.client_category, this.license ] = spec.split("/");
-              [ 'nr', 'timer', '_duration', '_price', 'space', 'license' ].forEach( prop => this[prop] === '_' ? '_' : parseInt(this[prop]));
+              if ( typeof spec === 'string' ){
+                [ this.nr, this.timer, this._duration, this._price, this._hash, this._color, this.space, this.client_category, this.license ] = spec.split("/");
+                [ 'nr', 'timer', '_duration', '_price', 'space' ].forEach( prop => this[prop] === '_' ? '_' : parseInt(this[prop]));
+              } else {
+                this.nr = spec;
+                this.license = spec;
+                this._inGarage = false;
+                this.timer = (new Date()).getTime();
+                this._duration = 0;
+              }
             } else {
               this.nr = garage.nextTotal();  // because the car has not entered the car_index
               this.timer = (new Date()).getTime();
-              this._license = randomLicense();
+              this.license = randomLicense();
             }
+          }
+          clear(){
+            this._inGarage = false;
+            this.timer = (new Date()).getTime();
+            this._duration = 0;
           }
           id(){
             return 'car_' + this.nr;
           }
           hash(){
             return self.hash ? self.hash.md5( self.SALT + this.nr + this.timer ) : this.nr;
+          }
+          inGarage(){
+            return this._inGarage;
           }
           get license(){
             if ( self.license_max && ! this._license ){
@@ -482,7 +503,7 @@
             this._client_category = cat;
           }
           get space(){
-            if ( ! this._space ) this._space = garage.randomSpace();
+            if ( ! this._space ) this.space = garage.randomSpace();
             return this._space;
           }
           set space( nr ){
@@ -491,6 +512,7 @@
             } else {
               this._space = garage.randomSpace();
             }
+            this._inGarage = true;
           }
           space_id(){
             return 'Space_' + this.space;
@@ -499,8 +521,16 @@
             const car_strings = s ? s.split(',') : [];
             return car_strings.map( spec => new Car( spec ) );
           }
+          enter(){
+            this._inGarage = true;
+            this._duration = 0;
+            this.timer = (new Date()).getTime();
+            // ToDo
+          }
           leave() {
+            this._inGarage = false;
             this._duration = (new Date()).getTime() - this.timer;
+            this.timer = (new Date()).getTime();
             return this._duration;
           }
           gone(){
@@ -535,7 +565,7 @@
           image(){
             return $.html( self.car, {
               id: this.space_id(),
-              nr: this.nr,
+              nr: this.license,
               color: this.color(),
               tooltip: this.tooltip()
             });
@@ -544,6 +574,24 @@
             return `Car(${this.nr})`;
           }
         }
+
+        class ClientList {
+          constructor( max ){
+            this._list = [];
+            for (let i = 0; i<max; i++){
+              this._list.push( new Car( i + 1 ) );
+            }
+          }
+          nextCar(){
+            const extern = this.externalCars();
+            return extern.length > 0 ?  extern[ getRandomInt( extern.length ) ] : null;
+          }
+          externalCars(){
+            return this._list.filter( car => ! car.inGarage() );
+          }
+        }
+
+        const clientMap = new ClientList( self.license_max );
 
         // render content to website
         // $.setContent( self.element, main_elem );
@@ -692,7 +740,8 @@
                       self.open_to && (new Date()).getHours() > parseInt( self.open_to ) - 1 ) {
             alert( self.messages.parkhaus_closed );
           } else {
-            garage.addCar( new Car() );
+            const nextCar = clientMap.nextCar();
+            if ( nextCar ) garage.addCar( nextCar );
          }
         }
 
@@ -831,9 +880,11 @@
             () => {
               const enterOrLeave = getRandomInt( self.simulation.max );
               if ( enterOrLeave < self.simulation.enter ){
-                garage.addCar( new Car() );
+                const nextCar = clientMap.nextCar();
+                if ( nextCar ) garage.addCar( nextCar );
               } else {
-                garage.removeCar( garage.random );
+                const oldCar = garage.random;
+                garage.removeCar( oldCar );
               }
             },
             self.simulation.delay * self.delay
