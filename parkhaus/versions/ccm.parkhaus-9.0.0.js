@@ -512,7 +512,6 @@
             } else {
               this._space = garage.randomSpace();
             }
-            this._inGarage = true;
           }
           space_id(){
             return 'Space_' + this.space;
@@ -591,7 +590,7 @@
           }
         }
 
-        const clientMap = new ClientList( self.license_max );
+        const clientMap = new ClientList( self.license_max || self.Max );
 
         // render content to website
         // $.setContent( self.element, main_elem );
