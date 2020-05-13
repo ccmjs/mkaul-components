@@ -85,7 +85,7 @@ button:active {
 }
 
 .car, .space {
-    width: auto;
+    width: 3rem;
     height: 2rem;
     display: inline-block;
 }
@@ -94,8 +94,8 @@ button:active {
     cursor: pointer;
 }
 
-.Max {
-    width: 2rem;
+.max {
+    width: 3rem;
 }
 
 .counter {
