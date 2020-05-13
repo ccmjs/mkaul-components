@@ -590,7 +590,7 @@
           }
         }
 
-        const clientMap = new ClientList( self.license_max || self.Max );
+        const clientMap = new ClientList( self.license_max || 100 * self.Max );
 
         // render content to website
         // $.setContent( self.element, main_elem );
@@ -717,13 +717,17 @@
               let config, response;
               try {
                 response = await csv_get_request( extra_params.extra_class, {} );
-                try {
-                  config = JSON.parse( response );
-                  config.root = extra_div;
-                  self.chart.start( config );
-                  checkbox.style.display = 'inline';
-                } catch (err2){
-                  console.log( err2, " in HTTP Response: ", response );
+                if ( response ){
+                  try {
+                    config = JSON.parse( response );
+                    config.root = extra_div;
+                    self.chart.start( config );
+                    checkbox.style.display = 'inline';
+                  } catch (err2){
+                    console.log( err2, " in HTTP Response: ", response );
+                  }
+                } else {
+                  console.log( 'No HTTP-GET handler for ' + extra_params.extra_class );
                 }
               } catch( err1 ){
                 show_error( "GET " + extra_params.extra_class + ": " + err1.toString() + "<br>" + response )
