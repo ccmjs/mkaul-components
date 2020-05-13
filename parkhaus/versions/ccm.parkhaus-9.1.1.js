@@ -758,7 +758,7 @@
         }
 
         function addTableRow( car ){
-          table.appendChild( $.html( self.html.row, {
+          if ( table ) table.appendChild( $.html( self.html.row, {
               nr: car.nr,
               von: car.begin(),
               bis: car.end(),
