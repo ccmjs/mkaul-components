@@ -7,21 +7,21 @@
  */
 
 ( function () {
-  
+
   var component = {
-    
+
     name: 'uml',
     version: [4,0,1],
 
     // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
     ccm: 'https://ccmjs.github.io/ccm/versions/ccm-25.0.0.js',
-    
+
     config: {
       plantUML: "https://www.plantuml.com/plantuml/img/",
       rawdeflate: ['ccm.load', 'https://ccmjs.github.io/mkaul-components/uml/resources/rawdeflate.js'], // helper library for PlantUML
       default: 'Bob->Alice : hello',
       html: {
-        main: {
+        main: { style: "overflow: auto",
           inner: [
             { tag: 'img', src: '%plantUML%%compressed_default%' },
             { tag: 'br' },
@@ -174,7 +174,7 @@
 
       this.getValue = function() {
         // replace every apostrophe with no leading backslash  /(?<!\\)"/ yields problems in Firefox and Edge
-        return this.element.querySelector( 'textarea' ).value.split('"').join('&#34;').replace(/\\n/g, "&#13;&#10;");
+        return this.element.querySelector( 'textarea' ).value.split('"').join('&#34;').replace(/\\n/g, "&#13;&#10;").replace(/\\[^n]/g, ''); // delete all non newline controls
       };
 
       this.replace = function() {
@@ -191,7 +191,7 @@
        * starts the instance
        */
       this.start = async () => {
-      
+
         // has logger instance? => log 'start' event
         if ( self.logger ) self.logger.log( 'start' );
 
@@ -218,7 +218,7 @@
             sync: sync,
             help: help
           } );
-        
+
         // select inner containers
         const uml_helper_text = main_elem.querySelector( '.uml_helper_text' );
         const sync_button = main_elem.querySelector( 'button.sync' );
@@ -229,6 +229,7 @@
         $.setContent( uml_helper_text, $.html( self.html.help[self.language] ) );
 
         const img = main_elem.querySelector( 'img' );
+        img.style.overflow = 'scroll';
         if ( self.width )  img.style.width = self.width;
         if ( self.format ) img.format = self.format;
 
@@ -260,7 +261,7 @@
           }
           if ( self.logger ) self.logger.log( 'help' );
         }
-        
+
         // set content of own website area
         $.setContent( self.element, main_elem );
 
@@ -270,7 +271,7 @@
             self.element.querySelector(selector).style.setProperty(key, self.style[selector][key]);
           });
         });
-  
+
         // helper functions for PlantUML
         function encode64(data) {
           let r = "";
@@ -286,7 +287,7 @@
           }
           return r;
         }
-  
+
         // helper function for PlantUML
         function append3bytes(b1, b2, b3) {
           const c1 = b1 >> 2;
@@ -300,7 +301,7 @@
           r += encode6bit(c4 & 0x3F);
           return r;
         }
-  
+
         // helper function for PlantUML
         function encode6bit(b) {
           if (b < 10) {
@@ -323,13 +324,13 @@
           }
           return '?';
         }
-  
+
         function compress(element, s) {
           //UTF8
           s = decodeURIComponent(encodeURIComponent(s));
           element.src = self.plantUML + encode64( deflate( s, 9 ));
         }
-  
+
         function compress_uml(s){
           return encode64( deflate( s, 9 ) );
         }
@@ -339,6 +340,6 @@
     }
 
   };
-  
+
   function p(){window.ccm[v].component(component)}var f="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[f])window.ccm.files[f]=component;else{var n=window.ccm&&window.ccm.components[component.name];n&&n.ccm&&(component.ccm=n.ccm),"string"==typeof component.ccm&&(component.ccm={url:component.ccm});var v=component.ccm.url.split("/").pop().split("-");if(v.length>1?(v=v[1].split("."),v.pop(),"min"===v[v.length-1]&&v.pop(),v=v.join(".")):v="latest",window.ccm&&window.ccm[v])p();else{var e=document.createElement("script");document.head.appendChild(e),component.ccm.integrity&&e.setAttribute("integrity",component.ccm.integrity),component.ccm.crossorigin&&e.setAttribute("crossorigin",component.ccm.crossorigin),e.onload=function(){p(),document.head.removeChild(e)},e.src=component.ccm.url}}
 }() );
