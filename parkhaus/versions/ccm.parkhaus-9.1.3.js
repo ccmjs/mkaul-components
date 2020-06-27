@@ -29,6 +29,7 @@
         enter: 2,  // enter car into garage for all random choices below this enter value
         delay: 2   // wait for simulation delay factor * self.delay
       },
+      // hide_table: true,
       html: {
         main: {
           inner: [
@@ -290,6 +291,7 @@
 
         const ticket_hash = main_elem.querySelector('.ticket_hash');
         const table = main_elem.querySelector( 'table' );
+        if ( self.hide_table ) table.style.display = 'none';
         const error_div = main_elem.querySelector('.errors');
         const header = {};
         ['counter','max','free','open_from','open_to' ].forEach( className => {
