@@ -583,16 +583,15 @@
               const client_price = self.price_factor[ this.client_category ];
               const vehicle_price = self.price_factor[ this.vehicle_type ];
               const client_vehicle_price = self.price_factor[ this.client_category + '.' + this.vehicle_type ];
+              if ( typeof client_vehicle_price === 'number' ) return client_vehicle_price;
               if ( typeof client_price === 'number' ) return client_price;
               if ( typeof vehicle_price === 'number' ) return vehicle_price;
-              if ( typeof client_vehicle_price === 'number' ) return client_vehicle_price;
               return 1;
             }
             return 1;
           }
           price() {
             return Math.round(this.price_factor() * this._duration / parseInt( self.simulation_speed ) );
-            // return this._duration ? ' € ' + parseFloat(Math.round(this._duration / self.simulation_speed ) / 100).toFixed(2) : null;
           }
           color(){
             if ( ! this._color ){
