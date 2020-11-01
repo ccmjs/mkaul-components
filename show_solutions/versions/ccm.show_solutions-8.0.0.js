@@ -58,7 +58,7 @@
       uml: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/uml/versions/ccm.uml-4.0.1.js" ],
       // editor: [ "ccm.component", "lib/ccm.editor-5.0.0.js" ],
 
-      submit: [ "ccm.component", "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-8.1.0.js" ],
+      submit: [ "ccm.component", "https://ccmjs.github.io/akless-components/submit/versions/ccm.submit-8.1.3.js" ],
 
       // editor: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/content_editor/versions/ccm.content_editor-7.1.0.js", {
       //   ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.5.3.min.js",
@@ -330,6 +330,17 @@
               break;
             case "url":
               solutionBody.innerHTML = `<a target="_blank" href="${$.escapeHTML( solution )}" rel="noopener">${$.escapeHTML( solution )}</a>`;
+              break;
+            case "html_no_numbers":
+              solutionBody.innerHTML = `<pre><code class="html">${$.escapeHTML( solution )}</code></pre>`;
+              // add highlighting to code
+              hljs.highlightBlock( solutionBody.firstElementChild );
+              break;
+            case "html_with_numbers":
+              solutionBody.innerHTML = `<pre><code class="html">${$.escapeHTML( solution )}</code></pre>`;
+              // add highlighting to code
+              hljs.highlightBlock( solutionBody.firstElementChild );
+              insertLineNumbers( solutionBody.firstElementChild );
               break;
             case "java":
               solutionBody.innerHTML = `<pre><code class="java">${$.escapeHTML( solution )}</code></pre>`;
