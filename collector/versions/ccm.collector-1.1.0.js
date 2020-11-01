@@ -26,7 +26,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.4.0.min.js",
+    ccm: "https://ccmjs.github.io/ccm/versions/ccm-25.5.3.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -197,7 +197,7 @@
 
               // store input values into dataset
               dataset = namedInputs.reduce( ( rec, input ) => {
-                  rec[ input.name ] = input.value;
+                  rec[ input.name ] = $.escapeHTML( input.value );
                   if ( self.replacer ) rec[ input.name ] = self.replacer( input.name, rec[ input.name ] );
                   return rec },
                 {

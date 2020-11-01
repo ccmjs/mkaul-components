@@ -57,4 +57,9 @@ button:active {
   background-color: #ffdddd;
 }
 
+.lecturer {
+  background-color: lightgrey;
+  font-style: italic;
+}
+
 
