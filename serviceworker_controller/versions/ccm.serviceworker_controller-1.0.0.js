@@ -217,11 +217,11 @@
         };
 
         this.hasNewChatContributions = async () => {
-          return await this.checkCounter( 'chat_count', self.store_metadata.name.chat );
+          return await this.checkCounter( self.store_metadata.name.chat, self.store_metadata.name.chat );
         };
 
         this.hasUpdates = async () => {
-          return await this.checkCounter( 'update_count', self.store_metadata.name.updates );
+          return await this.checkCounter( self.store_metadata.name.updates, self.store_metadata.name.updates );
         };
 
         this.getNotificationOptions = ( params ) => {
