@@ -77,7 +77,9 @@
           dateOfArrival: Date.now(),
           primaryKey: 1
         }
-      }
+      },
+
+      realm: "hbrsinfpseudo"
     },
 
     /**
@@ -91,6 +93,8 @@
        * @type {Instance}
        */
       const self = this;
+
+      let isLoggedOut = false;
 
       this.wb = null;
       this.timer = null;
@@ -234,16 +238,37 @@
 
         this.appNotification = async () => {
 
-          const newChatContributions = await this.hasNewChatContributions();
-          if ( newChatContributions ){
-            new Notification( newChatContributions + self.messages.new_chat, this.getNotificationOptions( { primaryKey: newChatContributions } ) );
-          }
+          const isLoggedIn = this.checkLogin();
 
-          const newUpdates = await this.hasUpdates();
-          if ( newUpdates ){
-            new Notification( newUpdates + self.messages.new_updates, this.getNotificationOptions( { primaryKey: newUpdates } ) );
+          if ( isLoggedIn ){
+            const newChatContributions = await this.hasNewChatContributions();
+            if ( newChatContributions ){
+              new Notification( newChatContributions + self.messages.new_chat, this.getNotificationOptions( { primaryKey: newChatContributions } ) );
+            }
+
+            const newUpdates = await this.hasUpdates();
+            if ( newUpdates ){
+              new Notification( newUpdates + self.messages.new_updates, this.getNotificationOptions( { primaryKey: newUpdates } ) );
+            }
           }
         }
+
+        this.checkLogin = () => {
+          const loginString = sessionStorage.getItem( 'ccm-user-' + self.realm );
+          if ( loginString ) {
+            const loginData = JSON.parse(loginString);
+            const day = new Date(loginData.date).toLocaleDateString();
+            if (day === new Date(Date.now()).toLocaleDateString()) {
+              // same day => Token valid
+              return true;
+            }
+          }
+          if ( ! isLoggedOut ){  // log out only once.
+            isLoggedOut = true;
+            self.parent.user.logout();
+          }
+          return false;
+        };
 
         this.changePushPeriod = ( input ) => {
           GLOBALS.setGlobal( self.push_period, input.value );
