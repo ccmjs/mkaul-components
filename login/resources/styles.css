@@ -1,0 +1,44 @@
+/**
+ * @overview default layout of ccm component login
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2021
+ * @license The MIT License (MIT)
+ */
+#element {
+  margin: 0;
+  padding: 0;
+}
+#element * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+span {
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+}
+
+button {
+  margin-left: 0.5em;
+  margin-bottom: 0;
+  color: #009ee0;
+  background-color: transparent;
+  border-color: #009ee0;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+
+
