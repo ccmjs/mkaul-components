@@ -191,6 +191,26 @@
         return $.isObject( dataset ) ? { inner: value } : value;
       };
 
+      this.get = () => {
+        return {
+          root: {
+            set innerHTML( newContents ){
+              self.root.querySelector('iframe').contentWindow.postMessage( JSON.stringify({
+                editor_id: self.editor.id,
+                action: 'contents',
+                inner: newContents
+              } ), self.editor.origin )
+            }
+          },
+          focus: function(){
+            self.root.querySelector('iframe').contentWindow.postMessage( JSON.stringify({
+              editor_id: self.editor.id,
+              action: 'focus'
+            } ), self.editor.origin );
+          }
+        }
+      }
+
     }
 
   };

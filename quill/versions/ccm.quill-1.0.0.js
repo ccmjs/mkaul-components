@@ -152,11 +152,16 @@
         // paste initial value of database into quill
         window.addEventListener("message", (event) => {
           if ( event.origin !== self.origin ) return;
+          if ( ! [' ','{'].includes( event.data.charAt(0) ) ) return;
           const json = JSON.parse( event.data );
           if ( json.editor_id !== self.editor_id ) return;
-          data = json.inner;
-          quill.root.innerHTML = json.inner || '';
-          inputListener();  // adjust scrollHeight
+          if ( json.action === 'focus' ){
+            quill.root.focus();
+          } else {
+            data = json.inner;
+            quill.root.innerHTML = json.inner || '';
+            inputListener();  // adjust scrollHeight
+          }
         }, false);
 
         const editor = self.root.querySelector( '.ql-editor' );
