@@ -34,6 +34,8 @@
     config: {
       shadow: "none",  // Safari has problems with shadow dom
 
+      debug: true,
+
       global_namespace: "WebAppGlobals",
 
       editor: {
@@ -75,13 +77,6 @@
       // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/editor/resources/styles.css" ],
       // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/styles.css" ],
 
-      // logger: [ "ccm.instance", "https://ccmjs.github.io/akless-components/log/versions/ccm.log-4.0.4.js", [ "ccm.get", "https://ccmjs.github.io/mkaul-components/editor/resources/configs.js", "log" ] ],
-
-      // onfinish: {
-      //   store: true,
-      //   restart: true,
-      //   alert: "Gesichert!"
-      // }
     },
 
     /**
@@ -103,6 +98,12 @@
       const self = this;
 
       /**
+       * reference to inner iframe
+       * @type {HTMLIFrameElement}
+       */
+      let iframe;
+
+      /**
        * dataset is the single source of truth, the Web is the UI
        * The value of dataset starts with a clone of this.data,
        *     but additional values might be added during editing.
@@ -110,7 +111,6 @@
        * @type {Object}
        */
       let dataset;
-
 
       /**
        * init is called once after all dependencies are solved and is then deleted
@@ -121,95 +121,97 @@
         // set shortcut to helper functions
         $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
 
-        // listen to datastore changes => restart
-        // if ( $.isDatastore( this.data.store ) ) this.data.store.onchange = this.start;
-
       };
 
-      /**
-       * is called once after the initialization and is then deleted
-       * @type {Function}
-       */
-      this.ready = async () => {
-
-        // logging of 'ready' event
-        this.logger && this.logger.log( 'ready' );
-
-      };
 
       /**
        * starts the instance
        */
       this.start = async () => {
 
-        // dataset = await $.dataset( this.data );
-        // if ( ! dataset ) dataset = { key: this.data.key };
+        // make editor id unique by adding id
+        self.editor.id += '_' + this.index;
+
+        dataset = self.data ? await $.dataset( self.data ) : '';
+        if ( dataset.inner ) dataset = dataset.inner;
+        if ( typeof dataset !== 'string' ) dataset = '';
 
         // add iframe srcdoc
-        this.html.main.srcdoc = `<script src="${self.editor.url}"></script>
-            <${self.editor.tag} 
-                origin="${self.editor.origin}" 
-                editor_id="${self.editor.id}" 
-                key='${self.editor.config}'>
-            </${self.editor.tag}>`;
+        this.html.main.srcdoc = `<script src="${self.ccm.url}"></script>
+            <div id="root"></div>
+            <script>
+                (async _=>{
+                  const root = document.getElementById('root');
+                  const origin = '${self.editor.origin}';
+                  const editor_id = '${self.editor.id}';
+                  const key = '${self.editor.config}';
+                  const debug = ${self.debug};
+                  const data = '${dataset.replaceAll(/(['`])/gm,"\\$1")}';
+                  const global_namespace = '${self.global_namespace}';
+                  window.ccm.start('${self.editor.url}',{ root, origin, editor_id, key, debug, global_namespace, data });
+                })();
+            </script>`;
 
         // render main HTML structure
         this.root.innerHTML = '';
-        const main = $.html( this.html.main );
-        this.root.appendChild( main );
-        const iframe = this.root.querySelector('iframe');
-        iframe.addEventListener('load', e => {
-            // ToDo await ready signal
-            // pass global namespace into iframe
-            iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];
+        iframe = $.html( this.html.main );
+        this.root.appendChild( iframe );
 
+        // after load event process data
+        iframe.addEventListener('load', async _=>{
+          iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];
+          /**
+           * access to editor
+           * @returns {Object}  editor
+           */
+          this.get = async () => {
+            const max = 30;
+            let count = 0;
+            return new Promise( resolve => {
+              if ( window[ self.global_namespace ][ self.editor.id ]?.quill ){
+                resolve( window[ self.global_namespace ][ self.editor.id ].quill );
+              } else {
+                if ( ++count < max ){
+                  setTimeout( _=> {
+                    resolve( this.get() );
+                  }, 100 );
+                }
+              }
+            } );
+          };
+
+          /**
+           * current state of this editor
+           * @returns {Object} state of editor
+           */
+          this.getValue = async () => {
+            const value = (await this.get()).root.innerHTML;
+            return $.isObject( dataset ) ? { inner: value } : value;
+          };
+
+          if ( $.isSafari() || $.isFirefox() ){
+            iframe.contentWindow.addEventListener('scroll-event', e => {
+              // iframeSharedObjects.ccm.root.scrollHeight
+              if ( e.detail.editor_id === self.editor.id ){
+                iframe.style.height = ( 45 + e.detail.scrollHeight ) + 'px';
+              }
+            });
+            iframe.style.height = ( 45 + (await self.get()).root.scrollHeight ) + 'px';
+          } else {
+            const sharedSpace = window[ self.global_namespace ][ self.editor.id ];
+            sharedSpace.ccm.scrollEventTarget.addEventListener('scroll-event', e => {
+              // iframeSharedObjects.ccm.root.scrollHeight
+              if ( e.detail.editor_id === self.editor.id ){
+                iframe.style.height = ( 35 + e.detail.scrollHeight ) + 'px';
+              }
+            });
+
+            iframe.style.height = ( 35 + sharedSpace.ccm.root.scrollHeight ) + 'px';
+
+          }
         });
 
-        /**
-         * update dataset from iframe
-         */
-        window.addEventListener("message", (event) => {
-          if ( event.origin !== self.editor.origin ) return;
-          // JSON data start with Blank or Opening Bracket
-          if ( ! [' ','{'].includes( event.data.charAt(0) ) ) return;
-          const json = JSON.parse( event.data );
-          const editor_id = json.editor_id;
-          if ( editor_id !== self.editor.id ) return;
-          dataset = json.inner;
-          iframe.style.height = ( 40 + json.scrollHeight ) + 'px';
-          self.onchange && self.onchange.call( self );
-        }, false);
-
       };
-
-      /**
-       * current state of this editor
-       * @returns {Object} state of editor
-       */
-      this.getValue = () => {
-        const value = dataset;
-        return $.isObject( dataset ) ? { inner: value } : value;
-      };
-
-      this.get = () => {
-        return {
-          root: {
-            set innerHTML( newContents ){
-              self.root.querySelector('iframe').contentWindow.postMessage( JSON.stringify({
-                editor_id: self.editor.id,
-                action: 'contents',
-                inner: newContents
-              } ), self.editor.origin )
-            }
-          },
-          focus: function(){
-            self.root.querySelector('iframe').contentWindow.postMessage( JSON.stringify({
-              editor_id: self.editor.id,
-              action: 'focus'
-            } ), self.editor.origin );
-          }
-        }
-      }
 
     }
 

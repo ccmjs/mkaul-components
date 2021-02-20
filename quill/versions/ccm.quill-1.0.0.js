@@ -56,27 +56,7 @@
 
       helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-6.0.1.min.mjs" ],
 
-      css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/quill/resources/styles.css" ],
-
-      user: [ "ccm.instance", "/ccmjs/mkaul-components/login/versions/ccm.login-1.0.0.js" ],
-
-      "data": {
-        "login": true,
-        "user": true,
-        "store": [ "ccm.store", {
-          "url": "https://ccm2.inf.h-brs.de",
-          "name": "se_ss20_solutions",
-          "method": "POST"
-        } ]
-      },
-
-      //data: {
-      //  store: [ "ccm.store", { "name": "editor_data" } ],
-      //  key: "demo"
-      //},
-      //onchange: function () { console.log( this.getValue() ) },
-
-
+      css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/quill/resources/styles.css" ]
 
     },
 
@@ -138,31 +118,12 @@
         div.id = 'editor';
         quill = new Quill( div, self.settings );
 
-        // logging of 'start' event
-        this.logger && this.logger.log( 'start' );
+        window.parent[ self.global_namespace ][ self.editor_id ] = {
+          ccm: this,
+          quill
+        };
 
-        /**
-         * inject dataset into iframe
-         */
-        if ( self.data ){
-          dataset = await $.dataset( self.data );
-          quill.root.innerHTML = ( $.isObject( dataset ) ? dataset.inner : dataset ) || '';
-        }
-
-        // paste initial value of database into quill
-        window.addEventListener("message", (event) => {
-          if ( event.origin !== self.origin ) return;
-          if ( ! [' ','{'].includes( event.data.charAt(0) ) ) return;
-          const json = JSON.parse( event.data );
-          if ( json.editor_id !== self.editor_id ) return;
-          if ( json.action === 'focus' ){
-            quill.root.focus();
-          } else {
-            data = json.inner;
-            quill.root.innerHTML = json.inner || '';
-            inputListener();  // adjust scrollHeight
-          }
-        }, false);
+        quill.root.innerHTML = self.data;
 
         const editor = self.root.querySelector( '.ql-editor' );
 
@@ -171,12 +132,16 @@
         editor.addEventListener( 'keydown', inputListener );
         editor.addEventListener( 'blur', inputListener );
 
+        self.scrollEventTarget = new EventTarget();
+
         function inputListener( event ){
-          window.parent.postMessage( JSON.stringify({
-            editor_id: self.editor_id,
-            inner: self.getValue(),
-            scrollHeight: self.root.scrollHeight
-          } ), self.origin );
+          ( ( $.isSafari() || $.isFirefox()  )
+              ? window
+              : self.scrollEventTarget
+          ).dispatchEvent( new CustomEvent( 'scroll-event', { detail: {
+              scrollHeight: self.root.scrollHeight,
+              editor_id: self.editor_id
+            } } ) );
         }
 
         if ( self.onchange )
@@ -185,6 +150,7 @@
           } );
 
         if ( self.focus ) self.root.querySelector( '.ql-editor' ).focus();
+
       };
 
       this.get = () => quill;
