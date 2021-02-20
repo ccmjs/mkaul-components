@@ -148,7 +148,7 @@
                   const debug = ${self.debug};
                   const data = '${dataset.replaceAll(/(['`])/gm,"\\$1")}';
                   const global_namespace = '${self.global_namespace}';
-                  window.ccm.start('${self.editor.url}',{ root, origin, editor_id, key, debug, global_namespace, data });
+                  window.ccm.start('${self.editor.url}',{ root, origin, editor_id, key, debug, global_namespace, data, "settings.placeholder": '${self.placeholder || "Start here ..."}' });
                 })();
             </script>`;
 
@@ -160,32 +160,29 @@
         // after load event process data
         iframe.addEventListener('load', async _=>{
           iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];
-          /**
-           * access to editor
-           * @returns {Object}  editor
-           */
-          this.get = async () => {
-            const max = 30;
-            let count = 0;
+
+          const sharedSpace = async ( count ) => {
             return new Promise( resolve => {
-              if ( window[ self.global_namespace ][ self.editor.id ]?.quill ){
-                resolve( window[ self.global_namespace ][ self.editor.id ].quill );
+              if ( window[ self.global_namespace ][ self.editor.id ] ){
+                resolve( window[ self.global_namespace ][ self.editor.id ] );
               } else {
-                if ( ++count < max ){
-                  setTimeout( _=> {
-                    resolve( this.get() );
+                if ( count > 0 ){
+                  setTimeout( async _=> {
+                    resolve( sharedSpace( --count ) );
                   }, 100 );
                 }
               }
             } );
           };
 
+          this.get = () => window[ self.global_namespace ][ self.editor.id ].quill;
+
           /**
            * current state of this editor
            * @returns {Object} state of editor
            */
-          this.getValue = async () => {
-            const value = (await this.get()).root.innerHTML;
+          this.getValue = () => {
+            const value = this.get().root.innerHTML;
             return $.isObject( dataset ) ? { inner: value } : value;
           };
 
@@ -196,7 +193,7 @@
                 iframe.style.height = ( 45 + e.detail.scrollHeight ) + 'px';
               }
             });
-            iframe.style.height = ( 45 + (await self.get()).root.scrollHeight ) + 'px';
+            iframe.style.height = ( 45 + ( await sharedSpace( 3 ) ).ccm.root.scrollHeight ) + 'px';
           } else {
             const sharedSpace = window[ self.global_namespace ][ self.editor.id ];
             sharedSpace.ccm.scrollEventTarget.addEventListener('scroll-event', e => {
