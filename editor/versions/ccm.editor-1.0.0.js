@@ -24,7 +24,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-25.5.3.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.1.1.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -134,46 +134,63 @@
 
         dataset = self.data ? await $.dataset( self.data ) : '';
         if ( dataset.inner ) dataset = dataset.inner;
-        if ( typeof dataset !== 'string' ) dataset = '';
+        if ( typeof dataset === 'string' && dataset.length ){
+          dataset = dataset.replaceAll('"',"'");
+          dataset = dataset.replaceAll('&lt;',"&amp;lt;");
+        } else {
+          dataset = '';
+        }
 
         // add iframe srcdoc
-        this.html.main.srcdoc = `<script src="${self.ccm.url}"></script>
-            <div id="root"></div>
-            <script>
-                (async _=>{
-                  const root = document.getElementById('root');
-                  const origin = '${self.editor.origin}';
-                  const editor_id = '${self.editor.id}';
-                  const key = '${self.editor.config}';
-                  const debug = ${self.debug};
-                  const data = '${dataset.replaceAll(/(['`])/gm,"\\$1")}';
-                  const global_namespace = '${self.global_namespace}';
-                  window.ccm.start('${self.editor.url}',{ root, origin, editor_id, key, debug, global_namespace, data, "settings.placeholder": '${self.placeholder || "Start here ..."}' });
-                })();
-            </script>`;
+        this.html.main.srcdoc = `<script src="${self.editor.url}"></script>
+            <${self.editor.tag} 
+                origin="${self.editor.origin}" 
+                editor_id="${self.editor.id}"
+                global_namespace="${self.global_namespace}"
+                data="${dataset}" 
+                debug="${self.debug}"
+                focus="${self.focus}"
+                key='${self.editor.config}'>
+            </${self.editor.tag}>`;
 
         // render main HTML structure
         this.root.innerHTML = '';
         iframe = $.html( this.html.main );
         this.root.appendChild( iframe );
 
+        const sharedSpace = async ( count ) => {
+          return new Promise( resolve => {
+            if ( window[ self.global_namespace ][ self.editor.id ] ){
+              resolve( window[ self.global_namespace ][ self.editor.id ] );
+            } else {  // not ready yet
+              if ( count > 0 ){
+                setTimeout( async _=> {
+                  resolve( sharedSpace( --count ) );
+                }, 100 );
+              }
+            }
+          } );
+        };
+
+        // preliminary access to be overwritten by the load event, see below
+        this.get = () => {
+          return {
+            focus: () => {
+              iframe.focus();
+            },
+            set innerHTML( newContents ){
+              debugger;  // ToDo
+            }
+          }
+        };
+
+        this.getValue = () => {
+          return dataset; // preliminary access to be overwritten by the load event, see below
+        };
+
         // after load event process data
         iframe.addEventListener('load', async _=>{
-          iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];
-
-          const sharedSpace = async ( count ) => {
-            return new Promise( resolve => {
-              if ( window[ self.global_namespace ][ self.editor.id ] ){
-                resolve( window[ self.global_namespace ][ self.editor.id ] );
-              } else {
-                if ( count > 0 ){
-                  setTimeout( async _=> {
-                    resolve( sharedSpace( --count ) );
-                  }, 100 );
-                }
-              }
-            } );
-          };
+          iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];  // ToDo delete if unused
 
           this.get = () => window[ self.global_namespace ][ self.editor.id ].quill;
 
@@ -182,30 +199,16 @@
            * @returns {Object} state of editor
            */
           this.getValue = () => {
-            const value = this.get().root.innerHTML;
-            return $.isObject( dataset ) ? { inner: value } : value;
+            return this.get().root.innerHTML;
           };
 
-          if ( $.isSafari() || $.isFirefox() ){
-            iframe.contentWindow.addEventListener('scroll-event', e => {
-              // iframeSharedObjects.ccm.root.scrollHeight
-              if ( e.detail.editor_id === self.editor.id ){
-                iframe.style.height = ( 45 + e.detail.scrollHeight ) + 'px';
-              }
-            });
-            iframe.style.height = ( 45 + ( await sharedSpace( 3 ) ).ccm.root.scrollHeight ) + 'px';
-          } else {
-            const sharedSpace = window[ self.global_namespace ][ self.editor.id ];
-            sharedSpace.ccm.scrollEventTarget.addEventListener('scroll-event', e => {
-              // iframeSharedObjects.ccm.root.scrollHeight
-              if ( e.detail.editor_id === self.editor.id ){
-                iframe.style.height = ( 35 + e.detail.scrollHeight ) + 'px';
-              }
-            });
-
-            iframe.style.height = ( 35 + sharedSpace.ccm.root.scrollHeight ) + 'px';
-
-          }
+          iframe.contentWindow.addEventListener('scroll-event', e => {
+            // iframeSharedObjects.ccm.root.scrollHeight
+            if ( e.detail.editor_id === self.editor.id ){
+              iframe.style.height = ( 45 + e.detail.scrollHeight ) + 'px';
+            }
+          });
+          iframe.style.height = ( 45 + ( await sharedSpace( 3 ) ).ccm.root.scrollHeight ) + 'px';
         });
 
       };
@@ -214,5 +217,5 @@
 
   };
 
-  let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||["latest"])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){window.ccm[c].component(component);document.head.removeChild(a)};a.src=component.ccm.url}
+  let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||[""])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){(c="latest"?window.ccm:window.ccm[c]).component(component);document.head.removeChild(a)};a.src=component.ccm.url}
 } )();

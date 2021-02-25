@@ -25,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-25.5.3.min.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.1.1.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -54,7 +54,7 @@
         "theme": "snow"
       },
 
-      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-6.0.1.min.mjs" ],
+      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.0.0.min.mjs" ],
 
       css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/quill/resources/styles.css" ]
 
@@ -77,12 +77,6 @@
        * @type {Object}
        */
       let quill;
-
-      /**
-       * data from editor stored into database
-       * @type {Object}
-       */
-      let data;
 
       /**
        * own reference for inner functions
@@ -123,7 +117,7 @@
           quill
         };
 
-        quill.root.innerHTML = self.data;
+        quill.root.innerHTML = ( typeof self.data === 'string' ) ? self.data : '';
 
         const editor = self.root.querySelector( '.ql-editor' );
 
@@ -135,17 +129,15 @@
         self.scrollEventTarget = new EventTarget();
 
         function inputListener( event ){
-          ( ( $.isSafari() || $.isFirefox()  )
-              ? window
-              : self.scrollEventTarget
-          ).dispatchEvent( new CustomEvent( 'scroll-event', { detail: {
+          window.dispatchEvent( new CustomEvent( 'scroll-event', { detail: {
               scrollHeight: self.root.scrollHeight,
               editor_id: self.editor_id
             } } ) );
         }
 
         if ( self.onchange )
-          self.root.querySelector( '.ql-editor' ).addEventListener( 'blur', async function () {
+          self.root.querySelector( '.ql-editor' ).addEventListener( 'blur', async function ( e ) {
+            inputListener( e );
             self.onchange.call( self );
           } );
 
@@ -160,8 +152,7 @@
        * @returns {Object} state of editor
        */
       this.getValue = () => {
-        const value = quill.root.innerHTML;
-        return $.isObject( data ) ? { inner: value } : value;
+        return quill.root.innerHTML;
       };
 
       /**
@@ -176,5 +167,5 @@
 
   };
 
-  let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||["latest"])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){window.ccm[c].component(component);document.head.removeChild(a)};a.src=component.ccm.url}
+  let b="ccm."+component.name+(component.version?"-"+component.version.join("."):"")+".js";if(window.ccm&&null===window.ccm.files[b])return window.ccm.files[b]=component;(b=window.ccm&&window.ccm.components[component.name])&&b.ccm&&(component.ccm=b.ccm);"string"===typeof component.ccm&&(component.ccm={url:component.ccm});let c=(component.ccm.url.match(/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/)||[""])[0];if(window.ccm&&window.ccm[c])window.ccm[c].component(component);else{var a=document.createElement("script");document.head.appendChild(a);component.ccm.integrity&&a.setAttribute("integrity",component.ccm.integrity);component.ccm.crossorigin&&a.setAttribute("crossorigin",component.ccm.crossorigin);a.onload=function(){(c="latest"?window.ccm:window.ccm[c]).component(component);document.head.removeChild(a)};a.src=component.ccm.url}
 } )();
