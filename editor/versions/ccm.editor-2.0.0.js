@@ -4,6 +4,7 @@
  * @license The MIT License (MIT)
  * @version latest (1.0.0)
  * @changes
+ * version 2.0.0 use HTML5 instead of CCM for inner quill web component
  * version 1.0.0 12.02.2021 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -18,7 +19,7 @@
      * @type {string}
      */
     name: "editor",
-    version: [1,0,0],
+    version: [2,0,0],
 
     /**
      * recommended used framework version

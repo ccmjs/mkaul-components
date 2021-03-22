@@ -25,7 +25,7 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.1.1.min.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.2.0.min.js",
     // ccm: "https://ccmjs.github.io/ccm/ccm.js",
 
     /**
@@ -112,8 +112,8 @@
         div.id = 'editor';
         quill = new Quill( div, self.settings );
 
-        window.parent[ self.global_namespace ][ self.editor_id ] = {
-          ccm: this,
+        if ( window.parent[ self.global_namespace ] ) window.parent[ self.global_namespace ][ self.editor_id ] = {
+          scrollHeight: _=> this.root.scrollHeight,
           quill
         };
 
@@ -126,7 +126,7 @@
         editor.addEventListener( 'keydown', inputListener );
         editor.addEventListener( 'blur', inputListener );
 
-        self.scrollEventTarget = new EventTarget();
+        // self.scrollEventTarget = new EventTarget();  // ToDo Use instead of Globals
 
         function inputListener( event ){
           window.dispatchEvent( new CustomEvent( 'scroll-event', { detail: {
