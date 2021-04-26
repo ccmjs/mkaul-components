@@ -369,7 +369,12 @@
               csv_post_event( 'closed', (new Date()).getTime() );
             } else {
               if ( ! parseInt( car.timer ) ) car.timer = (new Date()).getTime();
-              const reply = await csv_post_event( 'enter', ...car.toArray() );
+              let reply;
+              if ( ! self.json_format || self.json_format === "false" ){
+                reply = await csv_post_event( 'enter', ...car.toArray() );
+              } else {
+                reply = await csv_post_event( 'enter', car.toJSON() );
+              }
               if ( reply ){
                 car.space = parseInt( reply.trim() );
               } else {
@@ -422,7 +427,11 @@
               this.rerender();
               addTableRow( car );
 
-              csv_post_event( 'leave', ...car.toArray() );
+              if ( ! self.json_format || self.json_format === "false" ){
+                csv_post_event( 'leave', ...car.toArray() );
+              } else {
+                csv_post_event( 'leave', car.toJSON() );
+              }
               const leavingCar = $.html( { inner: car.image() } );
               leavingCar.style.display = 'inline-block';
               exit_car_container.replaceChild( leavingCar, exit_car_container.firstElementChild );
@@ -902,13 +911,12 @@
                   'Content-Type': 'text/html'
                 }
               });
-              if (!response.ok) // or check for response.status
-                throw new Error(response.statusText);
+              if (!response.ok) console.error( response.statusText ) // or check for response.status
               // process body
               const response_string = (await response.text()).trim();
               return command_interpreter( response_string, extra_span );
             } catch (err) {
-              console.log(err, request);
+              console.error(err, request);
               // show_error( "<p>" + request.url + " failed.<br>" + err + "</p>" );
             }
           } else {
@@ -937,7 +945,7 @@
             const response_string = (await response.text()).trim();
             return command_interpreter( response_string, extra_span );
           } else {
-            console.log( "No server_url" );
+            console.error( "No server_url" );
           }
         }
 
