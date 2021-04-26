@@ -68,7 +68,8 @@ button:hover {
 
 button:active {
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-    transform: translateY(4px);
+    transform: translateY(0.4rem);
+    margin-bottom: 0;
 }
 
 .garage {
@@ -107,4 +108,11 @@ button:active {
     padding: 1rem;
     border: thick solid red;
     color: red;
+}
+
+h3 {
+    border: thin solid black;
+    background-color: #dddddd;
+    padding: 1rem;
+    margin: 2px;
 }

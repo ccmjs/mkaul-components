@@ -11,10 +11,10 @@
     name: 'parkhaus',
     version: [10,0,0],
 
-    ccm: 'https://ccmjs.github.io/ccm/versions/ccm-26.2.1.min.js',
-    // ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: 'https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.3.1.min.js',
+    // ccm: 'https://kaul.inf.h-brs.de/ccmjs/ccm/ccm.js',
 
-    helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-7.1.0.min.mjs" ],
+    helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.2.0.min.mjs" ],
 
     config: {
       name: "CarHome",
@@ -40,22 +40,20 @@
         main: {
           inner: [
                 { "tag": "p", "class": "alert", "inner": "" },  // html.main.inner.0.inner
-                { tag: 'h2', inner: [
-                  'Autos im Parkhaus "%name%": &nbsp; ',
-                { tag: 'span', class: 'counter', inner: '0' },
-                  ', &nbsp; Max: &nbsp; ',
-                { tag: 'input', class: 'max', type: 'number', min: 0, value: "%max%", oninput: '%oninput%' },
-                  ' &nbsp; Frei: &nbsp; ',
-                { tag: 'span', class: 'free', inner: ' &nbsp; &nbsp; ' },
-                  ' &nbsp; Öffnungszeiten von : &nbsp; ',
-                { tag: 'input', class: 'open_from', type: 'number', min: 0, max: 24, value: "%open_from%", oninput: '%oninput%' },
-                  ' &nbsp; bis: &nbsp; ',
-                { tag: 'input', class: 'open_to', type: 'number', min: 0, max: 24, value: "%open_to%", oninput: '%oninput%' },
-                  ' &nbsp; ',
-                { tag: 'div', class: 'date', inner: '%date%' },
-                 'Simulation: &nbsp; ',
-                { tag: 'button', class: 'start', onclick: '%start_simulation%', inner: 'Start', title: 'Start simulation!' },
-                { tag: 'button', class: 'stop', onclick: '%stop%', inner: 'Stop', title: 'Stop simulation!' }
+                { tag: 'h3', inner: [
+                    'Autos im Parkhaus: &nbsp; ',
+                  { tag: 'span', class: 'counter', inner: '0' },
+                    ', &nbsp; Max: &nbsp; ',
+                  { tag: 'input', class: 'max', type: 'number', min: 0, value: "%max%", oninput: '%oninput%' },
+                    ' &nbsp; Frei: &nbsp; ',
+                  { tag: 'span', class: 'free', inner: ' &nbsp; &nbsp; ' }
+                ] }, { tag: 'h3', inner: [ 'Öffnungszeiten von: &nbsp; &nbsp; ',
+                  { tag: 'input', class: 'open_from', type: 'number', min: 0, max: 24, value: "%open_from%", oninput: '%oninput%' },
+                    ' &nbsp; bis: &nbsp; ',
+                  { tag: 'input', class: 'open_to', type: 'number', min: 0, max: 24, value: "%open_to%", oninput: '%oninput%' },
+                ] }, { tag: 'h4', inner: [ 'Simulation: &nbsp; ',
+                  { tag: 'button', class: 'start', onclick: '%start_simulation%', inner: 'Start', title: 'Start simulation!' },
+                  { tag: 'button', class: 'stop', onclick: '%stop%', inner: 'Stop', title: 'Stop simulation!' }
             ] },
             { class: 'button_container', inner: [
                 { tag: 'button', class: 'enter', onclick: '%enter%', inner: 'Enter', title: 'Drive your car into the garage!' },
@@ -89,9 +87,9 @@
       },
 
       images: {
-        car: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png',
-        parking_garage: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png',
-        empty: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png'
+        car: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/car.png',
+        parking_garage: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/parking_garage.png',
+        empty: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/empty.png'
       },
 
       messages: {
@@ -243,14 +241,16 @@
         ]
       },
 
-      hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
+      hash: [ "ccm.load", { "url": "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
 
       format: "json",
 
-      chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.2.js" ],
+      chart: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/plotly/versions/ccm.plotly-1.1.2.js" ],
 
-      css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
+      // background_color: 'yellow',
+
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
       // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
     },
 
@@ -305,7 +305,7 @@
 
         const ticket_hash = main_elem.querySelector('.ticket_hash');
         const table = main_elem.querySelector( 'table' );
-        if ( self.hide_table ) table.style.display = 'none';
+        if ( self.hide_table && self.hide_table !== "false" ) table.style.display = 'none';
         const error_div = main_elem.querySelector('.errors');
         const header = {};
         ['counter','max','free','open_from','open_to' ].forEach( className => {
@@ -473,7 +473,7 @@
             // garage_div.innerHTML += '';
           }
           randomSpace(){ // start with 1, end with max
-            return 1 + Math.floor(Math.random()*this.max);
+            return 1 + Math.floor(getRandom()*this.max);
           }
           updateHeader(){
             header.counter.innerText = this.countCars();
@@ -491,7 +491,7 @@
           get random(){
             // https://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
             const keys = Object.keys( this._space_index );
-            return this._space_index[ keys[ keys.length * Math.random() << 0] ];
+            return this._space_index[ keys[ keys.length * getRandom() << 0] ];
           }
           toString(){
             return this._space_index.toString();
@@ -628,7 +628,7 @@
           }
           color(){
             if ( ! this._color ){
-              this._color = '#' + ('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6);
+              this._color = '#' + ('00000'+(getRandom()*(1<<24)|0).toString(16)).slice(-6);
             }
             return this._color;
           }
@@ -696,6 +696,7 @@
         // $.setContent( self.element, main_elem );
         self.element.textContent = '';
         self.element.appendChild( main_elem );
+        if ( self.background_color ) self.element.style['background-color'] = self.background_color;
 
         // load config from server
         // =======================
@@ -706,7 +707,7 @@
         // simulation_speed: 10,
 
         const config_string = await csv_get_request( "config", { name: self.name } );
-        if ( config_string ){
+        if ( config_string && config_string.length > 1 ){
           const [ max, open_from, open_to, delay, simulation_speed ] = config_string.split(',');
           const config = { max, open_from, open_to, delay, simulation_speed };
           // merge into component config (self)
@@ -951,7 +952,7 @@
               headers:{
                 'Content-Type': 'text/plain'
               }
-            });
+            }).catch( err => { console.error( err ); return { text: _=> err } } );
             const response_string = (await response.text()).trim();
             const result = command_interpreter( response_string );
             console.log( request, " => ", result );
@@ -1027,7 +1028,7 @@
          * @param max - upper limit
          **/
         function getRandomInt(max) {
-          return Math.floor(Math.random() * Math.floor(max));
+          return Math.floor(getRandom() * Math.floor(max));
         }
 
         async function sleep( msec ) {
@@ -1035,12 +1036,13 @@
         }
 
         function show_error( message ){
+          if ( ! self.debug || self.debug === "false" ) return;
           if ( typeof message === 'string' ){
             error_div.innerHTML += message;
           } else {
             error_div.appendChild( message );
           }
-          error_div.style.display = 'block';
+          if ( self.debug ) error_div.style.display = 'block';
         }
 
         function randomCategory(){
@@ -1066,6 +1068,17 @@
           } else {
             return 0;
           }
+        }
+
+        function getRandom(){
+          let result = Math.random();
+          if ( self.random_start ){
+            const randomStart = Math.abs( parseInt( self.random_start ) );
+            for ( let i = randomStart; i > 0; i-- ){
+              result = Math.random();
+            }
+          }
+          return result;
         }
 
       };

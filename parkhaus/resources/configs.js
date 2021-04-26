@@ -95,7 +95,7 @@ ccm.files[ 'configs.js' ] = {
         }
       ]
     },
-    css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
+    css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
   },
   "server": {
     name: "CarHome",
@@ -152,9 +152,9 @@ ccm.files[ 'configs.js' ] = {
     },
 
     images: {
-      car: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/car.png',
-      parking_garage: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/parking_garage.png',
-      empty: 'https://ccmjs.github.io/mkaul-components/parkhaus/resources/empty.png'
+      car: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/car.png',
+      parking_garage: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/parking_garage.png',
+      empty: 'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/empty.png'
     },
 
     messages: {
@@ -264,12 +264,12 @@ ccm.files[ 'configs.js' ] = {
       ]
     },
 
-    hash: [ "ccm.load", { "url": "https://ccmjs.github.io/akless-components/modules/md5.mjs", "type": "module" } ],
+    hash: [ "ccm.load", { "url": "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/md5.mjs", "type": "module" } ],
     SALT: "123",
 
-    chart: [ "ccm.component", "https://ccmjs.github.io/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
+    chart: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/plotly/versions/ccm.plotly-1.1.1.js" ],
 
-    // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/parkhaus/resources/default.css' ]
+    // css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
     css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/data/ccmjs/mkaul-components/parkhaus/resources/default.css' ]
   }
 };
