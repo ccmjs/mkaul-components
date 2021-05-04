@@ -25,8 +25,8 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.2.0.min.js",
-    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.3.1.min.js",
+    // ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -40,9 +40,9 @@
       global_namespace: "WebAppGlobals",
 
       editor: {
-        url: "/ccmjs/mkaul-components/quill/versions/ccm.quill-1.0.0.js",
+        url: "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/quill/versions/ccm.quill-1.0.0.js",
         tag: "ccm-quill-1-0-0",
-        config: '["ccm.get","./resources/configs.js","quill_config" ]',  // as string
+        config: '["ccm.get","https://kaul.inf.h-brs.de/se1/resources/configs.js","quill_config" ]',  // as string
         id: 'ccm-editor-test',
         origin: 'https://kaul.inf.h-brs.de',
       },
@@ -60,8 +60,12 @@
         }
       },
 
+      retry: 20,         // number of retries
+      retry_timer: 250, // milliseconds
+      additional_height: 45,
+
       // data: {
-      //   store: [ "ccm.store", "https://ccmjs.github.io/mkaul-components/editor/resources/datasets.js" ],
+      //   store: [ "ccm.store", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/datasets.js" ],
       //   key: "demo"
       // },
 
@@ -72,10 +76,10 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-7.0.0.min.mjs" ],
+      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.2.0.min.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
-      // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/editor/resources/styles.css" ],
+      // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/styles.css" ],
       // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/styles.css" ],
 
     },
@@ -113,6 +117,8 @@
        */
       let dataset;
 
+      let additional_height = 0;
+
       /**
        * init is called once after all dependencies are solved and is then deleted
        * @type {Function}
@@ -132,6 +138,8 @@
 
         // make editor id unique by adding id
         self.editor.id += '_' + this.index;
+
+        additional_height = self.additional_height + $.isSafari() ? 35 : 0;
 
         dataset = self.data ? await $.dataset( self.data ) : '';
         if ( dataset.inner ) dataset = dataset.inner;
@@ -167,17 +175,30 @@
               if ( count > 0 ){
                 setTimeout( async _=> {
                   resolve( sharedSpace( --count ) );
-                }, 100 );
-              }
+                }, self.retry_timer );
+              } else debugger;
             }
           } );
         };
+
+        // onload-Event does not work:
+        // ===========================
+        // const sharedSpace = async ( count ) => {
+        //   return new Promise(resolve => {
+        //     window.addEventListener('load', e => {
+        //       iframe.contentWindow.addEventListener('load', e => {
+        //         resolve( window[ self.global_namespace ][ self.editor.id ] );
+        //       });
+        //     });
+        //   });
+        // };
 
         // preliminary access to be overwritten by the load event, see below
         this.get = () => {
           return {
             focus: () => {
-              iframe.focus();
+              if ( self.focus ) iframe.focus();
+              if ( self.focus && iframe.contentWindow ) iframe.contentWindow.postMessage('focus');
             },
             set innerHTML( newContents ){
               debugger;  // ToDo
@@ -191,9 +212,18 @@
 
         // after load event process data
         iframe.addEventListener('load', async _=>{
-          iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];  // ToDo delete if unused
 
-          this.get = () => window[ self.global_namespace ][ self.editor.id ].quill;
+          const lateSharedSpace = await sharedSpace( self.retry );
+
+          if ( self.focus ) iframe.contentWindow.focus();
+          if ( self.focus && iframe.contentWindow ) iframe.contentWindow.postMessage('set-focus');
+
+          if ( ! isEmpty( window[ self.global_namespace ] )){
+            iframe.contentWindow[ self.global_namespace ] = window[ self.global_namespace ];  // ToDo delete if unused
+            this.get = () => window[ self.global_namespace ][ self.editor.id ].quill;
+          } else {
+            this.get = () => lateSharedSpace.quill;
+          }
 
           /**
            * current state of this editor
@@ -206,13 +236,18 @@
           iframe.contentWindow.addEventListener('scroll-event', e => {
             // iframeSharedObjects.ccm.root.scrollHeight
             if ( e.detail.editor_id === self.editor.id ){
-              iframe.style.height = ( 45 + e.detail.scrollHeight ) + 'px';
+              iframe.style.height = ( additional_height + e.detail.scrollHeight ) + 'px';
             }
           });
-          iframe.style.height = ( 45 + ( await sharedSpace( 3 ) ).scrollHeight() ) + 'px';
+          iframe.style.height = ( additional_height + ( lateSharedSpace ).scrollHeight() ) + 'px';
         });
 
       };
+
+      function isEmpty( obj ){
+        for ( const key in obj ) return false;
+        return true;
+      }
 
     }
 

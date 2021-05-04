@@ -24,8 +24,8 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.2.0.min.js",
-    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.2.1.min.js",
+    // ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -60,7 +60,7 @@
       },
 
       // data: {
-      //   store: [ "ccm.store", "https://ccmjs.github.io/mkaul-components/editor/resources/datasets.js" ],
+      //   store: [ "ccm.store", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/datasets.js" ],
       //   key: "demo"
       // },
 
@@ -71,10 +71,10 @@
 
       // onchange: function(){ console.log( this.getValue() ); },
 
-      helper: [ "ccm.load", "https://ccmjs.github.io/akless-components/modules/versions/helper-7.0.0.min.mjs" ],
+      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.2.0.min.mjs" ],
 
       // css: [ "ccm.load",  "./resources/styles.css" ],
-      // css: [ "ccm.load",  "https://ccmjs.github.io/mkaul-components/editor/resources/styles.css" ],
+      // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/styles.css" ],
       // css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/editor/resources/styles.css" ],
 
     },
