@@ -25,8 +25,8 @@
      * recommended used framework version
      * @type {string}
      */
-    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.2.0.min.js",
-    // ccm: "https://ccmjs.github.io/ccm/ccm.js",
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.3.1.min.js",
+    // ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/ccm.js",
 
     /**
      * default instance configuration
@@ -54,7 +54,7 @@
         "theme": "snow"
       },
 
-      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.0.0.min.mjs" ],
+      helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.2.0.min.mjs" ],
 
       css: [ "ccm.load",  "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/quill/resources/styles.css" ]
 
@@ -142,6 +142,12 @@
           } );
 
         if ( self.focus ) self.root.querySelector( '.ql-editor' ).focus();
+
+        window.addEventListener( "message",e => {
+          if ( e.data === 'set-focus' ){
+            self.root.querySelector( '.ql-editor' ).focus();
+          }
+        });
 
       };
 
