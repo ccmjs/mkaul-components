@@ -619,11 +619,21 @@
             return this._duration;
           }
           price_factor(){
-            if ( typeof self.price_factor === 'number' ) return self.price_factor;
-            if ( typeof self.price_factor === 'object' ){
-              const client_price = self.price_factor[ this.client_category ];
-              const vehicle_price = self.price_factor[ this.vehicle_type ];
-              const client_vehicle_price = self.price_factor[ this.client_category + '.' + this.vehicle_type ];
+            let price_factor = self.price_factor;
+            if ( ! price_factor ) return 1;
+            if ( typeof price_factor === 'string' ){
+              price_factor = price_factor.trim();
+              if ( price_factor.startsWith('{') ){
+                price_factor = JSON.parse( price_factor );
+              } else {
+                price_factor = parseFloat( price_factor );
+              }
+            }
+            if ( typeof price_factor === 'number' ) return price_factor;
+            if ( typeof price_factor === 'object' ){
+              const client_price = price_factor[ this.client_category ];
+              const vehicle_price = price_factor[ this.vehicle_type ];
+              const client_vehicle_price = price_factor[ this.client_category + '.' + this.vehicle_type ];
               if ( typeof client_vehicle_price === 'number' ) return client_vehicle_price;
               if ( typeof client_price === 'number' ) return client_price;
               if ( typeof vehicle_price === 'number' ) return vehicle_price;
