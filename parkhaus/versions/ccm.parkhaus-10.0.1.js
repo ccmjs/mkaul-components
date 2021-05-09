@@ -388,12 +388,12 @@
               const oldChild = garage_div.querySelector('#' + car.space_id() );
               if ( oldChild && oldChild.classList.toString().trim() === 'space' ){  // space is free
                 (async ()=>{  // only traffic lights are concurrent
-                  await sleep( self.delay );
+                  await sleep( parseInt( self.delay ) );
                   switch_traffic_light( "yellow" );
-                  await sleep( self.delay );
+                  await sleep( parseInt( self.delay ) );
                   switch_traffic_light( "green" );
                   main_elem.querySelector("img.entry").src = self.images.empty;
-                  await sleep( self.delay );
+                  await sleep( parseInt( self.delay ) );
                   switch_traffic_light( "red" );
                   main_elem.querySelector("img.entry").src = self.images.car;
                 })();
@@ -439,7 +439,7 @@
                 () => {
                   exit_car_container.replaceChild( exit_img, exit_car_container.firstElementChild );
                 },
-                5 * self.delay
+                5 * parseInt( self.delay )
               );
             }
           }
@@ -694,8 +694,9 @@
 
         class ClientList {
           constructor( max ){
+            const maxNumber = typeof max === 'number' ? max : parseInt( max );
             this._list = [];
-            for (let i = 0; i<max; i++){
+            for (let i = 0; i< maxNumber; i++){
               this._list.push( new Car( i + 1 ) );
             }
           }
@@ -708,7 +709,7 @@
           }
         }
 
-        const clientMap = new ClientList( self.license_max || 100 * self.max );
+        const clientMap = new ClientList( parseInt( self.license_max ) || 100 * parseInt( self.max ) );
 
         // render content to website
         // $.setContent( self.element, main_elem );
@@ -1018,10 +1019,11 @@
         function start_simulation( e ){
           if ( ! simulationIsRunning ){  // Do not allow for more than one simulation at the same time
             simulationIsRunning = true;
+            const simulation = typeof self.simulation === 'string' ? JSON.parse( self.simulation ) : self.simulation;
             interval = setInterval(
               () => {
-                const enterOrLeave = getRandomInt( self.simulation.max );
-                if ( enterOrLeave < self.simulation.enter ){
+                const enterOrLeave = getRandomInt( simulation.max );
+                if ( enterOrLeave < simulation.enter ){
                   const nextCar = clientMap.nextCar();
                   if ( nextCar ) garage.addCar( nextCar );
                 } else {
@@ -1029,7 +1031,7 @@
                   garage.removeCar( oldCar );
                 }
               },
-              self.simulation.delay * self.delay
+              simulation.delay * parseInt( self.delay )
             );
           }
         }
