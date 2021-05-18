@@ -711,7 +711,7 @@
           }
         }
 
-        const clientMap = new ClientList( ( parseInt( self.license_max ) - parseInt( self.license_min || 0 ) ) || 10 * parseInt( self.max ) );
+        const clientMap = new ClientList( Math.abs( parseInt( self.license_max ) - parseInt( self.license_min || 0 ) ) || 10 * parseInt( self.max ) );
 
         // render content to website
         // $.setContent( self.element, main_elem );
