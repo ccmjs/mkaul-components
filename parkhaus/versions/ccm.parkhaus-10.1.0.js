@@ -515,7 +515,7 @@
           constructor( spec ){
             if ( spec ){
               if ( typeof spec === 'string' ){
-                [ this.nr, this.timer, this._duration, this._price, this._hash, this._color, this.space, this.client_category, this.vehicle_type, this.license ] = spec.split("/");
+                [ this.nr, this.timer, this._duration, this._price, this._hash, this._color, this.space, this.client_category, this.vehicle_type, this._license ] = spec.split("/");
                 [ 'nr', 'timer', '_duration', '_price', 'space' ].forEach( prop => this[prop] === '_' ? '_' : parseInt(this[prop]));
               } else if ( typeof spec === 'object' ){
                 for ( const [ key, value ] of Object.entries( spec ) ){
