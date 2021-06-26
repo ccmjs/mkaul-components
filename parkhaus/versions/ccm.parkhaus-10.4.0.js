@@ -910,7 +910,7 @@
               ticket: car.hash(),
               license: car.license,
               color: car.color(),
-              space: car.space(),
+              space: car.space,
               preis: ' € ' + ( car.price() / 100 ).toFixed(2) }
             )
           );
