@@ -1,0 +1,61 @@
+/**
+ * @overview default layout of ccm component search
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2021
+ * @license The MIT License (MIT)
+ */
+#element, #element * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+input {
+  width: calc( 100% - 10rem );
+  margin-top: 1rem;
+  font-size: x-large;
+  font-weight: bold;
+  border-radius: 0.3rem;
+}
+
+a {
+  color: #eaeaea;
+  background-color: #5292a5;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+a:hover {
+  color: white;
+  background-color: black;
+}
+
+a:visited {
+  color: #5292a5;
+  background: #eaeaea;
+}
+
+a::before {
+  content: '→ ';
+}
+
+a::after {
+  content: ' ';
+}
+
+button {
+  margin: -0.3rem 1em 0.5em 0.3em;
+  padding: 0.5em 3em;
+  color: white;
+  font-weight: bold;
+  background-color: #009EE0;
+  border: thin solid black;
+  border-radius: 0.3rem;
+  box-shadow: 4px 4px 3px 0 rgba(0,0,0,0.75);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
