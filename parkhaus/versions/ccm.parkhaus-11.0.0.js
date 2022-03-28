@@ -19,6 +19,7 @@
     config: {
       name: "CarHome",
       // server_url: "http://localhost:8080/DemoServlet7",
+      // json_format: true, if JSON instead of CSV is used in client server communication
       max: 10, // maximum number of parking slots
       // license_max: 100,  // maximum number of license numbers
       // license_min: 90,  // define range of numbers for license plates of cars
@@ -263,8 +264,6 @@
 
       hash: [ "ccm.load", { "url": "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/md5.mjs", "type": "module" } ],
       SALT: "123",
-
-      format: "json",
 
       chart: [ "ccm.component", "https://kaul.inf.h-brs.de/ccmjs/mkaul-components/plotly/versions/ccm.plotly-1.1.3.js" ],
 
@@ -714,6 +713,7 @@
             return this._color;
           }
           toObject(){
+            console.assert( this.timer == this.beginTime() );
             return {
               nr: this.nr,
               timer: this.timer,
@@ -725,17 +725,18 @@
               client_category: this.client_category,
               vehicle_type: this.vehicle_type,
               license: this.license,
-              begin: this.beginTime()
+              // begin: this.beginTime()
             };
           }
           toJSON(){
             return JSON.stringify( this.toObject(), null, 2 );
           }
           toTransferObject(){
-            return self.format === 'json' ? this.toJSON() : this.toCSV();
+            return self.json_format ? this.toJSON() : this.toCSV();
           }
           toArray(){
-            return [ this.nr, this.timer, this._duration, this.price(), this.hash(), this.color(), this.space, this.client_category, this.vehicle_type, this.license, this.beginTime() ].map( x => ( x || '_' ).toString() );
+            console.assert( this.timer == this.beginTime() );
+            return [ this.nr, this.timer, this._duration, this.price(), this.hash(), this.color(), this.space, this.client_category, this.vehicle_type, this.license ].map( x => ( x || '_' ).toString() );
           }
           toCSV(){
             this.toArray().join(',');
@@ -788,7 +789,6 @@
         // open_from: 6,
         // open_to: 24,
         // delay: 100
-        // time_shift: 1234567890
         // simulation_speed: 10
 
         const config_string = await csv_get_request( "config", { name: self.name } );
@@ -797,8 +797,8 @@
           if ( config_string.includes('{') ){ // JSON
             config = JSON.parse( config_string );
           } else { //CSV
-            const [ max, open_from, open_to, delay, time_shift, simulation_speed ] = config_string.split(',');
-            config = { max: parseInt(max), open_from: parseInt(open_from), open_to: parseInt(open_to), delay: parseInt(delay), time_shift: BigInt( time_shift ) || BigInt( self.time_shift ), simulation_speed: parseInt( simulation_speed ) || self.simulation_speed  };
+            const [ max, open_from, open_to, delay, simulation_speed ] = config_string.split(',');
+            config = { max: parseInt(max), open_from: parseInt(open_from), open_to: parseInt(open_to), delay: parseInt(delay), simulation_speed: parseInt( simulation_speed ) || self.simulation_speed  };
           }
           // merge into component config (self)
           garage.max = parseInt( config.max || self.max );
