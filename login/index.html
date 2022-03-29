@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Manfred Kaul <manfred.kaul@h-brs.de> 2021">
+<meta name="licence" content="The MIT License (MIT)">
+<div id="login" class="app_container">
+    <div class="box login">
+        <div class="start-row" title="Your EMail-Account in FB02">
+            <label for="user" id="user_label" class="white-color login">User:</label>
+            <input type="text" id="user" placeholder="astudi2s" class="start login" autocomplete="user" required pattern="\S+2[s|m]"/>
+        </div>
+        <div class="start-row" title="Your Passwort for your FB02-EMail-Account">
+            <label for="password" class="white-color login">Password:</label>
+            <input type="password" id="password" placeholder="123" class="login" autocomplete="password" pattern=".+" required>
+        </div>
+        <div class="last-row">
+            <button id="login_button" class="login">Login</button>
+        </div>
+    </div>
+</div>
+<script type="module">
+
+  const loginDiv = document.getElementById('login');
+  const passwd_input = document.getElementById('password');
+  const login_button = document.getElementById('login_button');
+  const user_input = document.getElementById('user');
+
+  /* Single Global Namespace */
+  window.WebAppGlobals = {
+    AppLoginEventTarget: new EventTarget(),   // ToDo document is a valid EventTarget as well
+    AppRoutingEventTarget: new EventTarget(),
+    realm: 'hbrsinfpseudo',
+    named: 'hbrsinfkaul',
+    loginURL: '/se1_test/login/ldap.php',
+  };
+  const realm = { named: window.WebAppGlobals.named, pseudo: window.WebAppGlobals.realm };
+  const loginKey = realm => 'ccm-user-' + realm;
+
+  login_button.addEventListener('click', loginHandler( user_input, passwd_input ) );
+
+  function loginHandler( user_input, passwd_input ){
+    return function( event ){
+      const user = user_input.value;
+      const passwd = passwd_input.value;
+      const data = { realm: realm.pseudo, user, passwd };
+
+      fetch( window.WebAppGlobals.loginURL, {
+        method: 'POST',
+        cache: 'no-cache',
+        credentials: 'omit',
+        headers: { 'Content-Type': 'application/json' },
+        body: btoa( JSON.stringify( data ) )
+      }).then( response => {
+        if ( response.status === 200 ){
+          response.json().then( json => {
+            loginDiv.style.display = 'none';
+            json.key = json.user;
+            json.token = `${json.user}#${json.token}`;
+            sessionStorage.setItem( loginKey( realm.named ), JSON.stringify( json.named ) );
+            delete json.named;
+            sessionStorage.setItem( loginKey( realm.pseudo ), JSON.stringify( json ) );
+            window.WebAppGlobals.AppLoginEventTarget.dispatchEvent( new Event('login') );
+            // displayApp();
+          }).catch( console.error );
+        } else {
+          loginDiv.innerHTML += `<h3 class="red">Please try again!</h3>`;
+          console.error( response );
+        }
+      }).catch( console.error );
+
+    }
+  }
+
+
+</script>
+<script src="/ccmjs/mkaul-components/login/versions/ccm.login-1.0.0.js"></script>
+<ccm-login-1-0-0></ccm-login-1-0-0>

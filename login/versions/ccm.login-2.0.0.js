@@ -2,8 +2,9 @@
  * @overview ccm component for login
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2021
  * @license The MIT License (MIT)
- * @version latest (1.0.0)
+ * @version latest (2.0.0)
  * @changes
+ * version 2.0.0 29.03.2022 logout on another day
  * version 1.0.0 07.02.2021 initial build
  * TODO: unit tests
  * TODO: builder component
@@ -18,7 +19,7 @@
      * @type {string}
      */
     name: "login",
-    version: [1,0,0],
+    version: [2,0,0],
 
     /**
      * recommended used framework version
@@ -145,14 +146,18 @@
       };
 
       this.isLoggedIn = () => {
+        return this.checkDate();
+      };
+
+      this.checkDate = async () => {
         const loginDataString = sessionStorage.getItem( this.loginKey() );
         if ( ! loginDataString ) return false;
         const loginData = JSON.parse( loginDataString );
         let loginDay = ( new Date( loginData.date ) ).getDay();
         if ( isNaN( loginDay ) ) loginDay = new Date( loginData.date.replace(' ','T')  ).getDay();
-        if ( (new Date()).getDay() === loginDay ) return true;
-        return false;
-      };
+        if ( (new Date()).getDay() !== loginDay ) this.logout();
+        return (new Date()).getDay() === loginDay;
+      }
 
       this.waitForLogin = async () => {
         return new Promise( resolve => {
@@ -199,6 +204,7 @@
       };
 
       this.data = () => {
+        this.checkDate();
         const loginDataString = sessionStorage.getItem( this.loginKey() );
         if ( ! loginDataString ) return { user: 'default', picture: this.picture };
         const userData = JSON.parse( loginDataString );
