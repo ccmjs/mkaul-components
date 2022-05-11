@@ -2,7 +2,7 @@
  * @overview ccm connector for plotly, https://plot.ly/javascript
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.1.1)
+ * @version latest (1.1.3)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component

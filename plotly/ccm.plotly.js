@@ -2,9 +2,7 @@
  * @overview ccm connector for plotly, https://plot.ly/javascript
  * @author Manfred Kaul <manfred.kaul@h-brs.de> 2018
  * @license The MIT License (MIT)
- * @version latest (1.1.1)
- * @changes
- * version 1.1.1 26.11.2018
+ * @version latest (1.1.3)
  * TODO: docu comments -> API
  * TODO: unit tests
  * TODO: builder component
@@ -22,13 +20,15 @@
      * @type {string}
      */
     name: 'plotly',
-    
+    version: [1,1,3],
+
     /**
      * recommended used framework version
      * @type {string}
      */
-    // ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.7.min.js',
-    ccm: 'https://ccmjs.github.io/ccm/ccm.js',
+    ccm: "https://kaul.inf.h-brs.de/ccmjs/ccm/versions/ccm-26.4.4.min.js",
+    helper: [ "ccm.load", "https://kaul.inf.h-brs.de/ccmjs/akless-components/modules/versions/helper-7.6.0.min.mjs" ],
+    // ccm: 'https://kaul.inf.h-brs.de/ccmjs/ccm/ccm.js',
 
     /**
      * default instance configuration
@@ -52,11 +52,10 @@
 
       layout: {},
 
-      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.js'  ],
-      // https://cdn.plot.ly/plotly-1.43.1.min.js
+      plotly_lib: [ 'ccm.load', 'https://cdn.plot.ly/plotly-latest.min.js'  ],
 
-      css: [ 'ccm.load',  '../plotly/resources/default.css' ],
-      // css: [ 'ccm.load',  'https://ccmjs.github.io/mkaul-components/plotly/resources/default.css' ],
+      // css: [ 'ccm.load',  'resources/default.css' ],
+      css: [ 'ccm.load',  'https://kaul.inf.h-brs.de/ccmjs/mkaul-components/plotly/resources/default.css' ],
       // onfinish: function( instance, results ){ console.log( results ); }
     },
 
@@ -65,34 +64,35 @@
      * @constructor
      */
     Instance: function () {
-      
+
       /**
        * shortcut to help functions
        * @type {Object.<string,function>}
        */
       let $;
-      
+
       /**
        * init is called once after all dependencies are solved and is then deleted
-       */      
+       */
       this.init = async () => {
 
-        // set shortcut to help functions
-        $ = this.ccm.helper;
-        
+        // set shortcut to helper functions
+        $ = Object.assign( {}, this.ccm.helper || ccm.helper, this.helper );
+
         //  Is config given via LightDOM (inner HTML of Custom Element)?
         //  Then use it with higher priority
         if ( this.inner && this.inner.innerHTML.trim() && this.inner.innerHTML.startsWith('{') ){
 
           // interprete LightDOM
           this.lightDOM = JSON.parse( this.inner.innerHTML );
+
           // merge into config
           Object.assign( this, this.lightDOM );
 
         }
 
       };
-        
+
       /**
        * starts the instance
        */
@@ -112,34 +112,14 @@
             this.layout,
             this.plot_config
           );
-
           event && event.preventDefault();
         };
 
         plotter();
 
-        $.setContent( this.element, main_div );
-
-        // Test via a getter in the options object to see if the passive property is accessed
-        // let supportsPassive = false;
-        // try {
-        //   const opts = Object.defineProperty({}, 'passive', {
-        //     get: function() {
-        //       supportsPassive = true;
-        //     }
-        //   });
-        //   window.addEventListener("testPassive", null, opts);
-        //   window.removeEventListener("testPassive", null, opts);
-        // } catch (e) {}
-
-        // window.addEventListener('resize', plotter, supportsPassive ? { passive: true } : false);
-        // window.addEventListener('resize', plotter );
-
         // render main HTML structure
-
-        // resize plotly chart
-        // window.dispatchEvent(new Event('resize'))
-        // $.wait( 1,  () => { window.dispatchEvent(new Event('resize')) } );
+        this.element.textContent = '';
+        this.element.appendChild( main_div );
 
       };
 
