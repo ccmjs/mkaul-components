@@ -38,7 +38,7 @@
 
       html: {
         main: { id: "main",
-          inner: { id: "plot"}
+          inner: { id: "plot", class: "js-plotly-plot" }
         }
       },
 
