@@ -20,7 +20,6 @@
      * @type {string}
      */
     name: 'plotly',
-    version: [1,1,3],
 
     /**
      * recommended used framework version
