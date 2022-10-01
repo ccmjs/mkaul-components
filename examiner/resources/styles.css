@@ -1,0 +1,186 @@
+/**
+ * @overview default layout of ccm component examiner
+ * @author Manfred Kaul <manfred.kaul@h-brs.de> 2020
+ * @license The MIT License (MIT)
+ */
+#element {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+}
+
+:host {
+  margin-bottom: 2rem;
+}
+
+input {
+  display: inline;
+}
+
+.form-group {
+  display: inline-block;
+  margin: 0 0.2rem;
+  padding: 0;
+}
+
+.item-label {
+  display: inline;
+  margin-right: 1rem;
+}
+
+div.checkbox {
+  display: inline;
+}
+
+.form-control {
+  display: inline-block;
+  width: fit-content;
+  height: 1.2rem;
+}
+
+textarea.form-control {
+  box-sizing: border-box;
+  min-width: 40rem;
+  resize: both;
+}
+
+input[type=text] {
+  color: red;
+  font-weight: bold;
+  width: 60rem;
+}
+
+input[type=number] {
+  color: red;
+  font-weight: bold;
+  width: 4rem;
+}
+
+input[type=text][name$=note], input[type=text][name=Note] {
+  color: red;
+  font-weight: bold;
+  width: 4rem;
+}
+
+.manual {
+  background-color: #fdddae;
+}
+
+button#calc {
+  margin: 0;
+  padding: 0.1rem;
+}
+
+.criterium {
+  display: inline-block;
+  font-size: inherit;
+  width: 6rem;
+  height: 1.5rem;
+  max-width: 6rem;
+}
+
+.atab {
+  tab-size:30;
+  -moz-tab-size:30;
+  -ms-tab-size:30;
+  white-space: pre;
+  margin: 0;
+  padding: 0;
+}
+
+.participant {
+  font-weight: bold;
+  background-color: lightpink;
+}
+
+#fill {
+  border: thin solid black;
+  padding: 0.1rem;
+  box-shadow: #b1b6bc;
+}
+
+.cloc {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+@media print{
+  /*  https://wiki.selfhtml.org/wiki/CSS/Tutorials/Print-CSS */
+  html, body, *, html *, body * {
+    height: initial;
+    font-family: "times new roman", times, serif;
+    font-size: 10pt;
+    text-align: justify;
+  }
+  body {
+    margin: initial;
+    padding: initial;
+    height: initial;
+  }
+  .background-color-blue {
+    background-color: white;
+  }
+  .app_container {
+    height: initial;
+  }
+  /*
+
+    a[href]::after {
+    content: " <"attr(href)">";
+    color: #888;
+    background-color: inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+
+  */
+  h1[id]::after,h2[id]::after,h3[id]::after {
+    content:" [#"attr(id)"]";
+    color: #888;
+    background-color: inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+  [title]::after {
+    content: " ("attr(title)")";
+    color: #888;
+    background-color:inherit;
+    font-style: italic;
+    size: 0.8rem;
+  }
+  [cite]::after {
+    content: close-quote" (Quelle: "attr(cite)")";
+    font-size: 0.8rem;
+  }
+  input[type=text], textarea.form-control {
+    display: inline-block;
+    height: fit-content;
+    color: red;
+    font-weight: bold;
+    padding: 2px;
+    margin: 0;
+    border-bottom: thin solid black;
+    border-right: thin solid black;
+    background-color: white !important;
+  }
+  .input-div {
+    display: block;
+    font-family: monospace, system-ui, sans-serif;
+    border-bottom: thin solid black;
+    border-right: thin solid black;
+    border-radius: 0.5em;
+    padding: 3px;
+    margin: 0;
+  }
+  .pre {
+    white-space: pre-wrap;
+  }
+  .noprint {
+    display: none;
+  }
+  button {
+    display: none;
+  }
+  textarea.input-div {
+    font-family: monospace, system-ui, sans-serif;
+  }
+}
